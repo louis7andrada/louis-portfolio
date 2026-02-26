@@ -1,9 +1,14 @@
 module.exports = {
   darkMode: 'class',
   content: [
-    "./layouts/**/*.{html,js,ts}",
-    "./content/**/*.{html,md}",
-    "./themes/portfolio-theme/**/*.{html,js,ts}"
+    "./layouts/**/*.html",
+    "./content/**/*.md",
+
+    "./themes/portfolio-theme/layouts/**/*.html",
+    "./themes/portfolio-theme/layouts/**/*.js",
+    "./themes/portfolio-theme/layouts/**/*.ts",
+
+    "./themes/portfolio-theme/content/**/*.md"
   ],
   theme: {
     extend: {},
