@@ -1,7 +1,6 @@
-+++
-title = 'Home'
-date = 2023-01-01T08:00:00-07:00
-draft = false
-+++
+---
+title: "Home"
+description: "Portfolio of Louis Andrada — Brazilian painter based in Toronto."
+---
 
-Welcome to my portfolio.
+Welcome to my portfolio. Explore my artworks, archives, and commissions.

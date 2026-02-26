@@ -6,5 +6,5 @@ size: "30 x 40 cm"
 availability: "private collection"
 price: ""
 project: "Project B"
-image: "/images/artworks/artwork19.jpg"
+image: "artwork19.jpeg"
 ---

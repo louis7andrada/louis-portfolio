@@ -6,5 +6,5 @@ size: "18 x 24 cm"
 availability: "available"
 price: "$300"
 project: "Project A"
-image: "/images/artworks/artwork30.jpg"
+image: "artwork30.jpeg"
 ---

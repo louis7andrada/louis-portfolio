@@ -6,5 +6,5 @@ size: "30 x 35 cm"
 availability: "sold"
 price: ""
 project: "Project D"
-image: "/images/artworks/artwork29.jpg"
+image: "artwork29.jpeg"
 ---

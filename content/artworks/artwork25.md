@@ -6,5 +6,5 @@ size: "22 x 28 cm"
 availability: "private collection"
 price: ""
 project: "Project D"
-image: "/images/artworks/artwork25.jpg"
+image: "artwork25.jpeg"
 ---

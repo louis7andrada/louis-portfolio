@@ -162,10 +162,10 @@
           class="artwork-select-item cursor-pointer border border-gray-300 rounded p-2 flex flex-col items-center"
           data-id="{{ .File.BaseFileName }}"
           data-title="{{ .Title }}"
-          data-image="{{ .Params.image }}"
+          data-image="/images/artworks/{{ .Params.image }}"
         >
           <img 
-            src="{{ .Params.image }}" 
+            src="/images/artworks/{{ .Params.image }}" 
             class="w-full h-24 object-cover rounded mb-2"
           />
           <p class="text-sm text-center">{{ .Title }}</p>

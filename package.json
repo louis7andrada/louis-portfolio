@@ -4,8 +4,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+
     "dev": "npx tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./assets/css/output.css --watch",
-    "build": "npx tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./assets/css/output.css"
+
+    "build": "npx tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./assets/css/output.css && hugo --gc --minify"
   },
   "keywords": [],
   "author": "",

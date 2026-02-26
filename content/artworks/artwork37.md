@@ -6,5 +6,5 @@ size: "50 x 60 cm"
 availability: "sold"
 price: ""
 project: "Project D"
-image: "/images/artworks/artwork37.jpg"
+image: "artwork37.jpeg"
 ---

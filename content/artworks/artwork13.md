@@ -6,5 +6,5 @@ size: "60 x 60 cm"
 availability: "commissioned"
 price: ""
 project: "Project D"
-image: "/images/artworks/artwork13.jpg"
+image: "artwork13.jpeg"
 ---

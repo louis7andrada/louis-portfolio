@@ -6,5 +6,5 @@ size: "50 x 60 cm"
 availability: "private collection"
 price: ""
 project: "Project A"
-image: "/images/artworks/artwork03.jpg"
+image: "artwork03.jpeg"
 ---

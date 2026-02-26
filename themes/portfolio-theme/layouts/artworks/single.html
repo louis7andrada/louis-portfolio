@@ -1,0 +1,68 @@
+{{ define "main" }}
+
+<section class="px-4 py-12 max-w-4xl mx-auto">
+
+  <!-- Title -->
+  <h1 class="text-4xl font-semibold mb-6">{{ .Title }}</h1>
+
+  <div class="grid md:grid-cols-2 gap-10">
+
+    <!-- Image -->
+    <div>
+      {{ if .Params.image }}
+        <img 
+            src="/images/artworks/{{ .Params.image }}" 
+            alt="{{ .Title }}" 
+            class="w-full h-auto rounded shadow"
+        />
+        {{ else }}
+        <div class="w-full aspect-square bg-gray-200 rounded flex items-center justify-center text-gray-500">
+            No image yet
+        </div>
+        {{ end }}
+    </div>
+
+    <!-- Details -->
+    <div class="space-y-2 text-lg">
+      {{ with .Params.medium }}
+        <p><strong>Medium:</strong> {{ . }}</p>
+      {{ end }}
+
+      {{ with .Params.size }}
+        <p><strong>Size:</strong> {{ . }}</p>
+      {{ end }}
+
+      {{ with .Params.year }}
+        <p><strong>Year:</strong> {{ . }}</p>
+      {{ end }}
+
+      {{ with .Params.project }}
+        <p><strong>Project:</strong> {{ . }}</p>
+      {{ end }}
+
+      {{ with .Params.availability }}
+        <p><strong>Availability:</strong> {{ . }}</p>
+      {{ end }}
+
+      {{ with .Params.price }}
+        <p><strong>Price:</strong> {{ . }}</p>
+      {{ end }}
+    </div>
+
+  </div>
+
+  <!-- Description -->
+  {{ with .Content }}
+    <div class="mt-10 prose max-w-none">
+      {{ . }}
+    </div>
+  {{ end }}
+
+  <!-- Back Link -->
+  <div class="mt-12">
+    <a href="/artworks/" class="text-blue-600 hover:underline">&larr; Back to Artworks</a>
+  </div>
+
+</section>
+
+{{ end }}
