@@ -19,17 +19,17 @@ interface FeaturedArtwork {
 
 const featuredArtworks: FeaturedArtwork[] = [
   {
-    src: "/images/featured/featured1.jpg",
+    src: "/images/featured/featured1.jpeg",
     title: "Artwork Title 1",
     details: "2024 • Oil on Canvas • 40 x 50 cm"
   },
   {
-    src: "/images/featured/featured2.jpg",
+    src: "/images/featured/featured2.jpeg",
     title: "Artwork Title 2",
     details: "2023 • Acrylic on Panel • 30 x 40 cm"
   },
   {
-    src: "/images/featured/featured3.jpg",
+    src: "/images/featured/featured3.jpeg",
     title: "Artwork Title 3",
     details: "2022 • Mixed Media • 50 x 60 cm"
   },
