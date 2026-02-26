@@ -1,4 +1,3 @@
-/** @type {import('@tailwindcss/cli').Config} */
 module.exports = {
   darkMode: 'class',
   content: [
