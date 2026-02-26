@@ -1,0 +1,26 @@
+<header class="w-full border-b border-gray-300 p-4 flex justify-between items-center">
+  <a href="/" class="text-xl font-semibold">Louis Andrada</a>
+
+  <!-- Mobile Menu Button -->
+  <button id="mobileMenuBtn" class="md:hidden flex flex-col gap-1">
+    <span class="w-6 h-0.5 bg-black"></span>
+    <span class="w-6 h-0.5 bg-black"></span>
+    <span class="w-6 h-0.5 bg-black"></span>
+  </button>
+
+  <!-- Desktop Menu -->
+  <nav class="hidden md:flex gap-6">
+    <a href="/artworks">Artworks</a>
+    <a href="/about">About</a>
+    <a href="/buy">Buy / Commission</a>
+    <a href="/archive">Archive</a>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <nav id="mobileMenu" class="hidden absolute top-16 left-0 w-full bg-white border-t border-gray-300 flex-col p-4 md:hidden">
+    <a href="/artworks" class="py-2">Artworks</a>
+    <a href="/about" class="py-2">About</a>
+    <a href="/buy" class="py-2">Buy / Commission</a>
+    <a href="/archive" class="py-2">Archive</a>
+  </nav>
+</header>

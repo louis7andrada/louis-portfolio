@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ .Title }}</title>
+
+  {{ $styles := resources.Get "css/output.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $styles.Permalink }}" />
+
+  {{ $scripts := resources.Get "ts/main.ts" | js.Build }}
+  <script defer src="{{ $scripts.Permalink }}"></script>
+</head>
+
+<body class="bg-white text-black">
+  {{ partial "header.html" . }}
+
+  <main class="min-h-screen">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+</body>
+</html>
