@@ -1,0 +1,189 @@
+{{ define "main" }}
+
+<section class="max-w-6xl mx-auto px-4 py-16">
+
+  <h1 class="text-3xl font-semibold mb-12 text-center">Buy / Commission</h1>
+
+  <!-- TWO COLUMN LAYOUT -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+
+    <!-- ========================= -->
+    <!-- BUY SECTION -->
+    <!-- ========================= -->
+    <div>
+      <h2 class="text-2xl font-semibold mb-4">Buy Artwork</h2>
+
+      <p class="leading-relaxed text-gray-800 mb-6">
+        Select one or more available artworks from the list below. After submitting the form, Louis will contact you shortly with pricing, availability, and purchase details.
+      </p>
+
+      <!-- SELECT ARTWORK BUTTON -->
+      <button 
+        id="openArtworkSelector"
+        class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition mb-6"
+      >
+        Select Artwork(s)
+      </button>
+
+      <!-- SELECTED ARTWORKS PREVIEW -->
+      <div id="selectedArtworksPreview" class="flex flex-wrap gap-3 mb-6"></div>
+
+      <!-- BUY FORM -->
+      <form id="buyForm" class="grid grid-cols-1 gap-4">
+
+        <input 
+          type="text" 
+          name="buyerName" 
+          placeholder="Your Name" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <input 
+          type="email" 
+          name="buyerEmail" 
+          placeholder="Your Email" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <!-- Hidden field storing selected artwork IDs -->
+        <input type="hidden" id="selectedArtworkIDs" name="artworkIDs" />
+
+        <button 
+          type="submit"
+          class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+        >
+          Submit Purchase Request
+        </button>
+
+        <p id="buySuccess" class="text-green-600 font-medium hidden mt-2">
+          Thank you! Louis will get in touch with you shortly.
+        </p>
+
+      </form>
+    </div>
+
+    <!-- ========================= -->
+    <!-- COMMISSION SECTION -->
+    <!-- ========================= -->
+    <div>
+      <h2 class="text-2xl font-semibold mb-4">Commission an Artwork</h2>
+
+      <p class="leading-relaxed text-gray-800 mb-6">
+        Commissions are open. Fill out the form below with your idea, preferred size, and location. Louis will follow up with pricing and timeline details.
+      </p>
+
+      <!-- COMMISSION FORM -->
+      <form id="commissionForm" class="grid grid-cols-1 gap-4">
+
+        <input 
+          type="text" 
+          name="commissionName" 
+          placeholder="Your Name" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <input 
+          type="email" 
+          name="commissionEmail" 
+          placeholder="Your Email" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <input 
+          type="text" 
+          name="commissionSize" 
+          placeholder="Preferred Size (e.g., 40x50cm)" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <input 
+          type="text" 
+          name="commissionLocation" 
+          placeholder="Where are you located?" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <textarea 
+          name="commissionIdea" 
+          placeholder="Describe your commission idea..." 
+          rows="5"
+          class="border border-gray-300 rounded p-3"
+          required
+        ></textarea>
+
+        <button 
+          type="submit"
+          class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+        >
+          Submit Commission Request
+        </button>
+
+        <p id="commissionSuccess" class="text-green-600 font-medium hidden mt-2">
+          Thank you! Louis will get in touch with you shortly.
+        </p>
+
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========================= -->
+<!-- ARTWORK SELECTOR MODAL -->
+<!-- ========================= -->
+<div 
+  id="artworkSelectorModal"
+  class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-4 z-50"
+>
+  <div class="bg-white max-w-3xl w-full rounded-lg overflow-hidden shadow-lg relative p-6">
+
+    <!-- Close Button -->
+    <button 
+      id="closeArtworkSelector"
+      class="absolute top-3 right-3 text-black text-2xl leading-none"
+    >
+      &times;
+    </button>
+
+    <h2 class="text-xl font-semibold mb-4">Select Artwork(s)</h2>
+
+    <!-- AVAILABLE ARTWORKS GRID -->
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
+
+      {{ range where .Site.RegularPages "Section" "artworks" }}
+        {{ if eq .Params.availability "available" }}
+        <div 
+          class="artwork-select-item cursor-pointer border border-gray-300 rounded p-2 flex flex-col items-center"
+          data-id="{{ .File.BaseFileName }}"
+          data-title="{{ .Title }}"
+          data-image="{{ .Params.image }}"
+        >
+          <img 
+            src="{{ .Params.image }}" 
+            class="w-full h-24 object-cover rounded mb-2"
+          />
+          <p class="text-sm text-center">{{ .Title }}</p>
+        </div>
+        {{ end }}
+      {{ end }}
+
+    </div>
+
+    <!-- DONE BUTTON -->
+    <button 
+      id="confirmArtworkSelection"
+      class="mt-6 px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+    >
+      Done
+    </button>
+
+  </div>
+</div>
+
+{{ end }}

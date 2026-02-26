@@ -10,3 +10,10 @@ module.exports = {
   },
   plugins: [],
 }
+
+module.exports = {
+  darkMode: 'class',
+  content: [...],
+  theme: { extend: {} },
+  plugins: [],
+}

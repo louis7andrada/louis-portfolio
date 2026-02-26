@@ -197,3 +197,196 @@ function initArtworksPage() {
 document.addEventListener("DOMContentLoaded", () => {
   initArtworksPage();
 });
+
+// ======================================================
+// BUY / COMMISSION PAGE LOGIC
+// ======================================================
+
+function initBuyCommissionPage() {
+  const artworkSelectorModal = document.getElementById("artworkSelectorModal") as HTMLElement | null;
+  const openSelectorBtn = document.getElementById("openArtworkSelector") as HTMLElement | null;
+  const closeSelectorBtn = document.getElementById("closeArtworkSelector") as HTMLElement | null;
+  const confirmSelectionBtn = document.getElementById("confirmArtworkSelection") as HTMLElement | null;
+
+  const previewContainer = document.getElementById("selectedArtworksPreview") as HTMLElement | null;
+  const hiddenIDsField = document.getElementById("selectedArtworkIDs") as HTMLInputElement | null;
+
+  const buyForm = document.getElementById("buyForm") as HTMLFormElement | null;
+  const buySuccess = document.getElementById("buySuccess") as HTMLElement | null;
+
+  const commissionForm = document.getElementById("commissionForm") as HTMLFormElement | null;
+  const commissionSuccess = document.getElementById("commissionSuccess") as HTMLElement | null;
+
+  if (!openSelectorBtn || !artworkSelectorModal) return; // Not on Buy page
+
+  // Track selected artworks
+  let selectedArtworks: {
+    id: string;
+    title: string;
+    image: string;
+  }[] = [];
+
+  // -----------------------------
+  // OPEN ARTWORK SELECTOR MODAL
+  // -----------------------------
+  openSelectorBtn.addEventListener("click", () => {
+    artworkSelectorModal.classList.remove("hidden");
+    artworkSelectorModal.classList.add("flex");
+  });
+
+  // -----------------------------
+  // CLOSE ARTWORK SELECTOR MODAL
+  // -----------------------------
+  function closeSelector() {
+    artworkSelectorModal.classList.add("hidden");
+    artworkSelectorModal.classList.remove("flex");
+  }
+
+  closeSelectorBtn?.addEventListener("click", closeSelector);
+
+  artworkSelectorModal.addEventListener("click", (e) => {
+    if (e.target === artworkSelectorModal) closeSelector();
+  });
+
+  // -----------------------------
+  // SELECT ARTWORKS
+  // -----------------------------
+  const artworkItems = Array.from(
+    document.getElementsByClassName("artwork-select-item")
+  ) as HTMLElement[];
+
+  artworkItems.forEach((item) => {
+    item.addEventListener("click", () => {
+      const id = item.dataset.id!;
+      const title = item.dataset.title!;
+      const image = item.dataset.image!;
+
+      const alreadySelected = selectedArtworks.find((a) => a.id === id);
+
+      if (alreadySelected) {
+        // Remove selection
+        selectedArtworks = selectedArtworks.filter((a) => a.id !== id);
+        item.classList.remove("border-black");
+        item.classList.add("border-gray-300");
+      } else {
+        // Add selection
+        selectedArtworks.push({ id, title, image });
+        item.classList.remove("border-gray-300");
+        item.classList.add("border-black");
+      }
+    });
+  });
+
+  // -----------------------------
+  // CONFIRM SELECTION
+  // -----------------------------
+  confirmSelectionBtn?.addEventListener("click", () => {
+    if (!previewContainer || !hiddenIDsField) return;
+
+    // Clear preview
+    previewContainer.innerHTML = "";
+
+    // Add thumbnails
+    selectedArtworks.forEach((art) => {
+      const thumb = document.createElement("div");
+      thumb.className = "w-16 h-16 rounded overflow-hidden shadow border border-gray-300";
+
+      thumb.innerHTML = `
+        <img src="${art.image}" class="w-full h-full object-cover" />
+      `;
+
+      previewContainer.appendChild(thumb);
+    });
+
+    // Store IDs in hidden field
+    hiddenIDsField.value = selectedArtworks.map((a) => a.id).join(",");
+
+    closeSelector();
+  });
+
+  // -----------------------------
+  // BUY FORM SUBMISSION
+  // -----------------------------
+  buyForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (!hiddenIDsField?.value) {
+      alert("Please select at least one artwork before submitting.");
+      return;
+    }
+
+    buySuccess?.classList.remove("hidden");
+    buyForm.reset();
+    previewContainer!.innerHTML = "";
+    selectedArtworks = [];
+    hiddenIDsField.value = "";
+  });
+
+  // -----------------------------
+  // COMMISSION FORM SUBMISSION
+  // -----------------------------
+  commissionForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    commissionSuccess?.classList.remove("hidden");
+    commissionForm.reset();
+  });
+}
+
+// Initialize Buy / Commission logic
+document.addEventListener("DOMContentLoaded", () => {
+  initBuyCommissionPage();
+});
+
+// ======================================================
+// ARCHIVE PAGE YEAR FILTER
+// ======================================================
+
+function initArchivePage() {
+  const filter = document.getElementById("archiveYearFilter") as HTMLSelectElement | null;
+  if (!filter) return;
+
+  const items = Array.from(document.getElementsByClassName("archive-item")) as HTMLElement[];
+
+  // Deduplicate options
+  const seen = new Set<string>();
+  Array.from(filter.options).forEach((opt) => {
+    if (opt.value !== "all") {
+      if (seen.has(opt.value)) filter.removeChild(opt);
+      else seen.add(opt.value);
+    }
+  });
+
+  filter.addEventListener("change", () => {
+    const year = filter.value;
+
+    items.forEach((item) => {
+      const itemYear = item.dataset.year;
+      if (year === "all" || itemYear === year) {
+        item.classList.remove("hidden");
+      } else {
+        item.classList.add("hidden");
+      }
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initArchivePage);
+
+// DARK MODE TOGGLE
+const darkToggle = document.getElementById("darkModeToggle");
+
+if (darkToggle) {
+  darkToggle.addEventListener("click", () => {
+    document.documentElement.classList.toggle("dark");
+    localStorage.setItem(
+      "theme",
+      document.documentElement.classList.contains("dark") ? "dark" : "light"
+    );
+  });
+
+  // Load saved preference
+  if (localStorage.getItem("theme") === "dark") {
+    document.documentElement.classList.add("dark");
+  }
+}

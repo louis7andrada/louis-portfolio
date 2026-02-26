@@ -29,90 +29,96 @@
     <loc>http://localhost:1313/</loc>
     <lastmod>2023-01-01T08:00:00-07:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/categories/</loc>
+    <loc>http://localhost:1313/about/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/</loc>
+    <loc>http://localhost:1313/archive/</loc>
+  </url><url>
+    <loc>http://localhost:1313/artworks/</loc>
+  </url><url>
+    <loc>http://localhost:1313/buy/</loc>
+  </url><url>
+    <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/links/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork01/</loc>
+    <loc>http://localhost:1313/artworks/artwork01/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork02/</loc>
+    <loc>http://localhost:1313/artworks/artwork02/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork03/</loc>
+    <loc>http://localhost:1313/artworks/artwork03/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork04/</loc>
+    <loc>http://localhost:1313/artworks/artwork04/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork05/</loc>
+    <loc>http://localhost:1313/artworks/artwork05/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork06/</loc>
+    <loc>http://localhost:1313/artworks/artwork06/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork07/</loc>
+    <loc>http://localhost:1313/artworks/artwork07/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork08/</loc>
+    <loc>http://localhost:1313/artworks/artwork08/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork09/</loc>
+    <loc>http://localhost:1313/artworks/artwork09/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork10/</loc>
+    <loc>http://localhost:1313/artworks/artwork10/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork11/</loc>
+    <loc>http://localhost:1313/artworks/artwork11/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork12/</loc>
+    <loc>http://localhost:1313/artworks/artwork12/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork13/</loc>
+    <loc>http://localhost:1313/artworks/artwork13/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork14/</loc>
+    <loc>http://localhost:1313/artworks/artwork14/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork15/</loc>
+    <loc>http://localhost:1313/artworks/artwork15/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork16/</loc>
+    <loc>http://localhost:1313/artworks/artwork16/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork17/</loc>
+    <loc>http://localhost:1313/artworks/artwork17/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork18/</loc>
+    <loc>http://localhost:1313/artworks/artwork18/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork19/</loc>
+    <loc>http://localhost:1313/artworks/artwork19/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork20/</loc>
+    <loc>http://localhost:1313/artworks/artwork20/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork21/</loc>
+    <loc>http://localhost:1313/artworks/artwork21/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork22/</loc>
+    <loc>http://localhost:1313/artworks/artwork22/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork23/</loc>
+    <loc>http://localhost:1313/artworks/artwork23/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork24/</loc>
+    <loc>http://localhost:1313/artworks/artwork24/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork25/</loc>
+    <loc>http://localhost:1313/artworks/artwork25/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork26/</loc>
+    <loc>http://localhost:1313/artworks/artwork26/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork27/</loc>
+    <loc>http://localhost:1313/artworks/artwork27/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork28/</loc>
+    <loc>http://localhost:1313/artworks/artwork28/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork29/</loc>
+    <loc>http://localhost:1313/artworks/artwork29/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork30/</loc>
+    <loc>http://localhost:1313/artworks/artwork30/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork31/</loc>
+    <loc>http://localhost:1313/artworks/artwork31/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork32/</loc>
+    <loc>http://localhost:1313/artworks/artwork32/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork33/</loc>
+    <loc>http://localhost:1313/artworks/artwork33/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork34/</loc>
+    <loc>http://localhost:1313/artworks/artwork34/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork35/</loc>
+    <loc>http://localhost:1313/artworks/artwork35/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork36/</loc>
+    <loc>http://localhost:1313/artworks/artwork36/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork37/</loc>
+    <loc>http://localhost:1313/artworks/artwork37/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork38/</loc>
+    <loc>http://localhost:1313/artworks/artwork38/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork39/</loc>
+    <loc>http://localhost:1313/artworks/artwork39/</loc>
   </url><url>
-    <loc>http://localhost:1313/content/artworks/artwork40/</loc>
+    <loc>http://localhost:1313/artworks/artwork40/</loc>
   </url>
 </urlset>

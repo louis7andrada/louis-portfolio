@@ -133,4 +133,121 @@
   document.addEventListener("DOMContentLoaded", () => {
     initArtworksPage();
   });
+  function initBuyCommissionPage() {
+    const artworkSelectorModal = document.getElementById("artworkSelectorModal");
+    const openSelectorBtn = document.getElementById("openArtworkSelector");
+    const closeSelectorBtn = document.getElementById("closeArtworkSelector");
+    const confirmSelectionBtn = document.getElementById("confirmArtworkSelection");
+    const previewContainer = document.getElementById("selectedArtworksPreview");
+    const hiddenIDsField = document.getElementById("selectedArtworkIDs");
+    const buyForm = document.getElementById("buyForm");
+    const buySuccess = document.getElementById("buySuccess");
+    const commissionForm = document.getElementById("commissionForm");
+    const commissionSuccess = document.getElementById("commissionSuccess");
+    if (!openSelectorBtn || !artworkSelectorModal) return;
+    let selectedArtworks = [];
+    openSelectorBtn.addEventListener("click", () => {
+      artworkSelectorModal.classList.remove("hidden");
+      artworkSelectorModal.classList.add("flex");
+    });
+    function closeSelector() {
+      artworkSelectorModal.classList.add("hidden");
+      artworkSelectorModal.classList.remove("flex");
+    }
+    closeSelectorBtn?.addEventListener("click", closeSelector);
+    artworkSelectorModal.addEventListener("click", (e) => {
+      if (e.target === artworkSelectorModal) closeSelector();
+    });
+    const artworkItems = Array.from(
+      document.getElementsByClassName("artwork-select-item")
+    );
+    artworkItems.forEach((item) => {
+      item.addEventListener("click", () => {
+        const id = item.dataset.id;
+        const title = item.dataset.title;
+        const image = item.dataset.image;
+        const alreadySelected = selectedArtworks.find((a) => a.id === id);
+        if (alreadySelected) {
+          selectedArtworks = selectedArtworks.filter((a) => a.id !== id);
+          item.classList.remove("border-black");
+          item.classList.add("border-gray-300");
+        } else {
+          selectedArtworks.push({ id, title, image });
+          item.classList.remove("border-gray-300");
+          item.classList.add("border-black");
+        }
+      });
+    });
+    confirmSelectionBtn?.addEventListener("click", () => {
+      if (!previewContainer || !hiddenIDsField) return;
+      previewContainer.innerHTML = "";
+      selectedArtworks.forEach((art) => {
+        const thumb = document.createElement("div");
+        thumb.className = "w-16 h-16 rounded overflow-hidden shadow border border-gray-300";
+        thumb.innerHTML = `
+        <img src="${art.image}" class="w-full h-full object-cover" />
+      `;
+        previewContainer.appendChild(thumb);
+      });
+      hiddenIDsField.value = selectedArtworks.map((a) => a.id).join(",");
+      closeSelector();
+    });
+    buyForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!hiddenIDsField?.value) {
+        alert("Please select at least one artwork before submitting.");
+        return;
+      }
+      buySuccess?.classList.remove("hidden");
+      buyForm.reset();
+      previewContainer.innerHTML = "";
+      selectedArtworks = [];
+      hiddenIDsField.value = "";
+    });
+    commissionForm?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      commissionSuccess?.classList.remove("hidden");
+      commissionForm.reset();
+    });
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    initBuyCommissionPage();
+  });
+  function initArchivePage() {
+    const filter = document.getElementById("archiveYearFilter");
+    if (!filter) return;
+    const items = Array.from(document.getElementsByClassName("archive-item"));
+    const seen = /* @__PURE__ */ new Set();
+    Array.from(filter.options).forEach((opt) => {
+      if (opt.value !== "all") {
+        if (seen.has(opt.value)) filter.removeChild(opt);
+        else seen.add(opt.value);
+      }
+    });
+    filter.addEventListener("change", () => {
+      const year = filter.value;
+      items.forEach((item) => {
+        const itemYear = item.dataset.year;
+        if (year === "all" || itemYear === year) {
+          item.classList.remove("hidden");
+        } else {
+          item.classList.add("hidden");
+        }
+      });
+    });
+  }
+  document.addEventListener("DOMContentLoaded", initArchivePage);
+  var darkToggle = document.getElementById("darkModeToggle");
+  if (darkToggle) {
+    darkToggle.addEventListener("click", () => {
+      document.documentElement.classList.toggle("dark");
+      localStorage.setItem(
+        "theme",
+        document.documentElement.classList.contains("dark") ? "dark" : "light"
+      );
+    });
+    if (localStorage.getItem("theme") === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }
 })();

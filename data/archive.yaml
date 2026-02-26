@@ -1,0 +1,20 @@
+studios:
+  items:
+    - image: "/images/archive/studios/studio1.jpg"
+      year: 2024
+   # - image: "/images/archive/studios/studio2.jpg"
+   #   year: 2023
+
+photos:
+  items:
+    - image: "/images/archive/photos/photo1.jpg"
+      year: 2024
+    #- image: "/images/archive/photos/photo2.jpg"
+    #  year: 2022
+
+galleries:
+  items:
+    - image: "/images/archive/galleries/gallery1.jpg"
+      year: 2023
+   # - image: "/images/archive/galleries/gallery2.jpg"
+    #  year: 2021

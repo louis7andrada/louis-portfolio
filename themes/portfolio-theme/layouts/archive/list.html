@@ -1,0 +1,86 @@
+{{ define "main" }}
+
+<section class="max-w-6xl mx-auto px-4 py-16">
+
+  <h1 class="text-3xl font-semibold mb-12 text-center">Archive</h1>
+
+  <!-- YEAR FILTER -->
+  <div class="flex justify-center mb-12">
+    <select 
+      id="archiveYearFilter" 
+      class="border border-gray-300 rounded p-2 w-48"
+    >
+      <option value="all">All Years</option>
+
+      <!-- Collect all years from all archive items -->
+      {{ range .Site.Data.archive }}
+        {{ range .items }}
+          <option value="{{ .year }}">{{ .year }}</option>
+        {{ end }}
+      {{ end }}
+    </select>
+  </div>
+
+  <!-- ========================= -->
+  <!-- STUDIOS -->
+  <!-- ========================= -->
+  <div class="mb-16">
+    <h2 class="text-2xl font-semibold mb-4">Studios</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      {{ range .Site.Data.archive.studios.items }}
+      <div 
+        class="archive-item aspect-square overflow-hidden rounded shadow"
+        data-year="{{ .year }}"
+      >
+        <img src="{{ .image }}" class="w-full h-full object-cover" />
+      </div>
+      {{ end }}
+
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- PHOTOS -->
+  <!-- ========================= -->
+  <div class="mb-16">
+    <h2 class="text-2xl font-semibold mb-4">Photos</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      {{ range .Site.Data.archive.photos.items }}
+      <div 
+        class="archive-item aspect-square overflow-hidden rounded shadow"
+        data-year="{{ .year }}"
+      >
+        <img src="{{ .image }}" class="w-full h-full object-cover" />
+      </div>
+      {{ end }}
+
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- GALLERIES -->
+  <!-- ========================= -->
+  <div class="mb-16">
+    <h2 class="text-2xl font-semibold mb-4">Galleries</h2>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      {{ range .Site.Data.archive.galleries.items }}
+      <div 
+        class="archive-item aspect-square overflow-hidden rounded shadow"
+        data-year="{{ .year }}"
+      >
+        <img src="{{ .image }}" class="w-full h-full object-cover" />
+      </div>
+      {{ end }}
+
+    </div>
+  </div>
+
+</section>
+
+{{ end }}
