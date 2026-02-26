@@ -1,0 +1,75 @@
+{{ define "main" }}
+
+<section class="min-h-screen flex flex-col items-center justify-start pt-16 px-6">
+
+  <!-- Profile Image -->
+  <div class="w-32 h-32 rounded-full overflow-hidden shadow mb-6">
+    <img 
+      src="/images/profile.jpg" 
+      alt="Profile" 
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <!-- Name -->
+  <h1 class="text-2xl font-semibold mb-2">Louis Andrada</h1>
+
+  <!-- Tagline -->
+  <p class="text-gray-600 mb-8 text-center max-w-sm">
+    Painter • Toronto • Brazilian Folklore • Analog Photography Influence
+  </p>
+
+  <!-- Links Container -->
+  <div class="w-full max-w-sm flex flex-col gap-4">
+
+    <!-- Instagram -->
+    <a 
+      href="https://instagram.com/louisandrada" 
+      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+    >
+      Instagram
+    </a>
+
+    <!-- Portfolio Website -->
+    <a 
+      href="https://louisandrada.com" 
+      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+    >
+      Portfolio Website
+    </a>
+
+    <!-- Email -->
+    <a 
+      href="mailto:luis7andrada@outlook.com" 
+      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+    >
+      Email Me
+    </a>
+
+    <!-- Buy / Commission -->
+    <a 
+      href="/buy" 
+      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+    >
+      Buy / Commission
+    </a>
+
+    <!-- Artworks -->
+    <a 
+      href="/artworks" 
+      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+    >
+      View Artworks
+    </a>
+
+  </div>
+
+  <!-- Footer -->
+  <p class="text-gray-400 text-xs mt-10 mb-6">
+    © {{ now.Format "2006" }} Louis Andrada
+  </p>
+
+</section>
+
+{{ end }}
+    

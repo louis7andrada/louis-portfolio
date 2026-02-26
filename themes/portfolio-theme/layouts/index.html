@@ -1,11 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>{{ .Site.Title }}</title>
-  <link rel="stylesheet" href="/assets/css/output.css">
-</head>
-<body class="bg-gray-900 text-white p-10">
-  <h1 class="text-4xl font-bold">Hugo + Tailwind is working 🚀</h1>
-</body>
-</html>
+{{ define "main" }}
+
+<!-- Container -->
+<section class="w-full flex flex-col items-center justify-center py-16 px-4">
+
+  <!-- Featured Artwork Section -->
+  <div class="w-full max-w-4xl">
+    <h2 class="text-center text-2xl font-semibold mb-6">Featured Artwork</h2>
+
+    <!-- Artwork Display -->
+    <div class="relative w-full aspect-[4/3] overflow-hidden rounded-lg shadow-lg">
+      <img 
+        id="featuredArtwork" 
+        src="/images/featured/featured1.jpg" 
+        alt="Featured Artwork" 
+        class="w-full h-full object-cover transition-opacity duration-700"
+      />
+    </div>
+
+    <!-- Artwork Info -->
+    <div id="featuredInfo" class="text-center mt-4">
+      <h3 class="text-xl font-semibold" id="featuredTitle">Artwork Title 1</h3>
+      <p class="text-gray-600" id="featuredDetails">2024 • Oil on Canvas • 40x50cm</p>
+    </div>
+  </div>
+
+</section>
+
+{{ end }}
