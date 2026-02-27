@@ -348,36 +348,48 @@ document.addEventListener("DOMContentLoaded", initBuyCommissionPage);
 
 
 // -----------------------------
-// ARCHIVE PAGE YEAR FILTER
+// ARCHIVE PAGE FILTERS (YEAR + CATEGORY)
 // -----------------------------
 function initArchivePage() {
-  const filter = document.getElementById("filterYear");
-  if (!filter) return;
+  const yearFilter = document.getElementById("filterYear");
+  const categoryFilter = document.getElementById("filterCategory");
+
+  if (!yearFilter || !categoryFilter) return;
 
   const items = Array.from(document.getElementsByClassName("archive-item"));
 
   // Remove duplicate year options (safety)
   const seen = new Set();
-  Array.from(filter.options).forEach((opt) => {
+  Array.from(yearFilter.options).forEach((opt) => {
     if (opt.value !== "all") {
-      if (seen.has(opt.value)) filter.removeChild(opt);
+      if (seen.has(opt.value)) yearFilter.removeChild(opt);
       else seen.add(opt.value);
     }
   });
 
-  filter.addEventListener("change", () => {
-    const year = filter.value;
+  function applyFilters() {
+    const selectedYear = yearFilter.value;
+    const selectedCategory = categoryFilter.value;
 
     items.forEach((item) => {
       const itemYear = item.dataset.year;
-      if (year === "all" || itemYear === year) {
+      const itemCategory = item.dataset.category;
+
+      const matchYear = selectedYear === "all" || itemYear === selectedYear;
+      const matchCategory = selectedCategory === "all" || itemCategory === selectedCategory;
+
+      if (matchYear && matchCategory) {
         item.classList.remove("hidden");
       } else {
         item.classList.add("hidden");
       }
     });
-  });
+  }
+
+  yearFilter.addEventListener("change", applyFilters);
+  categoryFilter.addEventListener("change", applyFilters);
 }
+
 
 
 document.addEventListener("DOMContentLoaded", initArchivePage);
