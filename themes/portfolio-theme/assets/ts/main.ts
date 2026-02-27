@@ -112,21 +112,6 @@ function initArtworksPage() {
   const filterYear = document.getElementById("filterYear") as HTMLSelectElement | null;
   const filterProject = document.getElementById("filterProject") as HTMLSelectElement | null;
 
-  const modal = document.getElementById("artworkModal") as HTMLElement | null;
-  const closeModalBtn = document.getElementById("closeModal") as HTMLElement | null;
-
-  const modalImage = document.getElementById("modalImage") as HTMLImageElement | null;
-  const modalTitle = document.getElementById("modalTitle") as HTMLElement | null;
-  const modalMedium = document.getElementById("modalMedium") as HTMLElement | null;
-  const modalSize = document.getElementById("modalSize") as HTMLElement | null;
-  const modalYear = document.getElementById("modalYear") as HTMLElement | null;
-  const modalAvailability = document.getElementById("modalAvailability") as HTMLElement | null;
-  const modalPrice = document.getElementById("modalPrice") as HTMLElement | null;
-
-  if (!modal || !modalImage || !modalTitle || !modalMedium || !modalSize || !modalYear || !modalAvailability || !modalPrice) {
-    return;
-  }
-
   function dedupeSelectOptions(select: HTMLSelectElement | null) {
     if (!select) return;
     const seen = new Set<string>();
@@ -166,40 +151,6 @@ function initArtworksPage() {
 
   filterYear?.addEventListener("change", applyFilters);
   filterProject?.addEventListener("change", applyFilters);
-
-  items.forEach((item) => {
-    item.addEventListener("click", () => {
-      const { image, title, medium, size, availability, price, year } = item.dataset;
-
-      if (image) modalImage.src = image;
-      modalTitle.textContent = title || "";
-      modalMedium.textContent = medium ? `Medium: ${medium}` : "";
-      modalSize.textContent = size ? `Size: ${size}` : "";
-      modalYear.textContent = year ? `Year: ${year}` : "";
-      modalAvailability.textContent = availability ? `Availability: ${availability}` : "";
-      modalPrice.textContent = price ? `Price: ${price}` : "Price: On request";
-
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    });
-  });
-
-  function closeModal() {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  }
-
-  closeModalBtn?.addEventListener("click", closeModal);
-
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-      closeModal();
-    }
-  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
