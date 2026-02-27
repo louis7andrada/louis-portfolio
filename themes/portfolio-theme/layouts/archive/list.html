@@ -47,14 +47,15 @@
     {{/* Collect all archive items */}}
     {{ $items := where .Site.RegularPages "Section" "archive" }}
 
-    {{/* Sort by year DESC */}}
-    {{ $items = sort $items "Params.year" "desc" }}
-
-    {{/* Category priority: studios → photos → galleries */}}
+    {{/* CATEGORY PRIORITY: studios → photos → galleries */}}
     {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
 
-    {{/* Apply category sorting */}}
-    {{ $items = sort $items (lambda "item" (index $priority (string .Params.category))) }}
+    {{/* First sort by category priority */}}
+    {{ $items = sort $items "Params.category" }}
+    {{ $items = sort $items "Params.category" "asc" }}
+
+    {{/* Then sort by year DESC (stable sort keeps category order inside each year) */}}
+    {{ $items = sort $items "Params.year" "desc" }}
 
     {{ range $items }}
 
