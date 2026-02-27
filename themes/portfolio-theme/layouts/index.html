@@ -9,7 +9,7 @@
     <h2 class="text-center text-3xl font-semibold mb-10">Featured Artwork</h2>
 
     {{ with index $featured 0 }}
-    <a id="featuredLink" href="{{ .RelPermalink }}">
+    <a id="featuredLink" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">
       <div class="featured-slideshow-container">
         <img 
           id="featuredArtwork" 
