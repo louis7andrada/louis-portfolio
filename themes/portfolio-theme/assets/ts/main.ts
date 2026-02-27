@@ -351,12 +351,13 @@ document.addEventListener("DOMContentLoaded", initBuyCommissionPage);
 // ARCHIVE PAGE YEAR FILTER
 // -----------------------------
 function initArchivePage() {
-  const filter = document.getElementById("archiveYearFilter") as HTMLSelectElement | null;
+  const filter = document.getElementById("filterYear");
   if (!filter) return;
 
-  const items = Array.from(document.getElementsByClassName("archive-item")) as HTMLElement[];
+  const items = Array.from(document.getElementsByClassName("archive-item"));
 
-  const seen = new Set<string>();
+  // Remove duplicate year options (safety)
+  const seen = new Set();
   Array.from(filter.options).forEach((opt) => {
     if (opt.value !== "all") {
       if (seen.has(opt.value)) filter.removeChild(opt);
@@ -377,6 +378,7 @@ function initArchivePage() {
     });
   });
 }
+
 
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
