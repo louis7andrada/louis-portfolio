@@ -1,32 +1,86 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body {
-  color: #222;
-  font-family: sans-serif;
-  line-height: 1.5;
-  margin: 1rem;
-  max-width: 768px;
+
+/* ----------------------------------------
+   FEATURED FADE
+----------------------------------------- */
+
+.featured-fade {
+  transition: opacity 0.6s ease-in-out;
+  opacity: 1;
+}
+
+.featured-fade.hidden {
   opacity: 0;
-  animation: fadeIn 0.6s ease forwards;
 }
 
-@keyframes fadeIn {
-  to { opacity: 1; }
+/* ----------------------------------------
+   SINGLE ARTWORK PAGE
+----------------------------------------- */
+
+.single-image-box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
-
-header {
-  border-bottom: 1px solid #222;
-  margin-bottom: 1rem;
+.single-image {
+  width: auto;
+  max-width: 1000px;
+  object-fit: contain;
+  display: block;
 }
 
-footer {
-  border-top: 1px solid #222;
-  margin-top: 1rem;
+/* Slightly larger horizontals */
+.single-image[style*="landscape"],
+.single-image:where(img) {
+  max-height: 92vh;
 }
 
-a {
-  color: #00e;
-  text-decoration: none;
+/* Slightly smaller verticals */
+@media (min-aspect-ratio: 1/1) {
+  .single-image {
+    max-height: 92vh; /* horizontal */
+  }
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .single-image {
+    max-height: 85vh; /* vertical slightly smaller */
+  }
+}
+
+.single-details {
+  margin-top: 20px;
+}
+
+/* Mobile */
+@media (max-width: 1024px) {
+  .single-image-box {
+    justify-content: center;
+  }
+
+  .single-image {
+    max-width: 100%;
+    max-height: 80vh;
+  }
+
+  .single-details {
+    margin-top: 40px;
+  }
+}
+
+/* ----------------------------------------
+   HOMEPAGE SLIDESHOW — FINAL WORKING FIX
+   (ALL previous homepage rules removed)
+----------------------------------------- */
+
+#featuredArtwork {
+  height: 75vh !important;   /* adjust this number to change size */
+  width: auto !important;
+  object-fit: contain !important;
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
 }

@@ -9,68 +9,85 @@ btn?.addEventListener("click", () => {
 });
 
 // -----------------------------
-// FEATURED ARTWORK ROTATION (HOME PAGE)
+// NEW FEATURED ARTWORK SLIDESHOW (HOME PAGE)
 // -----------------------------
-interface FeaturedArtwork {
-  src: string;
-  title: string;
-  details: string;
-}
+function initFeaturedSlideshow() {
+  const artworks = (window as any).featuredArtworks;
+  if (!artworks || artworks.length === 0) return;
 
-const featuredArtworks: FeaturedArtwork[] = [
-  {
-    src: "/static/featured/featured1.jpeg",
-    title: "Artwork Title 1",
-    details: "2024 • Oil on Canvas • 40 x 50 cm"
-  },
-  {
-    src: "/static/featured/featured2.jpeg",
-    title: "Artwork Title 2",
-    details: "2023 • Acrylic on Panel • 30 x 40 cm"
-  },
-  {
-    src: "/static/featured/featured3.jpeg",
-    title: "Artwork Title 3",
-    details: "2022 • Mixed Media • 50 x 60 cm"
-  },
-  {
-    src: "/static/featured/featured4.jpeg",
-    title: "Artwork Title 4",
-    details: "2021 • Oil on Canvas • 45 x 55 cm"
-  }
-];
-
-let currentFeaturedIndex = 0;
-
-function rotateArtwork() {
   const img = document.getElementById("featuredArtwork") as HTMLImageElement | null;
   const title = document.getElementById("featuredTitle") as HTMLElement | null;
   const details = document.getElementById("featuredDetails") as HTMLElement | null;
+  const link = document.getElementById("featuredLink") as HTMLAnchorElement | null;
 
-  if (!img || !title || !details || featuredArtworks.length === 0) return;
+  const nextBtn = document.getElementById("nextBtn");
+  const prevBtn = document.getElementById("prevBtn");
 
-  currentFeaturedIndex = (currentFeaturedIndex + 1) % featuredArtworks.length;
+  if (!img || !title || !details || !link) return;
 
-  img.style.opacity = "0";
+  let index = parseInt(sessionStorage.getItem("featuredIndex") || "0");
+  let autoRotate = sessionStorage.getItem("autoRotate") !== "false";
+  let interval: number | null = null;
 
-  setTimeout(() => {
-    const art = featuredArtworks[currentFeaturedIndex];
-    img.src = art.src;
-    title.textContent = art.title;
-    details.textContent = art.details;
-    img.style.opacity = "1";
-  }, 500);
+  function fade(callback: () => void) {
+    img.classList.add("hidden");
+    setTimeout(() => {
+      callback();
+      img.classList.remove("hidden");
+    }, 300);
+  }
+
+  function show(i: number) {
+    fade(() => {
+      const a = artworks[i];
+      img.src = a.image;
+      title.textContent = a.title;
+      details.textContent = `${a.year} • ${a.medium} • ${a.size}`;
+      link.href = a.link;
+      sessionStorage.setItem("featuredIndex", i.toString());
+    });
+  }
+
+  function next() {
+    index = (index + 1) % artworks.length;
+    show(index);
+  }
+
+  function prev() {
+    index = (index - 1 + artworks.length) % artworks.length;
+    show(index);
+  }
+
+  function startAuto() {
+    if (!autoRotate) return;
+    interval = window.setInterval(next, 10000);
+  }
+
+  function stopAuto() {
+    autoRotate = false;
+    sessionStorage.setItem("autoRotate", "false");
+    if (interval !== null) clearInterval(interval);
+  }
+
+  nextBtn?.addEventListener("click", () => {
+    stopAuto();
+    next();
+  });
+
+  prevBtn?.addEventListener("click", () => {
+    stopAuto();
+    prev();
+  });
+
+  show(index);
+  startAuto();
 }
 
-// Only start rotation if the featured elements exist (Home page)
-if (document.getElementById("featuredArtwork")) {
-  setInterval(rotateArtwork, 60000);
-}
+document.addEventListener("DOMContentLoaded", initFeaturedSlideshow);
 
 // -----------------------------
 // ARTWORKS PAGE LOGIC
 // -----------------------------
-
 interface ArtworkItem extends HTMLElement {
   dataset: {
     year?: string;
@@ -86,7 +103,7 @@ interface ArtworkItem extends HTMLElement {
 
 function initArtworksPage() {
   const gallery = document.getElementById("artworkGallery");
-  if (!gallery) return; // Not on artworks page
+  if (!gallery) return;
 
   const items = Array.from(
     gallery.getElementsByClassName("artwork-item")
@@ -110,7 +127,6 @@ function initArtworksPage() {
     return;
   }
 
-  // Deduplicate options in filters (Hugo template may repeat them)
   function dedupeSelectOptions(select: HTMLSelectElement | null) {
     if (!select) return;
     const seen = new Set<string>();
@@ -129,7 +145,6 @@ function initArtworksPage() {
   dedupeSelectOptions(filterYear);
   dedupeSelectOptions(filterProject);
 
-  // Filtering logic
   function applyFilters() {
     const yearValue = filterYear?.value || "all";
     const projectValue = filterProject?.value || "all";
@@ -152,7 +167,6 @@ function initArtworksPage() {
   filterYear?.addEventListener("change", applyFilters);
   filterProject?.addEventListener("change", applyFilters);
 
-  // Modal open
   items.forEach((item) => {
     item.addEventListener("click", () => {
       const { image, title, medium, size, availability, price, year } = item.dataset;
@@ -170,7 +184,6 @@ function initArtworksPage() {
     });
   });
 
-  // Modal close helpers
   function closeModal() {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
@@ -178,14 +191,10 @@ function initArtworksPage() {
 
   closeModalBtn?.addEventListener("click", closeModal);
 
-  // Click outside content to close
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) {
-      closeModal();
-    }
+    if (e.target === modal) closeModal();
   });
 
-  // ESC key to close
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !modal.classList.contains("hidden")) {
       closeModal();
@@ -193,162 +202,160 @@ function initArtworksPage() {
   });
 }
 
-// Initialize artworks page logic when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
   initArtworksPage();
 });
 
-// ======================================================
-// BUY / COMMISSION PAGE LOGIC
-// ======================================================
-
+// -----------------------------
+// BUY / COMMISSION PAGE LOGIC (FINAL + PERSISTENCE)
+// -----------------------------
 function initBuyCommissionPage() {
-  const artworkSelectorModal = document.getElementById("artworkSelectorModal") as HTMLElement | null;
-  const openSelectorBtn = document.getElementById("openArtworkSelector") as HTMLElement | null;
-  const closeSelectorBtn = document.getElementById("closeArtworkSelector") as HTMLElement | null;
-  const confirmSelectionBtn = document.getElementById("confirmArtworkSelection") as HTMLElement | null;
+  const modal = document.getElementById("artworkSelectorModal") as HTMLElement | null;
+  const openBtn = document.getElementById("openArtworkSelector") as HTMLElement | null;
+  const closeBtn = document.getElementById("closeArtworkSelector") as HTMLElement | null;
+  const confirmBtn = document.getElementById("confirmArtworkSelection") as HTMLElement | null;
 
-  const previewContainer = document.getElementById("selectedArtworksPreview") as HTMLElement | null;
-  const hiddenIDsField = document.getElementById("selectedArtworkIDs") as HTMLInputElement | null;
+  const preview = document.getElementById("selectedArtworksPreview") as HTMLElement | null;
+  const textarea = document.getElementById("selectedArtworkIDs") as HTMLTextAreaElement | null;
 
-  const buyForm = document.getElementById("buyForm") as HTMLFormElement | null;
-  const buySuccess = document.getElementById("buySuccess") as HTMLElement | null;
+  const buyerName = document.querySelector("input[name='buyerName']") as HTMLInputElement | null;
+  const buyerEmail = document.querySelector("input[name='buyerEmail']") as HTMLInputElement | null;
 
-  const commissionForm = document.getElementById("commissionForm") as HTMLFormElement | null;
-  const commissionSuccess = document.getElementById("commissionSuccess") as HTMLElement | null;
+  const commissionName = document.querySelector("input[name='commissionName']") as HTMLInputElement | null;
+  const commissionEmail = document.querySelector("input[name='commissionEmail']") as HTMLInputElement | null;
+  const commissionSize = document.querySelector("input[name='commissionSize']") as HTMLInputElement | null;
+  const commissionLocation = document.querySelector("input[name='commissionLocation']") as HTMLInputElement | null;
+  const commissionIdea = document.querySelector("textarea[name='commissionIdea']") as HTMLTextAreaElement | null;
 
-  if (!openSelectorBtn || !artworkSelectorModal) return; // Not on Buy page
-
-  // Track selected artworks
-  let selectedArtworks: {
-    id: string;
-    title: string;
-    image: string;
-  }[] = [];
+  if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !textarea) return;
 
   // -----------------------------
-  // OPEN ARTWORK SELECTOR MODAL
+  // RESTORE SAVED DATA
   // -----------------------------
-  openSelectorBtn.addEventListener("click", () => {
-    artworkSelectorModal.classList.remove("hidden");
-    artworkSelectorModal.classList.add("flex");
+  const savedSelected = JSON.parse(localStorage.getItem("selectedArtworks") || "[]") as string[];
+
+  let selected = new Set<string>(savedSelected);
+
+  const items = Array.from(document.getElementsByClassName("artworkChoice")) as HTMLElement[];
+
+  // Restore checkmarks + rings
+  items.forEach((item) => {
+    const id = item.dataset.id!;
+    const checkmark = item.querySelector(".checkmark-overlay") as HTMLElement;
+
+    if (selected.has(id)) {
+      item.classList.add("ring-4", "ring-black");
+      if (checkmark) checkmark.classList.remove("hidden");
+    }
   });
 
-  // -----------------------------
-  // CLOSE ARTWORK SELECTOR MODAL
-  // -----------------------------
-  function closeSelector() {
-    artworkSelectorModal.classList.add("hidden");
-    artworkSelectorModal.classList.remove("flex");
+  // Restore preview thumbnails
+  function rebuildPreview() {
+    preview.innerHTML = "";
+
+    Array.from(selected).forEach((id) => {
+      const item = document.querySelector(`.artworkChoice[data-id="${id}"]`) as HTMLElement;
+      if (!item) return;
+
+      const img = item.dataset.image!;
+      const thumb = document.createElement("img");
+
+      thumb.src = img;
+      thumb.style.width = "48px";
+      thumb.style.height = "48px";
+      thumb.style.objectFit = "cover";
+      thumb.style.borderRadius = "6px";
+      thumb.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+      thumb.style.flexShrink = "0";
+
+      preview.appendChild(thumb);
+    });
+
+    textarea.value = Array.from(selected).join(", ");
   }
 
-  closeSelectorBtn?.addEventListener("click", closeSelector);
+  rebuildPreview();
 
-  artworkSelectorModal.addEventListener("click", (e) => {
-    if (e.target === artworkSelectorModal) closeSelector();
+  // Restore form fields
+  function restoreField(field: HTMLInputElement | HTMLTextAreaElement | null, key: string) {
+    if (!field) return;
+    const saved = localStorage.getItem(key);
+    if (saved) field.value = saved;
+    field.addEventListener("input", () => localStorage.setItem(key, field.value));
+  }
+
+  restoreField(buyerName, "buyerName");
+  restoreField(buyerEmail, "buyerEmail");
+
+  restoreField(commissionName, "commissionName");
+  restoreField(commissionEmail, "commissionEmail");
+  restoreField(commissionSize, "commissionSize");
+  restoreField(commissionLocation, "commissionLocation");
+  restoreField(commissionIdea, "commissionIdea");
+
+  // -----------------------------
+  // OPEN / CLOSE MODAL
+  // -----------------------------
+  openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
   });
 
   // -----------------------------
-  // SELECT ARTWORKS
+  // SELECT / DESELECT ARTWORKS
   // -----------------------------
-  const artworkItems = Array.from(
-    document.getElementsByClassName("artwork-select-item")
-  ) as HTMLElement[];
-
-  artworkItems.forEach((item) => {
+  items.forEach((item) => {
     item.addEventListener("click", () => {
       const id = item.dataset.id!;
-      const title = item.dataset.title!;
-      const image = item.dataset.image!;
+      const checkmark = item.querySelector(".checkmark-overlay") as HTMLElement;
 
-      const alreadySelected = selectedArtworks.find((a) => a.id === id);
-
-      if (alreadySelected) {
-        // Remove selection
-        selectedArtworks = selectedArtworks.filter((a) => a.id !== id);
-        item.classList.remove("border-black");
-        item.classList.add("border-gray-300");
+      if (selected.has(id)) {
+        selected.delete(id);
+        item.classList.remove("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.add("hidden");
       } else {
-        // Add selection
-        selectedArtworks.push({ id, title, image });
-        item.classList.remove("border-gray-300");
-        item.classList.add("border-black");
+        selected.add(id);
+        item.classList.add("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.remove("hidden");
       }
+
+      // Save to localStorage
+      localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
     });
   });
 
   // -----------------------------
   // CONFIRM SELECTION
   // -----------------------------
-  confirmSelectionBtn?.addEventListener("click", () => {
-    if (!previewContainer || !hiddenIDsField) return;
-
-    // Clear preview
-    previewContainer.innerHTML = "";
-
-    // Add thumbnails
-    selectedArtworks.forEach((art) => {
-      const thumb = document.createElement("div");
-      thumb.className = "w-16 h-16 rounded overflow-hidden shadow border border-gray-300";
-
-      thumb.innerHTML = `
-        <img src="${art.image}" class="w-full h-full object-cover" />
-      `;
-
-      previewContainer.appendChild(thumb);
-    });
-
-    // Store IDs in hidden field
-    hiddenIDsField.value = selectedArtworks.map((a) => a.id).join(",");
-
-    closeSelector();
-  });
-
-  // -----------------------------
-  // BUY FORM SUBMISSION
-  // -----------------------------
-  buyForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    if (!hiddenIDsField?.value) {
-      alert("Please select at least one artwork before submitting.");
-      return;
-    }
-
-    buySuccess?.classList.remove("hidden");
-    buyForm.reset();
-    previewContainer!.innerHTML = "";
-    selectedArtworks = [];
-    hiddenIDsField.value = "";
-  });
-
-  // -----------------------------
-  // COMMISSION FORM SUBMISSION
-  // -----------------------------
-  commissionForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    commissionSuccess?.classList.remove("hidden");
-    commissionForm.reset();
+  confirmBtn.addEventListener("click", () => {
+    rebuildPreview();
+    closeModal();
   });
 }
 
-// Initialize Buy / Commission logic
-document.addEventListener("DOMContentLoaded", () => {
-  initBuyCommissionPage();
-});
+document.addEventListener("DOMContentLoaded", initBuyCommissionPage);
 
-// ======================================================
+
+// -----------------------------
 // ARCHIVE PAGE YEAR FILTER
-// ======================================================
-
+// -----------------------------
 function initArchivePage() {
   const filter = document.getElementById("archiveYearFilter") as HTMLSelectElement | null;
   if (!filter) return;
 
   const items = Array.from(document.getElementsByClassName("archive-item")) as HTMLElement[];
 
-  // Deduplicate options
   const seen = new Set<string>();
   Array.from(filter.options).forEach((opt) => {
     if (opt.value !== "all") {
@@ -373,7 +380,9 @@ function initArchivePage() {
 
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
+// -----------------------------
 // DARK MODE TOGGLE
+// -----------------------------
 const darkToggle = document.getElementById("darkModeToggle");
 
 if (darkToggle) {
@@ -385,8 +394,22 @@ if (darkToggle) {
     );
   });
 
-  // Load saved preference
   if (localStorage.getItem("theme") === "dark") {
     document.documentElement.classList.add("dark");
   }
 }
+
+// -----------------------------
+// HOME PAGE VERTICAL IMAGE FIX
+// -----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const imgs = document.querySelectorAll(".homepage-image");
+
+  imgs.forEach((img) => {
+    img.onload = () => {
+      if (img.naturalHeight > img.naturalWidth) {
+        img.classList.add("vertical");
+      }
+    };
+  });
+});

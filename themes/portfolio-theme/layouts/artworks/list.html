@@ -11,12 +11,21 @@
     <!-- Year Filter -->
     <div>
       <label class="block text-sm font-medium mb-1">Filter by Year</label>
+
       <select id="filterYear" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Years</option>
-        {{ range uniq (where .Site.RegularPages "Section" "artworks") }}
-          {{ with .Params.year }}
-            <option value="{{ . }}">{{ . }}</option>
+
+        {{/* Collect years except 2022 */}}
+        {{ $years := slice }}
+        {{ range where .Site.RegularPages "Section" "artworks" }}
+          {{ if and (.Params.year) (ne .Params.year 2022) }}
+            {{ $years = $years | append .Params.year }}
           {{ end }}
+        {{ end }}
+
+        {{/* Sort years ascending: 2024, 2025, 2026 */}}
+        {{ range sort (uniq $years) }}
+          <option value="{{ . }}">{{ . }}</option>
         {{ end }}
       </select>
     </div>
@@ -39,7 +48,8 @@
   <!-- GALLERY GRID -->
   <div id="artworkGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
-    {{ range (where .Site.RegularPages "Section" "artworks") }}
+    {{/* SORT ARTWORKS BY worknum DESCENDING */}}
+    {{ range sort (where .Site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
 
     <a 
       href="{{ .RelPermalink }}" 
@@ -51,22 +61,24 @@
       data-size="{{ .Params.size }}"
       data-availability="{{ .Params.availability }}"
       data-price="{{ .Params.price }}"
-      data-image="{{ if .Params.image }}/images/artworks/{{ .Params.image }}{{ end }}"
+      data-image="{{ .Params.image }}"
     >
 
-      <div class="w-full aspect-square overflow-hidden rounded shadow">
+      <!-- NATURAL PROPORTION IMAGE -->
+      <div class="w-full overflow-hidden rounded shadow">
         {{ if .Params.image }}
           <img 
-            src="/images/artworks/{{ .Params.image }}" 
+            src="{{ .Params.image }}" 
             alt="{{ .Title }}" 
-            class="w-full h-full object-cover group-hover:opacity-80 transition"
+            class="w-full h-auto object-cover group-hover:opacity-80 transition"
           />
         {{ else }}
-          <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+          <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
             No image yet
           </div>
         {{ end }}
       </div>
+
     </a>
 
     {{ end }}

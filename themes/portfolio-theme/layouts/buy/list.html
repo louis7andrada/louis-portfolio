@@ -4,7 +4,11 @@
 
   <h1 class="text-3xl font-semibold mb-12 text-center">Buy / Commission</h1>
 
-  <!-- TWO COLUMN LAYOUT -->
+  <!-- Success Message (legacy, unused now but kept) -->
+  <div id="pageSuccessMessage" class="hidden mb-10 text-green-600 font-medium text-center">
+    Thank you — your request has been sent successfully.
+  </div>
+
   <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
 
     <!-- ========================= -->
@@ -14,10 +18,9 @@
       <h2 class="text-2xl font-semibold mb-4">Buy Artwork</h2>
 
       <p class="leading-relaxed text-gray-800 mb-6">
-        Select one or more available artworks from the list below. After submitting the form, Louis will contact you shortly with pricing, availability, and purchase details.
+        Select one or more available artworks. After submitting, Louis will contact you with pricing and availability.
       </p>
 
-      <!-- SELECT ARTWORK BUTTON -->
       <button 
         id="openArtworkSelector"
         class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition mb-6"
@@ -25,11 +28,27 @@
         Select Artwork(s)
       </button>
 
-      <!-- SELECTED ARTWORKS PREVIEW -->
+      <!-- Selected artworks preview -->
       <div id="selectedArtworksPreview" class="flex flex-wrap gap-3 mb-6"></div>
 
-      <!-- BUY FORM -->
-      <form id="buyForm" class="grid grid-cols-1 gap-4">
+      <!-- BUY SUCCESS MESSAGE -->
+      <div id="buySuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
+        Thank you — your purchase request has been sent successfully. Louis will contact you soon.
+      </div>
+
+      <form 
+        id="buyForm"
+        action="https://formspree.io/f/xeeldjwj"
+        method="POST"
+        class="grid grid-cols-1 gap-4"
+      >
+
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_gotcha" class="hidden">
+        <input type="hidden" name="formType" value="Artwork Purchase Request">
+
+        <!-- reCAPTCHA v3 token -->
+        <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
 
         <input 
           type="text" 
@@ -47,8 +66,30 @@
           required
         />
 
-        <!-- Hidden field storing selected artwork IDs -->
-        <input type="hidden" id="selectedArtworkIDs" name="artworkIDs" />
+        <input 
+          type="tel" 
+          name="buyerPhone" 
+          placeholder="Your Phone Number" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <input 
+          type="text" 
+          name="buyerlocation" 
+          placeholder="Where are you located? (City, Country e.g., Paris, France)" 
+          class="border border-gray-300 rounded p-3"
+          required
+        />
+
+        <textarea
+          name="selectedArtworks"
+          id="selectedArtworkIDs"
+          placeholder="Please select artwork(s) above"
+          class="border border-gray-300 rounded p-3 bg-gray-100 cursor-not-allowed"
+          readonly
+          required
+        ></textarea>
 
         <button 
           type="submit"
@@ -56,10 +97,6 @@
         >
           Submit Purchase Request
         </button>
-
-        <p id="buySuccess" class="text-green-600 font-medium hidden mt-2">
-          Thank you! Louis will get in touch with you shortly.
-        </p>
 
       </form>
     </div>
@@ -71,11 +108,27 @@
       <h2 class="text-2xl font-semibold mb-4">Commission an Artwork</h2>
 
       <p class="leading-relaxed text-gray-800 mb-6">
-        Commissions are open. Fill out the form below with your idea, preferred size, and location. Louis will follow up with pricing and timeline details.
+        Commissions are open. Describe your idea, preferred size, and location.
       </p>
 
-      <!-- COMMISSION FORM -->
-      <form id="commissionForm" class="grid grid-cols-1 gap-4">
+      <!-- COMMISSION SUCCESS MESSAGE -->
+      <div id="commissionSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
+        Thank you — your commission request has been sent successfully. Louis will contact you soon.
+      </div>
+
+      <form 
+        id="commissionForm"
+        action="https://formspree.io/f/xgolqwbv"
+        method="POST"
+        class="grid grid-cols-1 gap-4"
+      >
+
+        <input type="hidden" name="_captcha" value="false">
+        <input type="text" name="_gotcha" class="hidden">
+        <input type="hidden" name="formType" value="Commission Request">
+
+        <!-- reCAPTCHA v3 token -->
+        <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
 
         <input 
           type="text" 
@@ -94,9 +147,9 @@
         />
 
         <input 
-          type="text" 
-          name="commissionSize" 
-          placeholder="Preferred Size (e.g., 40x50cm)" 
+          type="tel" 
+          name="commissionPhone" 
+          placeholder="Your Phone Number" 
           class="border border-gray-300 rounded p-3"
           required
         />
@@ -104,17 +157,87 @@
         <input 
           type="text" 
           name="commissionLocation" 
-          placeholder="Where are you located?" 
+          placeholder="Where are you located? (City, Country e.g., Paris, France)" 
           class="border border-gray-300 rounded p-3"
           required
         />
 
-        <textarea 
-          name="commissionIdea" 
-          placeholder="Describe your commission idea..." 
-          rows="5"
+        <input 
+          type="text" 
+          name="commissionSize" 
+          placeholder="Preferred Size in inches (HxWxL e.g., 40x30x1.5 in)" 
           class="border border-gray-300 rounded p-3"
           required
+        />
+
+        <div class="border border-gray-300 rounded p-4 space-y-3">
+
+          <p class="text-gray-700 font-medium">Type of Commission (select one or more)</p>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="canvas" class="w-4 h-4 accent-black" required />
+            <span>Canvas painting</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="mural" class="w-4 h-4 accent-black" />
+            <span>Mural</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="sculpture" class="w-4 h-4 accent-black" />
+            <span>Sculpture / Object / Furniture</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="clothing" class="w-4 h-4 accent-black" />
+            <span>Clothing</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="brand" class="w-4 h-4 accent-black" />
+            <span>Brand / Partnership / Event / Invitation</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="digital" class="w-4 h-4 accent-black" />
+            <span>Digital media / Print</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="tattoo" class="w-4 h-4 accent-black" />
+            <span>Tattoo</span>
+          </label>
+
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" name="commissionType[]" value="other" class="w-4 h-4 accent-black" />
+            <span>Other (please specify below)</span>
+          </label>
+
+        </div>
+
+        <textarea 
+          name="commissionIdea" 
+          placeholder="Describe your commission idea in details...
+(If left blank, I will create it based on what I envision for your piece)
+
+- What topic would you like the piece(s) to be about 
+(If left blank, I will create it based on what I envision for your piece)
+
+- Do you have preferred colors for the pieces?
+(If left blank, I will choose colors that fit my vision)
+
+- What is the mood of the piece?
+(If left blank, I will develop the piece(s) mood that fit my vision)
+
+- What size(s)?
+(Please write in inches or feet, format: H x W x L, for example; 40 x 30 x 1.5 in)
+
+- What is your budget?
+(Please write your budget range, I will take in consideration when providing the piece(s) final price(s) to you). 
+" 
+          rows="5"
+          class="border border-gray-300 rounded p-3"
         ></textarea>
 
         <button 
@@ -123,10 +246,6 @@
         >
           Submit Commission Request
         </button>
-
-        <p id="commissionSuccess" class="text-green-600 font-medium hidden mt-2">
-          Thank you! Louis will get in touch with you shortly.
-        </p>
 
       </form>
     </div>
@@ -139,51 +258,204 @@
 <!-- ========================= -->
 <div 
   id="artworkSelectorModal"
-  class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-4 z-50"
+  class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center p-6 z-50"
 >
-  <div class="bg-white max-w-3xl w-full rounded-lg overflow-hidden shadow-lg relative p-6">
+  <div class="bg-white max-w-4xl w-full rounded-lg p-6 relative">
 
-    <!-- Close Button -->
     <button 
       id="closeArtworkSelector"
-      class="absolute top-3 right-3 text-black text-2xl leading-none"
+      class="absolute top-3 right-3 text-black text-2xl"
     >
       &times;
     </button>
 
     <h2 class="text-xl font-semibold mb-4">Select Artwork(s)</h2>
 
-    <!-- AVAILABLE ARTWORKS GRID -->
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto pr-2">
 
-      {{ range where .Site.RegularPages "Section" "artworks" }}
-        {{ if eq .Params.availability "available" }}
-        <div 
-          class="artwork-select-item cursor-pointer border border-gray-300 rounded p-2 flex flex-col items-center"
-          data-id="{{ .File.BaseFileName }}"
-          data-title="{{ .Title }}"
-          data-image="/images/artworks/{{ .Params.image }}"
-        >
-          <img 
-            src="/images/artworks/{{ .Params.image }}" 
-            class="w-full h-24 object-cover rounded mb-2"
-          />
-          <p class="text-sm text-center">{{ .Title }}</p>
+      {{ range sort (where .Site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
+      <div 
+        class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
+        data-id="{{ .File.BaseFileName }}"
+        data-title="{{ .Title }}"
+        data-image="{{ .Params.image }}"
+      >
+        <img src="{{ .Params.image }}" class="w-full h-auto rounded">
+
+        <!-- CHECKMARK OVERLAY -->
+        <div class="checkmark-overlay hidden absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">
+          ✓
         </div>
-        {{ end }}
+
+        <p class="text-center text-sm mt-1">{{ .Title }}</p>
+      </div>
       {{ end }}
 
     </div>
 
-    <!-- DONE BUTTON -->
     <button 
       id="confirmArtworkSelection"
-      class="mt-6 px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+      class="mt-6 px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition w-full"
     >
-      Done
+      Confirm Selection
     </button>
 
   </div>
 </div>
+
+<!-- ========================= -->
+<!-- AJAX FORM SUBMISSION + AUTO‑SELECT LOGIC -->
+<!-- ========================= -->
+<script>
+function setupAjaxForm(formId, successId) {
+  const form = document.getElementById(formId);
+  const successMessage = document.getElementById(successId);
+
+  if (!form) return;
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+    form.querySelector(".recaptcha-token-field").value = token;
+
+    const data = new FormData(form);
+
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (response.ok) {
+      form.reset();
+      successMessage.classList.remove("hidden");
+
+      if (formId === "buyForm") {
+        const preview = document.getElementById("selectedArtworksPreview");
+        const textarea = document.getElementById("selectedArtworkIDs");
+        if (preview) preview.innerHTML = "";
+        if (textarea) textarea.value = "";
+        localStorage.removeItem("selectedArtworks");
+      }
+    } else {
+      alert("There was an error. Please try again.");
+    }
+  });
+}
+
+setupAjaxForm("buyForm", "buySuccessMessage");
+setupAjaxForm("commissionForm", "commissionSuccessMessage");
+
+
+// =========================
+// BUY / COMMISSION PAGE LOGIC (AUTO‑SELECT)
+// =========================
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("artworkSelectorModal");
+  const openBtn = document.getElementById("openArtworkSelector");
+  const closeBtn = document.getElementById("closeArtworkSelector");
+  const confirmBtn = document.getElementById("confirmArtworkSelection");
+
+  const preview = document.getElementById("selectedArtworksPreview");
+  const textarea = document.getElementById("selectedArtworkIDs");
+
+  if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !textarea) return;
+
+  const savedSelected = JSON.parse(localStorage.getItem("selectedArtworks") || "[]");
+  let selected = new Set(savedSelected);
+
+  const items = Array.from(document.getElementsByClassName("artworkChoice"));
+
+  // AUTO‑ADD FROM SINGLE PAGE
+  const urlParams = new URLSearchParams(window.location.search);
+  const addArtwork = urlParams.get("add");
+
+  if (addArtwork) {
+    selected.add(addArtwork);
+    localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+  }
+
+  function rebuildPreview() {
+    preview.innerHTML = "";
+
+    Array.from(selected).forEach((id) => {
+      const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
+      if (!item) return;
+
+      const img = item.dataset.image;
+      const thumb = document.createElement("img");
+
+      thumb.src = img;
+      thumb.style.width = "48px";
+      thumb.style.height = "48px";
+      thumb.style.objectFit = "cover";
+      thumb.style.borderRadius = "6px";
+      thumb.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+      thumb.style.flexShrink = "0";
+
+      preview.appendChild(thumb);
+    });
+
+    textarea.value = Array.from(selected).join(", ");
+  }
+
+  // RESTORE CHECKMARKS
+  items.forEach((item) => {
+    const id = item.dataset.id;
+    const checkmark = item.querySelector(".checkmark-overlay");
+
+    if (selected.has(id)) {
+      item.classList.add("ring-4", "ring-black");
+      if (checkmark) checkmark.classList.remove("hidden");
+    }
+  });
+
+  rebuildPreview();
+
+  // OPEN / CLOSE MODAL
+  openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+
+  closeBtn.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // SELECT / DESELECT ARTWORKS
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      const id = item.dataset.id;
+      const checkmark = item.querySelector(".checkmark-overlay");
+
+      if (selected.has(id)) {
+        selected.delete(id);
+        item.classList.remove("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.add("hidden");
+      } else {
+        selected.add(id);
+        item.classList.add("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.remove("hidden");
+      }
+
+      localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+    });
+  });
+
+  // CONFIRM SELECTION
+  confirmBtn.addEventListener("click", () => {
+    rebuildPreview();
+    closeModal();
+  });
+});
+</script>
 
 {{ end }}

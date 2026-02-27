@@ -5,8 +5,8 @@
   <!-- Profile Image -->
   <div class="w-32 h-32 rounded-full overflow-hidden shadow mb-6">
     <img 
-      src="/images/profile.jpg" 
-      alt="Profile" 
+      src="/profile.jpeg" 
+      alt="Louis Andrada" 
       class="w-full h-full object-cover"
     />
   </div>
@@ -16,60 +16,157 @@
 
   <!-- Tagline -->
   <p class="text-gray-600 mb-8 text-center max-w-sm">
-    Painter • Toronto • Brazilian Folklore • Analog Photography Influence
+    Painter & Research Coordinator
+    <br> Toronto based
+    <br> ܡܢܗܪܢܐ
   </p>
 
-  <!-- Links Container -->
+  <!-- LINKS -->
   <div class="w-full max-w-sm flex flex-col gap-4">
 
-    <!-- Instagram -->
-    <a 
-      href="https://instagram.com/louisandrada" 
-      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
-    >
-      Instagram
-    </a>
+    <a href="https://www.louisandrada.com" class="link-btn">Portfolio Website</a>
+    <a href="https://instagram.com/viiii13iixv" class="link-btn">Art Instagram</a>
+    <a href="https://instagram.com/louis7andrada" class="link-btn">Private Instagram</a>
+    <a href="/buy" class="link-btn">Buy / Commission</a>
+    <a href="https://m.imdb.com/name/nm13775288/" class="link-btn">IMDb - Filmography</a>
+    <a href="https://linkbio.co/IOHRGUofT" class="link-btn">IOHRG - U of T</a>
 
-    <!-- Portfolio Website -->
-    <a 
-      href="https://louisandrada.com" 
-      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
-    >
-      Portfolio Website
-    </a>
-
-    <!-- Email -->
-    <a 
-      href="mailto:luis7andrada@outlook.com" 
-      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
-    >
-      Email Me
-    </a>
-
-    <!-- Buy / Commission -->
-    <a 
-      href="/buy" 
-      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
-    >
-      Buy / Commission
-    </a>
-
-    <!-- Artworks -->
-    <a 
-      href="/artworks" 
-      class="w-full py-3 text-center bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
-    >
-      View Artworks
-    </a>
+    <!-- CONTACT TOGGLE BUTTON -->
+    <button id="toggleContact" class="link-btn">
+      Contact Me
+    </button>
 
   </div>
 
-  <!-- Footer -->
-  <p class="text-gray-400 text-xs mt-10 mb-6">
-    © {{ now.Format "2006" }} Louis Andrada
-  </p>
+  <!-- CONTACT FORM (Hidden by default) -->
+  <div id="contactSection" class="hidden w-full max-w-sm mt-10">
+
+    <div id="contactSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
+      Thank you — your message has been sent successfully. Louis will get back to you soon.
+    </div>
+
+    <form 
+      id="contactForm"
+      action="https://formspree.io/f/maqdkwkv"
+      method="POST"
+      class="grid grid-cols-1 gap-4"
+    >
+
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_gotcha" class="hidden">
+
+      <!-- reCAPTCHA v3 token -->
+      <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
+
+      <input 
+        type="text" 
+        name="name" 
+        placeholder="Your Name" 
+        class="border border-gray-300 rounded p-3"
+        required
+      />
+
+      <input 
+        type="email" 
+        name="email" 
+        placeholder="Your Email" 
+        class="border border-gray-300 rounded p-3"
+        required
+      />
+
+      <input 
+        type="tel" 
+        name="phone" 
+        placeholder="Your Phone Number" 
+        class="border border-gray-300 rounded p-3"
+        required
+      />
+
+      <textarea 
+        name="message" 
+        placeholder="Your message..."
+        rows="5"
+        class="border border-gray-300 rounded p-3"
+        required
+      ></textarea>
+
+      <button 
+        type="submit"
+        class="px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition"
+      >
+        Send Message
+      </button>
+
+    </form>
+
+    <script>
+    const form = document.getElementById("contactForm");
+    const successMessage = document.getElementById("contactSuccessMessage");
+
+    form.addEventListener("submit", async function(event) {
+      event.preventDefault();
+
+      // reCAPTCHA v3 token
+      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+      form.querySelector(".recaptcha-token-field").value = token;
+
+      const data = new FormData(form);
+
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        form.reset();
+        successMessage.classList.remove("hidden");
+      } else {
+        alert("There was an error. Please try again.");
+      }
+    });
+    </script>
+
+    <!-- Footer -->
+    <p class="text-gray-400 text-xs mt-10 mb-6">
+      © {{ now.Format "2006" }} Louis Andrada
+    </p>
+
+  </div>
 
 </section>
 
+<style>
+.link-btn {
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  background: black;
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.link-btn:hover {
+  background: #1f2937;
+}
+</style>
+
+<script>
+const toggleBtn = document.getElementById("toggleContact");
+const contactSection = document.getElementById("contactSection");
+
+toggleBtn.onclick = () => {
+  contactSection.classList.toggle("hidden");
+};
+
+const params = new URLSearchParams(window.location.search);
+if (params.get("success") === "true") {
+  contactSection.classList.remove("hidden");
+  document.getElementById("contactSuccessMessage").classList.remove("hidden");
+}
+</script>
+
 {{ end }}
-    
