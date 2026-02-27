@@ -1,5 +1,6 @@
 ---
 id: "studio11"
+category: "studios"
 title: "Third studio: Untitled (Death)' by the wall"
 year: 2025
 image: "/images/archive/studios/studio11.jpeg"
