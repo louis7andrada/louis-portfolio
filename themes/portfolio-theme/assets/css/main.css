@@ -41,13 +41,13 @@
 /* Slightly smaller verticals */
 @media (min-aspect-ratio: 1/1) {
   .single-image {
-    max-height: 92vh; /* horizontal */
+    max-height: 92vh;
   }
 }
 
 @media (max-aspect-ratio: 1/1) {
   .single-image {
-    max-height: 85vh; /* vertical slightly smaller */
+    max-height: 85vh;
   }
 }
 
@@ -72,12 +72,11 @@
 }
 
 /* ----------------------------------------
-   HOMEPAGE SLIDESHOW — FINAL WORKING FIX
-   (ALL previous homepage rules removed)
+   HOMEPAGE SLIDESHOW
 ----------------------------------------- */
 
 #featuredArtwork {
-  height: 75vh !important;   /* adjust this number to change size */
+  height: 75vh !important;
   width: auto !important;
   object-fit: contain !important;
   max-width: 100%;
@@ -89,12 +88,10 @@ html.dark {
   color-scheme: dark;
 }
 
-
 /* ----------------------------------------
    FULLSCREEN MOBILE MENU
 ----------------------------------------- */
 
-/* FULLSCREEN MOBILE MENU */
 #mobileMenu {
   opacity: 0;
   pointer-events: none;
@@ -105,8 +102,6 @@ html.dark {
   pointer-events: auto;
 }
 
-
-/* Smooth fade for menu */
 #mobileMenu a {
   transition: opacity 0.3s ease;
 }
@@ -116,71 +111,260 @@ body {
   max-width: none;
 }
 
-
 /* ----------------------------------------
-   MODERN DARK MODE PALETTE
+   MODERN DARK MODE — UNIFIED BACKGROUND
 ----------------------------------------- */
 
 html.dark body {
-  background-color: #111;
-  color: #e5e5e5;
+  background-color: #1a1a1a !important;
+  color: #e8e8e8 !important;
 }
 
-/* Header */
 html.dark header {
-  background-color: #1a1a1a;
-  border-color: #333;
+  background-color: #1a1a1a !important;
+  border-color: #2d2d2d;
 }
 
-/* Links */
 html.dark a {
-  color: #d1d1d1;
+  color: #e8e8e8 !important;
 }
 
 html.dark a:hover {
-  color: white;
+  color: #ffffff !important;
 }
 
-/* Borders */
+html.dark p,
+html.dark span,
+html.dark li,
+html.dark h1,
+html.dark h2,
+html.dark h3,
+html.dark h4,
+html.dark h5,
+html.dark h6 {
+  color: #e8e8e8 !important;
+}
+
 html.dark .border-gray-300 {
-  border-color: #444 !important;
+  border-color: #3a3a3a !important;
 }
 
-/* Cards / boxes / image containers */
 html.dark .shadow,
 html.dark .shadow-lg {
-  --tw-shadow-color: rgba(0,0,0,0.6);
+  --tw-shadow-color: rgba(0,0,0,0.65);
 }
 
 html.dark .bg-gray-200 {
-  background-color: #333 !important;
+  background-color: #2a2a2a !important;
 }
 
-/* Mobile menu */
 html.dark #mobileMenu {
-  background-color: #111;
-  color: #e5e5e5;
+  background-color: #1a1a1a !important;
+  color: #e8e8e8 !important;
 }
 
-/* Filters */
-html.dark select,
-html.dark option {
-  background-color: #222;
-  color: #e5e5e5;
-  border-color: #444;
-}
-
-/* Artwork modal */
 html.dark #artworkModal {
-  background-color: rgba(0,0,0,0.85);
+  background-color: rgba(0,0,0,0.75);
 }
 
 html.dark #artworkModal .modal-content {
-  background-color: #1a1a1a;
-  color: #e5e5e5;
+  background-color: #1a1a1a !important;
+  color: #e8e8e8 !important;
 }
 
-/* Archive items hover */
 html.dark .group:hover .group-hover\:opacity-80 {
-  opacity: 0.6;
+  opacity: 0.55;
+}
+
+/* ----------------------------------------
+   DARK MODE FIXES — FOOTER, FORMS, LINKS
+----------------------------------------- */
+
+html.dark footer,
+html.dark footer * {
+  color: #e6e6e6 !important;
+}
+
+html.dark input,
+html.dark textarea,
+html.dark select,
+html.dark label {
+  color: #e6e6e6 !important;
+  background-color: #1f1f1f !important;
+  border-color: #3a3a3a !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #bfbfbf !important;
+}
+
+html.dark button[type="submit"],
+html.dark input[type="submit"] {
+  background-color: #4a4a4a !important;
+  color: #e6e6e6 !important;
+  border: 1px solid #4a4a4a !important;
+}
+
+html.dark button[type="submit"]:hover,
+html.dark input[type="submit"]:hover {
+  background-color: #333 !important;
+}
+
+/* Select Artwork(s) button */
+html.dark #openArtworkSelector {
+  background-color: #4a4a4a !important;
+  color: #e6e6e6 !important;
+  border: 1px solid #4a4a4a !important;
+}
+
+html.dark #openArtworkSelector:hover {
+  background-color: #333 !important;
+}
+
+/* About page links */
+html.dark .about-page a {
+  color: #4da3ff !important;
+  text-decoration: underline;
+}
+
+html.dark .about-page a:hover {
+  color: #82c3ff !important;
+}
+
+/* Links page hyperlinks */
+html.dark .links-page a {
+  color: #4da3ff !important;
+  text-decoration: underline;
+}
+
+html.dark .links-page a:hover {
+  color: #82c3ff !important;
+}
+
+/* ----------------------------------------
+   FILTERS — KEEP GRAY BOXES, FIX LABELS
+----------------------------------------- */
+
+/* Remove accidental label backgrounds */
+label {
+  background: transparent !important;
+}
+
+/* Restore default select styling */
+select {
+  background-color: #e5e5e5;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+/* Dark mode select boxes stay gray */
+html.dark select {
+  background-color: #2a2a2a !important;
+  color: #e8e8e8 !important;
+  border-color: #3a3a3a !important;
+}
+
+html.dark option {
+  background-color: #1a1a1a !important;
+  color: #e8e8e8 !important;
+}
+
+/* Force filter section to inherit body background */
+html.dark .artworks-filters,
+html.dark .artworks-filters div,
+html.dark .artworks-filters label {
+  background-color: transparent !important;
+}
+
+/* Fix archive filter background in dark mode */
+
+html.dark .archive-filters,
+html.dark .archive-filters div,
+html.dark .archive-filters label {
+  background-color: transparent !important;
+}
+
+/* =========================
+   DARK MODE – ARTWORK SELECTOR MODAL
+   ========================= */
+
+/* Modal inner panel */
+.dark #artworkSelectorModal > div {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+/* Close button */
+.dark #artworkSelectorModal #closeArtworkSelector {
+  color: #ffffff;
+}
+
+/* Artwork choice card */
+.dark #artworkSelectorModal .artworkChoice {
+  border-color: #555555;
+  background-color: #1a1a1a;
+}
+
+/* Artwork title */
+.dark #artworkSelectorModal .artworkChoice p {
+  color: #ffffff;
+}
+
+/* Selected ring override */
+.dark #artworkSelectorModal .artworkChoice.ring-black {
+  --tw-ring-color: #ffffff;
+}
+
+/* Confirm button */
+.dark #artworkSelectorModal #confirmArtworkSelection {
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+
+.dark #artworkSelectorModal #confirmArtworkSelection:hover {
+  background-color: #222222;
+}
+
+/* =========================
+   FEATURED SLIDESHOW ARROWS
+   ========================= */
+
+.slideshow-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #d1d1d1;
+  backdrop-filter: blur(4px);
+  border: none;
+  font-size: 32px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 20;
+}
+
+.slideshow-arrow.left {
+  left: 20px;
+}
+
+.slideshow-arrow.right {
+  right: 20px;
+}
+
+.slideshow-arrow:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-50%) scale(1.05);
+}
+
+/* Dark mode */
+.dark .slideshow-arrow {
+  background: rgba(40, 40, 40, 0.85);
+  color: #ffffff;
+}
+
+.dark .slideshow-arrow:hover {
+  background: rgba(60, 60, 60, 0.95);
 }

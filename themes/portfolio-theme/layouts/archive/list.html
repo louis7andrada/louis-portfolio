@@ -5,11 +5,11 @@
   <h1 class="text-3xl font-semibold mb-12 text-center">Archive</h1>
 
   <!-- FILTERS -->
-  <div class="flex flex-col md:flex-row justify-center gap-6 mb-10">
+  <div class="archive-filters flex flex-col md:flex-row justify-center gap-6 mb-10">
 
     <!-- Year Filter -->
     <div>
-      <label class="block text-sm font-medium mb-1">Filter by Year</label>
+      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Year</label>
 
       <select id="filterYear" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Years</option>
@@ -29,7 +29,7 @@
 
     <!-- Category Filter -->
     <div>
-      <label class="block text-sm font-medium mb-1">Filter by Category</label>
+      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Category</label>
 
       <select id="filterCategory" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Categories</option>
@@ -44,17 +44,13 @@
   <!-- GALLERY GRID -->
   <div id="archiveGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
-    {{/* Collect all archive items */}}
     {{ $items := where .Site.RegularPages "Section" "archive" }}
 
-    {{/* CATEGORY PRIORITY: studios → photos → galleries */}}
     {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
 
-    {{/* First sort by category priority */}}
     {{ $items = sort $items "Params.category" }}
     {{ $items = sort $items "Params.category" "asc" }}
 
-    {{/* Then sort by year DESC (stable sort keeps category order inside each year) */}}
     {{ $items = sort $items "Params.year" "desc" }}
 
     {{ range $items }}

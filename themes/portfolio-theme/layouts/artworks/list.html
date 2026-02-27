@@ -1,16 +1,16 @@
 {{ define "main" }}
 
-<section class="px-4 py-10 max-w-7xl mx-auto">
+<section class="max-w-7xl mx-auto px-4 py-16">
 
   <!-- Page Title -->
   <h1 class="text-3xl font-semibold mb-8 text-center">Artworks</h1>
 
   <!-- FILTERS -->
-  <div class="flex flex-col md:flex-row justify-center gap-6 mb-10">
+  <div class="artworks-filters flex flex-col md:flex-row justify-center gap-6 mb-10">
 
     <!-- Year Filter -->
     <div>
-      <label class="block text-sm font-medium mb-1">Filter by Year</label>
+      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Year</label>
 
       <select id="filterYear" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Years</option>
@@ -23,7 +23,7 @@
           {{ end }}
         {{ end }}
 
-        {{/* Sort years ascending: 2024, 2025, 2026 */}}
+        {{/* Sort years ascending */}}
         {{ range sort (uniq $years) }}
           <option value="{{ . }}">{{ . }}</option>
         {{ end }}
@@ -32,7 +32,8 @@
 
     <!-- Project Filter -->
     <div>
-      <label class="block text-sm font-medium mb-1">Filter by Project</label>
+      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Project</label>
+
       <select id="filterProject" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Projects</option>
         {{ range uniq (where .Site.RegularPages "Section" "artworks") }}
@@ -48,7 +49,6 @@
   <!-- GALLERY GRID -->
   <div id="artworkGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
-    {{/* SORT ARTWORKS BY worknum DESCENDING */}}
     {{ range sort (where .Site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
 
     <a 
@@ -64,7 +64,6 @@
       data-image="{{ .Params.image }}"
     >
 
-      <!-- NATURAL PROPORTION IMAGE -->
       <div class="w-full overflow-hidden rounded shadow">
         {{ if .Params.image }}
           <img 
@@ -94,7 +93,6 @@
 >
   <div class="bg-white max-w-3xl w-full rounded-lg overflow-hidden shadow-lg relative">
 
-    <!-- Close Button -->
     <button 
       id="closeModal" 
       class="absolute top-3 right-3 text-black text-2xl leading-none"
@@ -104,7 +102,6 @@
 
     <div class="grid md:grid-cols-2">
 
-      <!-- Image -->
       <div class="w-full h-full">
         <img 
           id="modalImage" 
@@ -114,7 +111,6 @@
         />
       </div>
 
-      <!-- Details -->
       <div class="p-6">
         <h2 id="modalTitle" class="text-2xl font-semibold mb-2"></h2>
         <p id="modalMedium" class="text-gray-700 mb-1"></p>
