@@ -110,3 +110,8 @@ html.dark {
 #mobileMenu a {
   transition: opacity 0.3s ease;
 }
+
+body {
+  margin: 0;
+  max-width: none;
+}

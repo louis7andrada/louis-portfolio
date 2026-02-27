@@ -394,7 +394,10 @@ function initArchivePage() {
 
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
+
+/// -----------------------------
 // DARK MODE TOGGLE
+// -----------------------------
 const toggle = document.getElementById("darkModeToggle");
 const sunIcon = document.getElementById("sunIcon");
 const moonIcon = document.getElementById("moonIcon");
@@ -402,24 +405,23 @@ const moonIcon = document.getElementById("moonIcon");
 // Load saved theme
 if (localStorage.getItem("theme") === "dark") {
   document.documentElement.classList.add("dark");
-  sunIcon.classList.remove("hidden");
-  moonIcon.classList.add("hidden");
+  sunIcon?.classList.remove("hidden");
+  moonIcon?.classList.add("hidden");
 }
 
-toggle.addEventListener("click", () => {
+toggle?.addEventListener("click", () => {
   const isDark = document.documentElement.classList.toggle("dark");
 
   if (isDark) {
-    sunIcon.classList.remove("hidden");
-    moonIcon.classList.add("hidden");
+    sunIcon?.classList.remove("hidden");
+    moonIcon?.classList.add("hidden");
     localStorage.setItem("theme", "dark");
   } else {
-    sunIcon.classList.add("hidden");
-    moonIcon.classList.remove("hidden");
+    sunIcon?.classList.add("hidden");
+    moonIcon?.classList.remove("hidden");
     localStorage.setItem("theme", "light");
   }
 });
-
 
 
 // -----------------------------
