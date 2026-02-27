@@ -54,6 +54,14 @@
     <a 
       href="{{ .RelPermalink }}" 
       class="artwork-item cursor-pointer group block"
+      data-year="{{ .Params.year }}"
+      data-project="{{ .Params.project }}"
+      data-title="{{ .Title }}"
+      data-medium="{{ .Params.medium }}"
+      data-size="{{ .Params.size }}"
+      data-availability="{{ .Params.availability }}"
+      data-price="{{ .Params.price }}"
+      data-image="{{ .Params.image }}"
       target="_blank" 
       rel="noopener noreferrer"
     >
