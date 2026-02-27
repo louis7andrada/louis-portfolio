@@ -1,10 +1,11 @@
 // -----------------------------
-// MOBILE MENU TOGGLE
+// MOBILE MENU TOGGLE (FULLSCREEN)
 // -----------------------------
 const btn = document.getElementById("mobileMenuBtn");
 const menu = document.getElementById("mobileMenu");
 
 btn?.addEventListener("click", () => {
+  menu?.classList.toggle("open");
   menu?.classList.toggle("hidden");
 });
 
@@ -395,23 +396,33 @@ function initArchivePage() {
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
 // -----------------------------
-// DARK MODE TOGGLE
+// DARK MODE TOGGLE (SVG ICON VERSION)
 // -----------------------------
-const darkToggle = document.getElementById("darkModeToggle");
+const toggle = document.getElementById("darkModeToggle");
+const sunIcon = document.getElementById("sunIcon");
+const moonIcon = document.getElementById("moonIcon");
 
-if (darkToggle) {
-  darkToggle.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    localStorage.setItem(
-      "theme",
-      document.documentElement.classList.contains("dark") ? "dark" : "light"
-    );
-  });
-
-  if (localStorage.getItem("theme") === "dark") {
-    document.documentElement.classList.add("dark");
-  }
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+  document.documentElement.classList.add("dark");
+  sunIcon.classList.remove("hidden");
+  moonIcon.classList.add("hidden");
 }
+
+toggle.addEventListener("click", () => {
+  const isDark = document.documentElement.classList.toggle("dark");
+
+  if (isDark) {
+    sunIcon.classList.remove("hidden");
+    moonIcon.classList.add("hidden");
+    localStorage.setItem("theme", "dark");
+  } else {
+    sunIcon.classList.add("hidden");
+    moonIcon.classList.remove("hidden");
+    localStorage.setItem("theme", "light");
+  }
+});
+
 
 // -----------------------------
 // HOME PAGE VERTICAL IMAGE FIX

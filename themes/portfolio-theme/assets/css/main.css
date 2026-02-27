@@ -84,3 +84,32 @@
   display: block;
   margin: 0 auto;
 }
+
+html.dark {
+  color-scheme: dark;
+}
+
+
+/* ----------------------------------------
+   FULLSCREEN MOBILE MENU
+----------------------------------------- */
+
+#mobileMenu {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#mobileMenu.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+html.dark #mobileMenu {
+  background-color: black;
+  color: white;
+}
+
+/* Smooth fade for menu */
+#mobileMenu a {
+  transition: opacity 0.3s ease;
+}

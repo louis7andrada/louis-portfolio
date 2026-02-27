@@ -21,7 +21,7 @@
           {{ end }}
         {{ end }}
 
-        {{ range sort (uniq $years) }}
+        {{ range sort (uniq $years) "value" "desc" }}
           <option value="{{ . }}">{{ . }}</option>
         {{ end }}
       </select>
@@ -44,7 +44,19 @@
   <!-- GALLERY GRID -->
   <div id="archiveGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
 
-    {{ range sort (where .Site.RegularPages "Section" "archive") "Params.year" "desc" }}
+    {{/* Collect all archive items */}}
+    {{ $items := where .Site.RegularPages "Section" "archive" }}
+
+    {{/* Sort by year DESC */}}
+    {{ $items = sort $items "Params.year" "desc" }}
+
+    {{/* Category priority: studios → photos → galleries */}}
+    {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
+
+    {{/* Apply category sorting */}}
+    {{ $items = sort $items (lambda "item" (index $priority (string .Params.category))) }}
+
+    {{ range $items }}
 
     <a 
       href="{{ .RelPermalink }}" 
