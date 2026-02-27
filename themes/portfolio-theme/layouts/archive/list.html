@@ -1,77 +1,68 @@
 {{ define "main" }}
 
-<section class="max-w-6xl mx-auto px-4 py-16">
+<section class="max-w-7xl mx-auto px-4 py-16">
 
   <h1 class="text-3xl font-semibold mb-12 text-center">Archive</h1>
 
-  <!-- YEAR FILTER -->
-  <div class="flex justify-center mb-12">
-    <select 
-      id="archiveYearFilter" 
-      class="border border-gray-300 rounded p-2 w-48"
+  <!-- FILTERS -->
+  <div class="flex flex-col md:flex-row justify-center gap-6 mb-10">
+
+    <!-- Year Filter -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Filter by Year</label>
+
+      <select id="filterYear" class="border border-gray-300 rounded p-2 w-48">
+        <option value="all">All Years</option>
+
+        {{ $years := slice }}
+        {{ range where .Site.RegularPages "Section" "archive" }}
+          {{ if .Params.year }}
+            {{ $years = $years | append .Params.year }}
+          {{ end }}
+        {{ end }}
+
+        {{ range sort (uniq $years) }}
+          <option value="{{ . }}">{{ . }}</option>
+        {{ end }}
+      </select>
+    </div>
+
+    <!-- Category Filter -->
+    <div>
+      <label class="block text-sm font-medium mb-1">Filter by Category</label>
+
+      <select id="filterCategory" class="border border-gray-300 rounded p-2 w-48">
+        <option value="all">All Categories</option>
+        <option value="studios">Studios</option>
+        <option value="photos">Photos</option>
+        <option value="galleries">Galleries</option>
+      </select>
+    </div>
+
+  </div>
+
+  <!-- GALLERY GRID -->
+  <div id="archiveGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+
+    {{ range sort (where .Site.RegularPages "Section" "archive") "Params.year" "desc" }}
+
+    <a 
+      href="{{ .RelPermalink }}" 
+      class="archive-item cursor-pointer group block"
+      data-year="{{ .Params.year }}"
+      data-category="{{ .Section }}"
     >
-      <option value="all">All Years</option>
-    </select>
-  </div>
-
-  <!-- ========================= -->
-  <!-- STUDIOS -->
-  <!-- ========================= -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Studios</h2>
-
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {{ $files := readDir "static/images/archive/studios" }}
-      {{ range $files }}
-      <div class="archive-item aspect-square overflow-hidden rounded shadow">
+      <div class="w-full overflow-hidden rounded shadow">
         <img 
-          src="/images/archive/studios/{{ .Name }}" 
-          alt="{{ .Name }}" 
-          class="w-full h-full object-cover" 
+          src="{{ .Params.image }}" 
+          alt="{{ .Title }}" 
+          class="w-full h-auto object-cover group-hover:opacity-80 transition"
         />
       </div>
-      {{ end }}
-    </div>
-  </div>
+    </a>
 
-  <!-- ========================= -->
-  <!-- PHOTOS -->
-  <!-- ========================= -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Photos</h2>
+    {{ end }}
 
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {{ $files := readDir "static/images/archive/photos" }}
-      {{ range $files }}
-      <div class="archive-item aspect-square overflow-hidden rounded shadow">
-        <img 
-          src="/images/archive/photos/{{ .Name }}" 
-          alt="{{ .Name }}" 
-          class="w-full h-full object-cover" 
-        />
-      </div>
-      {{ end }}
-    </div>
-  </div>
-
-  <!-- ========================= -->
-  <!-- GALLERIES -->
-  <!-- ========================= -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Galleries</h2>
-
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-      {{ $files := readDir "static/images/archive/galleries" }}
-      {{ range $files }}
-      <div class="archive-item aspect-square overflow-hidden rounded shadow">
-        <img 
-          src="/images/archive/galleries/{{ .Name }}" 
-          alt="{{ .Name }}" 
-          class="w-full h-full object-cover" 
-        />
-      </div>
-      {{ end }}
-    </div>
   </div>
 
 </section>
