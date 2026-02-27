@@ -1,8 +1,8 @@
 ---
 id: "photo9"
 category: "photos"
-title: "Third studio: 'Untitled, 2026' by the wall"
+title: "Louis tagging a print of a painting of his in abandoned building"
 year: 2024
 image: "/images/archive/photos/photo9.jpeg"
-comment: "Louis second studio was at an artist studio company that rents small spaces, however louis only stayed there for about a month. after that Louis moved to a new apartment much bigger, where he was able to set his 3rd studio in his living room. In this picture you can see 'Untitled, 2026' finalized painting in the easel at the 3rd studio."
+comment: "In this picture you can see Louis tagging a print of a painting of his in the street in abandoned building wall"
 ---
