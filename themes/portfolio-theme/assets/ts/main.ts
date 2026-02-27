@@ -1,13 +1,12 @@
-// -----------------------------
-// MOBILE MENU TOGGLE (FULLSCREEN)
-// -----------------------------
+// MOBILE MENU TOGGLE
 const btn = document.getElementById("mobileMenuBtn");
 const menu = document.getElementById("mobileMenu");
 
 btn?.addEventListener("click", () => {
-  menu?.classList.toggle("open");
-  menu?.classList.toggle("hidden");
+  menu.classList.toggle("open");
+  menu.classList.toggle("hidden");
 });
+
 
 // -----------------------------
 // NEW FEATURED ARTWORK SLIDESHOW (HOME PAGE)
@@ -395,9 +394,7 @@ function initArchivePage() {
 
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
-// -----------------------------
-// DARK MODE TOGGLE (SVG ICON VERSION)
-// -----------------------------
+// DARK MODE TOGGLE
 const toggle = document.getElementById("darkModeToggle");
 const sunIcon = document.getElementById("sunIcon");
 const moonIcon = document.getElementById("moonIcon");
@@ -422,6 +419,7 @@ toggle.addEventListener("click", () => {
     localStorage.setItem("theme", "light");
   }
 });
+
 
 
 // -----------------------------
