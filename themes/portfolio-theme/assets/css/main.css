@@ -115,3 +115,72 @@ body {
   margin: 0;
   max-width: none;
 }
+
+
+/* ----------------------------------------
+   MODERN DARK MODE PALETTE
+----------------------------------------- */
+
+html.dark body {
+  background-color: #111;
+  color: #e5e5e5;
+}
+
+/* Header */
+html.dark header {
+  background-color: #1a1a1a;
+  border-color: #333;
+}
+
+/* Links */
+html.dark a {
+  color: #d1d1d1;
+}
+
+html.dark a:hover {
+  color: white;
+}
+
+/* Borders */
+html.dark .border-gray-300 {
+  border-color: #444 !important;
+}
+
+/* Cards / boxes / image containers */
+html.dark .shadow,
+html.dark .shadow-lg {
+  --tw-shadow-color: rgba(0,0,0,0.6);
+}
+
+html.dark .bg-gray-200 {
+  background-color: #333 !important;
+}
+
+/* Mobile menu */
+html.dark #mobileMenu {
+  background-color: #111;
+  color: #e5e5e5;
+}
+
+/* Filters */
+html.dark select,
+html.dark option {
+  background-color: #222;
+  color: #e5e5e5;
+  border-color: #444;
+}
+
+/* Artwork modal */
+html.dark #artworkModal {
+  background-color: rgba(0,0,0,0.85);
+}
+
+html.dark #artworkModal .modal-content {
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+}
+
+/* Archive items hover */
+html.dark .group:hover .group-hover\:opacity-80 {
+  opacity: 0.6;
+}

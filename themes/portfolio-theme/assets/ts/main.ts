@@ -395,18 +395,24 @@ function initArchivePage() {
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
 
-/// -----------------------------
-// DARK MODE TOGGLE
+// -----------------------------
+// DARK MODE TOGGLE (FINAL)
 // -----------------------------
 const toggle = document.getElementById("darkModeToggle");
 const sunIcon = document.getElementById("sunIcon");
 const moonIcon = document.getElementById("moonIcon");
 
-// Load saved theme
-if (localStorage.getItem("theme") === "dark") {
+// Apply saved theme immediately
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "dark") {
   document.documentElement.classList.add("dark");
   sunIcon?.classList.remove("hidden");
   moonIcon?.classList.add("hidden");
+} else {
+  document.documentElement.classList.remove("dark");
+  sunIcon?.classList.add("hidden");
+  moonIcon?.classList.remove("hidden");
 }
 
 toggle?.addEventListener("click", () => {
@@ -422,6 +428,7 @@ toggle?.addEventListener("click", () => {
     localStorage.setItem("theme", "light");
   }
 });
+
 
 
 // -----------------------------
