@@ -1,5 +1,6 @@
 ---
 id: "photo10"
+slug: "photo10"
 category: "photos"
 title: "Louis's hands wearing gloves after a graffiti session"
 year: 2024

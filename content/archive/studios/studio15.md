@@ -1,5 +1,6 @@
 ---
 id: "studio15"
+slug: "studio15"
 category: "studios"
 title: "Third studio: completed 'Self-portrait' painting"
 year: 2025

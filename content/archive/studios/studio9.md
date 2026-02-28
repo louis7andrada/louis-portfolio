@@ -1,5 +1,6 @@
 ---
 id: "studio9"
+slug: "studio9"
 category: "studios"
 title: "Third studio: 'Untitled, 2026' by the wall"
 year: 2026

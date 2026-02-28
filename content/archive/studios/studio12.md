@@ -1,5 +1,6 @@
 ---
 id: "studio12"
+slug: "studio12"
 category: "studios"
 title: "Third studio: 'Subjects N.3 & 4' standing against the wall"
 year: 2026

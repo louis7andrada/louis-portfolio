@@ -1,5 +1,6 @@
 ---
 id: "photo11"
+slug: "photo11"
 category: "photos"
 title: "Louis's stensil graffiti outside"
 year: 2024

@@ -1,5 +1,6 @@
 ---
 id: "studio2"
+slug: "studio2"
 category: "studios"
 title: "First studio: painting and drinking"
 year: 2024

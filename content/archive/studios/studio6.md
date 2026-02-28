@@ -1,5 +1,6 @@
 ---
 id: "studio6"
+slug: "studio6"
 category: "studios"
 title: "First studio: heart-flower stensil grafity test materials"
 year: 2024

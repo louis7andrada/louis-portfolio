@@ -1,5 +1,6 @@
 ---
 id: "studio1"
+slug: "studio1"
 category: "studios"
 title: "First studio: completed 'Untitled (Ending)' painting"
 year: 2024

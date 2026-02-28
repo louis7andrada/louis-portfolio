@@ -1,5 +1,6 @@
 ---
 id: "studio7"
+slug: "studio7"
 category: "studios"
 title: "Third studio: new canvas"
 year: 2026

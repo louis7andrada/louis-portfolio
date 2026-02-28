@@ -1,5 +1,6 @@
 ---
 id: "studio10"
+slug: "studio10"
 category: "studios"
 title: "Third studio: painting in progress"
 year: 2026

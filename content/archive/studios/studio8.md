@@ -1,5 +1,6 @@
 ---
 id: "studio8"
+slug: "studio8"
 category: "studios"
 title: "Third studio: Louis working on new canvas"
 year: 2026

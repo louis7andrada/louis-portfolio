@@ -1,5 +1,6 @@
 ---
 id: "photo15"
+slug: "photo15"
 category: "photos"
 title: "Louis Painting in his third studio"
 year: 2026

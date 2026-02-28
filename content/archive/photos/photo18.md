@@ -1,5 +1,6 @@
 ---
 id: "photo18"
+slug: "photo18"
 category: "photos"
 title: "Louis sketching in his 'Black Book' at Rooms Cafe on Baldwin Street, Toronto."
 year: 2026

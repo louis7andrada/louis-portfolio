@@ -1,5 +1,6 @@
 ---
 id: "photo7"
+slug: "photo7"
 category: "photos"
 title: "Louis painting on the street during the Yorkville Murals (YVM) Festival 2025"
 year: 2024

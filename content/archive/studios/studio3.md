@@ -1,5 +1,6 @@
 ---
 id: "studio3"
+slug: "studio3"
 category: "studios"
 title: "First studio: painting process"
 year: 2024

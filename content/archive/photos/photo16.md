@@ -1,5 +1,6 @@
 ---
 id: "photo16"
+slug: "photo16"
 category: "photos"
 title: "Louis standing in front of 'Untitled (Death)' against the wall of his third studio."
 year: 2026

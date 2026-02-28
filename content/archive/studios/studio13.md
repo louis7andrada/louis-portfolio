@@ -1,5 +1,6 @@
 ---
 id: "studio13"
+slug: "studio13"
 category: "studios"
 title: "Third studio: Louis in front of 'Untitled (Death)' standing against the wall"
 year: 2025

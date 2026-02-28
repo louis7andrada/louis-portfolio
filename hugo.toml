@@ -13,8 +13,8 @@ enableRobotsTXT = true
   lastmod = ["lastmod", ":fileModTime", ":default"]
 
 [permalinks]
-  artworks = "/artworks/:id/"
-  archive = "/archive/:id/"
+artworks = "/artworks/:filename/"
+archive = "archive/:filename/"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]

@@ -1,5 +1,6 @@
 ---
 id: "gallery1"
+slug: "gallery1"
 category: "galleries"
 title: "First Gallery: The Chess Gallery"
 year: 2024

@@ -1,5 +1,6 @@
 ---
 id: "studio4"
+slug: "studio4"
 category: "studios"
 title: "First studio: finished painting on wall"
 year: 2024

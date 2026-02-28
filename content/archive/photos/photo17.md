@@ -1,5 +1,6 @@
 ---
 id: "photo17"
+slug: "photo17"
 category: "photos"
 title: "Louis holding 'Untitled, 2026' in his apartment's living room"
 year: 2026

@@ -1,5 +1,6 @@
 ---
 id: "studio11"
+slug: "studio11"
 category: "studios"
 title: "Third studio: Untitled (Death)' stanting against the wall"
 year: 2025

@@ -1,5 +1,6 @@
 ---
 id: "studio14"
+slug: "studio14"
 category: "studios"
 title: "Third studio: 'Untitled (Death)' by the wall"
 year: 2025
