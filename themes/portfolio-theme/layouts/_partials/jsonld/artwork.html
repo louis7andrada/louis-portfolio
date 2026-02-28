@@ -1,0 +1,23 @@
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VisualArtwork",
+  "name": "{{ .Title }}",
+  "creator": {
+    "@type": "Person",
+    "name": "Louis Andrada"
+  },
+  "image": "{{ .Params.image }}",
+  "artMedium": "{{ .Params.medium }}",
+  "artform": "Painting",
+  "width": "{{ .Params.size }}",
+  "url": "{{ .Permalink }}",
+  "dateCreated": "{{ .Params.year }}",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ .Params.price }}",
+    "priceCurrency": "USD",
+    "availability": "{{ if eq .Params.availability "Available" }}InStock{{ else }}OutOfStock{{ end }}"
+  }
+}
+</script>

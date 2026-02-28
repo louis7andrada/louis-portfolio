@@ -1,5 +1,57 @@
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>
+  {{ if .IsHome }}
+    {{ site.Title }}
+  {{ else }}
+    {{ .Title }} | {{ site.Title }}
+  {{ end }}
+</title>
+
+<!-- Meta Description -->
+<meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+
+<!-- Canonical URL -->
+<link rel="canonical" href="{{ .Permalink }}">
+
+<!-- Open Graph -->
+<meta property="og:type" content="{{ if .IsHome }}website{{ else }}article{{ end }}">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ site.Title }}">
+
+<!-- OG Image -->
+{{ $img := "" }}
+{{ if .Params.image }}
+  {{ $img = .Params.image }}
+{{ else if .Params.images }}
+  {{ $img = index .Params.images 0 }}
+{{ else }}
+  {{ $img = "/images/og-default.jpg" }}
+{{ end }}
+<meta property="og:image" content="{{ $img }}">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}{{ .Summary | plainify | truncate 160 }}{{ end }}">
+<meta name="twitter:image" content="{{ $img }}">
+
+<!-- JSON-LD: Site Identity -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ site.Title }}",
+  "url": "{{ site.BaseURL }}",
+  "publisher": {
+    "@type": "Person",
+    "name": "Louis Andrada"
+  }
+}
+</script>
+
 {{ partialCached "head/css.html" . }}
 {{ partialCached "head/js.html" . }}

@@ -1,5 +1,7 @@
 {{ define "main" }}
 
+{{ partial "jsonld/artwork.html" . }}
+
 <section class="px-10 py-16 w-full">
 
   <!-- Title -->
@@ -65,7 +67,7 @@
                 transition"
         >
           Purchase Artwork
-      </a>
+        </a>
       {{ end }}
 
     </div>

@@ -1,28 +1,24 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-US'
-title = 'My New Hugo Project'
+baseURL = "https://louisandrada.com/"
+languageCode = "en-us"
+title = "Louis Andrada"
+theme = "portfolio-theme"
+enableRobotsTXT = true
 
-[menus]
-  [[menus.main]]
-    name = 'Home'
-    pageRef = '/'
-    weight = 10
+# Sitemap (Google uses this)
+[sitemap]
+  changefreq = "monthly"
+  priority = 0.5
+  filename = "sitemap.xml"
 
-  [[menus.main]]
-    name = 'Posts'
-    pageRef = '/posts'
-    weight = 20
+# Enable lastmod for SEO freshness
+[frontmatter]
+  lastmod = ["lastmod", ":fileModTime", ":default"]
 
-  [[menus.main]]
-    name = 'Tags'
-    pageRef = '/tags'
-    weight = 30
+# Canonical URL handling
+[permalinks]
+  artworks = "/artworks/:slug/"
+  archive = "/archive/:slug/"
 
-[module]
-  [module.hugoVersion]
-    extended = false
-    min = '0.146.0'
-
-[params]
-  recaptcha_site_key = "6LekcXksAAAAABR_ZmoI9DaQlHF1mPwHJutB410y"
-
+# Enable RSS (optional but good for indexing)
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
