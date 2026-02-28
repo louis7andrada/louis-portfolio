@@ -1041,6 +1041,16 @@ video {
   border-color: rgb(209 213 219 / var(--tw-border-opacity, 1));
 }
 
+.border-gray-400 {
+  --tw-border-opacity: 1;
+  border-color: rgb(156 163 175 / var(--tw-border-opacity, 1));
+}
+
+.bg-\[\#2c2c2c\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(44 44 44 / var(--tw-bg-opacity, 1));
+}
+
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
@@ -1579,7 +1589,13 @@ html.dark textarea,
 html.dark select,
 html.dark label {
   color: #e6e6e6 !important;
-  background-color: #1f1f1f !important;
+  background-color: #252525 !important;
+  border-color: #3a3a3a !important;
+}
+
+label {
+  color: #252525 !important;
+  background-color: #e6e6e6 !important;
   border-color: #3a3a3a !important;
 }
 
@@ -1617,6 +1633,15 @@ html.dark #openArtworkSelector:hover {
 }
 
 /* About page links */
+
+.about-page a {
+  color: #228cfd !important;
+  text-decoration: underline;
+}
+
+.about-page a:hover {
+  color: #4da3ff !important;
+}
 
 html.dark .about-page a {
   color: #4da3ff !important;
@@ -1761,24 +1786,29 @@ html.dark .archive-filters label {
 }
 
 .slideshow-arrow:hover {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(138, 138, 138, 0.95);
   transform: translateY(-50%) scale(1.05);
 }
 
 /* Dark mode */
 
 .dark .slideshow-arrow {
-  background: rgba(40, 40, 40, 0.85);
+  background: rgba(61, 61, 61, 0.85);
   color: #ffffff;
 }
 
 .dark .slideshow-arrow:hover {
-  background: rgba(60, 60, 60, 0.95);
+  background: rgba(44, 44, 44, 0.95);
 }
 
-.hover\:bg-\[\#d9d9d9\]:hover {
+button[type="submit"]:hover,
+#openArtworkSelector:hover {
+  background-color: #494949 !important;
+}
+
+.hover\:bg-\[\#494949\]:hover {
   --tw-bg-opacity: 1;
-  background-color: rgb(217 217 217 / var(--tw-bg-opacity, 1));
+  background-color: rgb(73 73 73 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-gray-800:hover {
@@ -1808,9 +1838,9 @@ html.dark .archive-filters label {
   background-color: rgb(17 17 17 / var(--tw-bg-opacity, 1));
 }
 
-.dark\:bg-\[\#1f1f1f\]:is(.dark *) {
+.dark\:bg-\[\#252525\]:is(.dark *) {
   --tw-bg-opacity: 1;
-  background-color: rgb(31 31 31 / var(--tw-bg-opacity, 1));
+  background-color: rgb(37 37 37 / var(--tw-bg-opacity, 1));
 }
 
 .dark\:bg-\[\#3a3a3a\]:is(.dark *) {
@@ -1888,3 +1918,4 @@ html.dark .archive-filters label {
     justify-content: center;
   }
 }
+
