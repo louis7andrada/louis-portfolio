@@ -29,7 +29,7 @@
 {{ else if .Params.images }}
   {{ $img = (index .Params.images 0) | absURL }}
 {{ else }}
-  {{ $img = "images/og-default.jpg" | absURL }}
+  {{ $img = "images/og-default.jpeg" | absURL }}
 {{ end }}
 <meta property="og:image" content="{{ $img }}">
 <meta property="og:image:secure_url" content="{{ $img }}">
