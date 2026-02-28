@@ -1,8 +1,8 @@
 ---
 id: "photo10"
 category: "photos"
-title: "Louis hands with gloves after graffiting"
+title: "Louis’s hands wearing gloves after a graffiti session"
 year: 2024
 image: "/images/archive/photos/photo10.jpeg"
-comment: "In this picture you can see Louis hands with gloves after a night out graffiting"
+comment: "In this picture, Louis’s hands are shown with gloves after a night of graffiti."
 ---

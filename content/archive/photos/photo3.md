@@ -1,8 +1,8 @@
 ---
 id: "photo3"
 category: "photos"
-title: "Louis Painting in the street Yorkville Murals - YVM festival 2025: Smoking while cops behind"
+title: "Louis painting on the street during the Yorkville Murals (YVM) Festival 2025: Smoking as police observe him"
 year: 2024
 image: "/images/archive/photos/photo3.jpeg"
-comment: "In this picture you can see Louis Painting in the street in front of Yorkville Murals - YVM festival 2025. Louis is smoking while cops watch him paint"
+comment: "In this picture, Louis is painting on the street during the Yorkville Murals (YVM) Festival 2025, while smoking as police observe him."
 ---

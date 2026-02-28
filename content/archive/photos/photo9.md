@@ -1,8 +1,8 @@
 ---
 id: "photo9"
 category: "photos"
-title: "Louis tagging a print of a painting of his in abandoned building"
+title: "Louis painting on the street during the Yorkville Murals (YVM) Festival 2025"
 year: 2024
 image: "/images/archive/photos/photo9.jpeg"
-comment: "In this picture you can see Louis tagging a print of a painting of his in the street in abandoned building wall"
+comment: "In this picture, Louis is painting on the street during the Yorkville Murals (YVM) Festival 2025."
 ---

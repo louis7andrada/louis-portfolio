@@ -1,8 +1,8 @@
 ---
 id: "studio15"
 category: "studios"
-title: "Third studio: 'Untitled (Death)' by the wall"
+title: "Third studio: completed 'Self-portrait' painting"
 year: 2025
 image: "/images/archive/studios/studio15.jpeg"
-comment: "Louis second studio was at an artist studio company that rents small spaces, however louis only stayed there for about a month. after that Louis moved to a new apartment much bigger, where he was able to set his 3rd studio in his living room. In this picture you can see 'Self-portrait, 2026' finalized painting in the easel at the 3rd studio."
+comment: "ouis’s second studio was in a shared artist space that rents small units, but he stayed there for only about a month. He then moved to a larger apartment, where he set up his third studio in the living room. In this picture, the completed painting 'Self-portrait, 2026' is displayed on the easel in his third studio."
 ---
