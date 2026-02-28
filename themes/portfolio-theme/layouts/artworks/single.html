@@ -58,7 +58,7 @@
 
       {{ if eq .Params.availability "Available" }}
         <a 
-          href="/buy/?add={{ .File.BaseFileName }}" 
+          href="/buy/?add={{ .Params.id }}" 
           class="inline-block mt-6 px-6 py-3 
                 bg-[#2c2c2c] text-white 
                 dark:bg-[#3a3a3a] dark:text-white

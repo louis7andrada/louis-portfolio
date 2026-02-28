@@ -16,8 +16,8 @@ enableRobotsTXT = true
 
 # Canonical URL handling
 [permalinks]
-  artworks = "/artworks/:slug/"
-  archive = "/archive/:slug/"
+  artworks = "/artworks/:id/"
+  artworks = "/artworks/:id/"
 
 # Enable RSS (optional but good for indexing)
 [outputs]
