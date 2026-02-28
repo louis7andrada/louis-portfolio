@@ -4,21 +4,17 @@ title = "Louis Andrada"
 theme = "portfolio-theme"
 enableRobotsTXT = true
 
-# Sitemap (Google uses this)
 [sitemap]
   changefreq = "monthly"
   priority = 0.5
   filename = "sitemap.xml"
 
-# Enable lastmod for SEO freshness
 [frontmatter]
   lastmod = ["lastmod", ":fileModTime", ":default"]
 
-# Canonical URL handling
 [permalinks]
-artworks = "/artworks/:id/"
-archive  = "/archive/:id/"
+  artworks = "/artworks/:id/"
+  archive = "/archive/:id/"
 
-# Enable RSS (optional but good for indexing)
 [outputs]
   home = ["HTML", "RSS", "JSON"]
