@@ -457,5 +457,10 @@ html.dark #nextBtnDesktop:active {
   opacity: 0.99 !important; /* ← mobile arrow opacity */
 }
 
+.grecaptcha-badge { 
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 
 
