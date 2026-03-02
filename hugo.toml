@@ -18,3 +18,7 @@ archive = "archive/:filename/"
 
 [outputs]
   home = ["HTML", "RSS", "JSON"]
+
+[params]
+recaptcha_site_key = "6LdOf3wsAAAAAJ7JhJeAshppid4Q2VCW7S6o-yYy"
+
