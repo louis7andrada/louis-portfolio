@@ -1,11 +1,11 @@
 {{ define "main" }}
 
-<section class="max-w-7xl mx-auto px-4 py-16">
+<section class="max-w-[1800px] mx-auto px-4 py-16">
 
   <h1 class="text-3xl font-semibold mb-12 text-center">Archive</h1>
 
   <!-- FILTERS -->
-  <div class="archive-filters flex flex-col md:flex-row justify-center gap-6 mb-10">
+  <div class="archive-filters flex flex-col md:flex-row items-center justify-center text-center gap-6 mb-10">
 
     <!-- Year Filter -->
     <div>
@@ -41,30 +41,67 @@
 
   </div>
 
-  <!-- GALLERY GRID -->
-  <div id="archiveGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  <!-- =============================== -->
+  <!-- SORTED ARCHIVE LIST (MATCHES SINGLE PAGE) -->
+  <!-- =============================== -->
 
-    {{ $items := where .Site.RegularPages "Section" "archive" }}
+  {{/* Load all archive pages */}}
+  {{ $raw := where .Site.RegularPages "Section" "archive" }}
 
-    {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
+  {{/* Category priority map */}}
+  {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
 
-    {{ $items = sort $items "Params.category" }}
-    {{ $items = sort $items "Params.category" "asc" }}
+  {{/* Build clean list with computed sort keys */}}
+  {{ $clean := slice }}
 
-    {{ $items = sort $items "Params.year" "desc" }}
+  {{ range $raw }}
 
-    {{ range $items }}
+    {{ $cat := .Params.category }}
+    {{ $prio := index $priority $cat }}
+
+    {{/* Extract trailing number from filename (studio3 → 3) */}}
+    {{ $num := 0 }}
+    {{ with findRE "[0-9]+$" .File.BaseFileName }}
+      {{ $num = (int (index . 0)) }}
+    {{ end }}
+
+    {{/* Attach sort metadata */}}
+    {{ $item := dict 
+        "page" . 
+        "year" .Params.year 
+        "prio" $prio 
+        "num" $num 
+    }}
+
+    {{ $clean = $clean | append $item }}
+
+  {{ end }}
+
+  {{/* SORT ORDER:
+        1. Year DESC
+        2. Category priority ASC (studios → photos → galleries)
+        3. Number DESC (studio3 → studio2 → studio1)
+  */}}
+
+  {{ $sorted := sort $clean "num" "desc" }}
+  {{ $sorted := sort $sorted "prio" "asc" }}
+  {{ $sorted := sort $sorted "year" "desc" }}
+
+  <!-- GALLERY GRID (5 COLUMNS) -->
+  <div id="archiveGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+    {{ range $sorted }}
 
     <a 
-      href="{{ .RelPermalink }}" 
+      href="{{ .page.RelPermalink }}" 
       class="archive-item cursor-pointer group block"
-      data-year="{{ .Params.year }}"
-      data-category="{{ .Params.category }}"
+      data-year="{{ .year }}"
+      data-category="{{ .page.Params.category }}"
     >
       <div class="w-full overflow-hidden rounded shadow">
         <img 
-          src="{{ .Params.image }}" 
-          alt="{{ .Title }}" 
+          src="{{ .page.Params.image }}" 
+          alt="{{ .page.Title }}" 
           class="w-full h-auto object-cover group-hover:opacity-80 transition"
         />
       </div>

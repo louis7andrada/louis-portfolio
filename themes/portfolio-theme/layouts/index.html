@@ -1,14 +1,17 @@
 {{ define "main" }}
 
-{{ $featured := first 5 (sort (where site.RegularPages "Section" "artworks") "Params.worknum" "desc") }}
+{{ $all := sort (where site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
+
+{{ $featured := where $all "Params.image" "ne" "/images/artworks/inprogress.jpeg" }}
+{{ $featured := first 10 $featured }}
 
 <section class="w-full px-4 md:px-8 py-16 relative">
-<h2 class="text-center text-3xl font-semibold mb-10">Recent Artworks</h2>
+  <h2 class="text-center text-3xl font-semibold mb-10">Recent Artworks</h2>
   <div class="w-full max-w-[1200px] mx-auto">
 
     {{ with index $featured 0 }}
-    <a id="featuredLink" href="{{ .RelPermalink }}" target="_blank" rel="noopener noreferrer">
-    <div class="featured-slideshow-container">
+    <a id="featuredLink" href="{{ .RelPermalink }}">
+      <div class="featured-slideshow-container">
         <img 
           id="featuredArtwork" 
           src="{{ .Params.image }}" 
@@ -17,25 +20,27 @@
         />
       </div>
       <div id="featuredInfo" class="text-center mt-6">
-      <h3 class="text-2xl font-semibold" id="featuredTitle">{{ .Title }}</h3>
-      <p class="text-gray-600" id="featuredDetails">
-        {{ .Params.year }} • {{ .Params.medium }} • {{ .Params.size }}
-      </p>
-    </div>
+        <h3 class="text-2xl font-semibold" id="featuredTitle">{{ .Title }}</h3>
+        <p class="text-gray-600" id="featuredDetails">
+          {{ .Params.year }} • {{ .Params.medium }} • {{ .Params.size }}
+        </p>
+      </div>
       <br>
     </a>
     {{ end }}
+
   </div>
 
-  <!-- LEFT ARROW -->
-        <button id="prevBtn" class="slideshow-arrow left">
-          ‹
-        </button>
+  <!-- PREV/NEXT ARROWS -->
+  <a id="prevBtnDesktop"
+     class="fixed left-10 top-1/2 -translate-y-1/2">
+    &lt Previous
+  </a>
 
-        <!-- RIGHT ARROW -->
-        <button id="nextBtn" class="slideshow-arrow right">
-          ›
-        </button>
+  <a id="nextBtnDesktop"
+     class="fixed right-10 top-1/2 -translate-y-1/2">
+    Next &gt
+  </a>
 
 </section>
 

@@ -1,0 +1,138 @@
+{{ define "main" }}
+
+<section class="max-w-7xl mx-auto px-6 py-16">
+
+  <!-- PAGE TITLE -->
+  <h1 class="text-4xl font-semibold mb-16 text-center">
+    {{ .Title }}
+  </h1>
+
+  <!-- MAIN PROPORTIONAL LAYOUT -->
+  <div class="grid grid-cols-1 lg:grid-cols-10 gap-10">
+
+    <!-- ========================= -->
+    <!-- TREE COLUMN -->
+    <!-- ========================= -->
+    <div class="lg:col-span-3">
+
+      <!-- Title moves WITH the column -->
+      <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Tree</h2>
+
+      <div class="grid grid-cols-3 gap-4">
+        {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "tree") "Params.collection_order" "asc" }}
+          {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow" />
+            </a>
+          {{ else }}
+            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow opacity-50" />
+          {{ end }}
+        {{ end }}
+      </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- SNAKE COLUMN -->
+    <!-- ========================= -->
+    <div class="lg:col-span-4">
+
+      <!-- Title moves WITH the column -->
+      <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Snake</h2>
+
+      <div class="grid grid-cols-4 gap-4">
+        {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "snake") "Params.collection_order" "asc" }}
+          {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow" />
+            </a>
+          {{ else }}
+            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow opacity-50" />
+          {{ end }}
+        {{ end }}
+      </div>
+
+    </div>
+
+    <!-- ========================= -->
+    <!-- FRUIT COLUMN -->
+    <!-- ========================= -->
+    <div class="lg:col-span-3">
+
+      <!-- Title moves WITH the column -->
+      <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Fruit</h2>
+
+      <div class="grid grid-cols-3 gap-4">
+        {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
+          {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow" />
+            </a>
+          {{ else }}
+            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow opacity-50" />
+          {{ end }}
+        {{ end }}
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- FULL COLLECTION 3‑COLUMN GRID -->
+  <!-- ========================= -->
+  <div class="mt-24 grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+    <!-- TREE FULL IMAGE -->
+    <div class="flex flex-col items-center">
+      <h3 class="text-2xl font-semibold mb-6 text-center">The Tree — Complete</h3>
+
+      {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}
+      {{ with index $treeFull 0 }}
+        {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+          </a>
+        {{ else }}
+          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+        {{ end }}
+      {{ end }}
+    </div>
+
+    <!-- SNAKE FULL IMAGE -->
+    <div class="flex flex-col items-center">
+      <h3 class="text-2xl font-semibold mb-6 text-center">The Snake — Complete</h3>
+
+      {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}
+      {{ with index $snakeFull 0 }}
+        {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+          </a>
+        {{ else }}
+          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+        {{ end }}
+      {{ end }}
+    </div>
+
+    <!-- FRUIT FULL IMAGE -->
+    <div class="flex flex-col items-center">
+      <h3 class="text-2xl font-semibold mb-6 text-center">The Fruit — Complete</h3>
+
+      {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}
+      {{ with index $fruitFull 0 }}
+        {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+          </a>
+        {{ else }}
+          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+        {{ end }}
+      {{ end }}
+    </div>
+
+  </div>
+
+</section>
+
+{{ end }}

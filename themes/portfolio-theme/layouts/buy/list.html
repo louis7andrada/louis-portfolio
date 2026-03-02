@@ -276,7 +276,38 @@
 
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto pr-2">
 
-      {{ range sort (where .Site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
+      {{/* START WITH ALL ARTWORKS */}}
+      {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+
+      {{/* FILTERED LIST */}}
+      {{ $clean := slice }}
+
+      {{ range $raw }}
+
+        {{/* Skip collection page */}}
+        {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}
+          {{ continue }}
+        {{ end }}
+
+        {{/* Skip in-progress */}}
+        {{ if eq .Params.image "/images/artworks/inprogress.jpeg" }}
+          {{ continue }}
+        {{ end }}
+
+        {{/* Skip .number IDs */}}
+        {{ if findRE "\\.[0-9]+$" .Params.id }}
+          {{ continue }}
+        {{ end }}
+
+        {{ $clean = $clean | append . }}
+
+      {{ end }}
+
+      {{/* SORT BY worknum DESC */}}
+      {{ $sorted := sort $clean "Params.worknum" "desc" }}
+
+      {{ range $sorted }}
+
       <div 
         class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
         data-id="{{ .File.BaseFileName }}"
@@ -292,6 +323,7 @@
 
         <p class="text-center text-sm mt-1">{{ .Title }}</p>
       </div>
+
       {{ end }}
 
     </div>

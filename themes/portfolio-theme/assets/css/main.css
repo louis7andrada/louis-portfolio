@@ -58,18 +58,28 @@
 /* Mobile */
 @media (max-width: 1024px) {
   .single-image-box {
+    width: 100%;
+    flex: 1;
+    display: flex;
     justify-content: center;
+    align-items: center;
+    min-height: auto; /* FIXED */
   }
 
   .single-image {
-    max-width: 100%;
-    max-height: 80vh;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
   }
 
   .single-details {
     margin-top: 40px;
   }
 }
+
 
 /* ----------------------------------------
    HOMEPAGE SLIDESHOW
@@ -193,6 +203,7 @@ html.dark label {
   background-color: #252525 !important;
   border-color: #3a3a3a !important;
 }
+
 label {
   color: #252525 !important;
   background-color: #e6e6e6 !important;
@@ -216,7 +227,6 @@ html.dark input[type="submit"]:hover {
   background-color: #333 !important;
 }
 
-/* Select Artwork(s) button */
 html.dark #openArtworkSelector {
   background-color: #4a4a4a !important;
   color: #e6e6e6 !important;
@@ -227,7 +237,6 @@ html.dark #openArtworkSelector:hover {
   background-color: #333 !important;
 }
 
-/* About page links */
 .about-page a {
   color: #228cfd !important;
   text-decoration: underline;
@@ -246,7 +255,6 @@ html.dark .about-page a:hover {
   color: #82c3ff !important;
 }
 
-/* Links page hyperlinks */
 html.dark .links-page a {
   color: #4da3ff !important;
   text-decoration: underline;
@@ -260,19 +268,16 @@ html.dark .links-page a:hover {
    FILTERS — KEEP GRAY BOXES, FIX LABELS
 ----------------------------------------- */
 
-/* Remove accidental label backgrounds */
 label {
   background: transparent !important;
 }
 
-/* Restore default select styling */
 select {
   background-color: #e5e5e5;
   color: #000;
   border: 1px solid #ccc;
 }
 
-/* Dark mode select boxes stay gray */
 html.dark select {
   background-color: #2a2a2a !important;
   color: #e8e8e8 !important;
@@ -284,14 +289,11 @@ html.dark option {
   color: #e8e8e8 !important;
 }
 
-/* Force filter section to inherit body background */
 html.dark .artworks-filters,
 html.dark .artworks-filters div,
 html.dark .artworks-filters label {
   background-color: transparent !important;
 }
-
-/* Fix archive filter background in dark mode */
 
 html.dark .archive-filters,
 html.dark .archive-filters div,
@@ -299,38 +301,32 @@ html.dark .archive-filters label {
   background-color: transparent !important;
 }
 
-/* =========================
+/* ----------------------------------------
    DARK MODE – ARTWORK SELECTOR MODAL
-   ========================= */
+----------------------------------------- */
 
-/* Modal inner panel */
 .dark #artworkSelectorModal > div {
   background-color: #1a1a1a;
   color: #ffffff;
 }
 
-/* Close button */
 .dark #artworkSelectorModal #closeArtworkSelector {
   color: #ffffff;
 }
 
-/* Artwork choice card */
 .dark #artworkSelectorModal .artworkChoice {
   border-color: #555555;
   background-color: #1a1a1a;
 }
 
-/* Artwork title */
 .dark #artworkSelectorModal .artworkChoice p {
   color: #ffffff;
 }
 
-/* Selected ring override */
 .dark #artworkSelectorModal .artworkChoice.ring-black {
   --tw-ring-color: #ffffff;
 }
 
-/* Confirm button */
 .dark #artworkSelectorModal #confirmArtworkSelection {
   background-color: #4a4a4a;
   color: #ffffff;
@@ -340,51 +336,126 @@ html.dark .archive-filters label {
   background-color: #222222;
 }
 
-/* =========================
-   FEATURED SLIDESHOW ARROWS
-   ========================= */
+/* ----------------------------------------
+   ARROWS SYSTEM — BASE
+----------------------------------------- */
 
-.slideshow-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #d1d1d1;
-  backdrop-filter: blur(4px);
-  border: none;
-  font-size: 32px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 20;
+#prevBtnDesktop,
+#nextBtnDesktop {
+  font-size: 16px !important;
+  transition: color 0.15s ease-out, opacity 0.15s ease-out;
+  opacity: 0.4 !important; /* ← 40% opacity */
 }
 
-.slideshow-arrow.left {
-  left: 20px;
+/* MOBILE: replace text with only arrows */
+@media (max-width: 1024px) {
+  #prevBtnDesktop,
+  #nextBtnDesktop {
+    font-size: 0 !important;
+  }
+
+  #prevBtnDesktop::before {
+    content: "<";
+    font-size: 26px;
+  }
+
+  #nextBtnDesktop::before {
+    content: ">";
+    font-size: 26px;
+  }
 }
 
-.slideshow-arrow.right {
-  right: 20px;
+/* ----------------------------------------
+   ARROWS SYSTEM — HIGHLIGHT BUTTON STYLE
+----------------------------------------- */
+
+#prevBtnDesktop,
+#nextBtnDesktop {
+  background-color: #2c2c2c !important;
+  color: white !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.slideshow-arrow:hover {
-  background: rgba(138, 138, 138, 0.95);
-  transform: translateY(-50%) scale(1.05);
+/* Hover */
+#prevBtnDesktop:hover,
+#nextBtnDesktop:hover {
+  background-color: #3a3a3a !important;
+  opacity: 0.6 !important; /* slightly stronger on hover */
 }
 
-/* Dark mode */
-.dark .slideshow-arrow {
-  background: rgba(61, 61, 61, 0.85);
-  color: #ffffff;
+/* Press */
+#prevBtnDesktop:active,
+#nextBtnDesktop:active {
+  background-color: #1f1f1f !important;
+  opacity: 0.8 !important;
 }
 
-.dark .slideshow-arrow:hover {
-  background: rgba(44, 44, 44, 0.95);
+/* DARK MODE */
+html.dark #prevBtnDesktop,
+html.dark #nextBtnDesktop {
+  background-color: #3a3a3a !important;
+  color: white !important;
 }
 
-button[type="submit"]:hover,
-#openArtworkSelector:hover {
-    background-color: #494949 !important;
+html.dark #prevBtnDesktop:hover,
+html.dark #nextBtnDesktop:hover {
+  background-color: #4a4a4a !important;
 }
+
+html.dark #prevBtnDesktop:active,
+html.dark #nextBtnDesktop:active {
+  background-color: #2a2a2a !important;
+}
+
+/* ----------------------------------------
+   MOBILE ARROW SIZE + POSITION FIX
+----------------------------------------- */
+
+@media (max-width: 1024px) {
+  #prevBtnDesktop,
+  #nextBtnDesktop {
+    padding: 0px 10px !important;
+    border-radius: 6px !important;
+  }
+
+  #prevBtnDesktop {
+    left: 6px !important;
+  }
+
+  #nextBtnDesktop {
+    right: 6px !important;
+  }
+}
+
+/* ----------------------------------------
+   DESKTOP ARROW POSITION FIX (match mobile)
+----------------------------------------- */
+
+@media (min-width: 1025px) {
+  #prevBtnDesktop {
+    left: 15px !important;
+  }
+
+  #nextBtnDesktop {
+    right: 15px !important;
+  }
+}
+
+/* ARROW GLYPH OPACITY — DESKTOP + MOBILE */
+#prevBtnDesktop,
+#nextBtnDesktop {
+  color: rgba(255, 255, 255, 0.99) !important; /* ← desktop arrow opacity */
+}
+
+#prevBtnDesktop::before,
+#nextBtnDesktop::before {
+  opacity: 0.99 !important; /* ← mobile arrow opacity */
+}
+
+
 

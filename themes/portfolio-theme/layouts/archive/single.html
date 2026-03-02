@@ -1,9 +1,25 @@
 {{ define "main" }}
 
-<section class="px-10 py-16 w-full">
+<section class="px-6 md:px-10 py-16 w-full relative">
+
+  <!-- RESPONSIVE BACK BUTTON (never overlaps title) -->
+  <a 
+  href="/archive/" 
+  class="
+    arrow-btn text-lg absolute 
+    left-4 top-8
+    sm:left-6 sm:top-8
+    md:left-10 md:top-8
+    lg:left-10 lg:top-8
+    z-40
+  "
+>
+  ← Back to Archive
+</a>
+
 
   <!-- Title -->
-  <h1 class="text-4xl font-semibold mb-16 text-center">
+  <h1 class="text-3xl font-semibold mb-16 text-center">
     {{ .Title }}
   </h1>
 
@@ -11,20 +27,24 @@
   <div class="flex flex-col lg:flex-row items-start lg:justify-center gap-16 max-w-[1400px] mx-auto">
 
     <!-- IMAGE COLUMN -->
-    <div class="shrink-0">
+    <div class="shrink-0 w-full lg:w-auto relative">
+
       {{ if .Params.image }}
         <div class="single-image-box">
-          <img 
-            src="{{ .Params.image }}" 
-            alt="{{ .Title }}" 
-            class="single-image"
-          />
+          <a href="{{ .Params.image }}" target="_blank" rel="noopener noreferrer">
+            <img 
+              src="{{ .Params.image }}" 
+              alt="{{ .Title }}" 
+              class="single-image w-full cursor-pointer"
+            />
+          </a>
         </div>
       {{ else }}
-        <div class="w-[800px] h-[500px] bg-gray-200 flex items-center justify-center text-gray-500">
+        <div class="w-full lg:w-[800px] h-[500px] bg-gray-200 flex items-center justify-center text-gray-500">
           No image yet
         </div>
       {{ end }}
+
     </div>
 
     <!-- DETAILS COLUMN -->
@@ -46,11 +66,84 @@
 
   </div>
 
-  <!-- DESCRIPTION (OPTIONAL) -->
+  <!-- DESCRIPTION -->
   {{ with .Content }}
     <div class="mt-24 max-w-[1000px] mx-auto">
       {{ . }}
     </div>
+  {{ end }}
+
+  <!-- =============================== -->
+  <!-- FILTERED + SORTED NAVIGATION LIST -->
+  <!-- =============================== -->
+
+  {{/* Load all archive pages */}}
+  {{ $raw := where .Site.RegularPages "Section" "archive" }}
+
+  {{/* Category priority map */}}
+  {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
+
+  {{/* Build clean list with computed sort keys */}}
+  {{ $clean := slice }}
+
+  {{ range $raw }}
+
+    {{ $cat := .Params.category }}
+    {{ $prio := index $priority $cat }}
+
+    {{/* Extract trailing number from category, e.g. studio3 → 3 */}}
+    {{ $num := 0 }}
+    {{ with findRE "[0-9]+$" .File.BaseFileName }}
+      {{ $num = (int (index . 0)) }}
+    {{ end }}
+
+    {{/* Attach sort metadata */}}
+    {{ $item := dict 
+        "page" . 
+        "year" .Params.year 
+        "prio" $prio 
+        "num" $num 
+    }}
+
+    {{ $clean = $clean | append $item }}
+
+  {{ end }}
+
+  {{/* SORTING ORDER:
+        1. Year DESC
+        2. Category priority ASC (studios → photos → galleries)
+        3. Number DESC (studio3 → studio2 → studio1)
+  */}}
+
+  {{ $sorted := sort $clean "num" "desc" }}
+  {{ $sorted := sort $sorted "prio" "asc" }}
+  {{ $sorted := sort $sorted "year" "desc" }}
+
+  <!-- FIND CURRENT INDEX -->
+  {{ $currentIndex := -1 }}
+  {{ range $i, $obj := $sorted }}
+    {{ if eq $obj.page.RelPermalink $.RelPermalink }}
+      {{ $currentIndex = $i }}
+    {{ end }}
+  {{ end }}
+
+  <!-- SAFE PREV/NEXT -->
+  {{ $prev := cond (gt $currentIndex 0) (index $sorted (sub $currentIndex 1)) nil }}
+  {{ $next := cond (lt $currentIndex (sub (len $sorted) 1)) (index $sorted (add $currentIndex 1)) nil }}
+
+  <!-- ARROWS -->
+  {{ with $prev }}
+    <a href="{{ .page.RelPermalink }}" id="prevBtnDesktop"
+       class="arrow-btn fixed left-10 top-1/2 -translate-y-1/2">
+       &lt Previous
+    </a>
+  {{ end }}
+
+  {{ with $next }}
+    <a href="{{ .page.RelPermalink }}" id="nextBtnDesktop"
+       class="arrow-btn fixed right-10 top-1/2 -translate-y-1/2">
+      Next &gt
+    </a>
   {{ end }}
 
 </section>

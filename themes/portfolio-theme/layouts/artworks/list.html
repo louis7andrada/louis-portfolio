@@ -1,12 +1,11 @@
 {{ define "main" }}
 
-<section class="max-w-7xl mx-auto px-4 py-16">
+<section class="max-w-[1800px] mx-auto px-4 py-16">
 
-  <!-- Page Title -->
   <h1 class="text-3xl font-semibold mb-8 text-center">Artworks</h1>
 
   <!-- FILTERS -->
-  <div class="artworks-filters flex flex-col md:flex-row justify-center gap-6 mb-10">
+  <div class="artworks-filters flex flex-col md:flex-row items-center justify-center text-center gap-6 mb-10">
 
     <!-- Year Filter -->
     <div>
@@ -15,7 +14,6 @@
       <select id="filterYear" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Years</option>
 
-        {{/* Collect years except 2022 */}}
         {{ $years := slice }}
         {{ range where .Site.RegularPages "Section" "artworks" }}
           {{ if and (.Params.year) (ne .Params.year 2022) }}
@@ -23,21 +21,20 @@
           {{ end }}
         {{ end }}
 
-        {{/* Sort years ascending */}}
         {{ range sort (uniq $years) }}
           <option value="{{ . }}">{{ . }}</option>
         {{ end }}
       </select>
     </div>
 
-    <!-- Project Filter -->
+    <!-- Collection Filter -->
     <div>
-      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Project</label>
+      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Collection</label>
 
-      <select id="filterProject" class="border border-gray-300 rounded p-2 w-48">
-        <option value="all">All Projects</option>
+      <select id="filterCollection" class="border border-gray-300 rounded p-2 w-48">
+        <option value="all">All Collections</option>
         {{ range uniq (where .Site.RegularPages "Section" "artworks") }}
-          {{ with .Params.project }}
+          {{ with .Params.collection }}
             <option value="{{ . }}">{{ . }}</option>
           {{ end }}
         {{ end }}
@@ -46,39 +43,66 @@
 
   </div>
 
-  <!-- GALLERY GRID -->
-  <div id="artworkGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+  <!-- =============================== -->
+  <!-- FILTERED + SORTED GALLERY LIST -->
+  <!-- =============================== -->
 
-    {{ range sort (where .Site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
+  {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+  {{ $clean := slice }}
 
-    <a 
-      href="{{ .RelPermalink }}" 
-      class="artwork-item cursor-pointer group block"
-      data-year="{{ .Params.year }}"
-      data-project="{{ .Params.project }}"
-      data-title="{{ .Title }}"
-      data-medium="{{ .Params.medium }}"
-      data-size="{{ .Params.size }}"
-      data-availability="{{ .Params.availability }}"
-      data-price="{{ .Params.price }}"
-      data-image="{{ .Params.image }}"
-    >
+  {{ range $raw }}
 
-      <div class="w-full overflow-hidden rounded shadow">
-        {{ if .Params.image }}
-          <img 
-            src="{{ .Params.image }}" 
-            alt="{{ .Title }}" 
-            class="w-full h-auto object-cover group-hover:opacity-80 transition"
-          />
-        {{ else }}
-          <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
-            No image yet
-          </div>
-        {{ end }}
-      </div>
+    {{ if eq .Params.image "/images/artworks/inprogress.jpeg" }}
+      {{ continue }}
+    {{ end }}
 
-    </a>
+    {{ if findRE "\\.[0-9]+$" .Params.id }}
+      {{ continue }}
+    {{ end }}
+
+    {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}
+      {{ continue }}
+    {{ end }}
+
+    {{ $clean = $clean | append . }}
+
+  {{ end }}
+
+  {{ $sorted := sort $clean "Params.worknum" "desc" }}
+
+  <!-- GALLERY GRID (5 COLUMNS, BIGGER IMAGES) -->
+  <div id="artworkGallery" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+
+    {{ range $sorted }}
+
+      <a 
+        href="{{ .RelPermalink }}" 
+        class="artwork-item cursor-pointer group block"
+        data-year="{{ .Params.year }}"
+        data-collection="{{ .Params.collection }}"
+        data-title="{{ .Title }}"
+        data-medium="{{ .Params.medium }}"
+        data-size="{{ .Params.size }}"
+        data-availability="{{ .Params.availability }}"
+        data-price="{{ .Params.price }}"
+        data-image="{{ .Params.image }}"
+      >
+
+        <div class="w-full overflow-hidden rounded shadow">
+          {{ if .Params.image }}
+            <img 
+              src="{{ .Params.image }}" 
+              alt="{{ .Title }}" 
+              class="w-full h-auto object-cover group-hover:opacity-80 transition"
+            />
+          {{ else }}
+            <div class="w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+              No image yet
+            </div>
+          {{ end }}
+        </div>
+
+      </a>
 
     {{ end }}
 

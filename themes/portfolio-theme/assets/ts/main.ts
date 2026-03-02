@@ -9,7 +9,7 @@ btn?.addEventListener("click", () => {
 
 
 // -----------------------------
-// NEW FEATURED ARTWORK SLIDESHOW (HOME PAGE)
+// FEATURED ARTWORK SLIDESHOW (HOME PAGE)
 // -----------------------------
 function initFeaturedSlideshow() {
   const artworks = (window as any).featuredArtworks;
@@ -20,8 +20,9 @@ function initFeaturedSlideshow() {
   const details = document.getElementById("featuredDetails") as HTMLElement | null;
   const link = document.getElementById("featuredLink") as HTMLAnchorElement | null;
 
-  const nextBtn = document.getElementById("nextBtn");
-  const prevBtn = document.getElementById("prevBtn");
+  // ONLY ARROWS WE KEEP
+  const nextBtnDesktop = document.getElementById("nextBtnDesktop");
+  const prevBtnDesktop = document.getElementById("prevBtnDesktop");
 
   if (!img || !title || !details || !link) return;
 
@@ -69,12 +70,13 @@ function initFeaturedSlideshow() {
     if (interval !== null) clearInterval(interval);
   }
 
-  nextBtn?.addEventListener("click", () => {
+  // ONLY PREV/NEXT ARROWS
+  nextBtnDesktop?.addEventListener("click", () => {
     stopAuto();
     next();
   });
 
-  prevBtn?.addEventListener("click", () => {
+  prevBtnDesktop?.addEventListener("click", () => {
     stopAuto();
     prev();
   });
@@ -85,13 +87,14 @@ function initFeaturedSlideshow() {
 
 document.addEventListener("DOMContentLoaded", initFeaturedSlideshow);
 
+
 // -----------------------------
 // ARTWORKS PAGE LOGIC
 // -----------------------------
 interface ArtworkItem extends HTMLElement {
   dataset: {
     year?: string;
-    project?: string;
+    collection?: string;
     title?: string;
     medium?: string;
     size?: string;
@@ -110,7 +113,7 @@ function initArtworksPage() {
   ) as ArtworkItem[];
 
   const filterYear = document.getElementById("filterYear") as HTMLSelectElement | null;
-  const filterProject = document.getElementById("filterProject") as HTMLSelectElement | null;
+  const filterCollection = document.getElementById("filterCollection") as HTMLSelectElement | null;
 
   function dedupeSelectOptions(select: HTMLSelectElement | null) {
     if (!select) return;
@@ -128,20 +131,20 @@ function initArtworksPage() {
   }
 
   dedupeSelectOptions(filterYear);
-  dedupeSelectOptions(filterProject);
+  dedupeSelectOptions(filterCollection);
 
   function applyFilters() {
     const yearValue = filterYear?.value || "all";
-    const projectValue = filterProject?.value || "all";
+    const collectionValue = filterCollection?.value || "all";
 
     items.forEach((item) => {
       const itemYear = item.dataset.year || "";
-      const itemProject = item.dataset.project || "";
+      const itemCollection = item.dataset.collection || "";
 
       const matchYear = yearValue === "all" || itemYear === yearValue;
-      const matchProject = projectValue === "all" || itemProject === projectValue;
+      const matchCollection = collectionValue === "all" || itemCollection === collectionValue;
 
-      if (matchYear && matchProject) {
+      if (matchYear && matchCollection) {
         item.classList.remove("hidden");
       } else {
         item.classList.add("hidden");
@@ -150,12 +153,25 @@ function initArtworksPage() {
   }
 
   filterYear?.addEventListener("change", applyFilters);
-  filterProject?.addEventListener("change", applyFilters);
+  filterCollection?.addEventListener("change", () => {
+  const value = filterCollection.value;
+
+  // Only this specific collection should open a new page
+  if (value === "The Tree, The Snake, The Fruit") {
+    window.location.href = "/artworks/collection-the_tree_the_snake_the_fruit";
+    return;
+  }
+
+  // All other collections behave normally (filter only)
+  applyFilters();
+});
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   initArtworksPage();
 });
+
 
 // -----------------------------
 // BUY / COMMISSION PAGE LOGIC (FINAL + PERSISTENCE)
@@ -180,16 +196,11 @@ function initBuyCommissionPage() {
 
   if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !textarea) return;
 
-  // -----------------------------
-  // RESTORE SAVED DATA
-  // -----------------------------
   const savedSelected = JSON.parse(localStorage.getItem("selectedArtworks") || "[]") as string[];
-
   let selected = new Set<string>(savedSelected);
 
   const items = Array.from(document.getElementsByClassName("artworkChoice")) as HTMLElement[];
 
-  // Restore checkmarks + rings
   items.forEach((item) => {
     const id = item.dataset.id!;
     const checkmark = item.querySelector(".checkmark-overlay") as HTMLElement;
@@ -200,17 +211,14 @@ function initBuyCommissionPage() {
     }
   });
 
-  // Restore preview thumbnails
   function rebuildPreview() {
     preview.innerHTML = "";
-
     Array.from(selected).forEach((id) => {
       const item = document.querySelector(`.artworkChoice[data-id="${id}"]`) as HTMLElement;
       if (!item) return;
 
       const img = item.dataset.image!;
       const thumb = document.createElement("img");
-
       thumb.src = img;
       thumb.style.width = "48px";
       thumb.style.height = "48px";
@@ -227,7 +235,6 @@ function initBuyCommissionPage() {
 
   rebuildPreview();
 
-  // Restore form fields
   function restoreField(field: HTMLInputElement | HTMLTextAreaElement | null, key: string) {
     if (!field) return;
     const saved = localStorage.getItem(key);
@@ -237,16 +244,12 @@ function initBuyCommissionPage() {
 
   restoreField(buyerName, "buyerName");
   restoreField(buyerEmail, "buyerEmail");
-
   restoreField(commissionName, "commissionName");
   restoreField(commissionEmail, "commissionEmail");
   restoreField(commissionSize, "commissionSize");
   restoreField(commissionLocation, "commissionLocation");
   restoreField(commissionIdea, "commissionIdea");
 
-  // -----------------------------
-  // OPEN / CLOSE MODAL
-  // -----------------------------
   openBtn.addEventListener("click", () => {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
@@ -258,14 +261,8 @@ function initBuyCommissionPage() {
   }
 
   closeBtn.addEventListener("click", closeModal);
+  modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
 
-  modal.addEventListener("click", (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  // -----------------------------
-  // SELECT / DESELECT ARTWORKS
-  // -----------------------------
   items.forEach((item) => {
     item.addEventListener("click", () => {
       const id = item.dataset.id!;
@@ -281,14 +278,10 @@ function initBuyCommissionPage() {
         if (checkmark) checkmark.classList.remove("hidden");
       }
 
-      // Save to localStorage
       localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
     });
   });
 
-  // -----------------------------
-  // CONFIRM SELECTION
-  // -----------------------------
   confirmBtn.addEventListener("click", () => {
     rebuildPreview();
     closeModal();
@@ -309,7 +302,6 @@ function initArchivePage() {
 
   const items = Array.from(document.getElementsByClassName("archive-item"));
 
-  // Remove duplicate year options (safety)
   const seen = new Set();
   Array.from(yearFilter.options).forEach((opt) => {
     if (opt.value !== "all") {
@@ -341,8 +333,6 @@ function initArchivePage() {
   categoryFilter.addEventListener("change", applyFilters);
 }
 
-
-
 document.addEventListener("DOMContentLoaded", initArchivePage);
 
 
@@ -353,7 +343,6 @@ const toggle = document.getElementById("darkModeToggle");
 const sunIcon = document.getElementById("sunIcon");
 const moonIcon = document.getElementById("moonIcon");
 
-// Apply saved theme immediately
 const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme === "dark") {
@@ -381,7 +370,6 @@ toggle?.addEventListener("click", () => {
 });
 
 
-
 // -----------------------------
 // HOME PAGE VERTICAL IMAGE FIX
 // -----------------------------
@@ -396,5 +384,3 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   });
 });
-
-
