@@ -1,5 +1,5 @@
 # =========================
-# Hugo
+# Hugo build output
 # =========================
 public/
 resources/_gen/
@@ -10,7 +10,12 @@ resources/_gen/
 .hugo_cache/
 
 # =========================
-# Node
+# Local analytics + scripts (private)
+# =========================
+logs/
+
+# =========================
+# Node / package managers
 # =========================
 node_modules/
 npm-debug.log*
@@ -43,6 +48,12 @@ Thumbs.db
 *.swo
 
 # =========================
-# Netlify
+# Netlify local build cache
 # =========================
 .netlify/
+
+# =========================
+# Temporary files
+# =========================
+*.tmp
+*.log
