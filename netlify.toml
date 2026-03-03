@@ -7,3 +7,7 @@
   HUGO_ENV = "production"
   HUGO_EXTENDED = "true"
   NODE_VERSION = "18"
+
+[functions]
+directory = "netlify/functions"
+
