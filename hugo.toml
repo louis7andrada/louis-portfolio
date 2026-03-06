@@ -13,12 +13,11 @@ enableRobotsTXT = true
   lastmod = ["lastmod", ":fileModTime", ":default"]
 
 [permalinks]
-artworks = "/artworks/:filename/"
-archive = "archive/:filename/"
+  artworks = "/artworks/:contentbasename/"
+  archive  = "/archive/:contentbasename/"
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["HTML", "RSS"]
 
 [params]
-recaptcha_site_key = "6LdOf3wsAAAAAJ7JhJeAshppid4Q2VCW7S6o-yYy"
-
+  recaptcha_site_key = "6LdOf3wsAAAAAJ7JhJeAshppid4Q2VCW7S6o-yYy"

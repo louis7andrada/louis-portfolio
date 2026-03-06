@@ -1,10 +1,19 @@
-// MOBILE MENU TOGGLE
 const btn = document.getElementById("mobileMenuBtn");
 const menu = document.getElementById("mobileMenu");
 
 btn?.addEventListener("click", () => {
-  menu.classList.toggle("open");
-  menu.classList.toggle("hidden");
+
+  btn.classList.toggle("open");   // burger animation
+  menu.classList.toggle("open");  // menu visibility
+
+  // -----------------------------
+  // SCROLL LOCK FOR MOBILE MENU
+  // -----------------------------
+  if (menu.classList.contains("open")) {
+    document.body.style.overflow = "hidden";  // disable page scroll
+  } else {
+    document.body.style.overflow = "";        // restore scroll
+  }
 });
 
 
@@ -343,30 +352,56 @@ const toggle = document.getElementById("darkModeToggle");
 const sunIcon = document.getElementById("sunIcon");
 const moonIcon = document.getElementById("moonIcon");
 
+// Ensure initial state: only one icon visible, no spin classes
+sunIcon?.classList.add("hidden");
+sunIcon?.classList.remove("moonIconSpin");
+moonIcon?.classList.add("hidden");
+moonIcon?.classList.remove("moonIconSpin");
+
 const savedTheme = localStorage.getItem("theme");
 
 if (savedTheme === "dark") {
   document.documentElement.classList.add("dark");
-  sunIcon?.classList.remove("hidden");
-  moonIcon?.classList.add("hidden");
+  sunIcon?.classList.remove("hidden"); // show sun only
 } else {
   document.documentElement.classList.remove("dark");
-  sunIcon?.classList.add("hidden");
-  moonIcon?.classList.remove("hidden");
+  moonIcon?.classList.remove("hidden"); // show moon only
 }
 
 toggle?.addEventListener("click", () => {
+
+  // trigger button rotation/fade animation
+  toggle.classList.add("animating");
+
   const isDark = document.documentElement.classList.toggle("dark");
 
   if (isDark) {
+    // DARK MODE: show sun, hide moon
     sunIcon?.classList.remove("hidden");
     moonIcon?.classList.add("hidden");
+
+    // spin sun only
+    sunIcon?.classList.add("moonIconSpin");
+    setTimeout(() => sunIcon?.classList.remove("moonIconSpin"), 250);
+
     localStorage.setItem("theme", "dark");
   } else {
+    // LIGHT MODE: show moon, hide sun
     sunIcon?.classList.add("hidden");
     moonIcon?.classList.remove("hidden");
+
+    // spin moon only
+    moonIcon?.classList.add("moonIconSpin");
+    setTimeout(() => moonIcon?.classList.remove("moonIconSpin"), 250);
+
     localStorage.setItem("theme", "light");
   }
+
+  // remove main animating class after button animation
+  setTimeout(() => {
+    toggle.classList.remove("animating");
+  }, 450);
+
 });
 
 

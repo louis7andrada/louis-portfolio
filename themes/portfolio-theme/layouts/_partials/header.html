@@ -1,7 +1,9 @@
 <header class="w-full border-b border-gray-300 px-4 md:px-8 py-4 flex items-center justify-between">
   
   <!-- Left: Logo -->
-  <a href="/" class="text-xl font-semibold">Louis Andrada</a>
+<a href="/" class="flex items-center">
+  <img src="/logo.png" alt="Louis Andrada Logo" class="h-14 w-40 dark:invert">
+</a>
 
   <!-- Right: Controls -->
   <div class="flex items-center gap-6">
@@ -18,49 +20,39 @@
     <button id="darkModeToggle" class="w-8 h-8 flex items-center justify-center">
   
       <!-- Sun Icon (dark mode) -->
-      <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg"
-          class="hidden w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"
-              d="M12 4v2m0 12v2m8-8h-2M6 12H4
-                m12.364 6.364l-1.414-1.414M7.05 7.05L5.636 5.636
-                m12.728 0l-1.414 1.414M7.05 16.95l-1.414 1.414
-                M12 8a4 4 0 100 8 4 4 0 000-8z" />
+      <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+           class="w-6 h-6 md:w-5 md:h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
       </svg>
-
 
       <!-- Moon Icon (light mode) -->
-      <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg"
-          class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"
-              d="M21 12.79A9 9 0 1111.21 3 
-                7 7 0 0021 12.79z" />
+      <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+           class="w-5 h-5 md:w-5 md:h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
       </svg>
-
 
     </button>
 
     <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn" class="md:hidden flex flex-col gap-1 z-50">
-      <span class="w-6 h-0.5 bg-black dark:bg-white"></span>
-      <span class="w-6 h-0.5 bg-black dark:bg-white"></span>
-      <span class="w-6 h-0.5 bg-black dark:bg-white"></span>
+    <button id="mobileMenuBtn" class="burger md:hidden z-50">
+      <span></span>
+      <span></span>
+      <span></span>
     </button>
 
   </div>
 
   <!-- FULLSCREEN MOBILE MENU -->
-    <nav 
+  <nav 
     id="mobileMenu" 
-    class="fixed inset-0 bg-white dark:bg-black hidden 
+    class="fixed inset-0 bg-white dark:bg-black
           flex flex-col items-center justify-center 
-          gap-10 text-3xl font-medium z-40 
-          transition-opacity duration-300"
+          gap-10 text-3xl font-medium z-40"
   >
     <a href="/artworks" class="block">Artworks</a>
     <a href="/about" class="block">About</a>
     <a href="/buy" class="block">Buy / Commission</a>
     <a href="/archive" class="block">Archive</a>
   </nav>
-
 
 </header>

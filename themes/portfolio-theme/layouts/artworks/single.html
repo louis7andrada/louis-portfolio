@@ -5,19 +5,39 @@
 <section class="px-4 md:px-10 py-16 w-full relative">
 
   <!-- RESPONSIVE BACK BUTTON (never overlaps title) -->
-  <a 
-    href="/artworks/" 
-    class="
-      arrow-btn text-lg absolute 
-      left-4 top-10
-      sm:left-6 sm:top-8
-      md:left-10 md:top-8
-      lg:left-10 lg:top-8
-      z-40
-    "
-  >
-    ← Back to Artworks
-  </a>
+  {{ if eq .Params.collection "The Tree, The Snake, The Fruit" }}
+
+    <a 
+      href="/artworks/collection-the_tree_the_snake_the_fruit/" 
+      class="
+        arrow-btn text-lg absolute 
+        left-4 top-10
+        sm:left-6 sm:top-8
+        md:left-10 md:top-8
+        lg:left-10 lg:top-8
+        z-40
+      "
+    >
+      ← Back to Collection
+    </a>
+
+    {{ else }}
+
+    <a 
+      href="/artworks/" 
+      class="
+        arrow-btn text-lg absolute 
+        left-4 top-10
+        sm:left-6 sm:top-8
+        md:left-10 md:top-8
+        lg:left-10 lg:top-8
+        z-40
+      "
+    >
+      ← Back to Artworks
+    </a>
+
+  {{ end }}
 
   <!-- TITLE -->
   <h1 class="text-3xl font-semibold mb-10 text-center">
@@ -58,7 +78,7 @@
       {{ if eq .Params.availability "Available" }}
         <a 
           href="/buy/?add={{ .Params.id }}" 
-          class="inline-block mt-6 px-6 py-3 bg-[#2c2c2c] text-white rounded text-lg font-semibold hover:bg-[#494949] transition"
+          class="inline-block mt-6 px-6 py-3 bg-[#2c2c2c] text-white rounded text-lg font-semibold hover:bg-[#575757] transition"
         >
           Purchase Artwork
         </a>

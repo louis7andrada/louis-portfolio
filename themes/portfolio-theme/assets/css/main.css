@@ -3,6 +3,45 @@
 @tailwind utilities;
 
 /* ----------------------------------------
+   HEADER IMPROVEMENT
+----------------------------------------- */
+
+header {
+  height: 64px; /* ← FIXED HEIGHT */
+  display: flex;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+  z-index: 50; /* ← FIX: keep header above mobile menu */
+  position: relative; /* ← required for z-index */
+}
+
+header:hover {
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+nav a {
+  position: relative;
+  transition: opacity 0.25s ease;
+  text-decoration: none !important; /* ← removes the ugly underline */
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.25s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* ----------------------------------------
    FEATURED FADE
 ----------------------------------------- */
 
@@ -14,6 +53,7 @@
 .featured-fade.hidden {
   opacity: 0;
 }
+
 
 /* ----------------------------------------
    SINGLE ARTWORK PAGE
@@ -99,27 +139,44 @@ html.dark {
 }
 
 /* ----------------------------------------
-   FULLSCREEN MOBILE MENU
+   MOBILE MENU SYSTEM
 ----------------------------------------- */
 
 #mobileMenu {
   opacity: 0;
   pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  transform: translateY(-10px);
+  transition: opacity .35s ease, transform .35s ease;
+  z-index: 40;
 }
 
 #mobileMenu.open {
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(0);
 }
 
 #mobileMenu a {
-  transition: opacity 0.3s ease;
+  transition: opacity .3s ease, transform .3s ease;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+#mobileMenu.open a {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 body {
   margin: 0;
   max-width: none;
 }
+
 
 /* ----------------------------------------
    MODERN DARK MODE — UNIFIED BACKGROUND
@@ -464,3 +521,264 @@ html.dark #nextBtnDesktop:active {
 }
 
 
+/* ----------------------------------------
+   BURGER MENU ANIMATION
+----------------------------------------- */
+
+.burger{
+  width:24px;
+  height:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  cursor:pointer;
+  position:relative;
+}
+
+.burger span{
+  display:block;
+  width:100%;
+  height:2px;
+  background:black;
+  transition:transform .35s ease, opacity .25s ease;
+}
+
+.dark .burger span{
+  background:white;
+}
+
+/* OPEN STATE */
+
+.burger.open span:nth-child(1){
+  transform:translateY(8px) rotate(45deg);
+}
+
+.burger.open span:nth-child(2){
+  opacity:0;
+}
+
+.burger.open span:nth-child(3){
+  transform:translateY(-8px) rotate(-45deg);
+}
+
+/* ----------------------------------------
+   ARTWORKS FILTER DROPDOWN — VISUAL DESIGN
+----------------------------------------- */
+
+.filter-dropdown {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+}
+
+/* Trigger button */
+.filter-trigger {
+  background: #e5e5e5;
+  color: #000;
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  min-width: 12rem;
+  text-align: left;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.filter-trigger:hover {
+  background: #dcdcdc;
+}
+
+/* Dark mode trigger */
+html.dark .filter-trigger {
+  background: #2a2a2a;
+  color: #e8e8e8;
+  border-color: #3a3a3a;
+}
+
+html.dark .filter-trigger:hover {
+  background: #333;
+}
+
+/* Dropdown menu */
+.filter-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 4px;
+  background: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  z-index: 30;
+}
+
+/* Dark mode menu */
+html.dark .filter-menu {
+  background: #1a1a1a !important;
+  border-color: #3a3a3a;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Menu items */
+.filter-menu div {
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: inherit;
+}
+
+.filter-menu div:hover {
+  background: #e0e0e0;
+}
+
+html.dark .filter-menu div:hover {
+  background: #2a2a2a;
+}
+
+/* When dropdown is open (JS adds this class) */
+.filter-dropdown.open .filter-menu {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* =================================
+   FORCE FORM BUTTON HOVER COLORS
+================================= */
+
+form button:hover,
+form input[type="submit"]:hover,
+form input[type="button"]:hover {
+  background-color: #494949 !important;
+  border-color: #494949 !important;
+}
+
+/* Remove Tailwind ring completely */
+form button:focus,
+form input:focus,
+form textarea:focus,
+form select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  --tw-ring-shadow: none !important;
+  --tw-ring-color: transparent !important;
+}
+
+/* Prevent hover utilities from Tailwind */
+form button.hover\:bg-gray-800:hover {
+  background-color: #575757 !important;
+}
+
+/* ----------------------------------------
+LIGHT / DARK MODE TOGGLE ANIMATION
+BUTTON ROTATE + FADE ANIMATION
+---------------------------------------- */
+#darkModeToggle.animating {
+  animation: rotateFade 0.5s ease forwards;
+}
+
+/* Shared stages for rotation + opacity */
+@keyframes rotateFade {
+  0% { transform: rotate(0deg) scale(1); opacity: 1; }
+  10% { transform: rotate(36deg) scale(1); opacity: 0.8; }
+  20% { transform: rotate(72deg) scale(1); opacity: 0.6; }
+  30% { transform: rotate(108deg) scale(1); opacity: 0.4; }
+  40% { transform: rotate(144deg) scale(1); opacity: 0.2; }
+  50% { transform: rotate(180deg) scale(1); opacity: 0.1; }
+  60% { transform: rotate(216deg) scale(1); opacity: 0.2; }
+  70% { transform: rotate(252deg) scale(1); opacity: 0.4; }
+  80% { transform: rotate(288deg) scale(1); opacity: 0.6; }
+  90% { transform: rotate(324deg) scale(1); opacity: 0.8; }
+  100% { transform: rotate(360deg) scale(1); opacity: 1; }
+}
+
+/* -----------------------------
+MOON ICON FAST SPIN
+----------------------------- */
+#moonIcon {
+  display: inline-block;
+  transform-origin: center;
+  transition: width 0.2s ease, height 0.2s ease, filter 0.25s ease, stroke 0.25s ease;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* moon uses same stages but faster (0.25s) */
+.moonIconSpin {
+  animation: rotateFade 0.25s linear forwards;
+}
+
+/* -----------------------------
+SUN ICON SLOW SPIN
+----------------------------- */
+#sunIcon {
+  display: inline-block;
+  transform-origin: center;
+  transition: filter 0.25s ease;
+  width: 1.5rem; /* keep original sizing */
+  height: 1.5rem;
+}
+
+/* sun uses same stages but slower (0.45s) */
+.sunIconSpin {
+  animation: rotateFade 0.45s ease forwards;
+}
+
+/* -----------------------------
+DARK MODE ICON DEFAULTS
+----------------------------- */
+#sunIcon,
+#moonIcon {
+  display: none;
+}
+
+html.dark #sunIcon {
+  display: inline-block;
+}
+
+html.dark #moonIcon {
+  display: none;
+}
+
+html:not(.dark) #sunIcon {
+  display: none;
+}
+
+html:not(.dark) #moonIcon {
+  display: inline-block;
+}
+
+/* prevent spinning class from stacking */
+.moonIconSpin,
+.sunIconSpin {
+  animation-fill-mode: forwards;
+}
+
+/* -----------------------------
+BUTTON HOVER BRIGHTNESS / DARKEN
+----------------------------- */
+/* removed base toggle hover filter */
+
+html.dark #darkModeToggle:hover svg#sunIcon {
+  filter: brightness(0.6) !important;
+}
+
+html:not(.dark) #darkModeToggle:hover svg#moonIcon {
+  filter: brightness(1.5) !important;
+}
+
+/* -----------------------------
+FIX MOON ICON SIZE ON MOBILE
+----------------------------- */
+@media (max-width: 1024px) {
+  #moonIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}
