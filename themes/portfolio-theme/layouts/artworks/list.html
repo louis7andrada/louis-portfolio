@@ -52,7 +52,7 @@
 
   {{ range $raw }}
 
-    {{ if eq .Params.image "/images/artworks/inprogress.jpeg" }}
+    {{ if .Params.inprogress }}
       {{ continue }}
     {{ end }}
 

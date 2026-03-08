@@ -2,7 +2,7 @@
 
 {{ $all := sort (where site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
 
-{{ $featured := where $all "Params.image" "ne" "/images/artworks/inprogress.jpeg" }}
+{{ $featured := where $all "Params.inprogress" "ne" true }}
 {{ $featured := first 10 $featured }}
 
 <section class="w-full px-4 md:px-8 py-16 relative">
