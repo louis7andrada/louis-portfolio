@@ -10,6 +10,12 @@ resources/_gen/
 .hugo_cache/
 
 # =========================
+# Artwork images (hosted externally)
+# =========================
+static/images/artworks/
+static/images/archive/
+
+# =========================
 # Local analytics + scripts (private)
 # =========================
 logs/
