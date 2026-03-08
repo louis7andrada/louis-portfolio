@@ -289,8 +289,8 @@
           {{ continue }}
         {{ end }}
 
-        {{/* Skip in-progress */}}
-        {{ if eq .Params.image "/images/artworks/inprogress.jpeg" }}
+        {{/* Skip in-progress artworks */}}
+        {{ if .Params.inprogress }}
           {{ continue }}
         {{ end }}
 
