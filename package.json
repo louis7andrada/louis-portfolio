@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./assets/css/output.css --watch",
-    "build": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./assets/css/output.css && hugo --gc --minify"
+    "build": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./assets/css/output.css && hugo --gc --minify",
+    "deploy": "powershell -Command \"git add .; try { git commit -m 'website updates' } catch {}; git push; hugo --gc --minify; netlify deploy --prod --dir=public\"",
+    "deploy-draft": "powershell -Command \"git add .; try { git commit -m 'website updates' } catch {}; git push; hugo --gc --minify; netlify deploy --dir=public\""
   },
   "devDependencies": {
     "autoprefixer": "^10.4.27",

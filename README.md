@@ -160,6 +160,8 @@ You can deploy in two ways:
      ```
      hugo --gc --minify
      netlify deploy --prod --dir=public
+     OR USE:
+     npm run deploy
      ```
    - This method only uploads the final /public folder, avoiding unnecessary rebuilds on Netlify.
 
