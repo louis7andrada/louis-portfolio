@@ -134,6 +134,14 @@ nav a:hover::after {
   margin: 0 auto;
 }
 
+@media (max-width: 1024px) {
+  #featuredArtwork {
+    height: auto !important;
+    max-height: 70vh;
+    width: 100% !important;
+  }
+}
+
 html.dark {
   color-scheme: dark;
 }
@@ -782,3 +790,4 @@ FIX MOON ICON SIZE ON MOBILE
     height: 1.25rem;
   }
 }
+

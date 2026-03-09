@@ -632,12 +632,20 @@ video {
   left: 2.5rem;
 }
 
+.left-20 {
+  left: 5rem;
+}
+
 .left-4 {
   left: 1rem;
 }
 
 .left-6 {
   left: 1.5rem;
+}
+
+.left-8 {
+  left: 2rem;
 }
 
 .right-0 {
@@ -698,6 +706,14 @@ video {
 
 .top-32 {
   top: 8rem;
+}
+
+.top-4 {
+  top: 1rem;
+}
+
+.top-6 {
+  top: 1.5rem;
 }
 
 .top-8 {
@@ -1786,6 +1802,14 @@ nav a:hover::after {
   margin: 0 auto;
 }
 
+@media (max-width: 1024px) {
+  #featuredArtwork {
+    height: auto !important;
+    max-height: 70vh;
+    width: 100% !important;
+  }
+}
+
 html.dark {
   color-scheme: dark;
 }
@@ -2581,12 +2605,16 @@ FIX MOON ICON SIZE ON MOBILE
 }
 
 @media (min-width: 640px) {
+  .sm\:fixed {
+    position: fixed;
+  }
+
   .sm\:left-6 {
     left: 1.5rem;
   }
 
-  .sm\:top-8 {
-    top: 2rem;
+  .sm\:top-24 {
+    top: 6rem;
   }
 }
 
@@ -2595,8 +2623,8 @@ FIX MOON ICON SIZE ON MOBILE
     left: 2.5rem;
   }
 
-  .md\:top-8 {
-    top: 2rem;
+  .md\:top-24 {
+    top: 6rem;
   }
 
   .md\:mt-16 {
@@ -2651,8 +2679,8 @@ FIX MOON ICON SIZE ON MOBILE
     left: 2.5rem;
   }
 
-  .lg\:top-8 {
-    top: 2rem;
+  .lg\:top-24 {
+    top: 6rem;
   }
 
   .lg\:col-span-3 {
@@ -2695,3 +2723,4 @@ FIX MOON ICON SIZE ON MOBILE
     justify-content: center;
   }
 }
+
