@@ -2161,7 +2161,7 @@ html.dark #nextBtnDesktop:active {
 @media (max-width: 1024px) {
   #prevBtnDesktop,
   #nextBtnDesktop {
-    padding: 12px 12px !important;
+    padding: 12px 13px !important;
     border-radius: 4px !important;
   }
 
