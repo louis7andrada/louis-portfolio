@@ -24,8 +24,7 @@
   <meta name="twitter:image" content="/images/og-default.jpg" />
 
   <!-- Styles -->
-  {{ $styles := resources.Get "css/output.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ $styles.Permalink }}" />
+  <link rel="stylesheet" href="/css/output.css">
 
   <!-- Scripts -->
   {{ $scripts := resources.Get "ts/main.ts" | js.Build }}
@@ -43,8 +42,7 @@
 
 </head>
 
-<body class="bg-white text-black 
-             dark:bg-[#111] dark:text-white">
+<body class="bg-white text-black dark:bg-[#111] dark:text-white">
 
   {{ partial "header.html" . }}
 

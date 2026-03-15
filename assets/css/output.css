@@ -1673,7 +1673,7 @@ header {
   backdrop-filter: blur(8px);
   transition: box-shadow 0.25s ease, background-color 0.25s ease;
   z-index: 50;
-  /* ← FIX: keep header above mobile menu */
+  /* ← keep header above mobile menu */
   position: relative;
   /* ← required for z-index */
 }
@@ -1733,21 +1733,7 @@ nav a:hover::after {
   -o-object-fit: contain;
      object-fit: contain;
   display: block;
-}
-
-/* Slightly larger horizontals */
-
-.single-image[style*="landscape"],
-.single-image:where(img) {
   max-height: 92vh;
-}
-
-/* Slightly smaller verticals */
-
-@media (min-aspect-ratio: 1/1) {
-  .single-image {
-    max-height: 92vh;
-  }
 }
 
 @media (max-aspect-ratio: 1/1) {
@@ -1766,21 +1752,16 @@ nav a:hover::after {
   .single-image-box {
     width: 100%;
     flex: 1;
-    display: flex;
     justify-content: center;
     align-items: center;
     min-height: auto;
-    /* FIXED */
   }
 
   .single-image {
     width: 100%;
     height: auto;
     max-height: none;
-    -o-object-fit: contain;
-       object-fit: contain;
     margin: 0 auto;
-    display: block;
   }
 
   .single-details {
@@ -1827,7 +1808,7 @@ html.dark {
   width: 100%;
   height: 100vh;
   transform: translateY(-10px);
-  transition: opacity .35s ease, transform .35s ease;
+  transition: opacity 0.35s ease, transform 0.35s ease;
   z-index: 40;
 }
 
@@ -1838,7 +1819,7 @@ html.dark {
 }
 
 #mobileMenu a {
-  transition: opacity .3s ease, transform .3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(8px);
 }
@@ -1864,7 +1845,7 @@ html.dark body {
 
 html.dark header {
   background-color: #1a1a1a !important;
-  border-color: #2d2d2d;
+  border-color: #2d2d2d !important;
 }
 
 html.dark a {
@@ -1906,7 +1887,7 @@ html.dark #mobileMenu {
 }
 
 html.dark #artworkModal {
-  background-color: rgba(0,0,0,0.75);
+  background-color: rgba(0,0,0,0.75) !important;
 }
 
 html.dark #artworkModal .modal-content {
@@ -1915,7 +1896,7 @@ html.dark #artworkModal .modal-content {
 }
 
 html.dark .group:hover .group-hover\:opacity-80 {
-  opacity: 0.55;
+  opacity: 0.55 !important;
 }
 
 /* ----------------------------------------
@@ -1965,7 +1946,7 @@ html.dark input[type="submit"]:hover {
 
 html.dark #openArtworkSelector {
   background-color: #4a4a4a !important;
-  color: #e6e6e6 !important;
+  color: #e8e8e8 !important;
   border: 1px solid #4a4a4a !important;
 }
 
@@ -1984,7 +1965,6 @@ html.dark #openArtworkSelector:hover {
 
 html.dark .about-page a {
   color: #4da3ff !important;
-  text-decoration: underline;
 }
 
 html.dark .about-page a:hover {
@@ -1993,7 +1973,6 @@ html.dark .about-page a:hover {
 
 html.dark .links-page a {
   color: #4da3ff !important;
-  text-decoration: underline;
 }
 
 html.dark .links-page a:hover {
@@ -2027,10 +2006,7 @@ html.dark option {
 
 html.dark .artworks-filters,
 html.dark .artworks-filters div,
-html.dark .artworks-filters label {
-  background-color: transparent !important;
-}
-
+html.dark .artworks-filters label,
 html.dark .archive-filters,
 html.dark .archive-filters div,
 html.dark .archive-filters label {
@@ -2042,34 +2018,34 @@ html.dark .archive-filters label {
 ----------------------------------------- */
 
 .dark #artworkSelectorModal > div {
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
 }
 
 .dark #artworkSelectorModal #closeArtworkSelector {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .dark #artworkSelectorModal .artworkChoice {
-  border-color: #555555;
-  background-color: #1a1a1a;
+  border-color: #555555 !important;
+  background-color: #1a1a1a !important;
 }
 
 .dark #artworkSelectorModal .artworkChoice p {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .dark #artworkSelectorModal .artworkChoice.ring-black {
-  --tw-ring-color: #ffffff;
+  --tw-ring-color: #ffffff !important;
 }
 
 .dark #artworkSelectorModal #confirmArtworkSelection {
-  background-color: #4a4a4a;
-  color: #ffffff;
+  background-color: #4a4a4a !important;
+  color: #ffffff !important;
 }
 
 .dark #artworkSelectorModal #confirmArtworkSelection:hover {
-  background-color: #222222;
+  background-color: #222222 !important;
 }
 
 /* ----------------------------------------
@@ -2081,7 +2057,26 @@ html.dark .archive-filters label {
   font-size: 16px !important;
   transition: color 0.15s ease-out, opacity 0.15s ease-out;
   opacity: 0.4 !important;
-  /* ← 40% opacity */
+  background-color: #2c2c2c !important;
+  color: white !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#prevBtnDesktop:hover,
+#nextBtnDesktop:hover {
+  background-color: #3a3a3a !important;
+  opacity: 0.6 !important;
+}
+
+#prevBtnDesktop:active,
+#nextBtnDesktop:active {
+  background-color: #1f1f1f !important;
+  opacity: 0.8 !important;
 }
 
 /* MOBILE: replace text with only arrows */
@@ -2090,79 +2085,17 @@ html.dark .archive-filters label {
   #prevBtnDesktop,
   #nextBtnDesktop {
     font-size: 0 !important;
+    padding: 0px 10px !important;
   }
 
   #prevBtnDesktop::before {
     content: "<";
-    font-size: 32px;
+    font-size: 26px;
   }
 
   #nextBtnDesktop::before {
     content: ">";
-    font-size: 32px;
-  }
-}
-
-/* ----------------------------------------
-   ARROWS SYSTEM — HIGHLIGHT BUTTON STYLE
------------------------------------------ */
-
-#prevBtnDesktop,
-#nextBtnDesktop {
-  background-color: #2c2c2c !important;
-  color: white !important;
-  padding: 8px 12px !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Hover */
-
-#prevBtnDesktop:hover,
-#nextBtnDesktop:hover {
-  background-color: #3a3a3a !important;
-  opacity: 0.6 !important;
-  /* slightly stronger on hover */
-}
-
-/* Press */
-
-#prevBtnDesktop:active,
-#nextBtnDesktop:active {
-  background-color: #1f1f1f !important;
-  opacity: 0.8 !important;
-}
-
-/* DARK MODE */
-
-html.dark #prevBtnDesktop,
-html.dark #nextBtnDesktop {
-  background-color: #3a3a3a !important;
-  color: white !important;
-}
-
-html.dark #prevBtnDesktop:hover,
-html.dark #nextBtnDesktop:hover {
-  background-color: #4a4a4a !important;
-}
-
-html.dark #prevBtnDesktop:active,
-html.dark #nextBtnDesktop:active {
-  background-color: #2a2a2a !important;
-}
-
-/* ----------------------------------------
-   MOBILE ARROW SIZE + POSITION FIX
------------------------------------------ */
-
-@media (max-width: 1024px) {
-  #prevBtnDesktop,
-  #nextBtnDesktop {
-    padding: 12px 12px !important;
-    border-radius: 4px !important;
+    font-size: 26px;
   }
 
   #prevBtnDesktop {
@@ -2172,11 +2105,14 @@ html.dark #nextBtnDesktop:active {
   #nextBtnDesktop {
     right: 6px !important;
   }
+
+  #moonIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
 }
 
-/* ----------------------------------------
-   DESKTOP ARROW POSITION FIX (match mobile)
------------------------------------------ */
+/* DESKTOP */
 
 @media (min-width: 1025px) {
   #prevBtnDesktop {
@@ -2188,64 +2124,52 @@ html.dark #nextBtnDesktop:active {
   }
 }
 
-/* ARROW GLYPH OPACITY — DESKTOP + MOBILE */
-
 #prevBtnDesktop,
 #nextBtnDesktop {
   color: rgba(255, 255, 255, 0.99) !important;
-  /* ← desktop arrow opacity */
 }
 
 #prevBtnDesktop::before,
 #nextBtnDesktop::before {
   opacity: 0.99 !important;
-  /* ← mobile arrow opacity */
-}
-
-.grecaptcha-badge {
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
 }
 
 /* ----------------------------------------
    BURGER MENU ANIMATION
 ----------------------------------------- */
 
-.burger{
-  width:24px;
-  height:18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  cursor:pointer;
-  position:relative;
+.burger {
+  width: 24px;
+  height: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
 }
 
-.burger span{
-  display:block;
-  width:100%;
-  height:2px;
-  background:black;
-  transition:transform .35s ease, opacity .25s ease;
+.burger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: black;
+  transition: transform .35s ease, opacity .25s ease;
 }
 
-.dark .burger span{
-  background:white;
+.dark .burger span {
+  background: white;
 }
 
-/* OPEN STATE */
-
-.burger.open span:nth-child(1){
-  transform:translateY(8px) rotate(45deg);
+.burger.open span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
 }
 
-.burger.open span:nth-child(2){
-  opacity:0;
+.burger.open span:nth-child(2) {
+  opacity: 0;
 }
 
-.burger.open span:nth-child(3){
-  transform:translateY(-8px) rotate(-45deg);
+.burger.open span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* ----------------------------------------
@@ -2257,8 +2181,6 @@ html.dark #nextBtnDesktop:active {
   display: inline-block;
   text-align: left;
 }
-
-/* Trigger button */
 
 .filter-trigger {
   background: #e5e5e5;
@@ -2276,8 +2198,6 @@ html.dark #nextBtnDesktop:active {
   background: #dcdcdc;
 }
 
-/* Dark mode trigger */
-
 html.dark .filter-trigger {
   background: #2a2a2a;
   color: #e8e8e8;
@@ -2287,8 +2207,6 @@ html.dark .filter-trigger {
 html.dark .filter-trigger:hover {
   background: #333;
 }
-
-/* Dropdown menu */
 
 .filter-menu {
   position: absolute;
@@ -2308,15 +2226,11 @@ html.dark .filter-trigger:hover {
   z-index: 30;
 }
 
-/* Dark mode menu */
-
 html.dark .filter-menu {
   background: #1a1a1a !important;
   border-color: #3a3a3a;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
-
-/* Menu items */
 
 .filter-menu div {
   padding: 10px 14px;
@@ -2332,8 +2246,6 @@ html.dark .filter-menu {
 html.dark .filter-menu div:hover {
   background: #2a2a2a;
 }
-
-/* When dropdown is open (JS adds this class) */
 
 .filter-dropdown.open .filter-menu {
   opacity: 1;
@@ -2352,8 +2264,6 @@ form input[type="button"]:hover {
   border-color: #494949 !important;
 }
 
-/* Remove Tailwind ring completely */
-
 form button:focus,
 form input:focus,
 form textarea:focus,
@@ -2364,22 +2274,19 @@ form select:focus {
   --tw-ring-color: transparent !important;
 }
 
-/* Prevent hover utilities from Tailwind */
+/* Prevent Tailwind hover utilities from applying */
 
 form button.hover\:bg-gray-800:hover {
   background-color: #575757 !important;
 }
 
 /* ----------------------------------------
-LIGHT / DARK MODE TOGGLE ANIMATION
-BUTTON ROTATE + FADE ANIMATION
----------------------------------------- */
+   LIGHT / DARK MODE TOGGLE ANIMATION
+----------------------------------------- */
 
 #darkModeToggle.animating {
   animation: rotateFade 0.5s ease forwards;
 }
-
-/* Shared stages for rotation + opacity */
 
 @keyframes rotateFade {
   0% {
@@ -2439,48 +2346,10 @@ BUTTON ROTATE + FADE ANIMATION
 }
 
 /* -----------------------------
-MOON ICON FAST SPIN
+MOON / SUN ICONS
 ----------------------------- */
 
-#moonIcon {
-  display: inline-block;
-  transform-origin: center;
-  transition: width 0.2s ease, height 0.2s ease, filter 0.25s ease, stroke 0.25s ease;
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-/* moon uses same stages but faster (0.25s) */
-
-.moonIconSpin {
-  animation: rotateFade 0.25s linear forwards;
-}
-
-/* -----------------------------
-SUN ICON SLOW SPIN
------------------------------ */
-
-#sunIcon {
-  display: inline-block;
-  transform-origin: center;
-  transition: filter 0.25s ease;
-  width: 1.5rem;
-  /* keep original sizing */
-  height: 1.5rem;
-}
-
-/* sun uses same stages but slower (0.45s) */
-
-.sunIconSpin {
-  animation: rotateFade 0.45s ease forwards;
-}
-
-/* -----------------------------
-DARK MODE ICON DEFAULTS
------------------------------ */
-
-#sunIcon,
-#moonIcon {
+#moonIcon, #sunIcon {
   display: none;
 }
 
@@ -2500,18 +2369,18 @@ html:not(.dark) #moonIcon {
   display: inline-block;
 }
 
-/* prevent spinning class from stacking */
-
-.moonIconSpin,
-.sunIconSpin {
-  animation-fill-mode: forwards;
+#moonIcon, #sunIcon {
+  transform-origin: center;
+  transition: all 0.25s ease;
 }
 
-/* -----------------------------
-BUTTON HOVER BRIGHTNESS / DARKEN
------------------------------ */
+.moonIconSpin {
+  animation: rotateFade 0.25s linear forwards;
+}
 
-/* removed base toggle hover filter */
+.sunIconSpin {
+  animation: rotateFade 0.45s ease forwards;
+}
 
 html.dark #darkModeToggle:hover svg#sunIcon {
   filter: brightness(0.6) !important;
@@ -2522,17 +2391,16 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 }
 
 /* -----------------------------
-FIX MOON ICON SIZE ON MOBILE
+MISC FIXES
 ----------------------------- */
 
-@media (max-width: 1024px) {
-  #moonIcon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
+.grecaptcha-badge {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
-.hover\:bg-\[\#494949\]:hover {
+.hover\:bg-\[\#9a9a9a\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(73 73 73 / var(--tw-bg-opacity, 1));
 }
@@ -2723,4 +2591,3 @@ FIX MOON ICON SIZE ON MOBILE
     justify-content: center;
   }
 }
-
