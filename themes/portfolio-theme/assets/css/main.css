@@ -421,12 +421,12 @@ html.dark .archive-filters label {
 
   #prevBtnDesktop::before {
     content: "<";
-    font-size: 26px;
+    font-size: 32px;
   }
 
   #nextBtnDesktop::before {
     content: ">";
-    font-size: 26px;
+    font-size: 32px;
   }
 }
 
@@ -439,7 +439,7 @@ html.dark .archive-filters label {
   background-color: #2c2c2c !important;
   color: white !important;
   padding: 8px 12px !important;
-  border-radius: 6px !important;
+  border-radius: 4px !important;
   font-weight: 600 !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -484,8 +484,8 @@ html.dark #nextBtnDesktop:active {
 @media (max-width: 1024px) {
   #prevBtnDesktop,
   #nextBtnDesktop {
-    padding: 12px 10px !important;
-    border-radius: 6px !important;
+    padding: 12px 12px !important;
+    border-radius: 4px !important;
   }
 
   #prevBtnDesktop {
