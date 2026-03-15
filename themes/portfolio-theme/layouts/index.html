@@ -1,9 +1,7 @@
 {{ define "main" }}
 
-{{ $all := sort (where site.RegularPages "Section" "artworks") "Params.worknum" "desc" }}
-{{ range $all }}
-<p>{{ .Params.worknum }} - {{ .Title }}</p>
-{{ end }}
+{{ $all := sort (where (where site.RegularPages "Section" "artworks") "Params.worknum" "!=" nil) "Params.worknum" "desc" }}
+
 {{ $featured := where $all "Params.inprogress" "ne" true }}
 {{ $featured := first 10 $featured }}
 
