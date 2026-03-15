@@ -9,7 +9,7 @@
   <h2 class="text-center text-3xl font-semibold mb-10">Recent Artworks</h2>
   <div class="w-full max-w-[1200px] mx-auto">
 
-    {{ with index $featured 0 }}
+    {{ with index $featured -1 }}
     <a id="featuredLink" href="{{ .RelPermalink }}">
       <div class="featured-slideshow-container">
         <img 
