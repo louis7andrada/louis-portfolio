@@ -36,7 +36,7 @@ function initFeaturedSlideshow() {
   if (!img || !title || !details || !link) return;
 
   let index = parseInt(sessionStorage.getItem("featuredIndex") || "0");
-  let autoRotate = sessionStorage.getItem("autoRotate") !== "false";
+  let autoRotate = true; // always reset on page load
   let interval: number | null = null;
 
   function fade(callback: () => void) {
@@ -70,12 +70,11 @@ function initFeaturedSlideshow() {
 
   function startAuto() {
     if (!autoRotate) return;
-    interval = window.setInterval(next, 10000);
+    interval = window.setInterval(next, 15000);
   }
 
   function stopAuto() {
     autoRotate = false;
-    sessionStorage.setItem("autoRotate", "false");
     if (interval !== null) clearInterval(interval);
   }
 
