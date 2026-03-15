@@ -24,7 +24,7 @@
   <meta name="twitter:image" content="/images/og-default.jpg" />
 
   <!-- Styles -->
-  {{ $styles := resources.Get "css/main.css" | minify | fingerprint }}
+  {{ $styles := resources.Get "css/output.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $styles.Permalink }}" />
 
   <!-- Scripts -->
