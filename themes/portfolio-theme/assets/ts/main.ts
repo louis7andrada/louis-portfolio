@@ -36,7 +36,6 @@ function initFeaturedSlideshow() {
   if (!img || !title || !details || !link) return;
 
   let index = parseInt(sessionStorage.getItem("featuredIndex") || "0");
-  let autoRotate = true;
   let userStopped = false;
   let interval: number | null = null;
 
@@ -70,22 +69,23 @@ function initFeaturedSlideshow() {
   }
 
   function startAuto() {
-    if (!autoRotate || userStopped) return;
+    if (userStopped) return;
     if (interval !== null) clearInterval(interval);
     interval = window.setInterval(next, 15000);
   }
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       if (interval !== null) clearInterval(interval);
-      userStopped = false;
-      autoRotate = true;
     } else {
-      startAuto();
+      if (!userStopped) startAuto();
     }
+  });
+  window.addEventListener("pageshow", () => {
+    userStopped = false;
+    startAuto();
   });
 
   function stopAuto() {
-    autoRotate = false;
     userStopped = true;
     if (interval !== null) clearInterval(interval);
   }
