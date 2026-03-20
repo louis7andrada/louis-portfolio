@@ -21,4 +21,4 @@ enableRobotsTXT = true
 
 [params]
   recaptcha_site_key = "6LdOf3wsAAAAAJ7JhJeAshppid4Q2VCW7S6o-yYy"
-  recaptcha_secret_key = "6LekcXksAAAAABR_ZmoI9DaQlHF1mPwHJutB410y"
+  recaptcha_secret_key = "6LdOf3wsAAAAAHly8HDpk6NmYQmiTKZHCQMcLtsW"
