@@ -44,7 +44,7 @@
 
 <body class="bg-white text-black dark:bg-[#111] dark:text-white">
 
-  {{ partial "header.html" . }}
+  {{ partial "header.html" .}}
 
   <main>
     {{ block "main" . }}{{ end }}
@@ -56,6 +56,22 @@
   <script>
     fetch("/.netlify/functions/log-ip")
       .catch(err => console.error("Log-IP function failed:", err));
+  </script>
+
+  <!-- Hidden reCAPTCHA token input for forms -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const forms = document.querySelectorAll("form");
+      forms.forEach(form => {
+        if (!form.querySelector(".recaptcha-token-field")) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "g-recaptcha-response";
+          input.classList.add("recaptcha-token-field");
+          form.appendChild(input);
+        }
+      });
+    });
   </script>
 
 </body>

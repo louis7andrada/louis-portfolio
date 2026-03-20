@@ -430,3 +430,156 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   });
 });
+
+// main.ts
+interface RecaptchaVerifyResponse {
+  success: boolean;
+  score: number;
+}
+
+export async function setupAjaxForm(formId: string, successId: string) {
+  const form = document.getElementById(formId) as HTMLFormElement | null;
+  const successMessage = document.getElementById(successId);
+
+  if (!form || !successMessage) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (typeof grecaptcha === "undefined") {
+      alert("reCAPTCHA not loaded");
+      return;
+    }
+
+    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+    const tokenField = form.querySelector<HTMLInputElement>(".recaptcha-token-field");
+    if (tokenField) tokenField.value = token;
+
+    const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
+    });
+
+    const verifyData: RecaptchaVerifyResponse = await verifyRes.json();
+
+    if (!verifyData.success || verifyData.score < 0.5) {
+      alert("Blocked by security check.");
+      return;
+    }
+
+    const data = new FormData(form);
+
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { Accept: "application/json" },
+    });
+
+    if (response.ok) {
+      form.reset();
+      successMessage.classList.remove("hidden");
+
+      if (formId === "buyForm") {
+        const preview = document.getElementById("selectedArtworksPreview");
+        const textarea = document.getElementById("selectedArtworkIDs") as HTMLTextAreaElement | null;
+        if (preview) preview.innerHTML = "";
+        if (textarea) textarea.value = "";
+        localStorage.removeItem("selectedArtworks");
+      }
+    } else {
+      alert("There was an error. Please try again.");
+    }
+  });
+}
+
+// Auto-select logic for Buy / Commission pages
+export function initArtworkSelector() {
+  const modal = document.getElementById("artworkSelectorModal");
+  const openBtn = document.getElementById("openArtworkSelector");
+  const closeBtn = document.getElementById("closeArtworkSelector");
+  const confirmBtn = document.getElementById("confirmArtworkSelection");
+  const preview = document.getElementById("selectedArtworksPreview");
+  const textarea = document.getElementById("selectedArtworkIDs") as HTMLTextAreaElement | null;
+
+  if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !textarea) return;
+
+  const savedSelected = JSON.parse(localStorage.getItem("selectedArtworks") || "[]") as string[];
+  const selected = new Set(savedSelected);
+
+  const items = Array.from(document.getElementsByClassName("artworkChoice")) as HTMLElement[];
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const addArtwork = urlParams.get("add");
+  if (addArtwork) {
+    selected.add(addArtwork);
+    localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+  }
+
+  const rebuildPreview = () => {
+    preview.innerHTML = "";
+    Array.from(selected).forEach((id) => {
+      const item = document.querySelector<HTMLElement>(`.artworkChoice[data-id="${id}"]`);
+      if (!item) return;
+      const imgSrc = item.dataset.image || "";
+      const thumb = document.createElement("img");
+      thumb.src = imgSrc;
+      thumb.style.width = "48px";
+      thumb.style.height = "48px";
+      thumb.style.objectFit = "cover";
+      thumb.style.borderRadius = "6px";
+      thumb.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+      thumb.style.flexShrink = "0";
+      preview.appendChild(thumb);
+    });
+    textarea.value = Array.from(selected).join(", ");
+  };
+
+  items.forEach((item) => {
+    const id = item.dataset.id;
+    const checkmark = item.querySelector<HTMLElement>(".checkmark-overlay");
+    if (id && selected.has(id)) {
+      item.classList.add("ring-4", "ring-black");
+      if (checkmark) checkmark.classList.remove("hidden");
+    }
+
+    item.addEventListener("click", () => {
+      if (!id) return;
+      if (selected.has(id)) {
+        selected.delete(id);
+        item.classList.remove("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.add("hidden");
+      } else {
+        selected.add(id);
+        item.classList.add("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.remove("hidden");
+      }
+      localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+    });
+  });
+
+  confirmBtn.addEventListener("click", () => {
+    rebuildPreview();
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  });
+
+  openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+  });
+
+  rebuildPreview();
+}
