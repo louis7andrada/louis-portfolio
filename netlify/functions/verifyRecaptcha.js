@@ -24,6 +24,12 @@ exports.handler = async function(event, context) {
 
     const data = await response.json();
 
+    // Log the full response and the score
+    console.log("reCAPTCHA response data:", data);
+    if (data.score !== undefined) {
+      console.log("reCAPTCHA score:", data.score);
+    }
+
     return {
       statusCode: 200,
       body: JSON.stringify(data),
