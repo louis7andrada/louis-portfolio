@@ -23,6 +23,9 @@
   <meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}Brazilian painter based in Toronto. Portfolio of artworks, commissions, and archives.{{ end }}" />
   <meta name="twitter:image" content="/images/og-default.jpg" />
 
+  <!-- font URL -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inconsolata:wght@400;500;600&display=swap" rel="stylesheet">
+
   <!-- Styles -->
   <link rel="stylesheet" href="/css/output.css">
 
@@ -42,7 +45,7 @@
 
 </head>
 
-<body class="bg-white text-black dark:bg-[#111] dark:text-white">
+<body class="font-sans bg-white text-black dark:bg-[#111] dark:text-white">
 
   {{ partial "header.html" .}}
 

@@ -19,7 +19,15 @@ module.exports = {
     'moonIcon', 'sunIcon',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['ui-sans-serif', 'system-ui'],
+        mono: ['"Inconsolata"', 'monospace'],
+      },
+      //letterSpacing: {
+      //  tighterCustom: '0.0em',
+      //},
+    },
   },
   plugins: [],
 };

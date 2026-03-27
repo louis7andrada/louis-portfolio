@@ -657,3 +657,15 @@ MISC FIXES
 ----------------------------- */
 
 .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+
+@layer base {
+  /* All titles → sans */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans;
+  }
+
+  /* All regular text → mono */
+  p, span, a, li, blockquote {
+    @apply font-mono;
+  }
+}
