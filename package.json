@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./static/css/output.css --watch",
+    "hugo": "hugo server -D",
+    "rev": "concurrently \"npm run dev\" \"npm run hugo\"",
     "build": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./static/css/output.css --minify && hugo --gc --minify",
     "deploy": "powershell -Command \"$changes = $(git status --porcelain); if ($changes) { git add .; git commit -m 'website updates'; git push; Remove-Item -Recurse -Force .\\public; Remove-Item -Recurse -Force .\\resources\\_gen; Remove-Item -Force .\\.hugo_build.lock; npm run build; netlify deploy --prod --dir=public } else { Write-Output 'No changes to commit. Production deploy skipped.' }\"",
     "deploy-draft": "powershell -Command \"Remove-Item -Recurse -Force .\\public; Remove-Item -Recurse -Force .\\resources\\_gen; Remove-Item -Force .\\.hugo_build.lock; npm run build; netlify deploy --dir=public\""
   },
   "devDependencies": {
     "autoprefixer": "^10.4.27",
+    "concurrently": "^9.2.1",
     "postcss": "^8.5.8",
     "postcss-cli": "^11.0.1",
     "tailwindcss": "^3.4.19",

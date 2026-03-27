@@ -392,8 +392,8 @@ html.dark .archive-filters label {
   opacity: 0.4 !important;
   background-color: #3a3a3a !important;
   color: white !important;
-  padding: 8px 12px !important;
-  border-radius: 6px !important;
+  padding: 4px 12px !important;
+  border-radius: 4px !important;
   font-weight: 600 !important;
   display: inline-flex !important;
   align-items: center !important;
@@ -447,11 +447,11 @@ html.dark .archive-filters label {
 /* DESKTOP */
 @media (min-width: 1025px) {
   #prevBtnDesktop {
-    left: 15px !important;
+    left: 8vw !important;
   }
 
   #nextBtnDesktop {
-    right: 15px !important;
+    right: 8vw !important;
   }
 }
 
@@ -659,13 +659,27 @@ MISC FIXES
 .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
 
 @layer base {
-  /* All titles → sans */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-sans;
+    font-family: theme('fontFamily.sans') !important;
+    font-weight: 425 !important;
   }
 
-  /* All regular text → mono */
-  p, span, a, li, blockquote {
+  p, li, blockquote {
+    font-family: theme('fontFamily.mono');
+    font-size: 1.02em !important;
+  }
+
+  a {
     @apply font-mono;
+  }
+}
+
+@layer base {
+  button,
+  a,
+  select,
+  input[type="submit"],
+  input[type="button"] {
+    border-radius: 4px !important;
   }
 }

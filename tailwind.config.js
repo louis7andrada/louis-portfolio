@@ -21,9 +21,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['ui-sans-serif', 'system-ui'],
-        mono: ['"Inconsolata"', 'monospace'],
-      },
+      sans: ['"IBM Plex Sans"', 'sans-serif'],
+      mono: ['"IBM Plex Mono"', 'monospace'],
+    },
       //letterSpacing: {
       //  tighterCustom: '0.0em',
       //},
