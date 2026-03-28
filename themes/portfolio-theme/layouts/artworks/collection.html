@@ -6,11 +6,12 @@
   href="/artworks/" 
   class="
     arrow-btn text-lg absolute
-    sm:fixed
     left-4 top-6
-    sm:left-6 sm:top-24
-    md:left-10 md:top-24
-    lg:left-10 lg:top-24
+
+    lg:left-6 lg:top-10
+
+    xl:fixed xl:left-10 xl:top-24
+
     z-40
   "
 >
@@ -18,29 +19,29 @@
 </a>
 
   <!-- PAGE TITLE -->
-  <h1 class="text-4xl font-semibold mb-16 text-center">
+  <h1 class="text-4xl font-semibold mt-5 mb-10 text-center">
     {{ .Title }}
   </h1>
 
   <!-- MAIN PROPORTIONAL LAYOUT -->
-  <div class="grid grid-cols-1 lg:grid-cols-10 gap-2">
+  <div class="grid grid-cols-10" style="gap: 3px;">
 
     <!-- ========================= -->
     <!-- TREE COLUMN -->
     <!-- ========================= -->
-    <div class="lg:col-span-3">
+    <div class="col-span-3">
 
       <!-- Title moves WITH the column -->
       <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Tree</h2>
 
-      <div class="grid grid-cols-3 gap-1">
+      <div class="grid grid-cols-3" style="gap: 3px;">
         {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "tree") "Params.collection_order" "asc" }}
           {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
             <a href="{{ .RelPermalink }}">
-              <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow" />
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
             </a>
           {{ else }}
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow opacity-50" />
+            <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-50" />
           {{ end }}
         {{ end }}
       </div>
@@ -50,19 +51,19 @@
     <!-- ========================= -->
     <!-- SNAKE COLUMN -->
     <!-- ========================= -->
-    <div class="lg:col-span-4">
+    <div class="col-span-4">
 
       <!-- Title moves WITH the column -->
       <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Snake</h2>
 
-      <div class="grid grid-cols-4 gap-1">
+      <div class="grid grid-cols-4" style="gap: 3px;">
         {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "snake") "Params.collection_order" "asc" }}
           {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
             <a href="{{ .RelPermalink }}">
-              <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow" />
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
             </a>
           {{ else }}
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow opacity-50" />
+            <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-50" />
           {{ end }}
         {{ end }}
       </div>
@@ -72,19 +73,19 @@
     <!-- ========================= -->
     <!-- FRUIT COLUMN -->
     <!-- ========================= -->
-    <div class="lg:col-span-3">
+    <div class="col-span-3">
 
       <!-- Title moves WITH the column -->
       <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Fruit</h2>
 
-      <div class="grid grid-cols-3 gap-1">
+      <div class="grid grid-cols-3" style="gap: 3px;">
         {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
           {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
             <a href="{{ .RelPermalink }}">
-              <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow" />
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
             </a>
           {{ else }}
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow opacity-50" />
+            <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-50" />
           {{ end }}
         {{ end }}
       </div>
@@ -96,7 +97,7 @@
   <!-- ========================= -->
   <!-- FULL COLLECTION 3‑COLUMN GRID -->
   <!-- ========================= -->
-  <div class="mt-24 grid grid-cols-1 lg:grid-cols-3 gap-2">
+  <div class="mt-24 grid" style="grid-template-columns: 3fr 4fr 3fr; gap: 3px;">
 
     <!-- TREE FULL IMAGE -->
     <div class="flex flex-col items-center">
@@ -106,10 +107,16 @@
       {{ with index $treeFull 0 }}
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
           <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+            <img src="{{ .Params.image }}" 
+     class="w-full object-cover shadow-lg" 
+     style="aspect-ratio: 72 / 108;" />
+
           </a>
         {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+          <img src="{{ .Params.image }}" 
+     class="w-full object-cover shadow-lg" 
+     style="aspect-ratio: 72 / 108;" />
+
         {{ end }}
       {{ end }}
     </div>
@@ -122,10 +129,16 @@
       {{ with index $snakeFull 0 }}
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
           <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+            <img src="{{ .Params.image }}" 
+     class="w-full object-cover shadow-lg" 
+     style="aspect-ratio: 96 / 108;" />
+
           </a>
         {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+          <img src="{{ .Params.image }}" 
+     class="w-full object-cover shadow-lg" 
+     style="aspect-ratio: 96 / 108;" />
+
         {{ end }}
       {{ end }}
     </div>
@@ -138,10 +151,16 @@
       {{ with index $fruitFull 0 }}
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
           <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+            <img src="{{ .Params.image }}" 
+     class="w-full object-cover shadow-lg" 
+     style="aspect-ratio: 72 / 108;" />
+
           </a>
         {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+          <img src="{{ .Params.image }}" 
+     class="w-full object-cover shadow-lg" 
+     style="aspect-ratio: 72 / 108;" />
+
         {{ end }}
       {{ end }}
     </div>
@@ -151,49 +170,21 @@
   <!-- ========================= -->
   <!-- FULL COLLECTION 3‑COLUMN GRID COMPLETE -->
   <!-- ========================= -->
-   <h1 class="text-4xl font-semibold mt-24 mb-16 text-center">
-    {{ .Title }}
-  </h1>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-0">
+   <h1 class="text-4xl font-semibold mt-24 mb-10 text-center">The Tree, The Snake, The Fruit</h1>
+  <div class="grid grid-cols-1 lg:grid-cols-1" style="gap: 0px;">
 
-    <!-- TREE FULL IMAGE -->
+    <!-- FULL COLLECTION IMAGE -->
     <div class="flex flex-col items-center">
-      {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}
-      {{ with index $treeFull 0 }}
+      {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}
+      {{ with index $completeFull 0 }}
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
           <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
+            <img src="{{ .Params.image }}" 
+                class="w-full object-cover shadow-lg" 
+                style="aspect-ratio: 20 / 9;" />
           </a>
         {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
-        {{ end }}
-      {{ end }}
-    </div>
-
-    <!-- SNAKE FULL IMAGE -->
-    <div class="flex flex-col items-center">
-      {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}
-      {{ with index $snakeFull 0 }}
-        {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
-          <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
-          </a>
-        {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
-        {{ end }}
-      {{ end }}
-    </div>
-
-    <!-- FRUIT FULL IMAGE -->
-    <div class="flex flex-col items-center">
-      {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}
-      {{ with index $fruitFull 0 }}
-        {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
-          <a href="{{ .RelPermalink }}">
-            <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg" />
-          </a>
-        {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded shadow-lg opacity-50" />
+          <img src="{{ .Params.image }}" class="w-full h-auto  shadow-lg opacity-50" />
         {{ end }}
       {{ end }}
     </div>

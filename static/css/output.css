@@ -763,6 +763,10 @@ button,
   margin-right: auto;
 }
 
+.\!mt-16 {
+  margin-top: 4rem !important;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -839,28 +843,16 @@ button,
   margin-top: 1rem;
 }
 
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
 }
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.\!mt-6 {
-  margin-top: 1.5rem !important;
-}
-
-.\!mt-10 {
-  margin-top: 2.5rem !important;
-}
-
-.\!mt-20 {
-  margin-top: 5rem !important;
-}
-
-.\!mt-16 {
-  margin-top: 4rem !important;
 }
 
 .block {
@@ -1218,10 +1210,6 @@ button,
   justify-content: space-between;
 }
 
-.gap-0 {
-  gap: 0px;
-}
-
 .gap-1 {
   gap: 0.25rem;
 }
@@ -1238,16 +1226,16 @@ button,
   gap: 4rem;
 }
 
-.gap-2 {
-  gap: 0.5rem;
-}
-
 .gap-3 {
   gap: 0.75rem;
 }
 
 .gap-4 {
   gap: 1rem;
+}
+
+.gap-5 {
+  gap: 1.25rem;
 }
 
 .gap-6 {
@@ -1817,6 +1805,7 @@ nav a:hover::after {
 
   .single-image {
     width: 100%;
+    max-width: 100%;
     height: auto;
     max-height: none;
     margin: 0 auto;
@@ -1824,6 +1813,24 @@ nav a:hover::after {
 
   .single-details {
     margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* center block */
+  }
+
+  .single-details p {
+    width: -moz-fit-content;
+    width: fit-content;
+    /* THIS is the real fix */
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .single-details a {
+    align-self: center;
   }
 }
 
@@ -2537,27 +2544,13 @@ MISC FIXES
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
-@media (min-width: 640px) {
-  .sm\:fixed {
-    position: fixed;
-  }
-
-  .sm\:left-6 {
+@media (min-width: 768px) {
+  .md\:left-6 {
     left: 1.5rem;
   }
 
-  .sm\:top-24 {
-    top: 6rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .md\:left-10 {
-    left: 2.5rem;
-  }
-
-  .md\:top-24 {
-    top: 6rem;
+  .md\:top-10 {
+    top: 2.5rem;
   }
 
   .md\:mt-16 {
@@ -2608,20 +2601,12 @@ MISC FIXES
 }
 
 @media (min-width: 1024px) {
-  .lg\:left-10 {
-    left: 2.5rem;
+  .lg\:left-6 {
+    left: 1.5rem;
   }
 
-  .lg\:top-24 {
-    top: 6rem;
-  }
-
-  .lg\:col-span-3 {
-    grid-column: span 3 / span 3;
-  }
-
-  .lg\:col-span-4 {
-    grid-column: span 4 / span 4;
+  .lg\:top-10 {
+    top: 2.5rem;
   }
 
   .lg\:mb-6 {
@@ -2636,27 +2621,41 @@ MISC FIXES
     width: auto;
   }
 
-  .lg\:grid-cols-10 {
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-  }
-
-  .lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+  .lg\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
   }
 
   .lg\:grid-cols-5 {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
-  .lg\:flex-row {
+  .lg\:text-\[14px\] {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .xl\:fixed {
+    position: fixed;
+  }
+
+  .xl\:left-10 {
+    left: 2.5rem;
+  }
+
+  .xl\:top-24 {
+    top: 6rem;
+  }
+
+  .xl\:flex-row {
     flex-direction: row;
   }
 
-  .lg\:justify-center {
-    justify-content: center;
+  .xl\:items-start {
+    align-items: flex-start;
   }
 
-  .lg\:text-\[14px\] {
-    font-size: 14px;
+  .xl\:justify-center {
+    justify-content: center;
   }
 }

@@ -95,6 +95,7 @@ nav a:hover::after {
 
   .single-image {
     width: 100%;
+    max-width: 100%;
     height: auto;
     max-height: none;
     margin: 0 auto;
@@ -102,6 +103,22 @@ nav a:hover::after {
 
   .single-details {
     margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* center block */
+  }
+
+  .single-details p {
+    width: fit-content;    /* THIS is the real fix */
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .single-details a {
+    align-self: center;
   }
 }
 

@@ -5,27 +5,19 @@
   <!-- RESPONSIVE BACK BUTTON (never overlaps title) -->
   <a 
   href="/archive/" 
-  class="
-    arrow-btn text-lg absolute
-    sm:fixed
-    left-4 top-6
-    sm:left-6 sm:top-24
-    md:left-10 md:top-24
-    lg:left-10 lg:top-24
-    z-40
-  "
+  class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40"
 >
   ← Back to Archive
 </a>
 
 
   <!-- Title -->
-  <h1 class="text-3xl font-semibold mb-16 text-center">
+  <h1 class="text-3xl font-semibold mt-5 mb-10 text-center">
     {{ .Title }}
   </h1>
 
   <!-- MAIN LAYOUT -->
-  <div class="flex flex-col lg:flex-row items-start lg:justify-center gap-16 max-w-[1400px] mx-auto">
+  <div class="flex flex-col items-center xl:flex-row xl:items-start xl:justify-center gap-5 md:gap-16 max-w-[1400px] mx-auto">
 
     <!-- IMAGE COLUMN -->
     <div class="shrink-0 w-full lg:w-auto relative">
