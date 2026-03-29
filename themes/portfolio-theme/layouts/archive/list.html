@@ -104,10 +104,10 @@
             <img 
               src="{{ .page.Params.image }}" 
               alt="{{ .page.Title }}" 
-              class="h-[520px] md:h-[480px] w-full md:w-auto object-contain group-hover:opacity-80 transition"
+              class="w-full md:w-auto max-h-[520px] object-contain group-hover:opacity-80 transition"
             />
           {{ else }}
-            <div class="w-full md:w-[300px] h-[520px] md:h-[480px] bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
+            <div class="w-full md:w-[300px] h-[520px] bg-gray-200 flex items-center justify-center text-gray-500 text-sm">
               No image yet
             </div>
           {{ end }}
