@@ -101,6 +101,8 @@
       </form>
     </div>
 
+    <div class="block md:hidden border-t border-gray-300 my-9"></div>
+
     <!-- ========================= -->
     <!-- COMMISSION SECTION -->
     <!-- ========================= -->
@@ -158,7 +160,7 @@
         <input 
           type="text" 
           name="commissionLocation" 
-          placeholder="Where are you located? (City, Country e.g., Paris, France)" 
+          placeholder="Where are you located? (City, Country)" 
           class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
           required
         />
@@ -171,77 +173,76 @@
           required
         />
 
-        <div class="border border-gray-300 dark:border-gray-600 
-            rounded p-4 space-y-3 
-            bg-gray-100 dark:bg-[#252525]">
+        <div class="border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-[#252525]">
+  
+  <button 
+    type="button"
+    id="toggleCommissionTypes"
+    class="w-full text-left p-4 font-medium flex justify-between items-center"
+  >
+    Type of Commission (select one or more)
+    <span id="commissionArrow">+</span>
+  </button>
 
-          <p class="text-gray-700 font-medium">Type of Commission (select one or more)</p>
-          
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="canvas" class="w-4 h-4 accent-black" />
-            <span>Canvas painting</span>
-          </label>
+  <div id="commissionOptions" class="hidden px-4 pt-2 pb-4 space-y-3">
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="mural" class="w-4 h-4 accent-black" />
-            <span>Mural</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="canvas" class="w-4 h-4 accent-black" />
+      <span>Canvas painting</span>
+    </label>
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="sculpture" class="w-4 h-4 accent-black" />
-            <span>Sculpture / Object / Furniture</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="mural" class="w-4 h-4 accent-black" />
+      <span>Mural</span>
+    </label>
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="clothing" class="w-4 h-4 accent-black" />
-            <span>Clothing</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="sculpture" class="w-4 h-4 accent-black" />
+      <span>Sculpture / Object / Furniture</span>
+    </label>
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="brand" class="w-4 h-4 accent-black" />
-            <span>Brand / Partnership / Event / Invitation</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="clothing" class="w-4 h-4 accent-black" />
+      <span>Clothing</span>
+    </label>
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="digital" class="w-4 h-4 accent-black" />
-            <span>Digital media / Print</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="brand" class="w-4 h-4 accent-black" />
+      <span>Brand / Partnership / Event / Invitation</span>
+    </label>
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="tattoo" class="w-4 h-4 accent-black" />
-            <span>Tattoo</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="digital" class="w-4 h-4 accent-black" />
+      <span>Digital media / Print</span>
+    </label>
 
-          <label class="flex items-center gap-3 cursor-pointer">
-            <input type="checkbox" name="commissionType[]" value="other" class="w-4 h-4 accent-black" />
-            <span>Other (please specify below)</span>
-          </label>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="tattoo" class="w-4 h-4 accent-black" />
+      <span>Tattoo</span>
+    </label>
 
-        </div>
+    <label class="flex items-center gap-3 cursor-pointer">
+      <input type="checkbox" name="commissionType[]" value="other" class="w-4 h-4 accent-black" />
+      <span>Other (please specify below)</span>
+    </label>
 
-        <textarea 
-          name="commissionIdea" 
-          placeholder="Describe your commission idea in details...
-(If left blank, I will create it based on what I envision for your piece)
+  </div>
+</div>
 
-- What topic would you like the piece(s) to be about 
-(If left blank, I will create it based on what I envision for your piece)
+  <textarea 
+    id="commissionTextarea"
+    name="commissionIdea" 
+    placeholder="Describe your commission in detail...
 
-- Do you have preferred colors for the pieces?
-(If left blank, I will choose colors that fit my vision)
+Concept you have in mind (if any)
+Intended space (home, office, etc.)
+Your budget range
 
-- What is the mood of the piece?
-(If left blank, I will develop the piece(s) mood that fit my vision)
+The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas or requests for control over the creative process will not be accepted.
 
-- What size(s)? (inches or feet, format: H x W x L, e.g., 40 x 30 x 1.5 in)
-
-- What is your budget?
-(Please write your budget range, I will take in consideration when providing the piece(s) final price(s) to you). 
-" 
-          rows="5"
-          class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
-        ></textarea>
-
+If this section is left blank, the piece will be created based entirely on the artist's vision."
+    class="w-full border border-gray-300 rounded p-4 dark:border-gray-600 bg-gray-100 dark:bg-[#252525] leading-[1.3] resize-none overflow-hidden box-border md:mb-2"
+  ></textarea>
         <button 
           type="submit"
           class="px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition" style="padding: 8px 14px;"
@@ -328,6 +329,54 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------------
+  // TEXTAREA AUTO-RESIZE (FIXED)
+  // ------------------------
+  const commissionTextarea = document.getElementById("commissionTextarea");
+
+  if (commissionTextarea) {
+    const autoResize = (el) => {
+      // Temporarily reset height to auto to measure scrollHeight correctly
+      el.style.height = "auto";
+
+      // Get computed styles
+      const style = window.getComputedStyle(el);
+      const boxSizing = style.boxSizing;
+      const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      const border = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+
+      // Set new height depending on box-sizing
+      if (boxSizing === "border-box") {
+        el.style.height = el.scrollHeight + "px"; // scrollHeight already includes padding
+      } else { // content-box
+        el.style.height = (el.scrollHeight - padding) + "px"; 
+      }
+    };
+
+    // Initial resize
+    autoResize(commissionTextarea);
+
+    // Resize on input
+    commissionTextarea.addEventListener("input", () => autoResize(commissionTextarea));
+
+    // Optional: Resize on window resize in case font changes layout
+    window.addEventListener("resize", () => autoResize(commissionTextarea));
+  }
+
+  // ------------------------
+  // COMMISSION DROPDOWN
+  // ------------------------
+  const toggleBtn = document.getElementById("toggleCommissionTypes");
+  const options = document.getElementById("commissionOptions");
+  const arrow = document.getElementById("commissionArrow");
+
+  if (toggleBtn && options && arrow) {
+    toggleBtn.addEventListener("click", () => {
+      options.classList.toggle("hidden");
+      arrow.textContent = options.classList.contains("hidden") ? "+" : "−";
+    });
+  }
+
+  // ------------------------
   // FORM HANDLING
   // ------------------------
   function setupAjaxForm(formId, successId) {
@@ -364,7 +413,9 @@ document.addEventListener("DOMContentLoaded", () => {
           if (textarea) textarea.value = "";
           localStorage.removeItem("selectedArtworks");
         }
-      } else { alert("There was an error. Please try again later."); }
+      } else {
+        alert("There was an error. Please try again later.");
+      }
     });
   }
 
@@ -379,21 +430,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeBtn = document.getElementById("closeArtworkSelector");
   const confirmBtn = document.getElementById("confirmArtworkSelection");
   const preview = document.getElementById("selectedArtworksPreview");
-  const textarea = document.getElementById("selectedArtworkIDs");
-  if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !textarea) return;
+  const selectedTextarea = document.getElementById("selectedArtworkIDs");
+
+  if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !selectedTextarea) return;
 
   let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
   const items = Array.from(document.getElementsByClassName("artworkChoice"));
 
   const urlParams = new URLSearchParams(window.location.search);
   const addArtwork = urlParams.get("add");
-  if (addArtwork) { selected.add(addArtwork); localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected))); }
+  if (addArtwork) {
+    selected.add(addArtwork);
+    localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+  }
 
   function rebuildPreview() {
     preview.innerHTML = "";
     Array.from(selected).forEach(id => {
       const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
       if (!item) return;
+
       const thumb = document.createElement("img");
       thumb.src = item.dataset.image;
       thumb.style.width = "48px";
@@ -402,36 +458,65 @@ document.addEventListener("DOMContentLoaded", () => {
       thumb.style.borderRadius = "6px";
       thumb.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
       thumb.style.flexShrink = "0";
+
       preview.appendChild(thumb);
     });
-    textarea.value = Array.from(selected).join(", ");
+
+    selectedTextarea.value = Array.from(selected).join(", ");
   }
 
   items.forEach(item => {
     const id = item.dataset.id;
     const checkmark = item.querySelector(".checkmark-overlay");
-    if (selected.has(id)) { item.classList.add("ring-4", "ring-black"); if (checkmark) checkmark.classList.remove("hidden"); }
+
+    if (selected.has(id)) {
+      item.classList.add("ring-4", "ring-black");
+      if (checkmark) checkmark.classList.remove("hidden");
+    }
   });
 
   rebuildPreview();
 
-  openBtn.addEventListener("click", () => { modal.classList.remove("hidden"); modal.classList.add("flex"); });
-  function closeModal() { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+  openBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+
   closeBtn.addEventListener("click", closeModal);
-  modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+  modal.addEventListener("click", e => {
+    if (e.target === modal) closeModal();
+  });
 
   items.forEach(item => {
     item.addEventListener("click", () => {
       const id = item.dataset.id;
       const checkmark = item.querySelector(".checkmark-overlay");
-      if (selected.has(id)) { selected.delete(id); item.classList.remove("ring-4", "ring-black"); if (checkmark) checkmark.classList.add("hidden"); }
-      else { selected.add(id); item.classList.add("ring-4", "ring-black"); if (checkmark) checkmark.classList.remove("hidden"); }
+
+      if (selected.has(id)) {
+        selected.delete(id);
+        item.classList.remove("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.add("hidden");
+      } else {
+        selected.add(id);
+        item.classList.add("ring-4", "ring-black");
+        if (checkmark) checkmark.classList.remove("hidden");
+      }
+
       localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
     });
   });
 
-  confirmBtn.addEventListener("click", () => { rebuildPreview(); closeModal(); });
+  confirmBtn.addEventListener("click", () => {
+    rebuildPreview();
+    closeModal();
+  });
 
 });
 </script>
+
 {{ end }}
