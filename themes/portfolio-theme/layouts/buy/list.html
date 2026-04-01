@@ -58,6 +58,55 @@
           readonly
           required
         ></textarea>
+        
+        <!-- HOW WOULD YOU LIKE THE ARTWORK(S) QUESTION -->
+<div class="border border-gray-300 rounded p-3 bg-gray-100 mb-3">
+  <p class="mb-2 font-medium text-gray-700 font-sans">What format would you like the artwork(s) in?</p>
+  
+  <label class="flex items-center gap-3 cursor-pointer">
+    <input type="radio" name="artworkType" value="original" class="w-4 h-4 accent-black" required>
+    <span>Original(s)</span>
+  </label>
+
+  <label class="flex items-center gap-3 cursor-pointer">
+    <input type="radio" name="artworkType" value="print" class="w-4 h-4 accent-black">
+    <span>Print(s)</span>
+  </label>
+
+  <label class="flex items-center gap-3 cursor-pointer">
+    <input type="radio" name="artworkType" value="other" class="w-4 h-4 accent-black" id="artworkOtherRadio">
+    <span>Other</span>
+  </label>
+
+  <input 
+    type="text" 
+    name="artworkOtherText" 
+    placeholder="Please specify"
+    class="border border-gray-300 rounded p-3 bg-gray-100 mt-2 hidden"
+    id="artworkOtherInput"
+  />
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const otherRadio = document.getElementById("artworkOtherRadio");
+  const otherInput = document.getElementById("artworkOtherInput");
+  const radios = document.querySelectorAll('input[name="artworkType"]');
+
+  radios.forEach(radio => {
+    radio.addEventListener("change", () => {
+      if (otherRadio.checked) {
+        otherInput.classList.remove("hidden");
+        otherInput.required = true;
+      } else {
+        otherInput.classList.add("hidden");
+        otherInput.required = false;
+        otherInput.value = "";
+      }
+    });
+  });
+});
+</script>
 
         <input 
           type="text" 
@@ -86,7 +135,7 @@
         <input 
           type="text" 
           name="buyerlocation" 
-          placeholder="Where are you located? (City, Country e.g., Paris, France)" 
+          placeholder="Where are you located? (City, Country)" 
           class="border border-gray-300 rounded p-3 bg-gray-100"
           required
         />

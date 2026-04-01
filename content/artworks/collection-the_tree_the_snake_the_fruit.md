@@ -1,5 +1,5 @@
 ---
-title: "The Tree, The Snake, The Fruit Collection"
-layout: "collection"
+title: "'The Tree, The Snake, The Fruit' Collection"
+layout: "collection-tree"
 collection: "The Tree, The Snake, The Fruit"
 ---

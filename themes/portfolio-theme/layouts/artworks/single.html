@@ -126,7 +126,46 @@
   {{ $prev := cond (gt $currentIndex 0) (index $sorted (sub $currentIndex 1)) nil }}
   {{ $next := cond (lt $currentIndex (sub (len $sorted) 1)) (index $sorted (add $currentIndex 1)) nil }}
 
-  <!-- ARROWS -->
+<!-- ARROWS -->
+{{ $inprogress := .Params.inprogress | default false }}
+
+{{ if and (eq .Params.collection "The Tree, The Snake, The Fruit") (findRE "mo6\\.[0-9]+" .Params.id) (not $inprogress) }}
+  {{/* Tree collection arrows (mo6 sequence) */}}
+  {{ $treeRaw := where .Site.RegularPages "Section" "artworks" }}
+  {{ $treeClean := slice }}
+  {{ range $treeRaw }}
+    {{ $tInprogress := .Params.inprogress | default false }}
+    {{ if and (eq .Params.collection "The Tree, The Snake, The Fruit") (findRE "mo6\\.[0-9]+" .Params.id) (not $tInprogress) }}
+      {{ $treeClean = $treeClean | append . }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Extract numeric part from mo6.X */}}
+  {{ $treeWithNum := slice }}
+  {{ range $treeClean }}
+    {{ $matches := findRE "mo6\\.[0-9]+" .Params.id }}
+    {{ $num := 0 }}
+    {{ if gt (len $matches) 0 }}
+      {{ $num = int (replaceRE "mo6\\." "" (index $matches 0)) }}
+    {{ end }}
+    {{ $treeWithNum = $treeWithNum | append (dict "art" . "num" $num) }}
+  {{ end }}
+
+  {{/* Sort by mo6 number ascending */}}
+  {{ $treeSorted := sort $treeWithNum "num" "asc" }}
+
+  {{/* Find current index */}}
+  {{ $currentIndex := -1 }}
+  {{ range $i, $entry := $treeSorted }}
+    {{ if eq $entry.art.RelPermalink $.RelPermalink }}
+      {{ $currentIndex = $i }}
+    {{ end }}
+  {{ end }}
+
+  {{/* Only assign prev/next if within bounds */}}
+  {{ $prev := cond (gt $currentIndex 0) (index $treeSorted (sub $currentIndex 1)).art nil }}
+  {{ $next := cond (lt $currentIndex (sub (len $treeSorted) 1)) (index $treeSorted (add $currentIndex 1)).art nil }}
+
   {{ with $prev }}
     <a href="{{ .RelPermalink }}" id="prevBtnDesktop"
        class="arrow-btn fixed left-10 top-1/2 -translate-y-1/2">
@@ -141,6 +180,45 @@
     </a>
   {{ end }}
 
+{{ else }}
+  {{/* Default arrows for all other artworks pages */}}
+  {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+  {{ $clean := slice }}
+  {{ range $raw }}
+    {{ $aInprogress := .Params.inprogress | default false }}
+    {{ $isMo6 := findRE "mo6" .Params.id }}
+    {{ if and (not $aInprogress) (or (not $isMo6) (eq .Params.id "LA2025-mo6")) (isset .Params "worknum") }}
+      {{ $clean = $clean | append . }}
+    {{ end }}
+  {{ end }}
+
+  {{ $sorted := sort $clean "Params.worknum" "desc" }}
+
+  {{ $currentIndex := -1 }}
+  {{ range $i, $p := $sorted }}
+    {{ if eq $p.RelPermalink $.RelPermalink }}
+      {{ $currentIndex = $i }}
+    {{ end }}
+  {{ end }}
+
+  {{ $prev := cond (gt $currentIndex 0) (index $sorted (sub $currentIndex 1)) nil }}
+  {{ $next := cond (lt $currentIndex (sub (len $sorted) 1)) (index $sorted (add $currentIndex 1)) nil }}
+
+  {{ with $prev }}
+    <a href="{{ .RelPermalink }}" id="prevBtnDesktop"
+       class="arrow-btn fixed left-10 top-1/2 -translate-y-1/2">
+      &lt Previous
+    </a>
+  {{ end }}
+
+  {{ with $next }}
+    <a href="{{ .RelPermalink }}" id="nextBtnDesktop"
+       class="arrow-btn fixed right-10 top-1/2 -translate-y-1/2">
+      Next &gt
+    </a>
+  {{ end }}
+
+{{ end }}
 </section>
 
 {{ end }}
