@@ -60,7 +60,7 @@
         ></textarea>
         
         <!-- HOW WOULD YOU LIKE THE ARTWORK(S) QUESTION -->
-<div class="border border-gray-300 rounded p-3 bg-gray-100 mb-3">
+<div class="border border-gray-300 rounded p-3 bg-gray-100">
   <p class="mb-2 font-medium text-gray-700 font-sans">What format would you like the artwork(s) in?</p>
   
   <label class="flex items-center gap-3 cursor-pointer">
@@ -434,10 +434,17 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!form) return;
 
     form.addEventListener("submit", async function(event) {
-      event.preventDefault();
-      if (typeof grecaptcha === "undefined") { alert("reCAPTCHA not loaded."); return; }
+  event.preventDefault();
 
-      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+  // Check if any artwork is selected
+  if (!selectedTextarea.value || selected.size === 0) {
+    alert("Please select at least one artwork before submitting your purchase request.");
+    return;
+  }
+
+  if (typeof grecaptcha === "undefined") { alert("reCAPTCHA not loaded."); return; }
+
+  const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
       const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
