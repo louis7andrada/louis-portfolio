@@ -1,0 +1,58 @@
+{{ define "main" }}
+
+<section class="flex flex-col items-center justify-start pt-16 pb-14 px-6">
+
+  <!-- Profile Image -->
+  <div class="w-32 h-32 rounded-full overflow-hidden shadow mb-6">
+    <img 
+      src="/profile2.jpeg" 
+      alt="Louis Andrada" 
+      class="w-full h-full object-cover"
+    />
+  </div>
+
+  <!-- Name -->
+  <h1 class="text-2xl font-semibold mb-2">Louis Andrada</h1>
+
+  <!-- Tagline -->
+  <p class="text-gray-600 mb-8 text-center max-w-sm">
+    Painter & Research Coordinator
+    <br> Toronto based
+    <br> ܡܢܗܪܢܐ
+  </p>
+
+  <!-- LINKS -->
+  <div class="w-full max-w-sm flex flex-col gap-4">
+    <a href="https://www.linkedin.com/in/luis7andrada/" target="_blank" rel="noopener noreferrer" class="link-btn">LinkedIn</a>
+    <a href="https://linkbio.co/IOHRGUofT" target="_blank" rel="noopener noreferrer" class="link-btn">IOHRG - U of T</a>
+    <a href="https://www.louisandrada.com" target="_blank" rel="noopener noreferrer" class="link-btn">Art - Portfolio Website</a>
+    <a href="https://instagram.com/viiii13iixv" target="_blank" rel="noopener noreferrer" class="link-btn">Art - Instagram</a>
+    <a href="https://instagram.com/louis7andrada" target="_blank" rel="noopener noreferrer" class="link-btn">Private Instagram</a>
+    <a href="https://m.imdb.com/name/nm13775288/" target="_blank" rel="noopener noreferrer" class="link-btn">IMDb - Filmography</a>
+  </div>
+
+</section>
+
+<style>
+.link-btn {
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  background: #575757;
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.link-btn:hover {
+  background: #9a9a9a;
+}
+.dark .link-btn {
+  background: #3a3a3a;
+}
+.dark .link-btn:hover {
+  background: #4a4a4a;
+}
+</style>
+
+{{ end }}
