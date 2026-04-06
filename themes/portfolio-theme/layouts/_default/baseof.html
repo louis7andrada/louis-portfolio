@@ -47,7 +47,9 @@
 
 <body class="font-sans bg-white text-black dark:bg-[#111] dark:text-white">
 
-  {{ partial "header.html" .}}
+  {{ if ne .Params.hideHeader true }}
+  {{ partial "header.html" . }}
+  {{ end }}
 
   <main>
     {{ block "main" . }}{{ end }}
