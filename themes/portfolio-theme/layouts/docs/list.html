@@ -1,0 +1,37 @@
+{{ define "main" }}
+
+<section class="flex flex-col items-center justify-start pt-16 pb-14 px-6">
+
+  <!-- Name -->
+  <h1 class="text-2xl font-semibold mb-2">Louis Andrada - Documents</h1>
+  <br>
+
+  <!-- LINKS -->
+  <div class="w-full max-w-sm flex flex-col gap-4">
+    <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="link-btn">CV</a>
+    <a href="{{ with site.GetPage "docs/dop" }}{{ .Params.image }}{{ end }}" target="_blank" class="link-btn">Description of Practice</a>
+</section>
+
+<style>
+.link-btn {
+  width: 100%;
+  padding: 0.75rem;
+  text-align: center;
+  background: #575757;
+  color: white;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+.link-btn:hover {
+  background: #9a9a9a;
+}
+.dark .link-btn {
+  background: #3a3a3a;
+}
+.dark .link-btn:hover {
+  background: #4a4a4a;
+}
+</style>
+
+{{ end }}

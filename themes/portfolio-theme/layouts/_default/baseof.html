@@ -45,13 +45,13 @@
 
 </head>
 
-<body class="font-sans bg-white text-black dark:bg-[#111] dark:text-white">
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#111] dark:text-white">
 
   {{ if ne .Params.hideHeader true }}
   {{ partial "header.html" . }}
   {{ end }}
 
-  <main>
+  <main class="flex-1 flex flex-col">
     {{ block "main" . }}{{ end }}
   </main>
 

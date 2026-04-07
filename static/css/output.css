@@ -997,6 +997,10 @@ button,
   height: 100%;
 }
 
+.h-screen {
+  height: 100vh;
+}
+
 .max-h-\[520px\] {
   max-height: 520px;
 }
@@ -1127,6 +1131,10 @@ button,
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .flex-shrink {

@@ -57,6 +57,17 @@
     </div>
   </div>
 
+  <!-- CV -->
+  <div class="mb-16">
+    <h2 class="text-2xl font-semibold mb-4">CV</h2>
+    <div class="space-y-2 leading-relaxed">
+      <p>
+        To download and view my CV, visit
+        <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="underline" rel="noopener noreferrer">louisandrada.com/cv</a>.
+      </p>
+    </div>
+  </div>
+
 </section>
 
 {{ end }}
