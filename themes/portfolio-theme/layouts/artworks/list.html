@@ -21,7 +21,7 @@
           {{ end }}
         {{ end }}
 
-        {{ range sort (uniq $years) }}
+        {{ range sort (uniq $years) "value" "desc" }}
           <option value="{{ . }}">{{ . }}</option>
         {{ end }}
       </select>

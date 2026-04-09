@@ -997,10 +997,6 @@ button,
   height: 100%;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
 .max-h-\[520px\] {
   max-height: 520px;
 }
