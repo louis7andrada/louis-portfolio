@@ -162,7 +162,12 @@ function initArtworksPage() {
       const itemCollection = item.dataset.collection || "";
 
       const matchYear = yearValue === "all" || itemYear === yearValue;
-      const matchCollection = collectionValue === "all" || itemCollection === collectionValue;
+      const matchCollection =
+  collectionValue === "all" ||
+  itemCollection
+    .split(",")
+    .map(c => c.trim())
+    .includes(collectionValue);
 
       if (matchYear && matchCollection) {
         item.classList.remove("hidden");

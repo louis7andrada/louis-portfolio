@@ -33,11 +33,41 @@
 
       <select id="filterCollection" class="border border-gray-300 rounded p-2 w-48">
         <option value="all">All Collections</option>
-        {{ range uniq (where .Site.RegularPages "Section" "artworks") }}
-          {{ with .Params.collection }}
-            <option value="{{ . }}">{{ . }}</option>
-          {{ end }}
+{{ $collectionMap := dict }}
+
+{{ range where .Site.RegularPages "Section" "artworks" }}
+
+  {{ $worknum := .Params.worknum }}
+
+  {{ with .Params.collection }}
+
+    {{ if reflect.IsSlice . }}
+      {{ range . }}
+        {{ $existing := index $collectionMap . | default 0 }}
+        {{ if gt $worknum $existing }}
+          {{ $collectionMap = merge $collectionMap (dict . $worknum) }}
         {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ $existing := index $collectionMap . | default 0 }}
+      {{ if gt $worknum $existing }}
+        {{ $collectionMap = merge $collectionMap (dict . $worknum) }}
+      {{ end }}
+    {{ end }}
+
+  {{ end }}
+
+{{ end }}
+
+{{ $collections := slice }}
+
+{{ range $name, $num := $collectionMap }}
+  {{ $collections = $collections | append (dict "name" $name "worknum" $num) }}
+{{ end }}
+
+{{ range sort $collections "worknum" "desc" }}
+  <option value="{{ .name }}">{{ .name }}</option>
+{{ end }}
       </select>
     </div>
 
@@ -65,7 +95,7 @@
         href="{{ .RelPermalink }}" 
         class="artwork-item cursor-pointer group block w-full md:w-auto"
         data-year="{{ .Params.year }}"
-        data-collection="{{ .Params.collection }}"
+        data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}"
         data-title="{{ .Title }}"
         data-medium="{{ .Params.medium }}"
         data-size="{{ .Params.size }}"
