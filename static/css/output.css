@@ -742,14 +742,6 @@ button,
   top: 2rem;
 }
 
-.right-4 {
-  right: 1rem;
-}
-
-.top-0 {
-  top: 0px;
-}
-
 .z-40 {
   z-index: 40;
 }
@@ -866,14 +858,6 @@ button,
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.mb-0 {
-  margin-bottom: 0px;
-}
-
-.ml-auto {
-  margin-left: auto;
 }
 
 .box-border {
@@ -1331,10 +1315,6 @@ button,
   white-space: nowrap;
 }
 
-.whitespace-nowrap {
-  white-space: nowrap;
-}
-
 .rounded {
   border-radius: 0.25rem;
 }
@@ -1548,10 +1528,6 @@ button,
   text-align: center;
 }
 
-.text-right {
-  text-align: right;
-}
-
 .font-sans {
   font-family: "IBM Plex Sans", sans-serif;
 }
@@ -1602,60 +1578,6 @@ button,
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-
-.text-\[8px\] {
-  font-size: 8px;
-}
-
-.\!text-\[10px\] {
-  font-size: 10px !important;
-}
-
-.\!text-\[14px\] {
-  font-size: 14px !important;
-}
-
-.\!text-\[12px\] {
-  font-size: 12px !important;
-}
-
-.\!text-\[11px\] {
-  font-size: 11px !important;
-}
-
-.\!text-xs {
-  font-size: 0.75rem !important;
-  line-height: 1rem !important;
-}
-
-.\!text-\[1px\] {
-  font-size: 1px !important;
-}
-
-.\!text-\[9px\] {
-  font-size: 9px !important;
-}
-
-.\!text-\[2px\] {
-  font-size: 2px !important;
-}
-
-.\!text-\[7px\] {
-  font-size: 7px !important;
-}
-
-.\!text-\[8px\] {
-  font-size: 8px !important;
-}
-
-.\!text-\[20px\] {
-  font-size: 20px !important;
-}
-
-.\!text-sm {
-  font-size: 0.875rem !important;
-  line-height: 1.25rem !important;
 }
 
 .font-bold {
@@ -1733,10 +1655,6 @@ button,
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-
-.\!text-\[px\] {
-  color: px !important;
 }
 
 .underline {

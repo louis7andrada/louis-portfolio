@@ -14,6 +14,8 @@ resources/_gen/
 # =========================
 static/images/artworks/
 static/images/archive/
+static/images/archive/
+static/images/docs/
 
 # =========================
 # Local analytics + scripts (private)
