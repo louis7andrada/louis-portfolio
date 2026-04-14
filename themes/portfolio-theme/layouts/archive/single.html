@@ -73,34 +73,22 @@
   {{/* Load all archive pages */}}
   {{ $raw := where .Site.RegularPages "Section" "archive" }}
 
-  {{/* Category priority map */}}
-  {{ $priority := dict "studios" 1 "photos" 2 "galleries" 3 }}
-
   {{/* Build clean list with computed sort keys */}}
   {{ $clean := slice }}
 
-  {{ range $raw }}
+{{ range $raw }}
 
-    {{ $cat := .Params.category }}
-    {{ $prio := index $priority $cat }}
+  {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
 
-    {{/* Extract trailing number from category, e.g. studio3 → 3 */}}
-    {{ $num := 0 }}
-    {{ with findRE "[0-9]+$" .File.BaseFileName }}
-      {{ $num = (int (index . 0)) }}
-    {{ end }}
+  {{ $item := dict 
+      "page" . 
+      "year" .Params.year 
+      "rand" $hash
+  }}
 
-    {{/* Attach sort metadata */}}
-    {{ $item := dict 
-        "page" . 
-        "year" .Params.year 
-        "prio" $prio 
-        "num" $num 
-    }}
+  {{ $clean = $clean | append $item }}
 
-    {{ $clean = $clean | append $item }}
-
-  {{ end }}
+{{ end }}
 
   {{/* SORTING ORDER:
         1. Year DESC
@@ -108,9 +96,8 @@
         3. Number DESC (studio3 → studio2 → studio1)
   */}}
 
-  {{ $sorted := sort $clean "num" "desc" }}
-  {{ $sorted := sort $sorted "prio" "asc" }}
-  {{ $sorted := sort $sorted "year" "desc" }}
+{{ $sorted := sort $clean "rand" "asc" }}
+{{ $sorted := sort $sorted "year" "desc" }}
 
   <!-- FIND CURRENT INDEX -->
   {{ $currentIndex := -1 }}
