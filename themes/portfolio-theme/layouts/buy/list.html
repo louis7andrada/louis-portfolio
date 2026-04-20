@@ -54,7 +54,7 @@
           name="selectedArtworks"
           id="selectedArtworkIDs"
           placeholder="Please select artwork(s) above"
-          class="border border-gray-400 rounded p-3 bg-gray-300 cursor-not-allowed"
+          class="hidden"
           readonly
           required
         ></textarea>
@@ -463,6 +463,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedTextarea = document.getElementById("selectedArtworkIDs");
   const notListedBtn = document.getElementById("notListedBtn");
   const notListedInput = document.getElementById("notListedInput");
+  notListedInput.value = localStorage.getItem("notListedCustom") || "";
   const artworkGrid = document.querySelector("#artworkSelectorModal .grid");
 
   let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
@@ -490,10 +491,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (customText) combined.push(customText);
 
   if (selectedTextarea) {
-  selectedTextarea.value = JSON.stringify({
-    selected: ids,
-    custom: customText || null
-  });
+  if (ids.length === 0 && !customText) {
+    selectedTextarea.value = "Please select artworks above or choose from 'Artworks' Page";
+  } else {
+    selectedTextarea.value = JSON.stringify({
+      selected: ids,
+      custom: customText || null
+    });
+  }
 }
 
   // Render selected artworks
@@ -593,7 +598,10 @@ document.addEventListener("DOMContentLoaded", () => {
     rebuildPreview();
   });
 
-  notListedInput.addEventListener("input", rebuildPreview);
+  notListedInput.addEventListener("input", () => {
+  rebuildPreview();
+  localStorage.setItem("notListedCustom", notListedInput.value);
+});
   notListedInput.addEventListener("click", (e) => e.stopPropagation());
 }
 
