@@ -348,7 +348,7 @@ If this section is left blank, the piece will be created based entirely on the a
   id="artworkSelectorModal"
   class="fixed inset-0 bg-[#575757] bg-opacity-70 hidden items-center justify-center p-6 z-50"
 >
-  <div class="bg-white max-w-4xl w-full rounded-lg p-6 relative">
+  <div class="bg-white max-w-4xl w-full rounded-lg relative max-h-[80vh] md:max-h-[85vh] flex flex-col">
 
     <button 
       id="closeArtworkSelector"
@@ -357,70 +357,73 @@ If this section is left blank, the piece will be created based entirely on the a
       &times;
     </button>
 
-    <h2 class="text-xl font-semibold mb-4">Select Artwork(s)</h2>
+    <h2 class="text-xl font-semibold p-6 pb-0">Select Artwork(s)</h2>
 
-    <div class="mb-4">
+    <!-- SCROLLABLE CONTENT -->
+    <div class="overflow-y-auto p-6 flex-1">
+
+      <div class="mb-4 flex flex-col items-start gap-2">
   <button 
     type="button"
     id="notListedBtn"
-    class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition w-full text-left"
+    class="px-3 py-1.5 bg-gray-200 rounded hover:bg-gray-300 transition text-sm"
   >
-    If artwork is not on the list below, please click here to specify.
+    Artwork not listed? Click here to specify
   </button>
 
   <input
     type="text"
     id="notListedInput"
-    placeholder="Specify the artwork you are looking for"
-    class="mt-3 w-full border border-gray-300 rounded p-3 hidden"
+    placeholder="Specify artwork"
+    class="border border-gray-300 rounded p-2 text-sm hidden w-64 max-w-full"
   />
 </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto pr-2">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pr-2">
 
-      {{/* START WITH ALL ARTWORKS */}}
-      {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+        {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+        {{ $clean := slice }}
 
-      {{/* FILTERED LIST */}}
-      {{ $clean := slice }}
+        {{ range $raw }}
+          {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
+          {{ if .Params.inprogress }}{{ continue }}{{ end }}
+          {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
+          {{ if ne (lower .Params.availability) "available" }}{{ continue }}{{ end }}
+          {{ $clean = $clean | append . }}
+        {{ end }}
 
-      {{ range $raw }}
-        {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
-        {{ if .Params.inprogress }}{{ continue }}{{ end }}
-        {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
-        {{ if ne (lower .Params.availability) "available" }}{{ continue }}{{ end }}
-        {{ $clean = $clean | append . }}
-      {{ end }}
+        {{ $sorted := sort $clean "Params.worknum" "desc" }}
 
-      {{/* SORT BY worknum DESC */}}
-      {{ $sorted := sort $clean "Params.worknum" "desc" }}
+        {{ range $sorted }}
+        <div 
+          class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
+          data-id="{{ .File.BaseFileName }}"
+          data-title="{{ .Title }}"
+          data-image="{{ .Params.image }}"
+        >
+          <img src="{{ .Params.image }}" class="w-full h-auto rounded">
 
-      {{ range $sorted }}
-      <div 
-        class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
-        data-id="{{ .File.BaseFileName }}"
-        data-title="{{ .Title }}"
-        data-image="{{ .Params.image }}"
-      >
-        <img src="{{ .Params.image }}" class="w-full h-auto rounded">
+          <div class="checkmark-overlay hidden absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">
+            ✓
+          </div>
 
-        <!-- CHECKMARK OVERLAY -->
-        <div class="checkmark-overlay hidden absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">
-          ✓
+          <p class="text-center text-sm mt-1">{{ .Title }}</p>
         </div>
+        {{ end }}
 
-        <p class="text-center text-sm mt-1">{{ .Title }}</p>
       </div>
-      {{ end }}
-
     </div>
 
-    <button 
-      id="confirmArtworkSelection"
-      class="mt-6 px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition w-full" style="padding: 8px 14px;"
-    >
-      Confirm Selection
-    </button>
+    <!-- FIXED BUTTON -->
+    <div class="p-4">
+      <button 
+        id="confirmArtworkSelection"
+        class="w-full px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition"
+        style="padding: 8px 14px;"
+      >
+        Confirm Selection
+      </button>
+    </div>
 
   </div>
 </div>
@@ -464,6 +467,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const notListedBtn = document.getElementById("notListedBtn");
   const notListedInput = document.getElementById("notListedInput");
   notListedInput.value = localStorage.getItem("notListedCustom") || "";
+  const savedCustom = localStorage.getItem("notListedCustom");
+
+if (savedCustom && savedCustom.trim() !== "") {
+  notListedInput.classList.remove("hidden");
+  notListedBtn.classList.add("ring-2", "ring-black");
+}
   const artworkGrid = document.querySelector("#artworkSelectorModal .grid");
 
   let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
@@ -544,11 +553,25 @@ document.addEventListener("DOMContentLoaded", () => {
   rebuildPreview();
 
   if (openBtn && modal) {
-    openBtn.addEventListener("click", () => {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    });
-  }
+  openBtn.addEventListener("click", () => {
+
+    // FORCE SYNC ON OPEN
+    const savedCustom = localStorage.getItem("notListedCustom");
+
+    if (savedCustom && savedCustom.trim() !== "") {
+      notListedInput.value = savedCustom;
+      notListedInput.classList.remove("hidden");
+      notListedBtn.classList.add("ring-2", "ring-black");
+    } else {
+      notListedInput.value = "";
+      notListedInput.classList.add("hidden");
+      notListedBtn.classList.remove("ring-2", "ring-black");
+    }
+
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  });
+}
 
   function closeModal() {
     modal.classList.add("hidden");
@@ -590,10 +613,11 @@ document.addEventListener("DOMContentLoaded", () => {
       notListedInput.classList.remove("hidden");
       notListedBtn.classList.add("ring-2", "ring-black");
     } else {
-      notListedInput.classList.add("hidden");
-      notListedInput.value = "";
-      notListedBtn.classList.remove("ring-2", "ring-black");
-    }
+  notListedInput.classList.add("hidden");
+  notListedInput.value = "";
+  notListedBtn.classList.remove("ring-2", "ring-black");
+  localStorage.removeItem("notListedCustom");
+}
 
     rebuildPreview();
   });
