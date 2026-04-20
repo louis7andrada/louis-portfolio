@@ -671,12 +671,21 @@ document.addEventListener("DOMContentLoaded", () => {
       successMessage?.classList.remove("hidden");
 
       if (formId === "buyForm") {
-        preview.innerHTML = "";
-        selectedTextarea.value = "";
-        localStorage.removeItem("selectedArtworks");
-        selected.clear();
-        syncUISelection();
-      }
+  preview.innerHTML = "";
+  selectedTextarea.value = "";
+
+  localStorage.removeItem("selectedArtworks");
+  localStorage.removeItem("notListedCustom");
+
+  selected.clear();
+
+  if (notListedInput) {
+    notListedInput.value = "";
+    notListedInput.classList.add("hidden");
+  }
+
+  syncUISelection();
+}
     }
   });
 
