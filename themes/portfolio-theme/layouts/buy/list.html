@@ -463,16 +463,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedTextarea = document.getElementById("selectedArtworkIDs");
   const notListedBtn = document.getElementById("notListedBtn");
   const notListedInput = document.getElementById("notListedInput");
-
-  const items = Array.from(document.getElementsByClassName("artworkChoice"));
+  const artworkGrid = document.querySelector("#artworkSelectorModal .grid");
 
   let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
-  let customStored = localStorage.getItem("customArtworkText") || "";
+  const items = Array.from(document.getElementsByClassName("artworkChoice"));
 
-  if (notListedInput) {
-    notListedInput.value = customStored;
-  }
-
+  // FIX 1: URL param sync BEFORE UI render
   const params = new URLSearchParams(window.location.search);
   const addId = params.get("add");
 
@@ -483,43 +479,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function rebuildPreview() {
-    if (!preview) return;
+  if (!preview) return;
+  preview.innerHTML = "";
 
-    preview.innerHTML = "";
+  const ids = Array.from(selected);
+  const customText = notListedInput ? notListedInput.value.trim() : "";
 
-    const ids = Array.from(selected);
-    const customText = notListedInput ? notListedInput.value.trim() : "";
+  // Combine both into textarea
+  let combined = [...ids];
+  if (customText) combined.push(customText);
 
-    if (selectedTextarea) {
-      selectedTextarea.value = JSON.stringify({
-        selected: ids,
-        custom: customText || null
-      });
-    }
+  if (selectedTextarea) {
+  selectedTextarea.value = JSON.stringify({
+    selected: ids,
+    custom: customText || null
+  });
+}
 
-    ids.forEach(id => {
-      const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
-      if (!item) return;
+  // Render selected artworks
+  ids.forEach(id => {
+    const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
+    if (!item) return;
 
-      const img = document.createElement("img");
-      img.src = item.dataset.image;
-      img.style.width = "48px";
-      img.style.height = "48px";
-      img.style.objectFit = "cover";
-      img.style.borderRadius = "6px";
-      preview.appendChild(img);
-    });
+    const img = document.createElement("img");
+    img.src = item.dataset.image;
+    img.style.width = "48px";
+    img.style.height = "48px";
+    img.style.objectFit = "cover";
+    img.style.borderRadius = "6px";
+    preview.appendChild(img);
+  });
 
-    if (customText) {
-      const tag = document.createElement("div");
-      tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
-      tag.textContent = customText;
-      preview.appendChild(tag);
-    }
-
-    localStorage.setItem("customArtworkText", customText);
+  // Render custom text
+  if (customText) {
+    const tag = document.createElement("div");
+    tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
+    tag.textContent = customText;
+    preview.appendChild(tag);
   }
+}
 
+  // FIX 2: force UI sync AFTER URL injection
   function syncUISelection() {
     items.forEach(item => {
       const id = item.dataset.id;
@@ -559,6 +559,7 @@ document.addEventListener("DOMContentLoaded", () => {
   items.forEach(item => {
     item.addEventListener("click", () => {
       const id = item.dataset.id;
+      const check = item.querySelector(".checkmark-overlay");
 
       if (selected.has(id)) {
         selected.delete(id);
@@ -573,36 +574,47 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // FIX 3: prevent glitch from nested input inside button
   if (notListedBtn && notListedInput) {
 
-    notListedBtn.addEventListener("click", () => {
-      const isHidden = notListedInput.classList.contains("hidden");
+  notListedBtn.addEventListener("click", () => {
 
-      if (isHidden) {
-        notListedInput.classList.remove("hidden");
-        notListedBtn.classList.add("ring-2", "ring-black");
-      } else {
-        notListedInput.classList.add("hidden");
-        notListedInput.value = "";
-        notListedBtn.classList.remove("ring-2", "ring-black");
-      }
+    const isHidden = notListedInput.classList.contains("hidden");
 
-      rebuildPreview();
-    });
+    if (isHidden) {
+      notListedInput.classList.remove("hidden");
+      notListedBtn.classList.add("ring-2", "ring-black");
+    } else {
+      notListedInput.classList.add("hidden");
+      notListedInput.value = "";
+      notListedBtn.classList.remove("ring-2", "ring-black");
+    }
 
-    notListedInput.addEventListener("input", rebuildPreview);
-    notListedInput.addEventListener("click", (e) => e.stopPropagation());
-  }
+    rebuildPreview();
+  });
 
-  document.getElementById("confirmArtworkSelection")?.addEventListener("click", () => {
+  notListedInput.addEventListener("input", rebuildPreview);
+  notListedInput.addEventListener("click", (e) => e.stopPropagation());
+}
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#confirmArtworkSelection")) return;
     rebuildPreview();
     closeModal();
   });
 
-  async function handleSubmit(form, successMessage) {
+  document.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formId = form.id;
+
+    if (formId !== "buyForm" && formId !== "commissionForm") return;
+
+    const successId = formId === "buyForm" ? "buySuccessMessage" : "commissionSuccessMessage";
+    const successMessage = document.getElementById(successId);
 
     let parsed = null;
-
     try {
       parsed = selectedTextarea.value ? JSON.parse(selectedTextarea.value) : null;
     } catch {
@@ -610,8 +622,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (
-      form.id === "buyForm" &&
-      (!parsed || (!parsed.selected?.length && !parsed.custom))
+      formId === "buyForm" &&
+      (!parsed || (parsed.selected.length === 0 && !parsed.custom))
     ) {
       alert("Please select at least one artwork before submitting.");
       return;
@@ -630,13 +642,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const verifyData = await verifyRes.json();
 
-      if (!verifyData.success || verifyData.score < 0.5) {
-        alert("Verification failed. Please try again.");
-        return;
-      }
+      if (!verifyData.success || verifyData.score < 0.5) return;
 
     } catch {
-      alert("Verification error. Please try again.");
       return;
     }
 
@@ -654,35 +662,15 @@ document.addEventListener("DOMContentLoaded", () => {
       form.reset();
       successMessage?.classList.remove("hidden");
 
-      if (form.id === "buyForm") {
+      if (formId === "buyForm") {
         preview.innerHTML = "";
         selectedTextarea.value = "";
         localStorage.removeItem("selectedArtworks");
-        localStorage.removeItem("customArtworkText");
         selected.clear();
         syncUISelection();
       }
-    } else {
-      alert("Submission failed. Please try again.");
     }
-  }
-
-  const buyForm = document.getElementById("buyForm");
-  const commissionForm = document.getElementById("commissionForm");
-
-  if (buyForm) {
-    buyForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      handleSubmit(buyForm, document.getElementById("buySuccessMessage"));
-    });
-  }
-
-  if (commissionForm) {
-    commissionForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      handleSubmit(commissionForm, document.getElementById("commissionSuccessMessage"));
-    });
-  }
+  });
 
 });
 </script>
