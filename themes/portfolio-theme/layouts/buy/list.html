@@ -365,7 +365,7 @@ If this section is left blank, the piece will be created based entirely on the a
     id="notListedBtn"
     class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition w-full text-left"
   >
-    If artwork is not on the list below, please click here to specify the piece you're looking for.
+    If artwork is not on the list below, please click here to specify.
   </button>
 
   <input
@@ -431,9 +431,6 @@ If this section is left blank, the piece will be created based entirely on the a
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ------------------------
-  // TEXTAREA AUTO-RESIZE
-  // ------------------------
   const commissionTextarea = document.getElementById("commissionTextarea");
 
   if (commissionTextarea) {
@@ -448,9 +445,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("resize", () => autoResize(commissionTextarea));
   }
 
-  // ------------------------
-  // COMMISSION DROPDOWN
-  // ------------------------
   const toggleBtn = document.getElementById("toggleCommissionTypes");
   const options = document.getElementById("commissionOptions");
   const arrow = document.getElementById("commissionArrow");
@@ -462,9 +456,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------------
-  // ARTWORK SELECTOR STATE
-  // ------------------------
   const modal = document.getElementById("artworkSelectorModal");
   const openBtn = document.getElementById("openArtworkSelector");
   const closeBtn = document.getElementById("closeArtworkSelector");
@@ -472,38 +463,44 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedTextarea = document.getElementById("selectedArtworkIDs");
   const notListedBtn = document.getElementById("notListedBtn");
   const notListedInput = document.getElementById("notListedInput");
-  const artworkGrid = document.querySelector("#artworkSelectorModal .grid");
 
-  let mode = "selection";
-  let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
   const items = Array.from(document.getElementsByClassName("artworkChoice"));
 
-  // ------------------------
-  // PREVIEW RENDER
-  // ------------------------
+  let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
+  let customStored = localStorage.getItem("customArtworkText") || "";
+
+  if (notListedInput) {
+    notListedInput.value = customStored;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const addId = params.get("add");
+
+  if (addId) {
+    selected.add(addId);
+    localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
   function rebuildPreview() {
     if (!preview) return;
+
     preview.innerHTML = "";
 
-    if (mode === "custom") {
-      const text = notListedInput ? notListedInput.value.trim() : "";
-      if (selectedTextarea) selectedTextarea.value = text;
-
-      if (text) {
-        const tag = document.createElement("div");
-        tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
-        tag.textContent = text;
-        preview.appendChild(tag);
-      }
-      return;
-    }
-
     const ids = Array.from(selected);
-    if (selectedTextarea) selectedTextarea.value = ids.join(", ");
+    const customText = notListedInput ? notListedInput.value.trim() : "";
+
+    if (selectedTextarea) {
+      selectedTextarea.value = JSON.stringify({
+        selected: ids,
+        custom: customText || null
+      });
+    }
 
     ids.forEach(id => {
       const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
       if (!item) return;
+
       const img = document.createElement("img");
       img.src = item.dataset.image;
       img.style.width = "48px";
@@ -512,25 +509,35 @@ document.addEventListener("DOMContentLoaded", () => {
       img.style.borderRadius = "6px";
       preview.appendChild(img);
     });
+
+    if (customText) {
+      const tag = document.createElement("div");
+      tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
+      tag.textContent = customText;
+      preview.appendChild(tag);
+    }
+
+    localStorage.setItem("customArtworkText", customText);
   }
 
-  // ------------------------
-  // INITIAL STATE RESTORE
-  // ------------------------
-  items.forEach(item => {
-    const id = item.dataset.id;
-    const check = item.querySelector(".checkmark-overlay");
-    if (selected.has(id)) {
-      item.classList.add("ring-4", "ring-black");
-      if (check) check.classList.remove("hidden");
-    }
-  });
+  function syncUISelection() {
+    items.forEach(item => {
+      const id = item.dataset.id;
+      const check = item.querySelector(".checkmark-overlay");
 
+      if (selected.has(id)) {
+        item.classList.add("ring-4", "ring-black");
+        if (check) check.classList.remove("hidden");
+      } else {
+        item.classList.remove("ring-4", "ring-black");
+        if (check) check.classList.add("hidden");
+      }
+    });
+  }
+
+  syncUISelection();
   rebuildPreview();
 
-  // ------------------------
-  // OPEN / CLOSE MODAL
-  // ------------------------
   if (openBtn && modal) {
     openBtn.addEventListener("click", () => {
       modal.classList.remove("hidden");
@@ -544,127 +551,99 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
   modal?.addEventListener("click", e => {
     if (e.target === modal) closeModal();
   });
 
-  // ------------------------
-  // ARTWORK SELECTION
-  // ------------------------
   items.forEach(item => {
     item.addEventListener("click", () => {
-      if (mode === "custom") return;
       const id = item.dataset.id;
-      const check = item.querySelector(".checkmark-overlay");
 
       if (selected.has(id)) {
         selected.delete(id);
-        item.classList.remove("ring-4", "ring-black");
-        if (check) check.classList.add("hidden");
       } else {
         selected.add(id);
-        item.classList.add("ring-4", "ring-black");
-        if (check) check.classList.remove("hidden");
       }
 
       localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+
+      syncUISelection();
       rebuildPreview();
     });
   });
 
-  // ------------------------
-  // NOT LISTED MODE
-  // ------------------------
   if (notListedBtn && notListedInput) {
 
     notListedBtn.addEventListener("click", () => {
-      if (mode === "custom") {
-        mode = "selection";
+      const isHidden = notListedInput.classList.contains("hidden");
+
+      if (isHidden) {
+        notListedInput.classList.remove("hidden");
+        notListedBtn.classList.add("ring-2", "ring-black");
+      } else {
         notListedInput.classList.add("hidden");
         notListedInput.value = "";
-        if (artworkGrid) artworkGrid.classList.remove("hidden");
-        notListedBtn.textContent = "If artwork is not on the list below, please click here to specify the piece you're looking for.";
         notListedBtn.classList.remove("ring-2", "ring-black");
-      } else {
-        mode = "custom";
-        notListedInput.classList.remove("hidden");
-        if (artworkGrid) artworkGrid.classList.add("hidden");
-        selected.clear();
-        localStorage.removeItem("selectedArtworks");
-        items.forEach(el => {
-          el.classList.remove("ring-4", "ring-black");
-          const check = el.querySelector(".checkmark-overlay");
-          if (check) check.classList.add("hidden");
-        });
-        notListedBtn.textContent = "✓ Artwork not listed — specify below (click to cancel)";
-        notListedBtn.classList.add("ring-2", "ring-black");
       }
+
       rebuildPreview();
     });
 
-    notListedInput.addEventListener("input", () => {
-      if (selectedTextarea) selectedTextarea.value = notListedInput.value.trim();
-      rebuildPreview();
-    });
+    notListedInput.addEventListener("input", rebuildPreview);
+    notListedInput.addEventListener("click", (e) => e.stopPropagation());
   }
 
-  // ------------------------
-  // CONFIRM SELECTION — event delegation bypasses Hugo modal timing issue
-  // ------------------------
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("#confirmArtworkSelection")) return;
-
-    if (mode === "custom") {
-      const text = notListedInput ? notListedInput.value.trim() : "";
-      if (selectedTextarea) selectedTextarea.value = text;
-      if (preview) {
-        preview.innerHTML = "";
-        if (text) {
-          const tag = document.createElement("div");
-          tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
-          tag.textContent = text;
-          preview.appendChild(tag);
-        }
-      }
-    } else {
-      rebuildPreview();
-    }
-
+  document.getElementById("confirmArtworkSelection")?.addEventListener("click", () => {
+    rebuildPreview();
     closeModal();
   });
 
-// ------------------------
-  // FORM HANDLING — event delegation bypasses Hugo timing issue
-  // ------------------------
-  document.addEventListener("submit", async function(e) {
-    e.preventDefault();
+  async function handleSubmit(form, successMessage) {
 
-    const form = e.target;
-    const formId = form.id;
-    if (formId !== "buyForm" && formId !== "commissionForm") return;
+    let parsed = null;
 
-    const successId = formId === "buyForm" ? "buySuccessMessage" : "commissionSuccessMessage";
-    const successMessage = document.getElementById(successId);
+    try {
+      parsed = selectedTextarea.value ? JSON.parse(selectedTextarea.value) : null;
+    } catch {
+      parsed = null;
+    }
 
-    if (formId === "buyForm" && (!selectedTextarea || !selectedTextarea.value.trim())) {
+    if (
+      form.id === "buyForm" &&
+      (!parsed || (!parsed.selected?.length && !parsed.custom))
+    ) {
       alert("Please select at least one artwork before submitting.");
       return;
     }
 
-    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+    let token = null;
 
-    const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
+    try {
+      token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
 
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success || verifyData.score < 0.5) return;
+      const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      const verifyData = await verifyRes.json();
+
+      if (!verifyData.success || verifyData.score < 0.5) {
+        alert("Verification failed. Please try again.");
+        return;
+      }
+
+    } catch {
+      alert("Verification error. Please try again.");
+      return;
+    }
 
     form.querySelector(".recaptcha-token-field").value = token;
 
     const data = new FormData(form);
+
     const response = await fetch(form.action, {
       method: "POST",
       body: data,
@@ -673,15 +652,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (response.ok) {
       form.reset();
-      if (successMessage) successMessage.classList.remove("hidden");
+      successMessage?.classList.remove("hidden");
 
-      if (formId === "buyForm") {
-        if (preview) preview.innerHTML = "";
-        if (selectedTextarea) selectedTextarea.value = "";
+      if (form.id === "buyForm") {
+        preview.innerHTML = "";
+        selectedTextarea.value = "";
         localStorage.removeItem("selectedArtworks");
+        localStorage.removeItem("customArtworkText");
+        selected.clear();
+        syncUISelection();
       }
+    } else {
+      alert("Submission failed. Please try again.");
     }
-  });
+  }
+
+  const buyForm = document.getElementById("buyForm");
+  const commissionForm = document.getElementById("commissionForm");
+
+  if (buyForm) {
+    buyForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleSubmit(buyForm, document.getElementById("buySuccessMessage"));
+    });
+  }
+
+  if (commissionForm) {
+    commissionForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      handleSubmit(commissionForm, document.getElementById("commissionSuccessMessage"));
+    });
+  }
 
 });
 </script>
