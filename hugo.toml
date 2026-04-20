@@ -20,5 +20,4 @@ enableRobotsTXT = true
   home = ["HTML", "RSS"]
 
 [params]
-  recaptcha_site_key = "6LdOf3wsAAAAAJ7JhJeAshppid4Q2VCW7S6o-yYy"
-  recaptcha_secret_key = "6LdOf3wsAAAAAHly8HDpk6NmYQmiTKZHCQMcLtsW"
+  recaptcha_site_key = "6LcOzL8sAAAAAAf811mO6GNulTWREGNzkzxTScVk"

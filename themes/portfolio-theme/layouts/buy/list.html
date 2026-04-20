@@ -74,6 +74,18 @@
   </label>
 
   <label class="flex items-center gap-3 cursor-pointer">
+    <input type="radio" name="artworkType" value="print" class="w-4 h-4 accent-black" id="artworkLicenseRadio">
+    <span>Artwork License</span>
+  </label>
+  <input 
+    type="text" 
+    name="artworkLicenseText" 
+    placeholder="Please specify"
+    class="border border-gray-300 dark:border-gray-600 rounded p-3 bg-gray-100 dark:bg-[#252525] mt-2 hidden"
+    id="artworkLicenseInput"
+  />
+
+  <label class="flex items-center gap-3 cursor-pointer">
     <input type="radio" name="artworkType" value="other" class="w-4 h-4 accent-black" id="artworkOtherRadio">
     <span>Other</span>
   </label>
@@ -91,10 +103,16 @@
 document.addEventListener("DOMContentLoaded", () => {
   const otherRadio = document.getElementById("artworkOtherRadio");
   const otherInput = document.getElementById("artworkOtherInput");
+
+  const licenseRadio = document.getElementById("artworkLicenseRadio");
+  const licenseInput = document.getElementById("artworkLicenseInput");
+
   const radios = document.querySelectorAll('input[name="artworkType"]');
 
   radios.forEach(radio => {
     radio.addEventListener("change", () => {
+
+      // Handle "Other"
       if (otherRadio.checked) {
         otherInput.classList.remove("hidden");
         otherInput.required = true;
@@ -103,6 +121,17 @@ document.addEventListener("DOMContentLoaded", () => {
         otherInput.required = false;
         otherInput.value = "";
       }
+
+      // Handle "License"
+      if (licenseRadio.checked) {
+        licenseInput.classList.remove("hidden");
+        licenseInput.required = true;
+      } else {
+        licenseInput.classList.add("hidden");
+        licenseInput.required = false;
+        licenseInput.value = "";
+      }
+
     });
   });
 });
@@ -139,6 +168,13 @@ document.addEventListener("DOMContentLoaded", () => {
           class="border border-gray-300 rounded p-3 bg-gray-100"
           required
         />
+
+        <textarea 
+    id="buycomments"
+    name="buyComments" 
+    placeholder="Additional comments or questions about the artwork(s) you're interested in (optional)"
+    class="w-full border border-gray-300 rounded p-4 dark:border-gray-600 bg-gray-100 dark:bg-[#252525] leading-[1.3] resize-none overflow-hidden box-border md:mb-2"
+  ></textarea>
 
         <button 
           type="submit"
@@ -323,6 +359,23 @@ If this section is left blank, the piece will be created based entirely on the a
 
     <h2 class="text-xl font-semibold mb-4">Select Artwork(s)</h2>
 
+    <div class="mb-4">
+  <button 
+    type="button"
+    id="notListedBtn"
+    class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition w-full text-left"
+  >
+    If artwork is not on the list below, please click here to specify the piece you're looking for.
+  </button>
+
+  <input
+    type="text"
+    id="notListedInput"
+    placeholder="Specify the artwork you are looking for"
+    class="mt-3 w-full border border-gray-300 rounded p-3 hidden"
+  />
+</div>
+
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto pr-2">
 
       {{/* START WITH ALL ARTWORKS */}}
@@ -379,36 +432,19 @@ If this section is left blank, the piece will be created based entirely on the a
 document.addEventListener("DOMContentLoaded", () => {
 
   // ------------------------
-  // TEXTAREA AUTO-RESIZE (FIXED)
+  // TEXTAREA AUTO-RESIZE
   // ------------------------
   const commissionTextarea = document.getElementById("commissionTextarea");
 
   if (commissionTextarea) {
     const autoResize = (el) => {
-      // Temporarily reset height to auto to measure scrollHeight correctly
       el.style.height = "auto";
-
-      // Get computed styles
       const style = window.getComputedStyle(el);
-      const boxSizing = style.boxSizing;
       const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-      const border = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
-
-      // Set new height depending on box-sizing
-      if (boxSizing === "border-box") {
-        el.style.height = el.scrollHeight + "px"; // scrollHeight already includes padding
-      } else { // content-box
-        el.style.height = (el.scrollHeight - padding) + "px"; 
-      }
+      el.style.height = (el.scrollHeight - padding) + "px";
     };
-
-    // Initial resize
     autoResize(commissionTextarea);
-
-    // Resize on input
     commissionTextarea.addEventListener("input", () => autoResize(commissionTextarea));
-
-    // Optional: Resize on window resize in case font changes layout
     window.addEventListener("resize", () => autoResize(commissionTextarea));
   }
 
@@ -427,150 +463,224 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ------------------------
-  // FORM HANDLING
-  // ------------------------
-  function setupAjaxForm(formId, successId) {
-    const form = document.getElementById(formId);
-    const successMessage = document.getElementById(successId);
-    if (!form) return;
-
-    form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  // Check if any artwork is selected
-  if (!selectedTextarea.value || selected.size === 0) {
-    alert("Please select at least one artwork before submitting your purchase request.");
-    return;
-  }
-
-  if (typeof grecaptcha === "undefined") { alert("reCAPTCHA not loaded."); return; }
-
-  const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-      const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token })
-      });
-      const verifyData = await verifyRes.json();
-      if (!verifyData.success || verifyData.score < 0.5) { alert("Your submission was flagged by our security check. Please try completing the form again later."); return; }
-
-      form.querySelector(".recaptcha-token-field").value = token;
-
-      const data = new FormData(form);
-      const response = await fetch(form.action, { method: "POST", body: data, headers: { "Accept": "application/json" } });
-
-      if (response.ok) {
-        form.reset();
-        successMessage.classList.remove("hidden");
-
-        if (formId === "buyForm") {
-          const preview = document.getElementById("selectedArtworksPreview");
-          const textarea = document.getElementById("selectedArtworkIDs");
-          if (preview) preview.innerHTML = "";
-          if (textarea) textarea.value = "";
-          localStorage.removeItem("selectedArtworks");
-        }
-      } else {
-        alert("There was an error. Please try again later.");
-      }
-    });
-  }
-
-  setupAjaxForm("buyForm", "buySuccessMessage");
-  setupAjaxForm("commissionForm", "commissionSuccessMessage");
-
-  // ------------------------
-  // ARTWORK MODAL LOGIC
+  // ARTWORK SELECTOR STATE
   // ------------------------
   const modal = document.getElementById("artworkSelectorModal");
   const openBtn = document.getElementById("openArtworkSelector");
   const closeBtn = document.getElementById("closeArtworkSelector");
-  const confirmBtn = document.getElementById("confirmArtworkSelection");
   const preview = document.getElementById("selectedArtworksPreview");
   const selectedTextarea = document.getElementById("selectedArtworkIDs");
+  const notListedBtn = document.getElementById("notListedBtn");
+  const notListedInput = document.getElementById("notListedInput");
+  const artworkGrid = document.querySelector("#artworkSelectorModal .grid");
 
-  if (!modal || !openBtn || !closeBtn || !confirmBtn || !preview || !selectedTextarea) return;
-
+  let mode = "selection";
   let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
   const items = Array.from(document.getElementsByClassName("artworkChoice"));
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const addArtwork = urlParams.get("add");
-  if (addArtwork) {
-    selected.add(addArtwork);
-    localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
-  }
-
+  // ------------------------
+  // PREVIEW RENDER
+  // ------------------------
   function rebuildPreview() {
+    if (!preview) return;
     preview.innerHTML = "";
-    Array.from(selected).forEach(id => {
+
+    if (mode === "custom") {
+      const text = notListedInput ? notListedInput.value.trim() : "";
+      if (selectedTextarea) selectedTextarea.value = text;
+
+      if (text) {
+        const tag = document.createElement("div");
+        tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
+        tag.textContent = text;
+        preview.appendChild(tag);
+      }
+      return;
+    }
+
+    const ids = Array.from(selected);
+    if (selectedTextarea) selectedTextarea.value = ids.join(", ");
+
+    ids.forEach(id => {
       const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
       if (!item) return;
-
-      const thumb = document.createElement("img");
-      thumb.src = item.dataset.image;
-      thumb.style.width = "48px";
-      thumb.style.height = "48px";
-      thumb.style.objectFit = "cover";
-      thumb.style.borderRadius = "6px";
-      thumb.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
-      thumb.style.flexShrink = "0";
-
-      preview.appendChild(thumb);
+      const img = document.createElement("img");
+      img.src = item.dataset.image;
+      img.style.width = "48px";
+      img.style.height = "48px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "6px";
+      preview.appendChild(img);
     });
-
-    selectedTextarea.value = Array.from(selected).join(", ");
   }
 
+  // ------------------------
+  // INITIAL STATE RESTORE
+  // ------------------------
   items.forEach(item => {
     const id = item.dataset.id;
-    const checkmark = item.querySelector(".checkmark-overlay");
-
+    const check = item.querySelector(".checkmark-overlay");
     if (selected.has(id)) {
       item.classList.add("ring-4", "ring-black");
-      if (checkmark) checkmark.classList.remove("hidden");
+      if (check) check.classList.remove("hidden");
     }
   });
 
   rebuildPreview();
 
-  openBtn.addEventListener("click", () => {
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-  });
+  // ------------------------
+  // OPEN / CLOSE MODAL
+  // ------------------------
+  if (openBtn && modal) {
+    openBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    });
+  }
 
   function closeModal() {
     modal.classList.add("hidden");
     modal.classList.remove("flex");
   }
 
-  closeBtn.addEventListener("click", closeModal);
-  modal.addEventListener("click", e => {
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+  modal?.addEventListener("click", e => {
     if (e.target === modal) closeModal();
   });
 
+  // ------------------------
+  // ARTWORK SELECTION
+  // ------------------------
   items.forEach(item => {
     item.addEventListener("click", () => {
+      if (mode === "custom") return;
       const id = item.dataset.id;
-      const checkmark = item.querySelector(".checkmark-overlay");
+      const check = item.querySelector(".checkmark-overlay");
 
       if (selected.has(id)) {
         selected.delete(id);
         item.classList.remove("ring-4", "ring-black");
-        if (checkmark) checkmark.classList.add("hidden");
+        if (check) check.classList.add("hidden");
       } else {
         selected.add(id);
         item.classList.add("ring-4", "ring-black");
-        if (checkmark) checkmark.classList.remove("hidden");
+        if (check) check.classList.remove("hidden");
       }
 
       localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+      rebuildPreview();
     });
   });
 
-  confirmBtn.addEventListener("click", () => {
-    rebuildPreview();
+  // ------------------------
+  // NOT LISTED MODE
+  // ------------------------
+  if (notListedBtn && notListedInput) {
+
+    notListedBtn.addEventListener("click", () => {
+      if (mode === "custom") {
+        mode = "selection";
+        notListedInput.classList.add("hidden");
+        notListedInput.value = "";
+        if (artworkGrid) artworkGrid.classList.remove("hidden");
+        notListedBtn.textContent = "If artwork is not on the list below, please click here to specify the piece you're looking for.";
+        notListedBtn.classList.remove("ring-2", "ring-black");
+      } else {
+        mode = "custom";
+        notListedInput.classList.remove("hidden");
+        if (artworkGrid) artworkGrid.classList.add("hidden");
+        selected.clear();
+        localStorage.removeItem("selectedArtworks");
+        items.forEach(el => {
+          el.classList.remove("ring-4", "ring-black");
+          const check = el.querySelector(".checkmark-overlay");
+          if (check) check.classList.add("hidden");
+        });
+        notListedBtn.textContent = "✓ Artwork not listed — specify below (click to cancel)";
+        notListedBtn.classList.add("ring-2", "ring-black");
+      }
+      rebuildPreview();
+    });
+
+    notListedInput.addEventListener("input", () => {
+      if (selectedTextarea) selectedTextarea.value = notListedInput.value.trim();
+      rebuildPreview();
+    });
+  }
+
+  // ------------------------
+  // CONFIRM SELECTION — event delegation bypasses Hugo modal timing issue
+  // ------------------------
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#confirmArtworkSelection")) return;
+
+    if (mode === "custom") {
+      const text = notListedInput ? notListedInput.value.trim() : "";
+      if (selectedTextarea) selectedTextarea.value = text;
+      if (preview) {
+        preview.innerHTML = "";
+        if (text) {
+          const tag = document.createElement("div");
+          tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
+          tag.textContent = text;
+          preview.appendChild(tag);
+        }
+      }
+    } else {
+      rebuildPreview();
+    }
+
     closeModal();
+  });
+
+// ------------------------
+  // FORM HANDLING — event delegation bypasses Hugo timing issue
+  // ------------------------
+  document.addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formId = form.id;
+    if (formId !== "buyForm" && formId !== "commissionForm") return;
+
+    const successId = formId === "buyForm" ? "buySuccessMessage" : "commissionSuccessMessage";
+    const successMessage = document.getElementById(successId);
+
+    if (formId === "buyForm" && (!selectedTextarea || !selectedTextarea.value.trim())) {
+      alert("Please select at least one artwork before submitting.");
+      return;
+    }
+
+    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+
+    const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
+
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success || verifyData.score < 0.5) return;
+
+    form.querySelector(".recaptcha-token-field").value = token;
+
+    const data = new FormData(form);
+    const response = await fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (response.ok) {
+      form.reset();
+      if (successMessage) successMessage.classList.remove("hidden");
+
+      if (formId === "buyForm") {
+        if (preview) preview.innerHTML = "";
+        if (selectedTextarea) selectedTextarea.value = "";
+        localStorage.removeItem("selectedArtworks");
+      }
+    }
   });
 
 });
