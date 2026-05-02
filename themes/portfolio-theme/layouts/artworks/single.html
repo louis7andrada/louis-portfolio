@@ -58,6 +58,15 @@
       {{ with .Params.size }}<p><strong>Size:</strong> {{ . }}</p>{{ end }}
       {{ with .Params.medium }}<p><strong>Medium:</strong> {{ . }}</p>{{ end }}
       {{ with .Params.availability }}<p><strong>Availability:</strong> {{ . }}</p>{{ end }}
+      {{ with .Params.collection }}
+  <p><strong>Collection:</strong>
+    {{ if reflect.IsSlice . }}
+      {{ delimit . ", " }}
+    {{ else }}
+      {{ . }}
+    {{ end }}
+  </p>
+{{ end }}
       {{ with .Params.comment }}<p><strong>Comments:</strong> {{ . }}</p>{{ end }}
       {{ if and (eq .Params.availability "Available") (isset .Params "price") }}
         <p><strong>Price: $</strong> {{ .Params.price }}</p>
