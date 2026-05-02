@@ -133,7 +133,9 @@ function initArtworksPage() {
   ) as ArtworkItem[];
 
   const filterYear = document.getElementById("filterYear") as HTMLSelectElement | null;
+  const filterAvailability = document.getElementById("filterAvailability") as HTMLSelectElement | null;
   const filterCollection = document.getElementById("filterCollection") as HTMLSelectElement | null;
+
 
   function dedupeSelectOptions(select: HTMLSelectElement | null) {
     if (!select) return;
@@ -151,33 +153,38 @@ function initArtworksPage() {
   }
 
   dedupeSelectOptions(filterYear);
+  dedupeSelectOptions(filterAvailability);
   dedupeSelectOptions(filterCollection);
 
   function applyFilters() {
-    const yearValue = filterYear?.value || "all";
-    const collectionValue = filterCollection?.value || "all";
+  const yearValue = filterYear?.value || "all";
+  const collectionValue = filterCollection?.value || "all";
+  const availabilityValue = filterAvailability?.value || "all";
 
-    items.forEach((item) => {
-      const itemYear = item.dataset.year || "";
-      const itemCollection = item.dataset.collection || "";
+  items.forEach((item) => {
+    const itemYear = item.dataset.year || "";
+    const itemCollection = item.dataset.collection || "";
+    const itemAvailability = item.dataset.availability || "";
 
-      const matchYear = yearValue === "all" || itemYear === yearValue;
-      const matchCollection =
-  collectionValue === "all" ||
-  itemCollection
-    .split(",")
-    .map(c => c.trim())
-    .includes(collectionValue);
+    const matchYear = yearValue === "all" || itemYear === yearValue;
+    const matchCollection =
+      collectionValue === "all" ||
+      itemCollection
+        .split(",")
+        .map(c => c.trim())
+        .includes(collectionValue);
+    const matchAvailability = availabilityValue === "all" || itemAvailability === availabilityValue;
 
-      if (matchYear && matchCollection) {
-        item.classList.remove("hidden");
-      } else {
-        item.classList.add("hidden");
-      }
-    });
-  }
+    if (matchYear && matchCollection && matchAvailability) {
+      item.classList.remove("hidden");
+    } else {
+      item.classList.add("hidden");
+    }
+  });
+}
 
   filterYear?.addEventListener("change", applyFilters);
+  filterAvailability?.addEventListener("change", applyFilters);
   filterCollection?.addEventListener("change", () => {
   const value = filterCollection.value;
 

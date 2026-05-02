@@ -27,6 +27,26 @@
       </select>
     </div>
 
+    <!-- Availability Filter -->
+<div>
+  <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Availability</label>
+
+  <select id="filterAvailability" class="border border-gray-300 rounded p-2 w-48">
+    <option value="all">All</option>
+
+    {{ $availabilities := slice }}
+    {{ range where .Site.RegularPages "Section" "artworks" }}
+      {{ with .Params.availability }}
+        {{ $availabilities = $availabilities | append . }}
+      {{ end }}
+    {{ end }}
+
+    {{ range sort (uniq $availabilities) }}
+      <option value="{{ . }}">{{ . }}</option>
+    {{ end }}
+  </select>
+</div>
+
     <!-- Collection Filter -->
     <div>
       <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Collection</label>
