@@ -6,6 +6,16 @@
 
   <title>{{ if .Title }}{{ .Title }} — Louis Andrada{{ else }}Louis Andrada{{ end }}</title>
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MSBCR3QFML"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+  
+    gtag('config', 'G-MSBCR3QFML');
+  </script>
+
   <!-- SEO -->
   <meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}Brazilian painter based in Toronto. Portfolio of artworks, commissions, and archives.{{ end }}">
   <meta name="keywords" content="Louis Andrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings">
