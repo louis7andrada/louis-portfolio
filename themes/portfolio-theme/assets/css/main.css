@@ -26,7 +26,6 @@ a img,
 #lightbox-img {
   pointer-events: auto;
 }
-
 /* ----------------------------------------
    HEADER IMPROVEMENT
 ----------------------------------------- */
@@ -95,6 +94,7 @@ nav a:hover::after {
   object-fit: contain;
   display: block;
   max-height: 92vh;
+  pointer-events: auto;  /* add this line */
 }
 
 @media (max-aspect-ratio: 1/1) {
