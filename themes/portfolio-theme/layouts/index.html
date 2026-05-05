@@ -5,6 +5,7 @@
   {{ $artwork = index $all 0 }}
 {{ end }}
 
+<section id="home-section" class="mb-14">
 <div class="homepage-wrapper">
 
   <div id="intro-door">
@@ -22,7 +23,7 @@
     </div>
     <nav class="hp-nav">
       <div class="hp-nav-inner">
-        <a href="/artworks/" class="hp-nav-link hp-nav--artworks">Artworks</a>
+        <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkSection" class="hp-nav-link hp-nav--artworks">Artworks</a>
         <a href="/inquire/" class="hp-nav-link hp-nav--acquisition">Inquire</a>
         <a href="/archive/" class="hp-nav-link hp-nav--archive">Archive</a>
         <a href="/about/" class="hp-nav-link hp-nav--about">About</a>
@@ -47,11 +48,7 @@
     justify-content: center;
     transition: opacity 2.5s ease;
   }
-
-  html.dark #intro-door {
-    background: #1a1a1a;
-  }
-
+  html.dark #intro-door { background: #1a1a1a; }
   #intro-logo {
     width: clamp(160px, 20vw, 280px);
     height: auto;
@@ -59,33 +56,12 @@
     transition: opacity 0.5s ease, transform 0.4s ease;
     cursor: pointer;
   }
-
-  html.dark #intro-logo {
-    filter: invert(1);
-  }
-
-  #intro-logo:hover {
-    opacity: 0.35;
-  }
-
-  #intro-door.logo-dim #intro-logo {
-    opacity: 0.35;
-  }
-
-  #intro-door.logo-clicked #intro-logo {
-    transform: scale(0.93);
-    opacity: 0.2;
-  }
-
-  #intro-door.dissolving {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .homepage-wrapper {
-    min-height: calc(100vh - 80px);
-  }
-
+  html.dark #intro-logo { filter: invert(1); }
+  #intro-logo:hover { opacity: 0.35; }
+  #intro-door.logo-dim #intro-logo { opacity: 0.35; }
+  #intro-door.logo-clicked #intro-logo { transform: scale(0.93); opacity: 0.2; }
+  #intro-door.dissolving { opacity: 0; pointer-events: none; }
+  .homepage-wrapper { min-height: calc(100vh - 80px); }
   .homepage-layout {
     display: flex;
     align-items: stretch;
@@ -93,97 +69,42 @@
     gap: 10rem;
     min-height: calc(100vh - 80px);
   }
-
-  .hp-left {
-    flex: 0 0 auto;
-    width: clamp(420px, 62vw, 900px);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .hp-title {
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
-    margin: 0 0 0.6rem 0;
-  }
-
-  .hp-image-link {
-    display: block;
-  }
-
-  .hp-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    transition: opacity 0.3s ease;
-  }
-
-  .hp-image-link:hover .hp-image {
-    opacity: 0.82;
-  }
-
-  .hp-year {
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    align-self: flex-end;
-    margin-top: 0.5rem;
-  }
-
-  .hp-nav {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .hp-nav-inner {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 60%;
-  }
-
+  .hp-left { flex: 0 0 auto; width: clamp(420px, 62vw, 900px); display: flex; flex-direction: column; }
+  .hp-title { font-size: 0.9rem; letter-spacing: 0.02em; margin: 0 0 0.6rem 0; }
+  .hp-image-link { display: block; }
+  .hp-image { width: 100%; height: auto; display: block; transition: opacity 0.3s ease; }
+  .hp-image-link:hover .hp-image { opacity: 0.82; }
+  .hp-year { font-size: 0.85rem; letter-spacing: 0.05em; align-self: flex-end; margin-top: 0.5rem; }
+  .hp-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .hp-nav-inner { display: flex; flex-direction: column; justify-content: space-between; height: 60%; }
   .hp-nav-link {
-    font-size: 1.1rem;
-    text-decoration: none;
-    color: inherit;
-    letter-spacing: 0.04em;
-    display: inline-block;
-    padding: 0.3rem 0;
-    transition: font-weight 0.1s ease;
+    font-size: 1.1rem; text-decoration: none; color: inherit;
+    letter-spacing: 0.04em; display: inline-block; padding: 0.3rem 0;
+    transition: font-weight 0.1s ease; white-space: nowrap;
   }
-
-  .hp-nav-link:hover {
-    text-decoration: underline;
-    font-weight: 700;
-  }
-
+  .hp-nav-link:hover { text-decoration: underline; font-weight: 700; }
   .hp-nav--artworks    { margin-left: 0%;  }
   .hp-nav--acquisition { margin-left: 35%; }
   .hp-nav--archive     { margin-left: 5%;  }
   .hp-nav--about       { margin-left: 30%; }
   .hp-nav--links       { margin-left: 60%; }
-
-  @media (max-width: 700px) {
-    .homepage-layout {
-      flex-direction: column;
-      padding: 1.5rem;
-      gap: 2rem;
-    }
-    .hp-left {
-      width: 100%;
-    }
-    .hp-nav {
-      justify-content: flex-start;
-    }
-    .hp-nav-inner {
-      height: auto;
-      gap: 1.5rem;
-    }
-    .hp-nav-link {
-      font-size: 1.2rem;
-      margin-left: 0 !important;
-    }
+  @media (max-width: 1200px) {
+    .homepage-layout { flex-direction: column; padding: 2rem 2.5rem; gap: 3rem; align-items: center; }
+    .hp-left { width: 100%; max-width: 680px; }
+    .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
+    .hp-nav-inner { height: auto; gap: 1rem; width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .hp-nav-link { font-size: 1.3rem; }
+    .hp-nav--artworks { margin-left: -4%; } .hp-nav--acquisition { margin-left: 8%; }
+    .hp-nav--archive { margin-left: -2%; } .hp-nav--about { margin-left: 6%; } .hp-nav--links { margin-left: 10%; }
+  }
+  @media (max-width: 699px) {
+    .homepage-layout { flex-direction: column; padding: 1.5rem 1.2rem; gap: 2.5rem; align-items: center; }
+    .hp-left { width: 100%; max-width: 100%; }
+    .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
+    .hp-nav-inner { height: auto; gap: 0.9rem; display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .hp-nav-link { font-size: 1.1rem; }
+    .hp-nav--artworks { margin-left: -4%; } .hp-nav--acquisition { margin-left: 6%; }
+    .hp-nav--archive { margin-left: -2%; } .hp-nav--about { margin-left: 4%; } .hp-nav--links { margin-left: 8%; }
   }
 </style>
 
@@ -191,42 +112,691 @@
   (function() {
     const door = document.getElementById('intro-door');
     const logo = document.getElementById('intro-logo');
-
-    if (sessionStorage.getItem('intro-seen')) {
-      door.style.display = 'none';
-      return;
-    }
-
+    if (sessionStorage.getItem('intro-seen')) { door.style.display = 'none'; return; }
     let dismissed = false;
-
     function dismiss(fromClick) {
       if (dismissed) return;
       dismissed = true;
-
       if (fromClick) {
-        // click: scale down then dissolve
         door.classList.add('logo-clicked');
-        setTimeout(() => {
-          door.classList.add('dissolving');
-        }, 400);
+        setTimeout(() => door.classList.add('dissolving'), 400);
       } else {
-        // auto: dim first, then dissolve
         door.classList.add('logo-dim');
-        setTimeout(() => {
-          door.classList.add('dissolving');
-        }, 600);
+        setTimeout(() => door.classList.add('dissolving'), 600);
       }
+      setTimeout(() => { door.style.display = 'none'; sessionStorage.setItem('intro-seen', '1'); }, 3200);
+    }
+    logo.addEventListener('click', () => dismiss(true));
+    setTimeout(() => dismiss(false), 5000);
+  })();
+</script>
+</section>
 
-      // remove from DOM after dissolve completes (2.5s transition + buffer)
-      setTimeout(() => {
-        door.style.display = 'none';
-        sessionStorage.setItem('intro-seen', '1');
-      }, 3200);
+<section id="artworks-section" class="w-full px-4 py-12">
+  <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Artworks</h1>
+
+  <!-- FILTER BAR — scrolls with page, gets blurred by overlay when open -->
+  <div class="artwork-filter-bar" id="artworkFilterBar">
+    <button id="filterToggle" class="artwork-filter-toggle">
+      Filters <span id="filterToggleSymbol">+</span>
+    </button>
+    <div id="activeFilterTags" class="artwork-active-tags"></div>
+  </div>
+
+  <!-- FILTER OVERLAY — fixed fullscreen frosted glass -->
+  <div id="filterOverlay" class="artwork-filter-overlay hidden">
+
+    <!-- Single row: Filters − on left, columns immediately beside it -->
+    <div class="artwork-filter-inner">
+
+      <button id="filterCloseToggle" class="artwork-filter-toggle open">
+        Filters <span>−</span>
+      </button>
+
+      <div class="artwork-filter-columns">
+
+        <!-- Years -->
+        <div class="artwork-filter-group">
+          <div class="artwork-filter-group-label">Years</div>
+          <div class="artwork-filter-options">
+            <button class="artwork-filter-option active" data-filter="year" data-value="all">All</button>
+            {{ $years := slice }}
+            {{ range where .Site.RegularPages "Section" "artworks" }}
+              {{ if and (.Params.year) (ne .Params.year 2022) }}
+                {{ $years = $years | append .Params.year }}
+              {{ end }}
+            {{ end }}
+            {{ range sort (uniq $years) "value" "desc" }}
+              <button class="artwork-filter-option" data-filter="year" data-value="{{ . }}">{{ . }}</button>
+            {{ end }}
+          </div>
+        </div>
+
+        <!-- Availability -->
+        <div class="artwork-filter-group">
+          <div class="artwork-filter-group-label">Availability</div>
+          <div class="artwork-filter-options">
+            <button class="artwork-filter-option active" data-filter="availability" data-value="all">All</button>
+            {{ $availabilities := slice }}
+            {{ range where .Site.RegularPages "Section" "artworks" }}
+              {{ with .Params.availability }}
+                {{ $availabilities = $availabilities | append . }}
+              {{ end }}
+            {{ end }}
+            {{ range sort (uniq $availabilities) }}
+              <button class="artwork-filter-option" data-filter="availability" data-value="{{ . }}">{{ . }}</button>
+            {{ end }}
+          </div>
+        </div>
+
+        <!-- Collections -->
+        <div class="artwork-filter-group">
+          <div class="artwork-filter-group-label">Collections</div>
+          <div class="artwork-filter-options">
+            <button class="artwork-filter-option active" data-filter="collection" data-value="all">All</button>
+            {{ $collectionMap := dict }}
+            {{ range where .Site.RegularPages "Section" "artworks" }}
+              {{ $worknum := .Params.worknum }}
+              {{ with .Params.collection }}
+                {{ if reflect.IsSlice . }}
+                  {{ range . }}
+                    {{ $existing := index $collectionMap . | default 0 }}
+                    {{ if gt $worknum $existing }}
+                      {{ $collectionMap = merge $collectionMap (dict . $worknum) }}
+                    {{ end }}
+                  {{ end }}
+                {{ else }}
+                  {{ $existing := index $collectionMap . | default 0 }}
+                  {{ if gt $worknum $existing }}
+                    {{ $collectionMap = merge $collectionMap (dict . $worknum) }}
+                  {{ end }}
+                {{ end }}
+              {{ end }}
+            {{ end }}
+            {{ $collections := slice }}
+            {{ range $name, $num := $collectionMap }}
+              {{ $collections = $collections | append (dict "name" $name "worknum" $num) }}
+            {{ end }}
+            {{ range sort $collections "worknum" "desc" }}
+              <button class="artwork-filter-option" data-filter="collection" data-value="{{ .name }}">{{ .name }}</button>
+            {{ end }}
+          </div>
+        </div>
+
+      </div><!-- end columns -->
+    </div><!-- end inner row -->
+  </div><!-- end overlay -->
+
+  <!-- DATA CLEAN -->
+  {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+  {{ $clean := slice }}
+  {{ range $raw }}
+    {{ if .Params.inprogress }}{{ continue }}{{ end }}
+    {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
+    {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
+    {{ $clean = $clean | append . }}
+  {{ end }}
+  {{ $sorted := sort $clean "Params.worknum" "desc" }}
+
+  <!-- GALLERY -->
+  <div id="artworkGallery" class="flex flex-wrap gap-8 justify-center">
+    {{ range $sorted }}
+      <a
+        href="{{ .RelPermalink }}"
+        class="artwork-item cursor-pointer group block w-full md:w-auto"
+        data-year="{{ .Params.year }}"
+        data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}"
+        data-title="{{ .Title }}"
+        data-medium="{{ .Params.medium }}"
+        data-size="{{ .Params.size }}"
+        data-availability="{{ .Params.availability }}"
+        data-price="{{ .Params.price }}"
+        data-image="{{ .Params.image }}"
+      >
+        <div class="overflow-hidden">
+          {{ if .Params.image }}
+            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="w-full md:w-auto max-h-[520px] object-contain group-hover:opacity-80 transition" />
+          {{ else }}
+            <div class="w-full md:w-[300px] h-[520px] bg-gray-200 flex items-center justify-center text-gray-500 text-sm">No image yet</div>
+          {{ end }}
+        </div>
+      </a>
+    {{ end }}
+  </div>
+
+  <div id="treeCollectionView" style="display:none;">
+
+<section class="max-w-7xl mx-auto px-6 relative">
+
+  <h1 class="text-2xl font-semibold mt-5 mb-10 text-center">
+    The Tree, The Snake, The Fruit
+  </h1>
+
+  <!-- TOP GRID (SMALL WORKS) -->
+  <div class="grid grid-cols-10 items-start" style="gap:3px;">
+
+    <!-- TREE -->
+    <div class="col-span-3 flex flex-col">
+      <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h2>
+      <div class="grid grid-cols-3 content-start" style="gap:3px;">
+        {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "tree") "Params.collection_order" "asc" }}
+          {{ if .Params.inprogress }}
+            <div class="artwork-inprogress">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" />
+            </div>
+          {{ else }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+            </a>
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+
+    <!-- SNAKE -->
+    <div class="col-span-4 flex flex-col">
+      <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h2>
+      <div class="grid grid-cols-4 content-start" style="gap:3px;">
+        {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "snake") "Params.collection_order" "asc" }}
+          {{ if .Params.inprogress }}
+            <div class="artwork-inprogress">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" />
+            </div>
+          {{ else }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+            </a>
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+
+    <!-- FRUIT -->
+    <div class="col-span-3 flex flex-col">
+      <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h2>
+      <div class="grid grid-cols-3 content-start" style="gap:3px;">
+        {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
+          {{ if .Params.inprogress }}
+            <div class="artwork-inprogress">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" />
+            </div>
+          {{ else }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+            </a>
+          {{ end }}
+        {{ end }}
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FULL PIECES (3 COLUMN) -->
+  <div class="mt-24 grid items-start" style="grid-template-columns: 3fr 4fr 3fr; gap:3px;">
+
+    <!-- TREE FULL -->
+    <div class="flex flex-col items-center">
+      <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h3>
+      {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}
+      {{ with index $treeFull 0 }}
+        <a href="{{ .RelPermalink }}">
+          <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" />
+        </a>
+      {{ end }}
+    </div>
+
+    <!-- SNAKE FULL -->
+    <div class="flex flex-col items-center">
+      <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h3>
+      {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}
+      {{ with index $snakeFull 0 }}
+      {{ if .Params.inprogress }}
+          <div class="artwork-inprogress">
+            <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;"/>
+          </div>
+          {{ else }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+            </a>
+        {{ end }}
+      {{ end }}
+    </div>
+
+    <!-- FRUIT FULL -->
+    <div class="flex flex-col items-center">
+      <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h3>
+      {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}
+      {{ with index $fruitFull 0 }}
+        {{ if .Params.inprogress }}
+          <div class="artwork-inprogress">
+            <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;"/>
+          </div>
+          {{ else }}
+            <a href="{{ .RelPermalink }}">
+              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+            </a>
+        {{ end }}
+      {{ end }}
+    </div>
+
+  </div>
+
+  <!-- FINAL COMBINED PIECE -->
+  <h1 class="text-2xl font-semibold mt-24 mb-10 text-center whitespace-nowrap">
+    The Tree, The Snake, The Fruit
+  </h1>
+
+  <div class="grid grid-cols-1" style="gap:0px;">
+    <div class="flex flex-col items-center">
+      {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}
+      {{ with index $completeFull 0 }}
+        {{ if .Params.inprogress }}
+            <div class="artwork-inprogress">
+              <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;"/>
+            </div>
+            {{ else }}
+              <a href="{{ .RelPermalink }}">
+                <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+              </a>
+          {{ end }}
+      {{ end }}
+    </div>
+  </div>
+
+</section>
+</div>
+
+<section class="max-w-7xl mx-auto px-6">
+
+  <div class="end-spacer-1"></div>
+
+  <div id="endMessage" class="end-message text-center">
+    The End :)
+  </div>
+
+  <div class="end-spacer-2"></div>
+
+  <div class="end-message2 text-right">
+    Please stop scrolling!!
+  </div>
+
+  <div class="end-spacer-3"></div>
+
+</section>
+
+
+</section>
+
+<style>
+/* only move title and filter bar, not gallery */
+#artworks-section > h1,
+#artworks-section > .artwork-filter-bar {
+  margin-left: 4rem;
+}
+@media (max-width: 1200px) {
+  #artworks-section > h1,
+  #artworks-section > .artwork-filter-bar {
+    margin-left: 3rem;
+  }
+}
+@media (max-width: 699px) {
+  #artworks-section > h1,
+  #artworks-section > .artwork-filter-bar {
+    margin-left: 1rem;
+  }
+}
+@media (max-width: 1200px) {
+  .artwork-filter-overlay {
+    padding-left: 4rem;
+  }
+}
+@media (max-width: 699px) {
+  .artwork-filter-overlay {
+    padding-left: 2rem;
+  }
+}
+  /* ── END SECTION SPACERS ── */
+  .end-spacer-1 { height: 20vh; }
+  .end-spacer-2 { height: 30vh; }
+  .end-spacer-3 { height: 10vh; }
+
+  @media (max-width: 768px) {
+    .end-spacer-1 { height: 15vh; }
+    .end-spacer-2 { height: 30vh; }
+    .end-spacer-3 { height: 8vh; }
+  }
+
+  @media (max-width: 480px) {
+    .end-spacer-1 { height: 10vh; }
+    .end-spacer-2 { height: 20vh; }
+    .end-spacer-3 { height: 5vh; }
+  }
+  /* ── FILTER BAR — normal flow, scrolls with page, blurred by overlay ── */
+  .artwork-filter-bar {
+  position: sticky;
+  top: 100px;
+  z-index: 50;
+
+  display: inline-flex;            /* key change */
+  align-items: flex-start;
+  gap: 1.2rem;
+
+  width: fit-content;              /* shrink to content */
+  max-width: min(90vw, 900px);     /* hard cap */
+  
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.9rem;
+
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  border-radius: 0px;
+}
+html.dark .artwork-filter-bar {
+  background: rgba(20, 20, 20, 0.65);
+}
+
+  .artwork-filter-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: 0.55;
+    padding: 0;
+    transition: opacity 0.2s;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .artwork-filter-toggle:hover,
+  .artwork-filter-toggle.open {
+    opacity: 1;
+  }
+
+  .artwork-active-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    max-width: 700px;      /* prevents infinite horizontal growth */
+  }
+
+  .artwork-active-tag-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    white-space: nowrap;
+  }
+
+  .artwork-active-tag-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .artwork-active-tag-value {
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    opacity: 0.75;
+  }
+
+  /* ── OVERLAY — fixed fullscreen ── */
+  .artwork-filter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    /* top padding = sticky header height (~72px) + artworks-section top padding (~40px) */
+    padding: 7rem 4rem 3rem 5rem;
+  }
+
+  html.dark .artwork-filter-overlay {
+    background: rgba(12, 12, 12, 0.78);
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+
+  .artwork-filter-overlay.hidden {
+    display: none;
+  }
+
+  /* ── INNER ROW: Filters − + columns side by side ── */
+  .artwork-filter-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    width: 100%;
+  }
+
+  /* ── FILTER COLUMNS ── */
+  .artwork-filter-columns {
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .artwork-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 110px;
+  }
+
+  .artwork-filter-group-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-bottom: 0.3rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .artwork-filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.artwork-filter-option {
+  position: relative;
+}
+
+/* stairs offset */
+.artwork-filter-option:nth-child(1) { margin-left: 0px; }
+.artwork-filter-option:nth-child(2) { margin-left: 8px; }
+.artwork-filter-option:nth-child(3) { margin-left: 16px; }
+.artwork-filter-option:nth-child(4) { margin-left: 24px; }
+.artwork-filter-option:nth-child(5) { margin-left: 32px; }
+.artwork-filter-option:nth-child(6) { margin-left: 40px; }
+.artwork-filter-option:nth-child(7) { margin-left: 48px; }
+.artwork-filter-option:nth-child(8) { margin-left: 56px; }
+
+  .artwork-filter-option {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    color: inherit;
+    opacity: 0.3;
+    text-align: left;
+    padding: 0.1rem 0;
+    transition: opacity 0.15s;
+    font-family: inherit;
+  }
+
+  .artwork-filter-option:hover { opacity: 0.7; }
+
+  .artwork-filter-option.active {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const toggle      = document.getElementById("filterToggle");
+  const symbol      = document.getElementById("filterToggleSymbol");
+  const overlay     = document.getElementById("filterOverlay");
+  const closeToggle = document.getElementById("filterCloseToggle");
+  const tagsEl      = document.getElementById("activeFilterTags");
+  const gallery     = document.getElementById("artworkGallery");
+  const items       = gallery ? Array.from(gallery.querySelectorAll(".artwork-item")) : [];
+
+  const active = { year: "all", availability: "all", collection: "all" };
+  const filterLabels = { year: "Years", availability: "Availability", collection: "Collection" };
+
+  function openOverlay() {
+    overlay.classList.remove("hidden");
+    symbol.textContent = "−";
+    toggle.classList.add("open");
+  }
+
+  function closeOverlay() {
+    overlay.classList.add("hidden");
+    symbol.textContent = "+";
+    toggle.classList.remove("open");
+  }
+
+  toggle.addEventListener("click", () => {
+    overlay.classList.contains("hidden") ? openOverlay() : closeOverlay();
+  });
+
+  closeToggle?.addEventListener("click", closeOverlay);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeOverlay();
+  });
+
+  document.querySelectorAll(".artwork-filter-option").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const filter = btn.dataset.filter;
+    const value  = btn.dataset.value;
+
+    btn.closest(".artwork-filter-options")
+       .querySelectorAll(".artwork-filter-option")
+       .forEach(b => b.classList.remove("active"));
+
+    btn.classList.add("active");
+    active[filter] = value;
+
+    const galleryView = document.getElementById("artworkGallery");
+    const treeView    = document.getElementById("treeCollectionView");
+
+    // SPECIAL COLLECTION MODE
+    if (filter === "collection" && value === "The Tree, The Snake, The Fruit") {
+      active.year = "all";
+      active.availability = "all";
+
+      // reset UI state visually
+      document.querySelectorAll('[data-filter="year"], [data-filter="availability"]')
+        .forEach(b => b.classList.remove("active"));
+
+      document.querySelectorAll('[data-filter="year"][data-value="all"], [data-filter="availability"][data-value="all"]')
+        .forEach(b => b.classList.add("active"));
+
+      galleryView.style.display = "none";
+      treeView.style.display = "block";
+
+      renderTags();
+      return;
     }
 
-    logo.addEventListener('click', () => dismiss(true));
-    setTimeout(() => dismiss(false), 5000);  /* 5 second auto timer */
-  })();
+    // NORMAL MODE
+    treeView.style.display = "none";
+    galleryView.style.display = "";
+
+    applyFilters();
+    renderTags();
+  });
+});
+
+
+  function applyFilters() {
+    items.forEach(item => {
+      const year  = String(item.dataset.year || "");
+      const avail = (item.dataset.availability || "").toLowerCase();
+      const col   = item.dataset.collection || "";
+      const matchYear  = active.year === "all" || year === String(active.year);
+      const matchAvail = active.availability === "all" || avail === active.availability.toLowerCase();
+      const matchCol   = active.collection === "all" || col.split(",").map(s => s.trim()).includes(active.collection);
+      item.style.display = (matchYear && matchAvail && matchCol) ? "" : "none";
+    });
+  }
+
+  function renderTags() {
+    tagsEl.innerHTML = "";
+    Object.entries(active).forEach(([key, val]) => {
+      if (val === "all") return;
+      const group = document.createElement("div");
+      group.className = "artwork-active-tag-group";
+      const label = document.createElement("span");
+      label.className = "artwork-active-tag-label";
+      label.textContent = filterLabels[key];
+      const value = document.createElement("span");
+      value.className = "artwork-active-tag-value";
+      value.textContent = val;
+      group.appendChild(label);
+      group.appendChild(value);
+      tagsEl.appendChild(group);
+    });
+  }
+
+  if (window.location.hash === "#artworks-section") {
+    const target = document.getElementById("artworks-section");
+    if (target) setTimeout(() => {
+      const headerH = document.getElementById("siteHeader")?.offsetHeight || 0;
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - headerH, behavior: "smooth" });
+    }, 150);
+  }
+  
+  const params = new URLSearchParams(window.location.search);
+
+const collectionParam = params.get("collection");
+if (collectionParam) {
+  active.collection = collectionParam;
+
+  // activate correct button visually
+  document.querySelectorAll('[data-filter="collection"]').forEach(b => {
+    b.classList.remove("active");
+    if (b.dataset.value === collectionParam) {
+      b.classList.add("active");
+    }
+  });
+
+  // trigger same logic as click
+  const galleryView = document.getElementById("artworkGallery");
+  const treeView    = document.getElementById("treeCollectionView");
+
+  if (collectionParam === "The Tree, The Snake, The Fruit") {
+    galleryView.style.display = "none";
+    treeView.style.display = "block";
+  } else {
+    applyFilters();
+  }
+
+  renderTags();
+}
+
+});
 </script>
 
 {{ end }}

@@ -5,11 +5,11 @@
 <section class="px-4 md:px-10 py-12 w-full relative">
 
   {{ if eq .Params.collection "The Tree, The Snake, The Fruit" }}
-    <a href="/artworks/collection-the_tree_the_snake_the_fruit/" class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40">
+    <a href="/?collection=The%20Tree,%20The%20Snake,%20The%20Fruit#artworks-section" class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40">
       ← Back to Collection
     </a>
   {{ else }}
-    <a href="/artworks/" class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40">
+    <a href="/#artworks-section" id="navArtworksLink" class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40">
       ← Back to Artworks
     </a>
   {{ end }}
@@ -205,27 +205,30 @@
 </style>
 
 <script>
-  function openLightbox(src, alt) {
-    const lb = document.getElementById('lightbox');
-    const img = document.getElementById('lightbox-img');
-    img.src = '';
-    requestAnimationFrame(() => {
+  (function() {
+    window.openLightbox = function(src, alt) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
       img.src = src;
       img.alt = alt || '';
       lb.classList.add('active');
+      document.body.setAttribute('data-lightbox-open', 'true');
       document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = function() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('active');
+      document.body.removeAttribute('data-lightbox-open');
+      if (!document.body.getAttribute('data-menu-open')) {
+        document.body.style.overflow = '';
+      }
+    };
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') window.closeLightbox();
     });
-  }
-
-  function closeLightbox() {
-    const lb = document.getElementById('lightbox');
-    lb.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
+  })();
 </script>
 
 {{ end }}

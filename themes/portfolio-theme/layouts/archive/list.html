@@ -1,46 +1,61 @@
 {{ define "main" }}
 
-<section class="max-w-[1800px] mx-auto px-4 py-10">
+<section id="archive-section" class="w-full px-4 py-10">
 
-  <h1 class="text-2xl font-semibold mb-12 text-center">Archive</h1>
+  <h1 class="text-2xl font-semibold mb-6 text-left">Archive</h1>
 
-  <!-- FILTERS -->
-  <div class="archive-filters flex flex-col md:flex-row items-center justify-center text-center gap-6 mb-10">
-
-    <!-- Year Filter -->
-    <div>
-      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Year</label>
-
-      <select id="filterYear" class="border border-gray-300 rounded p-2 w-48">
-        <option value="all">All Years</option>
-
-        {{ $years := slice }}
-        {{ range where .Site.RegularPages "Section" "archive" }}
-          {{ if .Params.year }}
-            {{ $years = $years | append .Params.year }}
-          {{ end }}
-        {{ end }}
-
-        {{ range sort (uniq $years) "value" "desc" }}
-          <option value="{{ . }}">{{ . }}</option>
-        {{ end }}
-      </select>
-    </div>
-
-    <!-- Category Filter -->
-    <div>
-      <label class="block text-sm font-medium mb-1 bg-transparent text-inherit">Filter by Category</label>
-
-      <select id="filterCategory" class="border border-gray-300 rounded p-2 w-48">
-        <option value="all">All Categories</option>
-        <option value="studios">Studios</option>
-        <option value="photos">Louis</option>
-        <option value="photography">Photography</option>
-        <option value="galleries">Galleries & Exhibitions</option>
-      </select>
-    </div>
-
+  <!-- FILTER BAR — scrolls with page, gets blurred by overlay when open -->
+  <div class="archive-filter-bar" id="archiveFilterBar">
+    <button id="filterToggle" class="archive-filter-toggle">
+      Filters <span id="filterToggleSymbol">+</span>
+    </button>
+    <div id="activeFilterTags" class="archive-active-tags"></div>
   </div>
+
+  <!-- FILTER OVERLAY — fixed fullscreen frosted glass -->
+  <div id="filterOverlay" class="archive-filter-overlay hidden">
+
+    <!-- Single row: Filters − on left, columns immediately beside it -->
+    <div class="archive-filter-inner">
+
+      <button id="filterCloseToggle" class="archive-filter-toggle open">
+        Filters <span>−</span>
+      </button>
+
+      <div class="archive-filter-columns">
+
+        <!-- Years -->
+        <div class="archive-filter-group">
+          <div class="archive-filter-group-label">Years</div>
+          <div class="archive-filter-options">
+            <button class="archive-filter-option active" data-filter="year" data-value="all">All</button>
+            {{ $years := slice }}
+            {{ range where .Site.RegularPages "Section" "archive" }}
+              {{ if .Params.year }}
+                {{ $years = $years | append .Params.year }}
+              {{ end }}
+            {{ end }}
+            {{ range sort (uniq $years) "value" "desc" }}
+              <button class="archive-filter-option" data-filter="year" data-value="{{ . }}">{{ . }}</button>
+            {{ end }}
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="archive-filter-group">
+          <div class="archive-filter-group-label">Category</div>
+          <div class="archive-filter-options">
+            <button class="archive-filter-option active" data-filter="category" data-value="all">All</button>
+            <button class="archive-filter-option" data-filter="category" data-value="photos">Louis</button>
+            <button class="archive-filter-option" data-filter="category" data-value="photography">Photography</button>
+            <button class="archive-filter-option" data-filter="category" data-value="studios">Studios</button>
+            <button class="archive-filter-option" data-filter="category" data-value="galleries">Galleries & Exhibitions</button>
+          </div>
+        </div>
+
+      </div><!-- end columns -->
+    </div><!-- end inner row -->
+  </div><!-- end overlay -->
 
   <!-- =============================== -->
   <!-- SORTED ARCHIVE LIST (MATCHES SINGLE PAGE) -->
@@ -108,6 +123,339 @@
 
   </div>
 
+  <section class="max-w-7xl mx-auto px-6">
+
+  <div class="end-spacer-1"></div>
+
+  <div id="endMessage" class="end-message text-center">
+    The End :)
+  </div>
+
+  <div class="end-spacer-2"></div>
+
+  <div class="end-message2 text-right">
+    Please stop scrolling!!
+  </div>
+
+  <div class="end-spacer-3"></div>
+
 </section>
+
+</section>
+
+<style>
+  #archive-section > h1,
+#archive-section > .archive-filter-bar {
+  margin-left: 4rem;
+}
+@media (max-width: 1200px) {
+  #archive-section > h1,
+  #archive-section > .archive-filter-bar {
+    margin-left: 3rem;
+  }
+}
+@media (max-width: 699px) {
+  #archive-section > h1,
+  #archive-section > .archive-filter-bar {
+    margin-left: 1rem;
+  }
+}
+@media (max-width: 1200px) {
+  .archive-filter-overlay {
+    padding-left: 4rem;
+  }
+}
+@media (max-width: 699px) {
+  .archive-filter-overlay {
+    padding-left: 2rem;
+  }
+}
+
+  /* ── END SECTION SPACERS ── */
+  .end-spacer-1 { height: 20vh; }
+  .end-spacer-2 { height: 30vh; }
+  .end-spacer-3 { height: 10vh; }
+
+  @media (max-width: 768px) {
+    .end-spacer-1 { height: 15vh; }
+    .end-spacer-2 { height: 30vh; }
+    .end-spacer-3 { height: 8vh; }
+  }
+
+  @media (max-width: 480px) {
+    .end-spacer-1 { height: 10vh; }
+    .end-spacer-2 { height: 20vh; }
+    .end-spacer-3 { height: 5vh; }
+  }
+  /* ── FILTER BAR — normal flow, scrolls with page, blurred by overlay ── */
+  .archive-filter-bar {
+  position: sticky;
+  top: 100px;
+  z-index: 50;
+
+  display: inline-flex;            /* inline flow */
+  align-items: flex-start;
+  gap: 1.2rem;
+
+  width: fit-content;              /* shrink to content */
+  max-width: min(90vw, 900px);     /* hard cap */
+  
+  margin-bottom: 2.5rem;
+  padding: 0.6rem 0.9rem;
+
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+
+  border-radius: 0px;
+}
+html.dark .archive-filter-bar {
+  background: rgba(20, 20, 20, 0.65);
+}
+
+  .archive-filter-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: inherit;
+    opacity: 0.55;
+    padding: 0;
+    transition: opacity 0.2s;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-family: inherit;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .archive-filter-toggle:hover,
+  .archive-filter-toggle.open {
+    opacity: 1;
+  }
+
+  .archive-active-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    max-width: 700px;      /* prevents infinite horizontal growth */
+  }
+
+  .archive-active-tag-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    white-space: nowrap;
+  }
+
+  .archive-active-tag-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .archive-active-tag-value {
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    opacity: 0.75;
+  }
+
+  /* ── OVERLAY — fixed fullscreen ── */
+  .archive-filter-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    /* top padding = sticky header height (~72px) + archive-section top padding (~40px) */
+    padding: 7rem 4rem 3rem 5rem;
+  }
+
+  html.dark .archive-filter-overlay {
+    background: rgba(12, 12, 12, 0.78);
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+
+  .archive-filter-overlay.hidden {
+    display: none;
+  }
+
+  /* ── INNER ROW: Filters − + columns side by side ── */
+  .archive-filter-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    width: 100%;
+  }
+
+  /* ── FILTER COLUMNS ── */
+  .archive-filter-columns {
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .archive-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 110px;
+  }
+
+  .archive-filter-group-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.35;
+    margin-bottom: 0.3rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .archive-filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.archive-filter-option {
+  position: relative;
+}
+
+/* stairs offset */
+.archive-filter-option:nth-child(1) { margin-left: 0px; }
+.archive-filter-option:nth-child(2) { margin-left: 8px; }
+.archive-filter-option:nth-child(3) { margin-left: 16px; }
+.archive-filter-option:nth-child(4) { margin-left: 24px; }
+.archive-filter-option:nth-child(5) { margin-left: 32px; }
+.archive-filter-option:nth-child(6) { margin-left: 40px; }
+.archive-filter-option:nth-child(7) { margin-left: 48px; }
+.archive-filter-option:nth-child(8) { margin-left: 56px; }
+
+  .archive-filter-option {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.03em;
+    color: inherit;
+    opacity: 0.3;
+    text-align: left;
+    padding: 0.1rem 0;
+    transition: opacity 0.15s;
+    font-family: inherit;
+  }
+
+  .archive-filter-option:hover { opacity: 0.7; }
+
+  .archive-filter-option.active {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const toggle      = document.getElementById("filterToggle");
+  const symbol      = document.getElementById("filterToggleSymbol");
+  const overlay     = document.getElementById("filterOverlay");
+  const closeToggle = document.getElementById("filterCloseToggle");
+  const tagsEl      = document.getElementById("activeFilterTags");
+  const gallery     = document.getElementById("archiveGallery");
+  const items       = gallery ? Array.from(gallery.querySelectorAll(".archive-item")) : [];
+
+  const active = { year: "all", category: "all" };
+  const filterLabels = { year: "Years", category: "Category" };
+
+  function openOverlay() {
+    overlay.classList.remove("hidden");
+    symbol.textContent = "−";
+    toggle.classList.add("open");
+  }
+
+  function closeOverlay() {
+    overlay.classList.add("hidden");
+    symbol.textContent = "+";
+    toggle.classList.remove("open");
+  }
+
+  toggle.addEventListener("click", () => {
+    overlay.classList.contains("hidden") ? openOverlay() : closeOverlay();
+  });
+
+  closeToggle?.addEventListener("click", closeOverlay);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeOverlay();
+  });
+
+  document.querySelectorAll(".archive-filter-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter;
+      const value  = btn.dataset.value;
+
+      btn.closest(".archive-filter-options")
+         .querySelectorAll(".archive-filter-option")
+         .forEach(b => b.classList.remove("active"));
+
+      btn.classList.add("active");
+      active[filter] = value;
+
+      applyFilters();
+      renderTags();
+    });
+  });
+
+  function applyFilters() {
+    items.forEach(item => {
+      const year  = String(item.dataset.year || "");
+      const cat   = (item.dataset.category || "").toLowerCase();
+      const matchYear  = active.year === "all" || year === String(active.year);
+      const matchCat   = active.category === "all" || cat === active.category.toLowerCase();
+      item.style.display = (matchYear && matchCat) ? "" : "none";
+    });
+  }
+
+  function renderTags() {
+    tagsEl.innerHTML = "";
+    Object.entries(active).forEach(([key, val]) => {
+      if (val === "all") return;
+      const group = document.createElement("div");
+      group.className = "archive-active-tag-group";
+      const label = document.createElement("span");
+      label.className = "archive-active-tag-label";
+      label.textContent = filterLabels[key];
+      const value = document.createElement("span");
+      value.className = "archive-active-tag-value";
+      value.textContent = val;
+      group.appendChild(label);
+      group.appendChild(value);
+      tagsEl.appendChild(group);
+    });
+  }
+
+  if (window.location.hash === "#archive-section") {
+    const target = document.getElementById("archive-section");
+    if (target) setTimeout(() => {
+      const headerH = document.getElementById("siteHeader")?.offsetHeight || 0;
+      window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - headerH, behavior: "smooth" });
+    }, 150);
+  }
+
+});
+</script>
 
 {{ end }}

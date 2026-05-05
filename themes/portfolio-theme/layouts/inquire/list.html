@@ -8,10 +8,19 @@
     Thank you — your request has been sent successfully.
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+  <!-- MOBILE TAB NAV (visible below 1200px) -->
+  <nav class="inquire-tab-nav" id="inquireTabNav">
+    <button class="inquire-tab active" data-target="col-purchase">Purchase</button>
+    <span class="inquire-tab-sep">|</span>
+    <button class="inquire-tab" data-target="col-commission">Commission</button>
+    <span class="inquire-tab-sep">|</span>
+    <button class="inquire-tab" data-target="col-contact">Contact</button>
+  </nav>
+
+  <div class="inquire-columns-grid">
 
     <!-- PURCHASE -->
-    <div>
+    <div id="col-purchase" class="inquire-col">
       <h2 class="inquire-section-title">Purchase Existing Artwork</h2>
       <p class="inquire-desc">
         To purchase an existing artwork by Louis Andrada, please submit the Purchase form below. Once submitted, Louis will reach out with the selected piece(s) information, price(s), and assist with finalizing your purchase.
@@ -79,20 +88,20 @@
         });
         </script>
 
-        <input type="text" name="buyerName" placeholder="Full Name" class="inquire-input" required />
-        <input type="email" name="buyerEmail" placeholder="Email" class="inquire-input" required />
-        <input type="tel" name="buyerPhone" placeholder="Phone Number" class="inquire-input" required />
-        <input type="text" name="buyerlocation" placeholder="Where are you located? (City, Country)" class="inquire-input" required />
+        <input type="text" name="buyerName" placeholder="Full Name *" class="inquire-input" required />
+        <input type="email" name="buyerEmail" placeholder="Email *" class="inquire-input" required />
+        <input type="tel" name="buyerPhone" placeholder="Phone Number *" class="inquire-input" required />
+        <input type="text" name="buyerlocation" placeholder="Where are you located? (City, Country) *" class="inquire-input" required />
         <textarea id="purchaseComments" name="purchaseComments" placeholder="Additional comments or questions (optional)" class="inquire-textarea"></textarea>
 
         <button type="submit" class="inquire-btn">Submit Purchase Request</button>
       </form>
     </div>
 
-    <div class="block md:hidden border-t border-gray-300 my-9"></div>
+    <div class="block md:hidden border-t border-gray-300 my-9 inquire-divider"></div>
 
     <!-- COMMISSION -->
-    <div>
+    <div id="col-commission" class="inquire-col">
       <h2 class="inquire-section-title">Commission New Artwork</h2>
       <p class="inquire-desc mb-6">
         Commissions are open. To commission a new artwork by Louis Andrada, please submit the Commission form below. Once submitted, Louis will reach out with more information.
@@ -108,11 +117,11 @@
         <input type="hidden" name="formType" value="Commission Request">
         <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
 
-        <input type="text" name="commissionName" placeholder="Full Name" class="inquire-input" required />
-        <input type="email" name="commissionEmail" placeholder="Email" class="inquire-input" required />
-        <input type="tel" name="commissionPhone" placeholder="Phone Number" class="inquire-input" required />
-        <input type="text" name="commissionLocation" placeholder="Where are you located? (City, Country)" class="inquire-input" required />
-        <input type="text" name="commissionSize" placeholder="Preferred Size in inches (HxWxL e.g., 40x30x1.5 in)" class="inquire-input" required />
+        <input type="text" name="commissionName" placeholder="Full Name *" class="inquire-input" required />
+        <input type="email" name="commissionEmail" placeholder="Email *" class="inquire-input" required />
+        <input type="tel" name="commissionPhone" placeholder="Phone Number *" class="inquire-input" required />
+        <input type="text" name="commissionLocation" placeholder="Where are you located? (City, Country) *" class="inquire-input" required />
+        <input type="text" name="commissionSize" placeholder="Preferred Size in inches (HxWxL e.g., 40x30x1.5 in) *" class="inquire-input" required />
 
         <div class="inquire-fieldset">
           <button type="button" id="toggleCommissionTypes" class="w-full text-left flex justify-between items-center inquire-fieldset-label">
@@ -131,24 +140,16 @@
           </div>
         </div>
 
-        <textarea id="commissionTextarea" name="commissionIdea"
-          placeholder="Describe your commission in detail...
-
-Concept you have in mind (if any)
-Intended space (home, office, etc.)
-Your budget range
-
-The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas or requests for control over the creative process will not be accepted.
-
-If this section is left blank, the piece will be created based entirely on the artist's vision."
-          class="inquire-textarea"></textarea>
+        <input type="text" name="commissionBudget" placeholder="Budget Range *" class="inquire-input" required />
+        <input type="text" name="commissionSpace" placeholder="Intended Space (home, office, etc.)" class="inquire-input" />
+        <textarea id="commissionTextarea" name="commissionComments" placeholder="Additional comments or questions (optional)" class="inquire-textarea"></textarea>
 
         <button type="submit" class="inquire-btn">Submit Commission Request</button>
       </form>
     </div>
 
     <!-- CONTACT -->
-    <div>
+    <div id="col-contact" class="inquire-col">
       <h2 class="inquire-section-title">Contact Me</h2>
       <p class="inquire-desc mb-6">
         Please fill the form below for any inquiries unrelated to purchase or commission of my artworks.
@@ -297,8 +298,8 @@ If this section is left blank, the piece will be created based entirely on the a
     background: #f5f5f5;
     color: inherit;
     line-height: 1.6;
-    resize: none;
-    overflow: hidden;
+    resize: vertical;
+    min-height: 90px;
     box-sizing: border-box;
   }
 
@@ -381,25 +382,157 @@ If this section is left blank, the piece will be created based entirely on the a
   .inquire-page .w-full.max-w-sm {
     max-width: 100% !important;
   }
+
+  /* Outer 3-column layout — controlled entirely by our CSS, not Tailwind */
+  .inquire-columns-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+
+  /* All columns visible on desktop */
+  .inquire-col {
+    display: block;
+  }
+
+  /* ── TAB NAV ── hidden on desktop, shown via media query below ── */
+  .inquire-tab-nav {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.06em;
+    font-size: 0.8rem;
+  }
+
+  .inquire-tab {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.4;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    padding: 0.25rem 0.1rem;
+    transition: opacity 0.2s ease;
+    text-transform: uppercase;
+  }
+
+  .inquire-tab.active {
+    opacity: 1;
+    border-bottom: 1px solid currentColor;
+  }
+
+  .inquire-tab:hover {
+    opacity: 0.75;
+  }
+
+  .inquire-tab-sep {
+    opacity: 0.25;
+    font-size: 0.75rem;
+  }
+
+  /* RESPONSIVE: below 1200px switch to tab mode */
+  @media (max-width: 1199px) {
+
+    .inquire-page {
+      padding-left: 4rem !important;
+      padding-right: 4rem !important;
+    }
+
+    .inquire-tab-nav {
+      display: flex;
+    }
+
+    /* collapse only the outer 3-col wrapper, not inner form grids */
+    .inquire-columns-grid,
+    .inquire-page .inquire-columns-grid,
+    section .inquire-columns-grid {
+      display: block !important;
+      grid-template-columns: none !important;
+    }
+
+    /* hide all columns by default — triple specificity to beat Tailwind */
+    .inquire-page .inquire-columns-grid .inquire-col {
+      display: none !important;
+    }
+
+    /* show only the active column */
+    .inquire-page .inquire-columns-grid .inquire-col.active {
+      display: block !important;
+    }
+
+    /* restore proper grid display and spacing on forms inside active column */
+    .inquire-col.active form.grid {
+      display: grid !important;
+      gap: 1rem !important;
+    }
+
+    .inquire-divider {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .inquire-page {
+      padding-left: 1.25rem !important;
+      padding-right: 1.25rem !important;
+    }
+  }
 </style>
 
-<!-- ALL SCRIPTS UNCHANGED -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const commissionTextarea = document.getElementById("commissionTextarea");
-  if (commissionTextarea) {
-    const autoResize = (el) => {
-      el.style.height = "auto";
-      const style = window.getComputedStyle(el);
-      const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-      el.style.height = (el.scrollHeight - padding) + "px";
-    };
-    autoResize(commissionTextarea);
-    commissionTextarea.addEventListener("input", () => autoResize(commissionTextarea));
-    window.addEventListener("resize", () => autoResize(commissionTextarea));
+  /* ── TAB SWITCHING ── */
+  const tabNav = document.getElementById("inquireTabNav");
+  const tabs = tabNav ? tabNav.querySelectorAll(".inquire-tab") : [];
+  const cols = document.querySelectorAll(".inquire-col");
+
+  function isTabMode() {
+    return window.innerWidth < 1200;
   }
 
+  function applyTabMode() {
+    if (isTabMode()) {
+      // find which tab is marked active
+      const activeTab = Array.from(tabs).find(t => t.classList.contains("active")) || tabs[0];
+      const targetId = activeTab.dataset.target;
+      // strip active from all cols, then add only to the selected one
+      tabs.forEach(t => t.classList.remove("active"));
+      cols.forEach(c => c.classList.remove("active"));
+      activeTab.classList.add("active");
+      const targetCol = document.getElementById(targetId);
+      if (targetCol) targetCol.classList.add("active");
+    } else {
+      // desktop: all cols visible, no tab active state needed
+      tabs.forEach(t => t.classList.remove("active"));
+      cols.forEach(c => c.classList.add("active"));
+    }
+  }
+
+  // Run immediately on load — do not wait for resize
+  applyTabMode();
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      if (!isTabMode()) return;
+      tabs.forEach(t => t.classList.remove("active"));
+      cols.forEach(c => c.classList.remove("active"));
+      tab.classList.add("active");
+      const target = document.getElementById(tab.dataset.target);
+      if (target) target.classList.add("active");
+    });
+  });
+
+  window.addEventListener("resize", applyTabMode);
+
+  /* ── COMMISSION TEXTAREA AUTO-RESIZE ── */
+  const commissionTextarea = document.getElementById("commissionTextarea");
+  // no longer auto-resizing — comments box uses fixed height like purchase form
+
+  /* ── COMMISSION TYPE TOGGLE ── */
   const toggleBtn = document.getElementById("toggleCommissionTypes");
   const options = document.getElementById("commissionOptions");
   const arrow = document.getElementById("commissionArrow");
@@ -410,6 +543,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* ── ARTWORK SELECTOR MODAL ── */
   const modal = document.getElementById("artworkSelectorModal");
   const openBtn = document.getElementById("openArtworkSelector");
   const closeBtn = document.getElementById("closeArtworkSelector");
