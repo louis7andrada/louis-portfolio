@@ -1,17 +1,28 @@
-<header class="w-full border-b border-gray-300 px-4 md:px-8 py-4 flex items-center justify-between">
+<header id="siteHeader" class="w-full border-b border-gray-300 px-4 md:px-8 py-4 flex items-center justify-between">
   
-  <!-- Left: Logo -->
-<a href="/" class="flex items-center">
-  <img src="/logo.png" alt="Louis Andrada Logo" class="h-14 w-40 dark:invert">
-</a>
+  <!-- Left: Logo — always visible -->
+  <a href="/" id="headerLogo" class="flex items-center">
+    <img src="/logo.png" alt="Louis Andrada Logo" class="h-10 w-28 dark:invert">
+  </a>
 
   <!-- Right: Controls -->
   <div class="flex items-center gap-6">
 
-    <!-- Desktop Navigation -->
-     {{ if not .IsHome }}
-    <nav class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
-      <a href="/artworks" class="hover:underline dark:text-gray-300 dark:hover:text-white">Artworks</a>
+    <!-- Desktop Navigation — non-home pages -->
+    {{ if not .IsHome }}
+    <nav id="desktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
+      <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkDesktop" class="hover:underline dark:text-gray-300 dark:hover:text-white">Artworks</a>
+      <a href="/inquire" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquire</a>
+      <a href="/about" class="hover:underline dark:text-gray-300 dark:hover:text-white">About</a>
+      <a href="/archive" class="hover:underline dark:text-gray-300 dark:hover:text-white">Archive</a>
+      <a href="/links" class="hover:underline dark:text-gray-300 dark:hover:text-white">Links</a>
+    </nav>
+    {{ end }}
+
+    <!-- HOME desktop nav — hidden while home section is visible -->
+    {{ if .IsHome }}
+    <nav id="homeDesktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
+      <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkHome" class="hover:underline dark:text-gray-300 dark:hover:text-white nav-link-active">Artworks</a>
       <a href="/inquire" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquire</a>
       <a href="/about" class="hover:underline dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/archive" class="hover:underline dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -21,42 +32,303 @@
 
     <!-- Dark Mode Toggle -->
     <button id="darkModeToggle" class="w-8 h-8 flex items-center justify-center">
-  
-      <!-- Sun Icon (dark mode) -->
-      <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-           class="w-6 h-6 md:w-5 md:h-5">
+      <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 md:w-5 md:h-5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
       </svg>
-
-      <!-- Moon Icon (light mode) -->
-      <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-           class="w-5 h-5 md:w-5 md:h-5">
+      <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 md:w-5 md:h-5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
       </svg>
-
     </button>
 
-    <!-- Mobile Menu Button -->
-    <button id="mobileMenuBtn" class="burger md:hidden z-50">
-      <span></span>
-      <span></span>
-      <span></span>
+    <!-- Mobile Menu Toggle -->
+    <button id="mobileMenuBtn" class="menu-toggle">
+      <span class="menu-plus">+</span>
+      <span class="menu-minus">−</span>
     </button>
 
   </div>
 
-  <!-- FULLSCREEN MOBILE MENU -->
-  <nav 
-    id="mobileMenu" 
-    class="fixed inset-0 bg-white dark:bg-black
-          flex flex-col items-center justify-center 
-          gap-10 text-3xl font-medium z-40"
-  >
-    <a href="/artworks" class="block">Artworks</a>
-    <a href="/inquire" class="block">Inquire</a>
-    <a href="/about" class="block">About</a>
-    <a href="/archive" class="block">Archive</a>
-    <a href="/links" class="block">Links</a>
-  </nav>
-
 </header>
+
+<!-- FULLSCREEN MOBILE MENU — outside header to avoid backdrop-filter stacking context conflict -->
+<nav id="mobileMenu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
+  <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkMobile" class="block">Artworks</a>
+  <a href="/inquire" class="block">Inquire</a>
+  <a href="/about" class="block">About</a>
+  <a href="/archive" class="block">Archive</a>
+  <a href="/links" class="block">Links</a>
+</nav>
+
+<style>
+  /* ── HEADER ── */
+  #siteHeader {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-bottom-color: rgb(209 213 219);
+    transition: border-bottom-color 0.3s ease;
+  }
+
+  html.dark #siteHeader {
+    background: rgba(20, 20, 20, 0.65) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+
+  /* ── MOBILE ONLY: hide toggle on desktop via CSS (not Tailwind, which may not scan this partial) ── */
+  #mobileMenuBtn {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    #mobileMenuBtn {
+      display: flex !important;
+    }
+  }
+
+  /* ── MENU OPEN: raise header, hide logo + darkmode, keep only the toggle ── */
+  body[data-menu-open] #siteHeader {
+    z-index: 600 !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  body[data-menu-open] #headerLogo,
+  body[data-menu-open] #darkModeToggle,
+  body[data-menu-open] #desktopNav,
+  body[data-menu-open] #homeDesktopNav {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.2s ease;
+  }
+
+  /* ── + / − TOGGLE BUTTON ── */
+  .menu-toggle {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    font-family: inherit;
+    font-size: 2rem;
+    line-height: 1;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-toggle:hover { opacity: 0.6; }
+
+  /* both symbols stacked, crossfade between them */
+  .menu-toggle .menu-plus,
+  .menu-toggle .menu-minus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .menu-toggle .menu-plus  { opacity: 1; }
+  .menu-toggle .menu-minus { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+
+  .menu-toggle.open .menu-plus  { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  .menu-toggle.open .menu-minus { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+  /* ── MOBILE MENU ── */
+  #mobileMenu {
+    z-index: 500 !important;
+    transform: none !important;
+    transition: opacity 0.35s ease !important;
+    background: rgba(240, 240, 240, 0.88) !important;
+    backdrop-filter: blur(40px) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(1.8) !important;
+  }
+
+  html.dark #mobileMenu {
+    background: rgba(18, 18, 18, 0.88) !important;
+    backdrop-filter: blur(40px) saturate(1.8) !important;
+    -webkit-backdrop-filter: blur(40px) saturate(1.8) !important;
+  }
+
+  #mobileMenu a {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  #mobileMenu.open a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── HIDE FILTER BARS when mobile menu is open ── */
+  body[data-menu-open] .artwork-filter-bar,
+  body[data-menu-open] .archive-filter-bar {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
+  /* ── ACTIVE NAV LINK ── */
+  .nav-link-active {
+    font-weight: bold;
+  }
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const siteHeader     = document.getElementById("siteHeader");
+  const homeSection    = document.getElementById("home-section");
+  const homeDesktopNav = document.getElementById("homeDesktopNav");
+
+  /* ── SCROLL HELPER ── */
+  function scrollToSection(el) {
+  const headerHeight = siteHeader
+  ? siteHeader.offsetHeight
+  : 0;
+
+const top =
+  el.getBoundingClientRect().top +
+  window.scrollY -
+  headerHeight;
+
+  window.scrollTo({ top, behavior: "smooth" });
+}
+
+  /* ── ARTWORKS LINK HANDLER ── */
+  function artworksNavHandler(e) {
+    e.preventDefault();
+
+    const mobileMenu    = document.getElementById("mobileMenu");
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    if (mobileMenu && mobileMenu.classList.contains("open")) {
+      mobileMenu.classList.remove("open");
+      if (mobileMenuBtn) mobileMenuBtn.classList.remove("open");
+      document.body.removeAttribute("data-menu-open");
+      if (!document.body.getAttribute("data-lightbox-open")) {
+        document.body.style.overflow = "";
+      }
+    }
+
+    const target = document.getElementById("artworks-section");
+    if (target) {
+      setTimeout(() => {
+        scrollToSection(target);
+
+      setTimeout(() => {
+        if (homeDesktopNav) {
+          homeDesktopNav.style.opacity = "1";
+          homeDesktopNav.style.pointerEvents = "auto";
+        }
+      }, 60);
+      }, 60);
+    } else {
+        sessionStorage.setItem("scrollTarget", "artworks-section");
+        window.location.href = "/";
+      }
+      }
+
+  document.querySelectorAll('[data-scroll="artworks"]').forEach(link => {
+  link.addEventListener("click", artworksNavHandler);
+});
+
+  /* ── HOME PAGE: watch home-section leaving viewport ── */
+  if (homeSection && homeDesktopNav) {
+    const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.intersectionRatio > 0.1) {
+      homeDesktopNav.style.opacity = "0";
+      homeDesktopNav.style.pointerEvents = "none";
+    } else {
+      homeDesktopNav.style.opacity = "1";
+      homeDesktopNav.style.pointerEvents = "auto";
+    }
+  });
+}, {
+  threshold: [0, 0.1]
+});
+
+    observer.observe(homeSection);
+  }
+
+  /* ── ACTIVE LINK STATE ── */
+  const pathname = window.location.pathname;
+  const isHome   = pathname === "/" || homeSection !== null;
+
+  if (!homeSection) {
+    let activePage = "";
+    if (pathname.includes("/inquire")) activePage = "inquire";
+    else if (pathname.includes("/about")) activePage = "about";
+    else if (pathname.includes("/archive")) activePage = "archive";
+    else if (pathname.includes("/links")) activePage = "links";
+    else if (pathname.includes("/artworks") || pathname === "/") activePage = "artworks";
+
+    document.querySelectorAll("nav:not(#mobileMenu) a").forEach(link => {
+      const href = link.getAttribute("href") || "";
+      if (activePage === "artworks" && (href.includes("artworks") || href.includes("#artworks"))) {
+        link.classList.add("nav-link-active");
+      } else if (activePage && href.includes(`/${activePage}`)) {
+        link.classList.add("nav-link-active");
+      }
+    });
+  }
+
+  const mobileMenu = document.getElementById("mobileMenu");
+  if (mobileMenu) {
+    mobileMenu.querySelectorAll("a").forEach(link => {
+      const href = link.getAttribute("href") || "";
+      let match = false;
+      if (isHome && (href.includes("artworks") || href.includes("#artworks"))) {
+        match = true;
+      } else if (!isHome) {
+        if (pathname.includes("/inquire") && href.includes("inquire")) match = true;
+        else if (pathname.includes("/about") && href.includes("about")) match = true;
+        else if (pathname.includes("/archive") && href.includes("archive")) match = true;
+        else if (pathname.includes("/links") && href.includes("links")) match = true;
+        else if ((pathname.includes("/artworks") || pathname === "/") && (href.includes("artworks") || href.includes("#artworks"))) match = true;
+      }
+      if (match) link.classList.add("nav-link-active");
+    });
+  }
+
+  /* ── HASH SCROLL on page load ── */
+  const savedTarget = sessionStorage.getItem("scrollTarget");
+
+if (savedTarget) {
+  sessionStorage.removeItem("scrollTarget");
+
+  const target = document.getElementById(savedTarget);
+  if (target) {
+    setTimeout(() => {
+      scrollToSection(target);
+
+      // FORCE correct state AFTER scroll
+      if (homeSection && homeDesktopNav) {
+        const rect = homeSection.getBoundingClientRect();
+
+        if (rect.top < 0) {
+          // home is above viewport → show nav
+          homeDesktopNav.style.opacity = "1";
+          homeDesktopNav.style.pointerEvents = "auto";
+        } else {
+          // home is visible → hide nav
+          homeDesktopNav.style.opacity = "0";
+          homeDesktopNav.style.pointerEvents = "none";
+        }
+      }
+
+    }, 100);
+  }
+}
+
+});
+</script>

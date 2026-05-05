@@ -88,30 +88,17 @@
       });
     });
   </script>
-
-  <!-- Image protection -->
   <script>
-    document.addEventListener('contextmenu', function(e) {
-      if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-      }
-    });
-
-    document.addEventListener('dragstart', function(e) {
-      if (e.target.tagName === 'IMG') {
-        e.preventDefault();
-      }
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (
-        (e.ctrlKey || e.metaKey) && 
-        ['s', 'u', 'p'].includes(e.key.toLowerCase())
-      ) {
-        e.preventDefault();
-      }
-    });
-  </script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.location.hash === "#artworks-section") {
+    const target = document.getElementById("artworks-section");
+    if (target) {
+      // Small delay ensures page is rendered before scrolling
+      setTimeout(() => target.scrollIntoView({ behavior: "smooth" }), 150);
+    }
+  }
+});
+</script>
 
 </body>
 </html>

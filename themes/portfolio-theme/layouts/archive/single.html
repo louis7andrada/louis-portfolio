@@ -132,27 +132,30 @@
 </style>
 
 <script>
-  function openLightbox(src, alt) {
-    const lb = document.getElementById('lightbox');
-    const img = document.getElementById('lightbox-img');
-    img.src = '';
-    requestAnimationFrame(() => {
+  (function() {
+    window.openLightbox = function(src, alt) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
       img.src = src;
       img.alt = alt || '';
       lb.classList.add('active');
+      document.body.setAttribute('data-lightbox-open', 'true');
       document.body.style.overflow = 'hidden';
+    };
+
+    window.closeLightbox = function() {
+      const lb = document.getElementById('lightbox');
+      lb.classList.remove('active');
+      document.body.removeAttribute('data-lightbox-open');
+      if (!document.body.getAttribute('data-menu-open')) {
+        document.body.style.overflow = '';
+      }
+    };
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') window.closeLightbox();
     });
-  }
-
-  function closeLightbox() {
-    const lb = document.getElementById('lightbox');
-    lb.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
+  })();
 </script>
 
 {{ end }}

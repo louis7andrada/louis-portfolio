@@ -15,17 +15,12 @@ img {
   user-drag: none;
   -webkit-user-select: none;
   user-select: none;
-  pointer-events: none;
+  -webkit-touch-callout: none;
 }
 
-a img,
-.hp-image,
-.single-image,
-.artworkChoice img,
-#intro-logo,
-#lightbox-img {
-  pointer-events: auto;
-}
+/* No pointer-events: none on images at all */
+/* Right-click blocking is handled in JS only */
+
 /* ----------------------------------------
    HEADER IMPROVEMENT
 ----------------------------------------- */
@@ -63,6 +58,25 @@ nav a::after {
 
 nav a:hover::after {
   width: 100%;
+}
+
+/* ----------------------------------------
+   END SECTION SPACERS
+----------------------------------------- */
+.end-spacer-1 { height: 30vh; }
+.end-spacer-2 { height: 60vh; }
+.end-spacer-3 { height: 15vh; }
+
+@media (max-width: 768px) {
+  .end-spacer-1 { height: 15vh; }
+  .end-spacer-2 { height: 30vh; }
+  .end-spacer-3 { height: 8vh; }
+}
+
+@media (max-width: 480px) {
+  .end-spacer-1 { height: 10vh; }
+  .end-spacer-2 { height: 20vh; }
+  .end-spacer-3 { height: 5vh; }
 }
 
 /* ----------------------------------------
@@ -186,15 +200,13 @@ html.dark {
   left: 0;
   width: 100%;
   height: 100vh;
-  transform: translateY(-10px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.35s ease;
   z-index: 40;
 }
 
 #mobileMenu.open {
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
 }
 
 #mobileMenu a {
@@ -223,10 +235,9 @@ html.dark body {
 }
 
 html.dark header {
-  background-color: #1a1a1a !important;
   border-color: #2d2d2d !important;
+  /* background and blur now handled per-element in nav partial */
 }
-
 html.dark a {
   color: #e8e8e8 !important;
 }
@@ -261,8 +272,8 @@ html.dark .bg-gray-200 {
 }
 
 html.dark #mobileMenu {
-  background-color: #1a1a1a !important;
   color: #e8e8e8 !important;
+  /* background and blur now handled in nav partial */
 }
 
 html.dark #artworkModal {
@@ -507,44 +518,6 @@ html.dark .archive-filters label {
 #prevBtnDesktop::before,
 #nextBtnDesktop::before {
   opacity: 0.99 !important;
-}
-
-/* ----------------------------------------
-   BURGER MENU ANIMATION
------------------------------------------ */
-
-.burger {
-  width: 24px;
-  height: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  cursor: pointer;
-  position: relative;
-}
-
-.burger span {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background: black;
-  transition: transform .35s ease, opacity .25s ease;
-}
-
-.dark .burger span {
-  background: white;
-}
-
-.burger.open span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-.burger.open span:nth-child(2) {
-  opacity: 0;
-}
-
-.burger.open span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
 }
 
 /* ----------------------------------------

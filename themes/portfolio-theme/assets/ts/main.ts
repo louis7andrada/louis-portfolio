@@ -2,17 +2,18 @@ const btn = document.getElementById("mobileMenuBtn");
 const menu = document.getElementById("mobileMenu");
 
 btn?.addEventListener("click", () => {
+  btn.classList.toggle("open");
+  menu.classList.toggle("open");
 
-  btn.classList.toggle("open");   // burger animation
-  menu.classList.toggle("open");  // menu visibility
-
-  // -----------------------------
-  // SCROLL LOCK FOR MOBILE MENU
-  // -----------------------------
   if (menu.classList.contains("open")) {
-    document.body.style.overflow = "hidden";  // disable page scroll
+    document.body.setAttribute("data-menu-open", "true");
+    document.body.style.overflow = "hidden";
   } else {
-    document.body.style.overflow = "";        // restore scroll
+    document.body.removeAttribute("data-menu-open");
+    // only restore scroll if lightbox is not open
+    if (!document.body.getAttribute("data-lightbox-open")) {
+      document.body.style.overflow = "";
+    }
   }
 });
 
@@ -322,4 +323,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
   });
+});
+
+
+// -----------------------------
+// IMAGE PROTECTION (no pointer-events interference)
+// -----------------------------
+document.addEventListener('contextmenu', function(e) {
+  if ((e.target as HTMLElement).tagName === 'IMG') {
+    e.preventDefault();
+  }
+});
+
+document.addEventListener('dragstart', function(e) {
+  if ((e.target as HTMLElement).tagName === 'IMG') {
+    e.preventDefault();
+  }
 });
