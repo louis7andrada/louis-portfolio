@@ -34,7 +34,7 @@
   <meta name="twitter:image" content="/images/og-default.jpg" />
 
   <!-- font URL -->
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"> -->
 
   <!-- Styles -->
   <link rel="stylesheet" href="/css/output.css">
@@ -86,6 +86,30 @@
           form.appendChild(input);
         }
       });
+    });
+  </script>
+
+  <!-- Image protection -->
+  <script>
+    document.addEventListener('contextmenu', function(e) {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('dragstart', function(e) {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (
+        (e.ctrlKey || e.metaKey) && 
+        ['s', 'u', 'p'].includes(e.key.toLowerCase())
+      ) {
+        e.preventDefault();
+      }
     });
   </script>
 

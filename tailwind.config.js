@@ -21,8 +21,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-      sans: ['"AndradaMono"', '"Courier Prime"', 'monospace'],
-      mono: ['"AndradaMono"', '"Courier Prime"', 'monospace'],
+      sans: ['"AndradaMono"', 'monospace'],
+      mono: ['"AndradaMono"', 'monospace'],
     },
       //letterSpacing: {
       //  tighterCustom: '0.0em',

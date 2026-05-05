@@ -4,7 +4,13 @@
 {{ if not $artwork }}
   {{ $artwork = index $all 0 }}
 {{ end }}
+
 <div class="homepage-wrapper">
+
+  <div id="intro-door">
+    <img src="/logo.png" id="intro-logo" alt="Louis Andrada" />
+  </div>
+
   {{ with $artwork }}
   <div class="homepage-layout">
     <div class="hp-left">
@@ -27,11 +33,59 @@
   {{ else }}
   <p style="padding:2rem;font-family:monospace;">No artwork found.</p>
   {{ end }}
+
 </div>
+
 <style>
+  #intro-door {
+    position: fixed;
+    inset: 0;
+    background: #ffffff;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 2.5s ease;
+  }
+
+  html.dark #intro-door {
+    background: #1a1a1a;
+  }
+
+  #intro-logo {
+    width: clamp(160px, 20vw, 280px);
+    height: auto;
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.4s ease;
+    cursor: pointer;
+  }
+
+  html.dark #intro-logo {
+    filter: invert(1);
+  }
+
+  #intro-logo:hover {
+    opacity: 0.35;
+  }
+
+  #intro-door.logo-dim #intro-logo {
+    opacity: 0.35;
+  }
+
+  #intro-door.logo-clicked #intro-logo {
+    transform: scale(0.93);
+    opacity: 0.2;
+  }
+
+  #intro-door.dissolving {
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .homepage-wrapper {
     min-height: calc(100vh - 80px);
   }
+
   .homepage-layout {
     display: flex;
     align-items: stretch;
@@ -39,61 +93,77 @@
     gap: 10rem;
     min-height: calc(100vh - 80px);
   }
+
   .hp-left {
     flex: 0 0 auto;
     width: clamp(420px, 62vw, 900px);
     display: flex;
     flex-direction: column;
   }
+
   .hp-title {
     font-size: 0.9rem;
     letter-spacing: 0.02em;
     margin: 0 0 0.6rem 0;
   }
+
   .hp-image-link {
     display: block;
   }
+
   .hp-image {
     width: 100%;
     height: auto;
     display: block;
+    transition: opacity 0.3s ease;
   }
+
+  .hp-image-link:hover .hp-image {
+    opacity: 0.82;
+  }
+
   .hp-year {
     font-size: 0.85rem;
     letter-spacing: 0.05em;
     align-self: flex-end;
     margin-top: 0.5rem;
   }
+
   .hp-nav {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
   }
+
   .hp-nav-inner {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 60%;
   }
+
   .hp-nav-link {
     font-size: 1.1rem;
     text-decoration: none;
     color: inherit;
     letter-spacing: 0.04em;
-    display: inline-block;  /* shrinks to text width so underline doesn't stretch */
+    display: inline-block;
     padding: 0.3rem 0;
     transition: font-weight 0.1s ease;
   }
+
   .hp-nav-link:hover {
     text-decoration: underline;
     font-weight: 700;
   }
+
   .hp-nav--artworks    { margin-left: 0%;  }
   .hp-nav--acquisition { margin-left: 35%; }
   .hp-nav--archive     { margin-left: 5%;  }
   .hp-nav--about       { margin-left: 30%; }
   .hp-nav--links       { margin-left: 60%; }
+
   @media (max-width: 700px) {
     .homepage-layout {
       flex-direction: column;
@@ -116,4 +186,47 @@
     }
   }
 </style>
+
+<script>
+  (function() {
+    const door = document.getElementById('intro-door');
+    const logo = document.getElementById('intro-logo');
+
+    if (sessionStorage.getItem('intro-seen')) {
+      door.style.display = 'none';
+      return;
+    }
+
+    let dismissed = false;
+
+    function dismiss(fromClick) {
+      if (dismissed) return;
+      dismissed = true;
+
+      if (fromClick) {
+        // click: scale down then dissolve
+        door.classList.add('logo-clicked');
+        setTimeout(() => {
+          door.classList.add('dissolving');
+        }, 400);
+      } else {
+        // auto: dim first, then dissolve
+        door.classList.add('logo-dim');
+        setTimeout(() => {
+          door.classList.add('dissolving');
+        }, 600);
+      }
+
+      // remove from DOM after dissolve completes (2.5s transition + buffer)
+      setTimeout(() => {
+        door.style.display = 'none';
+        sessionStorage.setItem('intro-seen', '1');
+      }, 3200);
+    }
+
+    logo.addEventListener('click', () => dismiss(true));
+    setTimeout(() => dismiss(false), 5000);  /* 5 second auto timer */
+  })();
+</script>
+
 {{ end }}

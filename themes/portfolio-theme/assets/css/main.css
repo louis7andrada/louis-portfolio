@@ -10,6 +10,22 @@
   font-style: normal;
   font-display: swap;
 }
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+a img,
+.hp-image,
+.single-image,
+.artworkChoice img,
+#intro-logo,
+#lightbox-img {
+  pointer-events: auto;
+}
 
 /* ----------------------------------------
    HEADER IMPROVEMENT

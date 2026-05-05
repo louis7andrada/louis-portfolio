@@ -1,131 +1,153 @@
 {{ define "main" }}
 
-<section class="px-6 md:px-10 py-16 w-full relative">
+<section class="px-6 md:px-10 py-12 w-full relative">
 
-  <!-- RESPONSIVE BACK BUTTON (never overlaps title) -->
-  <a 
-  href="/archive/" 
-  class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40"
->
-  ← Back to Archive
-</a>
+  <a href="/archive/" class="arrow-btn text-lg absolute left-4 top-6 md:left-6 md:top-10 xl:fixed xl:left-10 xl:top-24 z-40">
+    ← Back to Archive
+  </a>
 
+  <h1 class="text-2xl font-semibold mt-5 mb-10 text-center">{{ .Title }}</h1>
 
-  <!-- Title -->
-  <h1 class="text-3xl font-semibold mt-5 mb-10 text-center">
-    {{ .Title }}
-  </h1>
-
-  <!-- MAIN LAYOUT -->
   <div class="flex flex-col items-center xl:flex-row xl:items-start xl:justify-center gap-5 md:gap-16 max-w-[1400px] mx-auto">
 
-    <!-- IMAGE COLUMN -->
     <div class="shrink-0 w-full lg:w-auto relative">
-
       {{ if .Params.image }}
         <div class="single-image-box">
-          <a href="{{ .Params.image }}" target="_blank" rel="noopener noreferrer">
-            <img 
-              src="{{ .Params.image }}" 
-              alt="{{ .Title }}" 
-              class="single-image w-full cursor-pointer"
-            />
-          </a>
+          <img
+            src="{{ .Params.image }}"
+            alt="{{ .Title }}"
+            class="single-image w-full cursor-pointer"
+            onclick="openLightbox('{{ .Params.image }}', '{{ .Title }}')"
+          />
         </div>
       {{ else }}
         <div class="w-full lg:w-[800px] h-[500px] bg-gray-200 flex items-center justify-center text-gray-500">
           No image yet
         </div>
       {{ end }}
-
     </div>
 
-    <!-- DETAILS COLUMN -->
     <div class="w-full max-w-[420px] text-lg space-y-5 single-details">
-
-      {{ with .Params.year }}
-        <p><strong>Year:</strong> {{ . }}</p>
-      {{ end }}
-
-      {{ with .Params.category }}
-        <p><strong>Category:</strong> {{ . | title }}</p>
-      {{ end }}
-
-      {{ with .Params.comment }}
-        <p><strong>Comments:</strong> {{ . }}</p>
-      {{ end }}
-
+      {{ with .Params.year }}<p><strong>Year:</strong> {{ . }}</p>{{ end }}
+      {{ with .Params.category }}<p><strong>Category:</strong> {{ . | title }}</p>{{ end }}
+      {{ with .Params.comment }}<p><strong>Comments:</strong> {{ . }}</p>{{ end }}
     </div>
 
   </div>
 
-  <!-- DESCRIPTION -->
   {{ with .Content }}
-    <div class="mt-24 max-w-[1000px] mx-auto">
-      {{ . }}
-    </div>
+    <div class="mt-24 max-w-[1000px] mx-auto">{{ . }}</div>
   {{ end }}
 
-  <!-- =============================== -->
-  <!-- FILTERED + SORTED NAVIGATION LIST -->
-  <!-- =============================== -->
-
-  {{/* Load all archive pages */}}
   {{ $raw := where .Site.RegularPages "Section" "archive" }}
-
-  {{/* Build clean list with computed sort keys */}}
   {{ $clean := slice }}
+  {{ range $raw }}
+    {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
+    {{ $item := dict "page" . "year" .Params.year "rand" $hash }}
+    {{ $clean = $clean | append $item }}
+  {{ end }}
 
-{{ range $raw }}
+  {{ $sorted := sort $clean "rand" "asc" }}
+  {{ $sorted := sort $sorted "year" "desc" }}
 
-  {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
-
-  {{ $item := dict 
-      "page" . 
-      "year" .Params.year 
-      "rand" $hash
-  }}
-
-  {{ $clean = $clean | append $item }}
-
-{{ end }}
-
-  {{/* SORTING ORDER:
-        1. Year DESC
-        2. Category priority ASC (studios → photos → galleries)
-        3. Number DESC (studio3 → studio2 → studio1)
-  */}}
-
-{{ $sorted := sort $clean "rand" "asc" }}
-{{ $sorted := sort $sorted "year" "desc" }}
-
-  <!-- FIND CURRENT INDEX -->
   {{ $currentIndex := -1 }}
   {{ range $i, $obj := $sorted }}
-    {{ if eq $obj.page.RelPermalink $.RelPermalink }}
-      {{ $currentIndex = $i }}
-    {{ end }}
+    {{ if eq $obj.page.RelPermalink $.RelPermalink }}{{ $currentIndex = $i }}{{ end }}
   {{ end }}
 
-  <!-- SAFE PREV/NEXT -->
   {{ $prev := cond (gt $currentIndex 0) (index $sorted (sub $currentIndex 1)) nil }}
   {{ $next := cond (lt $currentIndex (sub (len $sorted) 1)) (index $sorted (add $currentIndex 1)) nil }}
 
-  <!-- ARROWS -->
   {{ with $prev }}
-    <a href="{{ .page.RelPermalink }}" id="prevBtnDesktop"
-       class="arrow-btn fixed left-10 top-1/2 -translate-y-1/2">
-       &lt Previous
-    </a>
+    <a href="{{ .page.RelPermalink }}" id="prevBtnDesktop" class="arrow-btn fixed left-10 top-1/2 -translate-y-1/2">&lt Previous</a>
   {{ end }}
-
   {{ with $next }}
-    <a href="{{ .page.RelPermalink }}" id="nextBtnDesktop"
-       class="arrow-btn fixed right-10 top-1/2 -translate-y-1/2">
-      Next &gt
-    </a>
+    <a href="{{ .page.RelPermalink }}" id="nextBtnDesktop" class="arrow-btn fixed right-10 top-1/2 -translate-y-1/2">Next &gt</a>
   {{ end }}
 
 </section>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" class="lightbox-img" onclick="event.stopPropagation()" />
+</div>
+
+<style>
+  .lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(18px) saturate(0.7);
+    -webkit-backdrop-filter: blur(18px) saturate(0.7);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  html.dark .lightbox-overlay {
+    background: rgba(15, 15, 15, 0.35);
+  }
+  .lightbox-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lightbox-img {
+    max-width: 88vw;
+    max-height: 88vh;
+    object-fit: contain;
+    cursor: default;
+    border-radius: 2px;
+    transform: scale(0.88);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .lightbox-overlay.active .lightbox-img {
+    transform: scale(1);
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 3rem;
+    right: 3.5rem;
+    font-size: 1.3rem;
+    font-family: 'AndradaMono', 'Courier Prime', monospace;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.8;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s ease;
+    z-index: 901;
+  }
+
+  .lightbox-close:hover {
+    opacity: 1;
+  }
+</style>
+
+<script>
+  function openLightbox(src, alt) {
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    img.alt = alt || '';
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>
 
 {{ end }}
