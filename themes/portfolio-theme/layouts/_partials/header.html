@@ -9,13 +9,15 @@
   <div class="flex items-center gap-6">
 
     <!-- Desktop Navigation -->
+     {{ if not .IsHome }}
     <nav class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
       <a href="/artworks" class="hover:underline dark:text-gray-300 dark:hover:text-white">Artworks</a>
+      <a href="/inquire" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquire</a>
       <a href="/about" class="hover:underline dark:text-gray-300 dark:hover:text-white">About</a>
-      <a href="/buy" class="hover:underline dark:text-gray-300 dark:hover:text-white">Buy/Commission</a>
       <a href="/archive" class="hover:underline dark:text-gray-300 dark:hover:text-white">Archive</a>
       <a href="/links" class="hover:underline dark:text-gray-300 dark:hover:text-white">Links</a>
     </nav>
+    {{ end }}
 
     <!-- Dark Mode Toggle -->
     <button id="darkModeToggle" class="w-8 h-8 flex items-center justify-center">
@@ -51,8 +53,8 @@
           gap-10 text-3xl font-medium z-40"
   >
     <a href="/artworks" class="block">Artworks</a>
+    <a href="/inquire" class="block">Inquire</a>
     <a href="/about" class="block">About</a>
-    <a href="/buy" class="block">Buy/Commission</a>
     <a href="/archive" class="block">Archive</a>
     <a href="/links" class="block">Links</a>
   </nav>
