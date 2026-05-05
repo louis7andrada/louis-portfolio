@@ -1,76 +1,248 @@
 {{ define "main" }}
 
-<section class="max-w-4xl mx-auto px-4 py-16 about-page">
+<section class="about-page about-wrapper">
 
-  <!-- Page Title -->
-  <h1 class="text-3xl font-semibold mb-12 text-center">About</h1>
+  <div class="about-hero-title">Who am I ?</div>
 
-  <!-- Artist Bio -->
-  <div class="mb-16">
-    <div class="space-y-4 leading-relaxed">
-      <p>
-        I am a Brazilian painter based in Toronto. I never knew how to express myself the way others seemed to. I felt alone even when people were around, carried things I could not name and could not release. I did not understand until much later that painting is the only place I can express and give form to my thoughts. Most of my work portrays darkness, grief, fear and sadness because that is what I kept enclosed inside my head all those years. What goes onto the canvas is everything that wished it could have been said, and never was.
-      </p>
-      <p>
-        Horror, folklore and occult imagery are not escapes for me, rather they are the inspiration that fuels me to understand my own fears. Merging my fascination for the dark with my foundation in analog film photography, my works are built through layers of acrylic that surface exposure and slow deterioration. My images tend to not want to be fully seen.
-      </p>
+  <!-- BIO -->
+  <div class="about-bio-grid">
+
+    <div class="about-bio-left">
+      <p class="stair-1">I am a Brazilian painter based in Toronto.</p>
+      <p class="stair-2">I never knew how to express myself the way others seemed to.</p>
+      <p class="stair-3">I felt alone even when people were around, carried things I could not name and could not release.</p>
+      <p class="stair-4">I did not understand until much later that painting is the only place I can express and give form to my thoughts.</p>
+      <p class="stair-5">Most of my work portrays darkness, grief, fear and sadness because that is what I kept enclosed inside my head all those years.</p>
+      <p class="stair-6">What goes onto the canvas is everything that wished it could have been said, and never was.</p>
+    </div>
+
+    <div class="about-bio-right">
+      <p class="inv-1">Horror, folklore and occult imagery are not escapes for me,</p>
+      <p class="inv-2">rather they are the inspiration that fuels me to understand my own fears.</p>
+      <p class="inv-3">Merging my fascination for the dark with my foundation in analog film photography,</p>
+      <p class="inv-4">my works are built through layers of acrylic that surface through exposure and slow deterioration.</p>
+      <p class="inv-5">My images tend to not want to be fully seen.</p>
+    </div>
+
+  </div>
+
+  <hr class="about-rule" />
+
+  <!-- EXHIBITIONS -->
+  <div class="about-table-section">
+    <div class="about-table-label">Exhibitions</div>
+    <div class="about-table-rows">
+      <div class="about-table-row">
+        <span class="about-table-year">2026</span>
+        <span class="about-table-name">Group Exhibition</span>
+        <span class="about-table-venue">Pancakes and Booze</span>
+        <span class="about-table-location">Toronto, Canada</span>
+      </div>
+      <div class="about-table-row">
+        <span class="about-table-year">2025–2024</span>
+        <span class="about-table-name">Works on Display</span>
+        <span class="about-table-venue">The Chess Gallery</span>
+        <span class="about-table-location">Toronto, Canada</span>
+      </div>
     </div>
   </div>
 
-  <!-- Exhibitions -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Exhibitions</h2>
-    <ul class="list-disc ml-6 space-y-2">
-      <li><p>2026 — Group Exhibition — Pancakes and Booze — Toronto, Canada</p></li>
-      <li><p>2024-2025 — Works on Display — The Chess Gallery — Toronto, Canada</p></li>
-    </ul>
-  </div>
+  <hr class="about-rule" />
 
-  <!-- Press & Publications -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Press & Publications</h2>
-    <ul class="list-disc ml-6 space-y-2">
-      <li><p>2026 — Featured Artworks — ArtLaunch — Canada/Online</p></li>
-    </ul>
-  </div>
-
-  <!-- Collections -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Collections</h2>
-    <h2 class="text-lg font-semibold mb-1">Private:</h2>
-    <ul class="list-disc ml-6 space-y-2">
-      <li><p>Athens, Greece</p></li>
-      <li><p>Rapid City, USA</p></li>
-      <li><p>Suncheon, South Korea</p></li>
-      <li><p>Toronto, Canada</p></li>
-    </ul>
-  </div>
-
-  <!-- Contact -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">Contact</h2>
-    <div class="space-y-2 leading-relaxed">
-      <p>
-        To <span class="underline">purchase</span> or <span class="underline">commission</span> artworks, visit
-        <a href="https://louisandrada.com/inquire" class="underline" target="_blank" rel="noopener noreferrer">louisandrada.com/inquire</a>.
-        <br><br>
-        For <span class="underline">other inquiries</span>, submit a request at
-        <a href="https://louisandrada.com/links/contact" class="underline" target="_blank" rel="noopener noreferrer">louisandrada.com/contact</a>.
-      </p>
+  <!-- PRESS & PUBLICATIONS -->
+  <div class="about-table-section">
+    <div class="about-table-label">Press & Publications</div>
+    <div class="about-table-rows">
+      <div class="about-table-row">
+        <span class="about-table-year">2026</span>
+        <span class="about-table-name">Featured Artworks</span>
+        <span class="about-table-venue">ArtLaunch</span>
+        <span class="about-table-location">Online, Canada</span>
+      </div>
     </div>
   </div>
 
-  <!-- CV -->
-  <div class="mb-16">
-    <h2 class="text-2xl font-semibold mb-4">CV</h2>
-    <div class="space-y-2 leading-relaxed">
-      <p>
-        To download and view my CV, visit
-        <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="underline" rel="noopener noreferrer">louisandrada.com/cv</a>.
-      </p>
+  <hr class="about-rule" />
+
+  <!-- COLLECTIONS -->
+  <div class="about-table-section">
+    <div class="about-table-label">Collections</div>
+    <div class="about-table-rows">
+      <div class="about-table-row about-collections-row">
+        <span class="about-table-year">Private</span>
+        <span class="about-table-location">Athens, Greece</span>
+        <span class="about-table-location">Rapid City, USA</span>
+        <span class="about-table-location">Suncheon, South Korea</span>
+        <span class="about-table-location">Toronto, Canada</span>
+      </div>
     </div>
+  </div>
+
+  <hr class="about-rule" />
+
+  <!-- CONTACT -->
+  <div class="about-contact">
+    <a href="/inquire" class="about-contact-link">Purchase or Commission Artworks</a>
+    <a href="/inquire" class="about-contact-link">Contact Me</a>
+    <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="about-contact-link">View My CV</a>
   </div>
 
 </section>
+
+<style>
+  .about-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 3rem 1rem;
+  }
+
+  .about-hero-title {
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 1rem;
+    text-align: center;
+    opacity: 0.5;
+  }
+
+  .about-bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+
+  .about-bio-left,
+  .about-bio-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .about-bio-left p,
+  .about-bio-right p {
+    margin: 0;
+    font-size: 0.80rem !important;
+    line-height: 1.85;
+  }
+
+  /* LEFT: staircase descending right */
+  .stair-1 { padding-left: 0rem;   }
+  .stair-2 { padding-left: 1rem;   }
+  .stair-3 { padding-left: 2rem;   }
+  .stair-4 { padding-left: 3rem;   }
+  .stair-5 { padding-left: 1rem; }
+  .stair-6 { padding-left: 4rem;   }
+
+  /* RIGHT: inverse pyramid — wide at top, narrows down */
+  .inv-1 { padding-left: 0rem;   padding-right: 0rem;   }
+  .inv-2 { padding-left: 2rem;   padding-right: 2rem;   }
+  .inv-3 { padding-left: 4rem; padding-right: 4rem;   }
+  .inv-4 { padding-left: 2em;   padding-right: 6rem; }
+  .inv-5 { padding-left: 8rem; padding-right: 8rem;   }
+
+  .about-rule {
+    border: none;
+    border-top: 1px solid #d1d1d1;
+    margin: 0;
+  }
+
+  html.dark .about-rule {
+    border-color: #2d2d2d;
+  }
+
+  .about-table-section {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    padding: 1.8rem 0;
+    gap: 1rem;
+    font-size: 0.80rem;
+  }
+
+  .about-table-label {
+    font-size: 0.80rem;
+    font-weight: 600;
+    padding-top: 0.1rem;
+  }
+
+  .about-table-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .about-table-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 1fr 1fr;
+    gap: 0.5rem;
+    align-items: baseline;
+  }
+
+  .about-collections-row {
+    grid-template-columns: 90px 1fr 1fr 1fr 1fr;
+  }
+
+  .about-table-year {
+    font-weight: 600;
+    font-size: 0.80rem;
+  }
+
+  .about-table-name,
+  .about-table-venue,
+  .about-table-location {
+    font-size: 0.80rem;
+  }
+
+  .about-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 3rem 0 1rem;
+  }
+
+  .about-contact-link {
+    font-size: 0.85rem;
+    text-decoration: underline;
+    color: inherit;
+    letter-spacing: 0.02em;
+  }
+
+  .about-contact-link:hover {
+    opacity: 0.6;
+  }
+
+  @media (max-width: 768px) {
+    .about-wrapper {
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .about-bio-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .stair-1, .stair-2, .stair-3,
+    .stair-4, .stair-5, .stair-6,
+    .inv-1, .inv-2, .inv-3,
+    .inv-4, .inv-5 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    .about-table-section {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+
+    .about-table-row {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.3rem;
+    }
+
+    .about-collections-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
 
 {{ end }}

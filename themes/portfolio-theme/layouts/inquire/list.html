@@ -1,323 +1,138 @@
 {{ define "main" }}
 
-<section class="max-w-7xl mx-auto px-4 py-10">
+<section class="max-w-7xl mx-auto px-4 py-10 inquire-page">
 
-  <h1 class="text-3xl font-semibold mb-8 text-center">Inquire</h1>
+  <h1 class="inquire-title">Inquire</h1>
 
-  <!-- Success Message (legacy, unused now but kept) -->
   <div id="pageSuccessMessage" class="hidden mb-10 text-green-600 font-medium text-center">
     Thank you — your request has been sent successfully.
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
 
-    <!-- ========================= -->
-    <!-- Purchase SECTION -->
-    <!-- ========================= -->
+    <!-- PURCHASE -->
     <div>
-      <h2 class="text-2xl font-semibold mb-4">Purchase Existing Artwork</h2>
-
-      <p class="leading-relaxed text-gray-800">
-        To purchase a existing artwork made by Louis Andrada, please submit the Purchase form bellow. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.
+      <h2 class="inquire-section-title">Purchase Existing Artwork</h2>
+      <p class="inquire-desc">
+        To purchase an existing artwork by Louis Andrada, please submit the Purchase form below. Once submitted, Louis will reach out with the selected piece(s) information, price(s), and assist with finalizing your purchase.
       </p>
       <br>
-      <button 
-        id="openArtworkSelector"
-        class="px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition mb-6" style="padding: 8px 14px;"
-      >
+      <button id="openArtworkSelector" class="inquire-btn mb-6">
         Select Artwork(s)
       </button>
 
-      <!-- Selected artworks preview -->
       <div id="selectedArtworksPreview" class="flex flex-wrap gap-3 mb-6"></div>
 
-      <!-- PURCHASE SUCCESS MESSAGE -->
-      <div id="purchaseSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
+      <div id="purchaseSuccessMessage" class="hidden mb-6 text-green-600 text-center inquire-small">
         Thank you — your purchase request has been sent successfully. Louis will contact you soon.
       </div>
 
-      <form 
-        id="purchaseForm"
-        action="https://formspree.io/f/xeeldjwj"
-        method="POST"
-        class="grid grid-cols-1 gap-4"
-      >
-
+      <form id="purchaseForm" action="https://formspree.io/f/xeeldjwj" method="POST" class="grid grid-cols-1 gap-4">
         <input type="hidden" name="_captcha" value="false">
         <input type="text" name="_gotcha" class="hidden">
         <input type="hidden" name="formType" value="Artwork Purchase Request">
-
-        <!-- reCAPTCHA v3 token -->
         <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
 
-        <textarea
-          name="selectedArtworks"
-          id="selectedArtworkIDs"
-          placeholder="Please select artwork(s) above"
-          class="hidden"
-          readonly
-          required
-        ></textarea>
-        
-        <!-- HOW WOULD YOU LIKE THE ARTWORK(S) QUESTION -->
-<div class="border border-gray-300 dark:border-gray-600 rounded p-3 bg-gray-100 dark:bg-[#252525]">
-  <p class="mb-2 font-medium text-gray-700 dark:text-gray-300 font-sans">What format would you like the artwork(s) in?</p>
-  
-  <label class="flex items-center gap-3 cursor-pointer">
-    <input type="radio" name="artworkType" value="original" class="w-4 h-4 accent-black" required>
-    <span>Original(s)</span>
-  </label>
+        <textarea name="selectedArtworks" id="selectedArtworkIDs" placeholder="Please select artwork(s) above" class="hidden" readonly required></textarea>
 
-  <label class="flex items-center gap-3 cursor-pointer">
-    <input type="radio" name="artworkType" value="print" class="w-4 h-4 accent-black">
-    <span>Print(s)</span>
-  </label>
+        <div class="inquire-fieldset">
+          <p class="inquire-fieldset-label">What format would you like the artwork(s) in?</p>
 
-  <label class="flex items-center gap-3 cursor-pointer">
-    <input type="radio" name="artworkType" value="license" class="w-4 h-4 accent-black" id="artworkLicenseRadio">
-    <span>Artwork License</span>
-  </label>
-  <input 
-    type="text" 
-    name="artworkLicenseText" 
-    placeholder="Please specify"
-    class="border border-gray-300 dark:border-gray-600 rounded p-3 bg-gray-100 dark:bg-[#252525] mt-2 hidden"
-    id="artworkLicenseInput"
-  />
+          <label class="inquire-radio-label">
+            <input type="radio" name="artworkType" value="original" class="w-3.5 h-3.5 accent-black" required>
+            <span>Original(s)</span>
+          </label>
+          <label class="inquire-radio-label">
+            <input type="radio" name="artworkType" value="print" class="w-3.5 h-3.5 accent-black">
+            <span>Print(s)</span>
+          </label>
+          <label class="inquire-radio-label">
+            <input type="radio" name="artworkType" value="license" class="w-3.5 h-3.5 accent-black" id="artworkLicenseRadio">
+            <span>Artwork License</span>
+          </label>
+          <input type="text" name="artworkLicenseText" placeholder="Please specify" class="inquire-input mt-2 hidden" id="artworkLicenseInput" />
 
-  <label class="flex items-center gap-3 cursor-pointer">
-    <input type="radio" name="artworkType" value="other" class="w-4 h-4 accent-black" id="artworkOtherRadio">
-    <span>Other</span>
-  </label>
+          <label class="inquire-radio-label">
+            <input type="radio" name="artworkType" value="other" class="w-3.5 h-3.5 accent-black" id="artworkOtherRadio">
+            <span>Other</span>
+          </label>
+          <input type="text" name="artworkOtherText" placeholder="Please specify" class="inquire-input mt-2 hidden" id="artworkOtherInput" />
+        </div>
 
-  <input 
-    type="text" 
-    name="artworkOtherText" 
-    placeholder="Please specify"
-    class="border border-gray-300 dark:border-gray-600 rounded p-3 bg-gray-100 dark:bg-[#252525] mt-2 hidden"
-    id="artworkOtherInput"
-  />
-</div>
+        <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const otherRadio = document.getElementById("artworkOtherRadio");
+          const otherInput = document.getElementById("artworkOtherInput");
+          const licenseRadio = document.getElementById("artworkLicenseRadio");
+          const licenseInput = document.getElementById("artworkLicenseInput");
+          const radios = document.querySelectorAll('input[name="artworkType"]');
+          radios.forEach(radio => {
+            radio.addEventListener("change", () => {
+              otherInput.classList.toggle("hidden", !otherRadio.checked);
+              otherInput.required = otherRadio.checked;
+              if (!otherRadio.checked) otherInput.value = "";
+              licenseInput.classList.toggle("hidden", !licenseRadio.checked);
+              licenseInput.required = licenseRadio.checked;
+              if (!licenseRadio.checked) licenseInput.value = "";
+            });
+          });
+        });
+        </script>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const otherRadio = document.getElementById("artworkOtherRadio");
-  const otherInput = document.getElementById("artworkOtherInput");
+        <input type="text" name="buyerName" placeholder="Full Name" class="inquire-input" required />
+        <input type="email" name="buyerEmail" placeholder="Email" class="inquire-input" required />
+        <input type="tel" name="buyerPhone" placeholder="Phone Number" class="inquire-input" required />
+        <input type="text" name="buyerlocation" placeholder="Where are you located? (City, Country)" class="inquire-input" required />
+        <textarea id="purchaseComments" name="purchaseComments" placeholder="Additional comments or questions (optional)" class="inquire-textarea"></textarea>
 
-  const licenseRadio = document.getElementById("artworkLicenseRadio");
-  const licenseInput = document.getElementById("artworkLicenseInput");
-
-  const radios = document.querySelectorAll('input[name="artworkType"]');
-
-  radios.forEach(radio => {
-    radio.addEventListener("change", () => {
-
-      // Handle "Other"
-      if (otherRadio.checked) {
-        otherInput.classList.remove("hidden");
-        otherInput.required = true;
-      } else {
-        otherInput.classList.add("hidden");
-        otherInput.required = false;
-        otherInput.value = "";
-      }
-
-      // Handle "License"
-      if (licenseRadio.checked) {
-        licenseInput.classList.remove("hidden");
-        licenseInput.required = true;
-      } else {
-        licenseInput.classList.add("hidden");
-        licenseInput.required = false;
-        licenseInput.value = "";
-      }
-
-    });
-  });
-});
-</script>
-
-        <input 
-          type="text" 
-          name="buyerName" 
-          placeholder="Your Name" 
-          class="border border-gray-300 rounded p-3 bg-gray-100"
-          required
-        />
-
-        <input 
-          type="email" 
-          name="buyerEmail" 
-          placeholder="Your Email" 
-          class="border border-gray-300 rounded p-3 bg-gray-100"
-          required
-        />
-
-        <input 
-          type="tel" 
-          name="buyerPhone" 
-          placeholder="Your Phone Number" 
-          class="border border-gray-300 rounded p-3 bg-gray-100"
-          required
-        />
-
-        <input 
-          type="text" 
-          name="buyerlocation" 
-          placeholder="Where are you located? (City, Country)" 
-          class="border border-gray-300 rounded p-3 bg-gray-100"
-          required
-        />
-
-        <textarea 
-    id="purchaseComments"
-    name="purchaseComments" 
-    placeholder="Additional comments or questions about the artwork(s) you're interested in (optional)"
-    class="w-full border border-gray-300 rounded p-4 dark:border-gray-600 bg-gray-100 dark:bg-[#252525] leading-[1.3] resize-none overflow-hidden box-border md:mb-2"
-  ></textarea>
-
-        <button 
-          type="submit"
-          class="px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition" style="padding: 8px 14px;"
-        >
-          Submit Purchase Request
-        </button>
-
+        <button type="submit" class="inquire-btn">Submit Purchase Request</button>
       </form>
     </div>
 
     <div class="block md:hidden border-t border-gray-300 my-9"></div>
 
-    <!-- ========================= -->
-    <!-- COMMISSION SECTION -->
-    <!-- ========================= -->
+    <!-- COMMISSION -->
     <div>
-      <h2 class="text-2xl font-semibold mb-4">Commission New Artwork</h2>
-
-      <p class="leading-relaxed text-gray-800 mb-6">
-        Commissions are open. To commission a new art-work made by Louis Andrada, please submit the Commission form bellow. 
-        Once the form is submitted Louis will reach out to you about your commission with more information.
+      <h2 class="inquire-section-title">Commission New Artwork</h2>
+      <p class="inquire-desc mb-6">
+        Commissions are open. To commission a new artwork by Louis Andrada, please submit the Commission form below. Once submitted, Louis will reach out with more information.
       </p>
 
-      <!-- COMMISSION SUCCESS MESSAGE -->
-      <div id="commissionSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
+      <div id="commissionSuccessMessage" class="hidden mb-6 text-green-600 text-center inquire-small">
         Thank you — your commission request has been sent successfully. Louis will contact you soon.
       </div>
 
-      <form 
-        id="commissionForm"
-        action="https://formspree.io/f/xgolqwbv"
-        method="POST"
-        class="grid grid-cols-1 gap-4"
-      >
-
+      <form id="commissionForm" action="https://formspree.io/f/xgolqwbv" method="POST" class="grid grid-cols-1 gap-4">
         <input type="hidden" name="_captcha" value="false">
         <input type="text" name="_gotcha" class="hidden">
         <input type="hidden" name="formType" value="Commission Request">
-
-        <!-- reCAPTCHA v3 token -->
         <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
 
-        <input 
-          type="text" 
-          name="commissionName" 
-          placeholder="Your Name" 
-          class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
-          required
-        />
+        <input type="text" name="commissionName" placeholder="Full Name" class="inquire-input" required />
+        <input type="email" name="commissionEmail" placeholder="Email" class="inquire-input" required />
+        <input type="tel" name="commissionPhone" placeholder="Phone Number" class="inquire-input" required />
+        <input type="text" name="commissionLocation" placeholder="Where are you located? (City, Country)" class="inquire-input" required />
+        <input type="text" name="commissionSize" placeholder="Preferred Size in inches (HxWxL e.g., 40x30x1.5 in)" class="inquire-input" required />
 
-        <input 
-          type="email" 
-          name="commissionEmail" 
-          placeholder="Your Email" 
-          class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
-          required
-        />
+        <div class="inquire-fieldset">
+          <button type="button" id="toggleCommissionTypes" class="w-full text-left flex justify-between items-center inquire-fieldset-label">
+            Type of Commission (select one or more)
+            <span id="commissionArrow">+</span>
+          </button>
+          <div id="commissionOptions" class="hidden pt-3 space-y-2">
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="canvas" class="w-3.5 h-3.5 accent-black" /><span>Canvas painting</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="mural" class="w-3.5 h-3.5 accent-black" /><span>Mural</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="sculpture" class="w-3.5 h-3.5 accent-black" /><span>Sculpture / Object / Furniture</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="clothing" class="w-3.5 h-3.5 accent-black" /><span>Clothing</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="brand" class="w-3.5 h-3.5 accent-black" /><span>Brand / Partnership / Event / Invitation</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="digital" class="w-3.5 h-3.5 accent-black" /><span>Digital media / Print</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="tattoo" class="w-3.5 h-3.5 accent-black" /><span>Tattoo</span></label>
+            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="other" class="w-3.5 h-3.5 accent-black" /><span>Other (please specify below)</span></label>
+          </div>
+        </div>
 
-        <input 
-          type="tel" 
-          name="commissionPhone" 
-          placeholder="Your Phone Number" 
-          class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
-          required
-        />
-
-        <input 
-          type="text" 
-          name="commissionLocation" 
-          placeholder="Where are you located? (City, Country)" 
-          class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
-          required
-        />
-
-        <input 
-          type="text" 
-          name="commissionSize" 
-          placeholder="Preferred Size in inches (HxWxL e.g., 40x30x1.5 in)" 
-          class="border border-gray-300 rounded p-3 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-[#252525]"
-          required
-        />
-
-        <div class="border border-gray-300 dark:border-gray-600 rounded bg-gray-100 dark:bg-[#252525]">
-  
-  <button 
-    type="button"
-    id="toggleCommissionTypes"
-    class="w-full text-left p-4 font-medium flex justify-between items-center"
-  >
-    Type of Commission (select one or more)
-    <span id="commissionArrow">+</span>
-  </button>
-
-  <div id="commissionOptions" class="hidden px-4 pt-2 pb-4 space-y-3">
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="canvas" class="w-4 h-4 accent-black" />
-      <span>Canvas painting</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="mural" class="w-4 h-4 accent-black" />
-      <span>Mural</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="sculpture" class="w-4 h-4 accent-black" />
-      <span>Sculpture / Object / Furniture</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="clothing" class="w-4 h-4 accent-black" />
-      <span>Clothing</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="brand" class="w-4 h-4 accent-black" />
-      <span>Brand / Partnership / Event / Invitation</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="digital" class="w-4 h-4 accent-black" />
-      <span>Digital media / Print</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="tattoo" class="w-4 h-4 accent-black" />
-      <span>Tattoo</span>
-    </label>
-
-    <label class="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" name="commissionType[]" value="other" class="w-4 h-4 accent-black" />
-      <span>Other (please specify below)</span>
-    </label>
-
-  </div>
-</div>
-
-  <textarea 
-    id="commissionTextarea"
-    name="commissionIdea" 
-    placeholder="Describe your commission in detail...
+        <textarea id="commissionTextarea" name="commissionIdea"
+          placeholder="Describe your commission in detail...
 
 Concept you have in mind (if any)
 Intended space (home, office, etc.)
@@ -326,80 +141,45 @@ Your budget range
 The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas or requests for control over the creative process will not be accepted.
 
 If this section is left blank, the piece will be created based entirely on the artist's vision."
-    class="w-full border border-gray-300 rounded p-4 dark:border-gray-600 bg-gray-100 dark:bg-[#252525] leading-[1.3] resize-none overflow-hidden box-border md:mb-2"
-  ></textarea>
-        <button 
-          type="submit"
-          class="px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition" style="padding: 8px 14px;"
-        >
-          Submit Commission Request
-        </button>
+          class="inquire-textarea"></textarea>
 
+        <button type="submit" class="inquire-btn">Submit Commission Request</button>
       </form>
     </div>
 
-
-  <!-- ========================= -->
-    <!-- CONTACT SECTION -->
-    <!-- ========================= -->
+    <!-- CONTACT -->
     <div>
-      <h2 class="text-2xl font-semibold mb-4">Contact Me</h2>
-
-      <p class="leading-relaxed text-gray-800 mb-6">
-        Please fill the form bellow  for any inquires unrelated to purchase or commission of  my artworks.
+      <h2 class="inquire-section-title">Contact Me</h2>
+      <p class="inquire-desc mb-6">
+        Please fill the form below for any inquiries unrelated to purchase or commission of my artworks.
       </p>
+      <div class="w-full max-w-sm">
+        {{ partial "contact-form.html" . }}
+      </div>
+    </div>
 
-  <div class="w-full max-w-sm">
-    {{ partial "contact-form.html" . }}
   </div>
-    </div>
-    </div>
-
 </section>
 
-<!-- ========================= -->
 <!-- ARTWORK SELECTOR MODAL -->
-<!-- ========================= -->
-<div 
-  id="artworkSelectorModal"
-  class="fixed inset-0 bg-[#575757] bg-opacity-70 hidden items-center justify-center p-6 z-50"
->
-  <div class="bg-white max-w-4xl w-full rounded-lg relative max-h-[80vh] md:max-h-[85vh] flex flex-col">
+<div id="artworkSelectorModal" class="fixed inset-0 bg-[#575757] bg-opacity-70 hidden items-center justify-center p-6 z-50">
+  <div class="bg-white dark:bg-[#1a1a1a] max-w-4xl w-full rounded-lg relative max-h-[80vh] md:max-h-[85vh] flex flex-col">
 
-    <button 
-      id="closeArtworkSelector"
-      class="absolute top-3 right-3 text-black text-2xl"
-    >
-      &times;
-    </button>
+    <button id="closeArtworkSelector" class="absolute top-3 right-3 text-black dark:text-white text-2xl">&times;</button>
 
-    <h2 class="text-xl font-semibold p-6 pb-0">Select Artwork(s)</h2>
+    <h2 class="inquire-section-title p-6 pb-0">Select Artwork(s)</h2>
 
-    <!-- SCROLLABLE CONTENT -->
     <div class="overflow-y-auto p-6 flex-1">
-
       <div class="mb-4 flex flex-col items-start gap-2">
-  <button 
-    type="button"
-    id="notListedBtn"
-    class="px-3 py-1.5 bg-gray-200 rounded hover:bg-gray-300 transition text-sm"
-  >
-    Artwork not listed? Click here to specify
-  </button>
-
-  <input
-    type="text"
-    id="notListedInput"
-    placeholder="Specify artwork"
-    class="border border-gray-300 rounded p-2 text-sm hidden w-64 max-w-full"
-  />
-</div>
+        <button type="button" id="notListedBtn" class="inquire-small px-3 py-1.5 bg-gray-200 dark:bg-[#2a2a2a] rounded hover:bg-gray-300 transition">
+          Artwork not listed? Click here to specify
+        </button>
+        <input type="text" id="notListedInput" placeholder="Specify artwork" class="inquire-input hidden w-64 max-w-full" />
+      </div>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pr-2">
-
         {{ $raw := where .Site.RegularPages "Section" "artworks" }}
         {{ $clean := slice }}
-
         {{ range $raw }}
           {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
           {{ if .Params.inprogress }}{{ continue }}{{ end }}
@@ -407,51 +187,207 @@ If this section is left blank, the piece will be created based entirely on the a
           {{ if ne (lower .Params.availability) "available" }}{{ continue }}{{ end }}
           {{ $clean = $clean | append . }}
         {{ end }}
-
         {{ $sorted := sort $clean "Params.worknum" "desc" }}
-
         {{ range $sorted }}
-        <div 
-          class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
-          data-id="{{ .File.BaseFileName }}"
-          data-title="{{ .Title }}"
-          data-image="{{ .Params.image }}"
-        >
+        <div class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
+          data-id="{{ .File.BaseFileName }}" data-title="{{ .Title }}" data-image="{{ .Params.image }}">
           <img src="{{ .Params.image }}" class="w-full h-auto rounded">
-
-          <div class="checkmark-overlay hidden absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">
-            ✓
-          </div>
-
-          <p class="text-center text-sm mt-1">{{ .Title }}</p>
+          <div class="checkmark-overlay hidden absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">✓</div>
+          <p class="text-center inquire-small mt-1">{{ .Title }}</p>
         </div>
         {{ end }}
-
       </div>
     </div>
 
-    <!-- FIXED BUTTON -->
     <div class="p-4">
-      <button 
-        id="confirmArtworkSelection"
-        class="w-full px-6 py-3 bg-[#575757] text-white rounded-lg font-medium hover:bg-[#9a9a9a] transition"
-        style="padding: 8px 14px;"
-      >
-        Confirm Selection
-      </button>
+      <button id="confirmArtworkSelection" class="inquire-btn w-full">Confirm Selection</button>
     </div>
-
   </div>
 </div>
 
-<!-- ========================= -->
-<!-- COMBINED AJAX + ARTWORK LOGIC -->
-<!-- ========================= -->
+<style>
+  .inquire-page {
+    font-size: 0.88rem;
+    max-width: 100% !important;
+    padding-left: 9rem !important;
+    padding-right: 9rem !important;
+  }
+
+  .inquire-title {
+    font-size: 1.2rem;
+    letter-spacing: 0.04em;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    opacity: 0.6;
+  }
+
+  .inquire-section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.75rem;
+  }
+
+  .inquire-desc {
+    font-size: 0.85rem !important;
+    line-height: 1.75;
+    opacity: 0.8;
+  }
+
+  .inquire-small {
+    font-size: 0.8rem !important;
+  }
+
+  .inquire-fieldset {
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    background: #f5f5f5;
+    font-size: 0.85rem;
+  }
+
+  html.dark .inquire-fieldset {
+    background: #252525;
+    border-color: #3a3a3a;
+  }
+
+  .inquire-fieldset-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .inquire-radio-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.2rem 0;
+  }
+
+  .inquire-input {
+    width: 100%;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+    background: #f5f5f5;
+    color: inherit;
+  }
+
+  html.dark .inquire-input {
+    background: #252525;
+    border-color: #3a3a3a;
+    color: #e8e8e8;
+  }
+
+  .inquire-input::placeholder {
+    font-size: 0.82rem;
+    opacity: 0.6;
+  }
+
+  .inquire-textarea {
+    width: 100%;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+    background: #f5f5f5;
+    color: inherit;
+    line-height: 1.6;
+    resize: none;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  html.dark .inquire-textarea {
+    background: #252525;
+    border-color: #3a3a3a;
+    color: #e8e8e8;
+  }
+
+  .inquire-textarea::placeholder {
+    font-size: 0.82rem;
+    opacity: 0.6;
+  }
+
+  .inquire-btn {
+    padding: 0.55rem 1rem;
+    background: #575757;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    border: none;
+  }
+
+  .inquire-btn:hover {
+    background: #9a9a9a;
+  }
+
+  /* Force contact form inputs and button to match other columns */
+  .inquire-page input[type="text"],
+  .inquire-page input[type="email"],
+  .inquire-page input[type="tel"],
+  .inquire-page textarea {
+    width: 100%;
+    border: 1px solid #d1d1d1;
+    border-radius: 4px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.85rem;
+    background: #f5f5f5;
+    color: inherit;
+    box-sizing: border-box;
+  }
+
+  html.dark .inquire-page input[type="text"],
+  html.dark .inquire-page input[type="email"],
+  html.dark .inquire-page input[type="tel"],
+  html.dark .inquire-page textarea {
+    background: #252525;
+    border-color: #3a3a3a;
+    color: #e8e8e8;
+  }
+
+  .inquire-page input::placeholder,
+  .inquire-page textarea::placeholder {
+    font-size: 0.82rem;
+    opacity: 0.6;
+  }
+
+  /* Contact form submit button — matches inquire-btn exactly */
+  .inquire-page button[type="submit"],
+  .inquire-page input[type="submit"] {
+    padding: 0.55rem 1rem !important;
+    background: #575757 !important;
+    color: white !important;
+    border-radius: 4px !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    transition: background 0.2s ease !important;
+    border: none !important;
+    width: 100%;
+  }
+
+  .inquire-page button[type="submit"]:hover,
+  .inquire-page input[type="submit"]:hover {
+    background: #9a9a9a !important;
+  }
+
+  /* Remove max-width constraint on contact form wrapper */
+  .inquire-page .w-full.max-w-sm {
+    max-width: 100% !important;
+  }
+</style>
+
+<!-- ALL SCRIPTS UNCHANGED -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
   const commissionTextarea = document.getElementById("commissionTextarea");
-
   if (commissionTextarea) {
     const autoResize = (el) => {
       el.style.height = "auto";
@@ -467,7 +403,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("toggleCommissionTypes");
   const options = document.getElementById("commissionOptions");
   const arrow = document.getElementById("commissionArrow");
-
   if (toggleBtn && options && arrow) {
     toggleBtn.addEventListener("click", () => {
       options.classList.toggle("hidden");
@@ -482,22 +417,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const selectedTextarea = document.getElementById("selectedArtworkIDs");
   const notListedBtn = document.getElementById("notListedBtn");
   const notListedInput = document.getElementById("notListedInput");
+
   notListedInput.value = localStorage.getItem("notListedCustom") || "";
   const savedCustom = localStorage.getItem("notListedCustom");
-
-if (savedCustom && savedCustom.trim() !== "") {
-  notListedInput.classList.remove("hidden");
-  notListedBtn.classList.add("ring-2", "ring-black");
-}
-  const artworkGrid = document.querySelector("#artworkSelectorModal .grid");
+  if (savedCustom && savedCustom.trim() !== "") {
+    notListedInput.classList.remove("hidden");
+    notListedBtn.classList.add("ring-2", "ring-black");
+  }
 
   let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
   const items = Array.from(document.getElementsByClassName("artworkChoice"));
 
-  // FIX 1: URL param sync BEFORE UI render
   const params = new URLSearchParams(window.location.search);
   const addId = params.get("add");
-
   if (addId) {
     selected.add(addId);
     localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
@@ -505,56 +437,40 @@ if (savedCustom && savedCustom.trim() !== "") {
   }
 
   function rebuildPreview() {
-  if (!preview) return;
-  preview.innerHTML = "";
-
-  const ids = Array.from(selected);
-  const customText = notListedInput ? notListedInput.value.trim() : "";
-
-  // Combine both into textarea
-  let combined = [...ids];
-  if (customText) combined.push(customText);
-
-  if (selectedTextarea) {
-  if (ids.length === 0 && !customText) {
-    selectedTextarea.value = "Please select artworks above or choose from 'Artworks' Page";
-  } else {
-    selectedTextarea.value = JSON.stringify({
-      selected: ids,
-      custom: customText || null
+    if (!preview) return;
+    preview.innerHTML = "";
+    const ids = Array.from(selected);
+    const customText = notListedInput ? notListedInput.value.trim() : "";
+    if (selectedTextarea) {
+      if (ids.length === 0 && !customText) {
+        selectedTextarea.value = "Please select artworks above or choose from 'Artworks' Page";
+      } else {
+        selectedTextarea.value = JSON.stringify({ selected: ids, custom: customText || null });
+      }
+    }
+    ids.forEach(id => {
+      const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
+      if (!item) return;
+      const img = document.createElement("img");
+      img.src = item.dataset.image;
+      img.style.width = "48px";
+      img.style.height = "48px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "6px";
+      preview.appendChild(img);
     });
+    if (customText) {
+      const tag = document.createElement("div");
+      tag.className = "px-3 py-2 bg-gray-200 rounded inquire-small";
+      tag.textContent = customText;
+      preview.appendChild(tag);
+    }
   }
-}
 
-  // Render selected artworks
-  ids.forEach(id => {
-    const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
-    if (!item) return;
-
-    const img = document.createElement("img");
-    img.src = item.dataset.image;
-    img.style.width = "48px";
-    img.style.height = "48px";
-    img.style.objectFit = "cover";
-    img.style.borderRadius = "6px";
-    preview.appendChild(img);
-  });
-
-  // Render custom text
-  if (customText) {
-    const tag = document.createElement("div");
-    tag.className = "px-3 py-2 bg-gray-200 rounded text-sm";
-    tag.textContent = customText;
-    preview.appendChild(tag);
-  }
-}
-
-  // FIX 2: force UI sync AFTER URL injection
   function syncUISelection() {
     items.forEach(item => {
       const id = item.dataset.id;
       const check = item.querySelector(".checkmark-overlay");
-
       if (selected.has(id)) {
         item.classList.add("ring-4", "ring-black");
         if (check) check.classList.remove("hidden");
@@ -569,25 +485,21 @@ if (savedCustom && savedCustom.trim() !== "") {
   rebuildPreview();
 
   if (openBtn && modal) {
-  openBtn.addEventListener("click", () => {
-
-    // FORCE SYNC ON OPEN
-    const savedCustom = localStorage.getItem("notListedCustom");
-
-    if (savedCustom && savedCustom.trim() !== "") {
-      notListedInput.value = savedCustom;
-      notListedInput.classList.remove("hidden");
-      notListedBtn.classList.add("ring-2", "ring-black");
-    } else {
-      notListedInput.value = "";
-      notListedInput.classList.add("hidden");
-      notListedBtn.classList.remove("ring-2", "ring-black");
-    }
-
-    modal.classList.remove("hidden");
-    modal.classList.add("flex");
-  });
-}
+    openBtn.addEventListener("click", () => {
+      const savedCustom = localStorage.getItem("notListedCustom");
+      if (savedCustom && savedCustom.trim() !== "") {
+        notListedInput.value = savedCustom;
+        notListedInput.classList.remove("hidden");
+        notListedBtn.classList.add("ring-2", "ring-black");
+      } else {
+        notListedInput.value = "";
+        notListedInput.classList.add("hidden");
+        notListedBtn.classList.remove("ring-2", "ring-black");
+      }
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    });
+  }
 
   function closeModal() {
     modal.classList.add("hidden");
@@ -595,55 +507,39 @@ if (savedCustom && savedCustom.trim() !== "") {
   }
 
   if (closeBtn) closeBtn.addEventListener("click", closeModal);
-
-  modal?.addEventListener("click", e => {
-    if (e.target === modal) closeModal();
-  });
+  modal?.addEventListener("click", e => { if (e.target === modal) closeModal(); });
 
   items.forEach(item => {
     item.addEventListener("click", () => {
       const id = item.dataset.id;
       const check = item.querySelector(".checkmark-overlay");
-
-      if (selected.has(id)) {
-        selected.delete(id);
-      } else {
-        selected.add(id);
-      }
-
+      if (selected.has(id)) { selected.delete(id); } else { selected.add(id); }
       localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
-
       syncUISelection();
       rebuildPreview();
     });
   });
 
-  // FIX 3: prevent glitch from nested input inside button
   if (notListedBtn && notListedInput) {
-
-  notListedBtn.addEventListener("click", () => {
-
-    const isHidden = notListedInput.classList.contains("hidden");
-
-    if (isHidden) {
-      notListedInput.classList.remove("hidden");
-      notListedBtn.classList.add("ring-2", "ring-black");
-    } else {
-  notListedInput.classList.add("hidden");
-  notListedInput.value = "";
-  notListedBtn.classList.remove("ring-2", "ring-black");
-  localStorage.removeItem("notListedCustom");
-}
-
-    rebuildPreview();
-  });
-
-  notListedInput.addEventListener("input", () => {
-  rebuildPreview();
-  localStorage.setItem("notListedCustom", notListedInput.value);
-});
-  notListedInput.addEventListener("click", (e) => e.stopPropagation());
-}
+    notListedBtn.addEventListener("click", () => {
+      const isHidden = notListedInput.classList.contains("hidden");
+      if (isHidden) {
+        notListedInput.classList.remove("hidden");
+        notListedBtn.classList.add("ring-2", "ring-black");
+      } else {
+        notListedInput.classList.add("hidden");
+        notListedInput.value = "";
+        notListedBtn.classList.remove("ring-2", "ring-black");
+        localStorage.removeItem("notListedCustom");
+      }
+      rebuildPreview();
+    });
+    notListedInput.addEventListener("input", () => {
+      rebuildPreview();
+      localStorage.setItem("notListedCustom", notListedInput.value);
+    });
+    notListedInput.addEventListener("click", (e) => e.stopPropagation());
+  }
 
   document.addEventListener("click", (e) => {
     if (!e.target.closest("#confirmArtworkSelection")) return;
@@ -653,53 +549,35 @@ if (savedCustom && savedCustom.trim() !== "") {
 
   document.addEventListener("submit", async function(e) {
     e.preventDefault();
-
     const form = e.target;
     const formId = form.id;
-
     if (formId !== "purchaseForm" && formId !== "commissionForm") return;
 
     const successId = formId === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
     const successMessage = document.getElementById(successId);
 
     let parsed = null;
-    try {
-      parsed = selectedTextarea.value ? JSON.parse(selectedTextarea.value) : null;
-    } catch {
-      parsed = null;
-    }
+    try { parsed = selectedTextarea.value ? JSON.parse(selectedTextarea.value) : null; } catch { parsed = null; }
 
-    if (
-      formId === "purchaseForm" &&
-      (!parsed || (parsed.selected.length === 0 && !parsed.custom))
-    ) {
+    if (formId === "purchaseForm" && (!parsed || (parsed.selected.length === 0 && !parsed.custom))) {
       alert("Please select at least one artwork before submitting.");
       return;
     }
 
     let token = null;
-
     try {
       token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-
       const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ token })
       });
-
       const verifyData = await verifyRes.json();
-
       if (!verifyData.success || verifyData.score < 0.5) return;
-
-    } catch {
-      return;
-    }
+    } catch { return; }
 
     form.querySelector(".recaptcha-token-field").value = token;
-
     const data = new FormData(form);
-
     const response = await fetch(form.action, {
       method: "POST",
       body: data,
@@ -709,23 +587,18 @@ if (savedCustom && savedCustom.trim() !== "") {
     if (response.ok) {
       form.reset();
       successMessage?.classList.remove("hidden");
-
       if (formId === "purchaseForm") {
-  preview.innerHTML = "";
-  selectedTextarea.value = "";
-
-  localStorage.removeItem("selectedArtworks");
-  localStorage.removeItem("notListedCustom");
-
-  selected.clear();
-
-  if (notListedInput) {
-    notListedInput.value = "";
-    notListedInput.classList.add("hidden");
-  }
-
-  syncUISelection();
-}
+        preview.innerHTML = "";
+        selectedTextarea.value = "";
+        localStorage.removeItem("selectedArtworks");
+        localStorage.removeItem("notListedCustom");
+        selected.clear();
+        if (notListedInput) {
+          notListedInput.value = "";
+          notListedInput.classList.add("hidden");
+        }
+        syncUISelection();
+      }
     }
   });
 
