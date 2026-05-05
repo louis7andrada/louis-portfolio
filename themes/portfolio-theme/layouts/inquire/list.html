@@ -1,24 +1,24 @@
 {{ define "main" }}
 
-<section class="max-w-6xl mx-auto px-4 py-16">
+<section class="max-w-7xl mx-auto px-4 py-10">
 
-  <h1 class="text-3xl font-semibold mb-12 text-center">Buy / Commission</h1>
+  <h1 class="text-3xl font-semibold mb-8 text-center">Inquire</h1>
 
   <!-- Success Message (legacy, unused now but kept) -->
   <div id="pageSuccessMessage" class="hidden mb-10 text-green-600 font-medium text-center">
     Thank you — your request has been sent successfully.
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
 
     <!-- ========================= -->
-    <!-- BUY SECTION -->
+    <!-- Purchase SECTION -->
     <!-- ========================= -->
     <div>
-      <h2 class="text-2xl font-semibold mb-4">Buy Existing Artwork</h2>
+      <h2 class="text-2xl font-semibold mb-4">Purchase Existing Artwork</h2>
 
-      <p class="leading-relaxed text-gray-800 mb-6">
-        Select one or more available artworks. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.
+      <p class="leading-relaxed text-gray-800">
+        To purchase a existing artwork made by Louis Andrada, please submit the Purchase form bellow. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.
       </p>
       <br>
       <button 
@@ -31,13 +31,13 @@
       <!-- Selected artworks preview -->
       <div id="selectedArtworksPreview" class="flex flex-wrap gap-3 mb-6"></div>
 
-      <!-- BUY SUCCESS MESSAGE -->
-      <div id="buySuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
+      <!-- PURCHASE SUCCESS MESSAGE -->
+      <div id="purchaseSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
         Thank you — your purchase request has been sent successfully. Louis will contact you soon.
       </div>
 
       <form 
-        id="buyForm"
+        id="purchaseForm"
         action="https://formspree.io/f/xeeldjwj"
         method="POST"
         class="grid grid-cols-1 gap-4"
@@ -170,8 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
         />
 
         <textarea 
-    id="buycomments"
-    name="buyComments" 
+    id="purchaseComments"
+    name="purchaseComments" 
     placeholder="Additional comments or questions about the artwork(s) you're interested in (optional)"
     class="w-full border border-gray-300 rounded p-4 dark:border-gray-600 bg-gray-100 dark:bg-[#252525] leading-[1.3] resize-none overflow-hidden box-border md:mb-2"
   ></textarea>
@@ -338,7 +338,23 @@ If this section is left blank, the piece will be created based entirely on the a
       </form>
     </div>
 
+
+  <!-- ========================= -->
+    <!-- CONTACT SECTION -->
+    <!-- ========================= -->
+    <div>
+      <h2 class="text-2xl font-semibold mb-4">Contact Me</h2>
+
+      <p class="leading-relaxed text-gray-800 mb-6">
+        Please fill the form bellow  for any inquires unrelated to purchase or commission of  my artworks.
+      </p>
+
+  <div class="w-full max-w-sm">
+    {{ partial "contact-form.html" . }}
   </div>
+    </div>
+    </div>
+
 </section>
 
 <!-- ========================= -->
@@ -641,9 +657,9 @@ if (savedCustom && savedCustom.trim() !== "") {
     const form = e.target;
     const formId = form.id;
 
-    if (formId !== "buyForm" && formId !== "commissionForm") return;
+    if (formId !== "purchaseForm" && formId !== "commissionForm") return;
 
-    const successId = formId === "buyForm" ? "buySuccessMessage" : "commissionSuccessMessage";
+    const successId = formId === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
     const successMessage = document.getElementById(successId);
 
     let parsed = null;
@@ -654,7 +670,7 @@ if (savedCustom && savedCustom.trim() !== "") {
     }
 
     if (
-      formId === "buyForm" &&
+      formId === "purchaseForm" &&
       (!parsed || (parsed.selected.length === 0 && !parsed.custom))
     ) {
       alert("Please select at least one artwork before submitting.");
@@ -694,7 +710,7 @@ if (savedCustom && savedCustom.trim() !== "") {
       form.reset();
       successMessage?.classList.remove("hidden");
 
-      if (formId === "buyForm") {
+      if (formId === "purchaseForm") {
   preview.innerHTML = "";
   selectedTextarea.value = "";
 

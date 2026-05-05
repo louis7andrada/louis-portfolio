@@ -1,62 +1,119 @@
 {{ define "main" }}
-
-{{ $all := sort (where (where site.RegularPages "Section" "artworks") "Params.worknum" "!=" nil) "Params.worknum" "desc" }}
-
-{{ $featured := where $all "Params.inprogress" "ne" true }}
-{{ $featured := first 10 $featured }}
-
-<section class="w-full px-4 md:px-8 py-16 relative">
-  <h2 class="text-center text-3xl font-semibold mb-10">Recent Artworks</h2>
-  <div class="w-full max-w-[1200px] mx-auto">
-
-    {{ with index $featured 0 }}
-    <a id="featuredLink" href="{{ .RelPermalink }}">
-      <div class="featured-slideshow-container">
-        <img 
-          id="featuredArtwork" 
-          src="{{ .Params.image }}" 
-          alt="{{ .Title }}" 
-          class="featured-img homepage-image"
-        />
+{{ $all := where (where site.RegularPages "Section" "artworks") "Params.worknum" "!=" nil }}
+{{ $artwork := index (where $all "Params.id" "eq" "LA2026-o13") 0 }}
+{{ if not $artwork }}
+  {{ $artwork = index $all 0 }}
+{{ end }}
+<div class="homepage-wrapper">
+  {{ with $artwork }}
+  <div class="homepage-layout">
+    <div class="hp-left">
+      <p class="hp-title">{{ .Title }}</p>
+      <a href="{{ .RelPermalink }}" class="hp-image-link">
+        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="hp-image" />
+      </a>
+      <span class="hp-year">{{ .Params.year }}</span>
+    </div>
+    <nav class="hp-nav">
+      <div class="hp-nav-inner">
+        <a href="/artworks/" class="hp-nav-link hp-nav--artworks">Artworks</a>
+        <a href="/inquire/" class="hp-nav-link hp-nav--acquisition">Inquire</a>
+        <a href="/archive/" class="hp-nav-link hp-nav--archive">Archive</a>
+        <a href="/about/" class="hp-nav-link hp-nav--about">About</a>
+        <a href="/links/" class="hp-nav-link hp-nav--links">Links</a>
       </div>
-      <div id="featuredInfo" class="text-center mt-6">
-        <h3 class="text-2xl font-semibold" id="featuredTitle">{{ .Title }}</h3>
-        <p class="text-gray-600" id="featuredDetails">
-          {{ .Params.year }} • {{ .Params.medium }} • {{ .Params.size }}
-        </p>
-      </div>
-      <br>
-    </a>
-    {{ end }}
-
+    </nav>
   </div>
-
-  <!-- PREV/NEXT ARROWS -->
-  <a id="prevBtnDesktop"
-     class="fixed left-10 top-1/2 -translate-y-1/2">
-    &lt Previous
-  </a>
-
-  <a id="nextBtnDesktop"
-     class="fixed right-10 top-1/2 -translate-y-1/2">
-    Next &gt
-  </a>
-
-</section>
-
-<script>
-  window.featuredArtworks = [
-    {{ range $featured }}
-    {
-      title: "{{ .Title }}",
-      year: "{{ .Params.year }}",
-      medium: "{{ .Params.medium }}",
-      size: "{{ .Params.size }}",
-      image: "{{ .Params.image }}",
-      link: "{{ .RelPermalink }}"
-    },
-    {{ end }}
-  ];
-</script>
-
+  {{ else }}
+  <p style="padding:2rem;font-family:monospace;">No artwork found.</p>
+  {{ end }}
+</div>
+<style>
+  .homepage-wrapper {
+    min-height: calc(100vh - 80px);
+  }
+  .homepage-layout {
+    display: flex;
+    align-items: stretch;
+    padding: 3rem 1rem 2rem 8rem;
+    gap: 10rem;
+    min-height: calc(100vh - 80px);
+  }
+  .hp-left {
+    flex: 0 0 auto;
+    width: clamp(420px, 62vw, 900px);
+    display: flex;
+    flex-direction: column;
+  }
+  .hp-title {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.6rem 0;
+  }
+  .hp-image-link {
+    display: block;
+  }
+  .hp-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .hp-year {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    align-self: flex-end;
+    margin-top: 0.5rem;
+  }
+  .hp-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hp-nav-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 60%;
+  }
+  .hp-nav-link {
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: inherit;
+    letter-spacing: 0.04em;
+    display: inline-block;  /* shrinks to text width so underline doesn't stretch */
+    padding: 0.3rem 0;
+    transition: font-weight 0.1s ease;
+  }
+  .hp-nav-link:hover {
+    text-decoration: underline;
+    font-weight: 700;
+  }
+  .hp-nav--artworks    { margin-left: 0%;  }
+  .hp-nav--acquisition { margin-left: 35%; }
+  .hp-nav--archive     { margin-left: 5%;  }
+  .hp-nav--about       { margin-left: 30%; }
+  .hp-nav--links       { margin-left: 60%; }
+  @media (max-width: 700px) {
+    .homepage-layout {
+      flex-direction: column;
+      padding: 1.5rem;
+      gap: 2rem;
+    }
+    .hp-left {
+      width: 100%;
+    }
+    .hp-nav {
+      justify-content: flex-start;
+    }
+    .hp-nav-inner {
+      height: auto;
+      gap: 1.5rem;
+    }
+    .hp-nav-link {
+      font-size: 1.2rem;
+      margin-left: 0 !important;
+    }
+  }
+</style>
 {{ end }}

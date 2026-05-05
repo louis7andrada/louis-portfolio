@@ -154,7 +154,7 @@ html,
   -o-tab-size: 4;
      tab-size: 4;
   /* 3 */
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "AndradaMono", "Courier Prime", monospace;
   /* 4 */
   font-feature-settings: normal;
   /* 5 */
@@ -243,7 +243,7 @@ code,
 kbd,
 samp,
 pre {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "AndradaMono", "Courier Prime", monospace;
   /* 1 */
   font-feature-settings: normal;
   /* 2 */
@@ -555,17 +555,17 @@ video {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "IBM Plex Sans", sans-serif !important;
+  font-family: "AndradaMono", "Courier Prime", monospace !important;
   font-weight: 425 !important;
 }
 
 p, li, blockquote {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "AndradaMono", "Courier Prime", monospace;
   font-size: 1.02em !important;
 }
 
 a {
-  font-family: "IBM Plex Mono", monospace;
+  font-family: "AndradaMono", "Courier Prime", monospace;
 }
 
 button,
@@ -1105,10 +1105,6 @@ button,
   max-width: 1000px;
 }
 
-.max-w-\[1200px\] {
-  max-width: 1200px;
-}
-
 .max-w-\[1400px\] {
   max-width: 1400px;
 }
@@ -1546,7 +1542,7 @@ button,
 }
 
 .font-sans {
-  font-family: "IBM Plex Sans", sans-serif;
+  font-family: "AndradaMono", "Courier Prime", monospace;
 }
 
 .text-2xl {
@@ -1773,6 +1769,19 @@ button,
 
 .duration-700 {
   transition-duration: 700ms;
+}
+
+@font-face {
+  font-family: 'AndradaMono';
+
+  src: url('/fonts/AndradaMono.woff2') format('woff2'),
+       url('/fonts/AndradaMono.woff') format('woff');
+
+  font-weight: normal;
+
+  font-style: normal;
+
+  font-display: swap;
 }
 
 /* ----------------------------------------
@@ -2666,10 +2675,6 @@ MISC FIXES
 
   .md\:w-auto {
     width: auto;
-  }
-
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:grid-cols-3 {

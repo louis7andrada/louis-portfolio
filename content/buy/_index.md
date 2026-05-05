@@ -1,5 +1,5 @@
 ---
-title: "Buy/Commission"
-url: "/buy"
-type: "buy"
+title: "Inquire"
+url: "/inquire"
+type: "inquire"
 ---
