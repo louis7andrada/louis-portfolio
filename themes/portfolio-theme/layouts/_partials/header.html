@@ -100,13 +100,23 @@
   }
 
   body[data-menu-open] #headerLogo,
-  body[data-menu-open] #darkModeToggle,
   body[data-menu-open] #desktopNav,
   body[data-menu-open] #homeDesktopNav {
     opacity: 0 !important;
     pointer-events: none !important;
     transition: opacity 0.2s ease;
   }
+
+  @media (max-width: 767px) {
+  #darkModeToggle {
+    display: none;
+  }
+  body[data-menu-open] #darkModeToggle {
+    display: flex !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
 
   /* ── + / − TOGGLE BUTTON ── */
   .menu-toggle {
@@ -116,11 +126,11 @@
     cursor: pointer;
     color: inherit;
     font-family: inherit;
-    font-size: 2rem;
+    font-size: 2.4rem;
     line-height: 1;
     padding: 0;
-    width: 2rem;
-    height: 2rem;
+    width: 2.4rem;
+    height: 2.4rem;
     align-items: center;
     justify-content: center;
   }
