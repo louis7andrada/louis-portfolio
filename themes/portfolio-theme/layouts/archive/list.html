@@ -384,8 +384,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterLabels = { year: "Years", category: "Category" };
 
   function openOverlay() {
-    overlay.classList.remove("hidden");
     toggle.classList.add("open");
+    setTimeout(() => overlay.classList.remove("hidden"), 300);
   }
 
   function closeOverlay() {
