@@ -53,7 +53,8 @@
 
 #intro-logo {
   width: clamp(180px, 22vw, 220px);
-  height: auto;
+  height: clamp(64px, 8vw, 79px);
+  object-fit: fill;
   opacity: 1;
   transition: opacity 0.5s ease, transform 0.4s ease;
   cursor: pointer;
@@ -66,13 +67,13 @@
   /* transform: translate(-50%, -50%); */
 
   /* with this */
-  transform: translate(calc(-50% + 6px), calc(-50% - 3px));
+  transform: translate(calc(-50% - 6px), calc(-50% - 3px));
 }
   html.dark #intro-logo { filter: invert(1); }
   #intro-logo:hover { opacity: 0.35; }
   #intro-door.logo-dim #intro-logo { opacity: 0.35; }
   #intro-door.logo-clicked #intro-logo {
-  transform: translate(calc(-50% + 6px), calc(-50% - 3px)) scale(0.93);
+  transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93);
   opacity: 0.2;
 }
   #intro-door.dissolving { opacity: 0; pointer-events: none; }
