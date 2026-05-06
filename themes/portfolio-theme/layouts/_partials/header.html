@@ -126,8 +126,8 @@
     cursor: pointer;
     color: inherit;
     padding: 0;
-    width: 2.4rem;
-    height: 2.4rem;
+    width: 2.2rem;
+    height: 2.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -145,17 +145,18 @@
   }
 
   .bar-h {
-    width: 22px;
-    height: 1.5px;
+    width: 18px;
+    height: 2px;
     transform: translate(-50%, -50%);
   }
 
   .bar-v {
-    width: 1.5px;
-    height: 22px;
+    width: 2px;
+    height: 18px;
     transform: translate(-50%, -50%);
     transform-origin: center center;
-    transition: transform 0.35s ease, opacity 0.25s ease;
+    will-change: transform, opacity;
+    transition: transform 0.45s ease, opacity 0.35s ease;
   }
 
   .menu-toggle.open .bar-v {
