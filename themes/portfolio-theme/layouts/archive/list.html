@@ -4,22 +4,28 @@
 
   <h1 class="text-2xl font-semibold mb-6 text-left">Archive</h1>
 
-  <!-- FILTER BAR — scrolls with page, gets blurred by overlay when open -->
+  <!-- FILTER BAR -->
   <div class="archive-filter-bar" id="archiveFilterBar">
     <button id="filterToggle" class="archive-filter-toggle">
-      Filters <span id="filterToggleSymbol">+</span>
+      <span class="filter-label">Filters</span>
+      <span class="filter-icon">
+        <span class="fbar fbar-h"></span>
+        <span class="fbar fbar-v"></span>
+      </span>
     </button>
     <div id="activeFilterTags" class="archive-active-tags"></div>
   </div>
 
-  <!-- FILTER OVERLAY — fixed fullscreen frosted glass -->
+  <!-- FILTER OVERLAY -->
   <div id="filterOverlay" class="archive-filter-overlay hidden">
-
-    <!-- Single row: Filters − on left, columns immediately beside it -->
     <div class="archive-filter-inner">
 
       <button id="filterCloseToggle" class="archive-filter-toggle open">
-        Filters <span>−</span>
+        <span class="filter-label">Filters</span>
+        <span class="filter-icon">
+          <span class="fbar fbar-h"></span>
+          <span class="fbar fbar-v"></span>
+        </span>
       </button>
 
       <div class="archive-filter-columns">
@@ -53,61 +59,38 @@
           </div>
         </div>
 
-      </div><!-- end columns -->
-    </div><!-- end inner row -->
-  </div><!-- end overlay -->
-
-  <!-- =============================== -->
-  <!-- SORTED ARCHIVE LIST (MATCHES SINGLE PAGE) -->
-  <!-- =============================== -->
+      </div>
+    </div>
+  </div>
 
   {{/* Load all archive pages */}}
   {{ $raw := where .Site.RegularPages "Section" "archive" }}
 
-
   {{/* Build clean list with computed sort keys */}}
-{{ $clean := slice }}
+  {{ $clean := slice }}
+  {{ range $raw }}
+    {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
+    {{ $item := dict "page" . "year" .Params.year "rand" $hash }}
+    {{ $clean = $clean | append $item }}
+  {{ end }}
 
-{{ range $raw }}
+  {{ $sorted := sort $clean "rand" "asc" }}
+  {{ $sorted := sort $sorted "year" "desc" }}
 
-  {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
-
-  {{ $item := dict 
-      "page" . 
-      "year" .Params.year 
-      "rand" $hash
-  }}
-
-  {{ $clean = $clean | append $item }}
-
-{{ end }}
-
-  {{/* SORT ORDER:
-        1. Year DESC
-        2. Category priority ASC (studios → photos → galleries)
-        3. Number DESC (studio3 → studio2 → studio1)
-  */}}
-
-{{ $sorted := sort $clean "rand" "asc" }}
-{{ $sorted := sort $sorted "year" "desc" }}
-
-  <!-- ADAPTIVE FLEX GALLERY (same as artworks) -->
+  <!-- GALLERY -->
   <div id="archiveGallery" class="flex flex-wrap gap-8 justify-center">
-
     {{ range $sorted }}
-
-      <a 
-        href="{{ .page.RelPermalink }}" 
+      <a
+        href="{{ .page.RelPermalink }}"
         class="archive-item cursor-pointer group block w-full md:w-auto"
         data-year="{{ .year }}"
         data-category="{{ .page.Params.category }}"
       >
-
         <div class="overflow-hidden">
           {{ if .page.Params.image }}
-            <img 
-              src="{{ .page.Params.image }}" 
-              alt="{{ .page.Title }}" 
+            <img
+              src="{{ .page.Params.image }}"
+              alt="{{ .page.Title }}"
               class="w-full md:w-auto max-h-[520px] object-contain group-hover:opacity-80 transition"
             />
           {{ else }}
@@ -116,60 +99,43 @@
             </div>
           {{ end }}
         </div>
-
       </a>
-
     {{ end }}
-
   </div>
 
   <section class="max-w-7xl mx-auto px-6">
-
-  <div class="end-spacer-1"></div>
-
-  <div id="endMessage" class="end-message text-center">
-    The End :)
-  </div>
-
-  <div class="end-spacer-2"></div>
-
-  <div class="end-message2 text-right">
-    Please stop scrolling!!
-  </div>
-
-  <div class="end-spacer-3"></div>
-
-</section>
+    <div class="end-spacer-1"></div>
+    <div id="endMessage" class="end-message text-center">The End :)</div>
+    <div class="end-spacer-2"></div>
+    <div class="end-message2 text-right">Please stop scrolling!!</div>
+    <div class="end-spacer-3"></div>
+  </section>
 
 </section>
 
 <style>
   #archive-section > h1,
-#archive-section > .archive-filter-bar {
-  margin-left: 4rem;
-}
-@media (max-width: 1200px) {
-  #archive-section > h1,
   #archive-section > .archive-filter-bar {
-    margin-left: 3rem;
+    margin-left: 4rem;
   }
-}
-@media (max-width: 699px) {
-  #archive-section > h1,
-  #archive-section > .archive-filter-bar {
-    margin-left: 1rem;
+  @media (max-width: 1200px) {
+    #archive-section > h1,
+    #archive-section > .archive-filter-bar {
+      margin-left: 3rem;
+    }
   }
-}
-@media (max-width: 1200px) {
-  .archive-filter-overlay {
-    padding-left: 4rem;
+  @media (max-width: 699px) {
+    #archive-section > h1,
+    #archive-section > .archive-filter-bar {
+      margin-left: 1rem;
+    }
   }
-}
-@media (max-width: 699px) {
-  .archive-filter-overlay {
-    padding-left: 2rem;
+  @media (max-width: 1200px) {
+    .archive-filter-overlay { padding-left: 4rem; }
   }
-}
+  @media (max-width: 699px) {
+    .archive-filter-overlay { padding-left: 2rem; }
+  }
 
   /* ── END SECTION SPACERS ── */
   .end-spacer-1 { height: 20vh; }
@@ -181,38 +147,34 @@
     .end-spacer-2 { height: 30vh; }
     .end-spacer-3 { height: 8vh; }
   }
-
   @media (max-width: 480px) {
     .end-spacer-1 { height: 10vh; }
     .end-spacer-2 { height: 20vh; }
     .end-spacer-3 { height: 5vh; }
   }
-  /* ── FILTER BAR — normal flow, scrolls with page, blurred by overlay ── */
+
+  /* ── FILTER BAR ── */
   .archive-filter-bar {
-  position: sticky;
-  top: 100px;
-  z-index: 50;
+    position: sticky;
+    top: 100px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    width: fit-content;
+    max-width: min(90vw, 900px);
+    margin-bottom: 2.5rem;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 0px;
+  }
+  html.dark .archive-filter-bar {
+    background: rgba(20, 20, 20, 0.65);
+  }
 
-  display: inline-flex;            /* inline flow */
-  align-items: flex-start;
-  gap: 1.2rem;
-
-  width: fit-content;              /* shrink to content */
-  max-width: min(90vw, 900px);     /* hard cap */
-  
-  margin-bottom: 2.5rem;
-  padding: 0.6rem 0.9rem;
-
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-
-  border-radius: 0px;
-}
-html.dark .archive-filter-bar {
-  background: rgba(20, 20, 20, 0.65);
-}
-
+  /* ── FILTER TOGGLE BUTTON ── */
   .archive-filter-toggle {
     background: none;
     border: none;
@@ -224,11 +186,12 @@ html.dark .archive-filter-bar {
     opacity: 0.55;
     padding: 0;
     transition: opacity 0.2s;
-    text-decoration: underline;
-    text-underline-offset: 3px;
     font-family: inherit;
     white-space: nowrap;
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .archive-filter-toggle:hover,
@@ -236,12 +199,56 @@ html.dark .archive-filter-bar {
     opacity: 1;
   }
 
+  /* underline only on the word */
+  .archive-filter-toggle .filter-label {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── FILTER ICON (small + / −) ── */
+  .filter-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+
+  .fbar {
+    position: absolute;
+    background: currentColor;
+    border-radius: 1px;
+    top: 50%;
+    left: 50%;
+  }
+
+  .fbar-h {
+    width: 11px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
+
+  .fbar-v {
+    width: 1.5px;
+    height: 11px;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    transition: transform 0.35s ease, opacity 0.25s ease;
+  }
+
+  .archive-filter-toggle.open .fbar-v {
+    transform: translate(-50%, -50%) scaleY(0);
+    opacity: 0;
+  }
+
+  /* ── ACTIVE TAGS ── */
   .archive-active-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-
-    max-width: 700px;      /* prevents infinite horizontal growth */
+    max-width: 700px;
   }
 
   .archive-active-tag-group {
@@ -266,7 +273,7 @@ html.dark .archive-filter-bar {
     opacity: 0.75;
   }
 
-  /* ── OVERLAY — fixed fullscreen ── */
+  /* ── OVERLAY ── */
   .archive-filter-overlay {
     position: fixed;
     inset: 0;
@@ -277,7 +284,6 @@ html.dark .archive-filter-bar {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    /* top padding = sticky header height (~72px) + archive-section top padding (~40px) */
     padding: 7rem 4rem 3rem 5rem;
   }
 
@@ -291,7 +297,6 @@ html.dark .archive-filter-bar {
     display: none;
   }
 
-  /* ── INNER ROW: Filters − + columns side by side ── */
   .archive-filter-inner {
     display: flex;
     align-items: flex-start;
@@ -299,7 +304,6 @@ html.dark .archive-filter-bar {
     width: 100%;
   }
 
-  /* ── FILTER COLUMNS ── */
   .archive-filter-columns {
     display: flex;
     gap: 4rem;
@@ -324,24 +328,24 @@ html.dark .archive-filter-bar {
   }
 
   .archive-filter-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 
-.archive-filter-option {
-  position: relative;
-}
+  .archive-filter-option {
+    position: relative;
+  }
 
-/* stairs offset */
-.archive-filter-option:nth-child(1) { margin-left: 0px; }
-.archive-filter-option:nth-child(2) { margin-left: 8px; }
-.archive-filter-option:nth-child(3) { margin-left: 16px; }
-.archive-filter-option:nth-child(4) { margin-left: 24px; }
-.archive-filter-option:nth-child(5) { margin-left: 32px; }
-.archive-filter-option:nth-child(6) { margin-left: 40px; }
-.archive-filter-option:nth-child(7) { margin-left: 48px; }
-.archive-filter-option:nth-child(8) { margin-left: 56px; }
+  /* stairs offset */
+  .archive-filter-option:nth-child(1) { margin-left: 0px; }
+  .archive-filter-option:nth-child(2) { margin-left: 8px; }
+  .archive-filter-option:nth-child(3) { margin-left: 16px; }
+  .archive-filter-option:nth-child(4) { margin-left: 24px; }
+  .archive-filter-option:nth-child(5) { margin-left: 32px; }
+  .archive-filter-option:nth-child(6) { margin-left: 40px; }
+  .archive-filter-option:nth-child(7) { margin-left: 48px; }
+  .archive-filter-option:nth-child(8) { margin-left: 56px; }
 
   .archive-filter-option {
     background: none;
@@ -370,7 +374,6 @@ html.dark .archive-filter-bar {
 document.addEventListener("DOMContentLoaded", () => {
 
   const toggle      = document.getElementById("filterToggle");
-  const symbol      = document.getElementById("filterToggleSymbol");
   const overlay     = document.getElementById("filterOverlay");
   const closeToggle = document.getElementById("filterCloseToggle");
   const tagsEl      = document.getElementById("activeFilterTags");
@@ -382,13 +385,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openOverlay() {
     overlay.classList.remove("hidden");
-    symbol.textContent = "−";
     toggle.classList.add("open");
   }
 
   function closeOverlay() {
     overlay.classList.add("hidden");
-    symbol.textContent = "+";
     toggle.classList.remove("open");
   }
 
@@ -421,10 +422,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function applyFilters() {
     items.forEach(item => {
-      const year  = String(item.dataset.year || "");
-      const cat   = (item.dataset.category || "").toLowerCase();
-      const matchYear  = active.year === "all" || year === String(active.year);
-      const matchCat   = active.category === "all" || cat === active.category.toLowerCase();
+      const year = String(item.dataset.year || "");
+      const cat  = (item.dataset.category || "").toLowerCase();
+      const matchYear = active.year === "all" || year === String(active.year);
+      const matchCat  = active.category === "all" || cat === active.category.toLowerCase();
       item.style.display = (matchYear && matchCat) ? "" : "none";
     });
   }
