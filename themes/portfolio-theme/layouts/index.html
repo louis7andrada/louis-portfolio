@@ -54,20 +54,18 @@
   opacity: 1;
   transition: opacity 0.5s ease, transform 0.4s ease;
   cursor: pointer;
-
   position: absolute;
   top: 50%;
   left: 50%;
-
   transform: translate(calc(-50% - 6px), calc(-50% - 3px));
 }
   html.dark #intro-logo { filter: invert(1); }
   #intro-logo:hover { opacity: 0.35; }
   #intro-door.logo-dim #intro-logo { opacity: 0.35; }
   #intro-door.logo-clicked #intro-logo {
-  transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93);
-  opacity: 0.2;
-}
+    transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93);
+    opacity: 0.2;
+  }
   #intro-door.dissolving { opacity: 0; pointer-events: none; }
   .homepage-wrapper { min-height: calc(100vh - 80px); }
   .homepage-layout {
@@ -117,9 +115,8 @@
 </style>
 
 <script>
-  (function() {
+(function() {
   const door = document.getElementById('intro-door');
-  const logo = document.getElementById('intro-logo');
 
   function sessionGet(key) {
     try { return sessionStorage.getItem(key); } catch(e) { return null; }
@@ -155,7 +152,7 @@
 <section id="artworks-section" class="w-full px-4 py-12">
   <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Artworks</h1>
 
-  <!-- FILTER BAR -->
+  <!-- FILTER BAR — z-index 110, sits above overlay so toggle never moves -->
   <div class="artwork-filter-bar" id="artworkFilterBar">
     <button id="filterToggle" class="artwork-filter-toggle">
       <span class="filter-label">Filters</span>
@@ -171,13 +168,14 @@
   <div id="filterOverlay" class="artwork-filter-overlay hidden">
     <div class="artwork-filter-inner">
 
-      <button id="filterCloseToggle" class="artwork-filter-toggle open">
+      <!-- invisible spacer: same dimensions as filterToggle, keeps columns aligned -->
+      <div class="artwork-filter-toggle filter-spacer" aria-hidden="true">
         <span class="filter-label">Filters</span>
         <span class="filter-icon">
           <span class="fbar fbar-h"></span>
           <span class="fbar fbar-v"></span>
         </span>
-      </button>
+      </div>
 
       <div class="artwork-filter-columns">
 
@@ -298,10 +296,8 @@
     The Tree, The Snake, The Fruit
   </h1>
 
-  <!-- TOP GRID (SMALL WORKS) -->
   <div class="grid grid-cols-10 items-start" style="gap:3px;">
 
-    <!-- TREE -->
     <div class="col-span-3 flex flex-col">
       <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h2>
       <div class="grid grid-cols-3 content-start" style="gap:3px;">
@@ -319,7 +315,6 @@
       </div>
     </div>
 
-    <!-- SNAKE -->
     <div class="col-span-4 flex flex-col">
       <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h2>
       <div class="grid grid-cols-4 content-start" style="gap:3px;">
@@ -337,7 +332,6 @@
       </div>
     </div>
 
-    <!-- FRUIT -->
     <div class="col-span-3 flex flex-col">
       <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h2>
       <div class="grid grid-cols-3 content-start" style="gap:3px;">
@@ -357,10 +351,8 @@
 
   </div>
 
-  <!-- FULL PIECES (3 COLUMN) -->
   <div class="mt-24 grid items-start" style="grid-template-columns: 3fr 4fr 3fr; gap:3px;">
 
-    <!-- TREE FULL -->
     <div class="flex flex-col items-center">
       <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h3>
       {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}
@@ -371,24 +363,22 @@
       {{ end }}
     </div>
 
-    <!-- SNAKE FULL -->
     <div class="flex flex-col items-center">
       <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h3>
       {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}
       {{ with index $snakeFull 0 }}
-      {{ if .Params.inprogress }}
+        {{ if .Params.inprogress }}
           <div class="artwork-inprogress">
             <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;"/>
           </div>
-          {{ else }}
-            <a href="{{ .RelPermalink }}">
-              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
-            </a>
+        {{ else }}
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+          </a>
         {{ end }}
       {{ end }}
     </div>
 
-    <!-- FRUIT FULL -->
     <div class="flex flex-col items-center">
       <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h3>
       {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}
@@ -397,17 +387,16 @@
           <div class="artwork-inprogress">
             <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;"/>
           </div>
-          {{ else }}
-            <a href="{{ .RelPermalink }}">
-              <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
-            </a>
+        {{ else }}
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+          </a>
         {{ end }}
       {{ end }}
     </div>
 
   </div>
 
-  <!-- FINAL COMBINED PIECE -->
   <h1 class="text-2xl font-semibold mt-24 mb-10 text-center whitespace-nowrap">
     The Tree, The Snake, The Fruit
   </h1>
@@ -417,14 +406,14 @@
       {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}
       {{ with index $completeFull 0 }}
         {{ if .Params.inprogress }}
-            <div class="artwork-inprogress">
-              <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;"/>
-            </div>
-            {{ else }}
-              <a href="{{ .RelPermalink }}">
-                <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
-              </a>
-          {{ end }}
+          <div class="artwork-inprogress">
+            <img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;"/>
+          </div>
+        {{ else }}
+          <a href="{{ .RelPermalink }}">
+            <img src="{{ .Params.image }}" class="w-full h-auto shadow" />
+          </a>
+        {{ end }}
       {{ end }}
     </div>
   </div>
@@ -433,76 +422,54 @@
 </div>
 
 <section class="max-w-7xl mx-auto px-6">
-
   <div class="end-spacer-1"></div>
-
-  <div id="endMessage" class="end-message text-center">
-    The End :)
-  </div>
-
+  <div id="endMessage" class="end-message text-center">The End :)</div>
   <div class="end-spacer-2"></div>
-
-  <div class="end-message2 text-right">
-    Please stop scrolling!!
-  </div>
-
+  <div class="end-message2 text-right">Please stop scrolling!!</div>
   <div class="end-spacer-3"></div>
-
 </section>
 
 </section>
 
 <style>
-/* only move title and filter bar, not gallery */
 #artworks-section > h1,
 #artworks-section > .artwork-filter-bar {
   margin-left: 4rem;
 }
 @media (max-width: 1200px) {
   #artworks-section > h1,
-  #artworks-section > .artwork-filter-bar {
-    margin-left: 3rem;
-  }
+  #artworks-section > .artwork-filter-bar { margin-left: 3rem; }
 }
 @media (max-width: 699px) {
   #artworks-section > h1,
-  #artworks-section > .artwork-filter-bar {
-    margin-left: 1rem;
-  }
+  #artworks-section > .artwork-filter-bar { margin-left: 1rem; }
 }
 @media (max-width: 1200px) {
-  .artwork-filter-overlay {
-    padding-left: 4rem;
-  }
+  .artwork-filter-overlay { padding-left: 4rem; }
 }
 @media (max-width: 699px) {
-  .artwork-filter-overlay {
-    padding-left: 2rem;
-  }
+  .artwork-filter-overlay { padding-left: 2rem; }
 }
 
-  /* ── END SECTION SPACERS ── */
   .end-spacer-1 { height: 20vh; }
   .end-spacer-2 { height: 30vh; }
   .end-spacer-3 { height: 10vh; }
-
   @media (max-width: 768px) {
     .end-spacer-1 { height: 15vh; }
     .end-spacer-2 { height: 30vh; }
     .end-spacer-3 { height: 8vh; }
   }
-
   @media (max-width: 480px) {
     .end-spacer-1 { height: 10vh; }
     .end-spacer-2 { height: 20vh; }
     .end-spacer-3 { height: 5vh; }
   }
 
-  /* ── FILTER BAR ── */
+  /* ── FILTER BAR — raised above overlay so toggle never moves ── */
   .artwork-filter-bar {
     position: sticky;
     top: 100px;
-    z-index: 50;
+    z-index: 110;
     display: inline-flex;
     align-items: flex-start;
     gap: 1.2rem;
@@ -514,9 +481,17 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-radius: 0px;
+    transition: background 0.2s ease;
   }
   html.dark .artwork-filter-bar {
     background: rgba(20, 20, 20, 0.65);
+  }
+
+  /* strip background when overlay is open so bar blends into overlay */
+  .artwork-filter-bar.filter-open {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   /* ── FILTER TOGGLE BUTTON ── */
@@ -538,19 +513,22 @@
     align-items: center;
     gap: 0.5rem;
   }
-
   .artwork-filter-toggle:hover,
-  .artwork-filter-toggle.open {
-    opacity: 1;
-  }
+  .artwork-filter-toggle.open { opacity: 1; }
 
-  /* underline only on the word */
   .artwork-filter-toggle .filter-label {
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  /* ── FILTER ICON (small + / −) ── */
+  /* invisible spacer inside overlay — layout only, not interactive */
+  .artwork-filter-toggle.filter-spacer {
+    opacity: 0;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  /* ── FILTER ICON ── */
   .filter-icon {
     position: relative;
     display: inline-flex;
@@ -595,14 +573,12 @@
     gap: 1rem;
     max-width: 700px;
   }
-
   .artwork-active-tag-group {
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
     white-space: nowrap;
   }
-
   .artwork-active-tag-label {
     font-size: 0.65rem;
     letter-spacing: 0.1em;
@@ -611,7 +587,6 @@
     text-decoration: underline;
     text-underline-offset: 2px;
   }
-
   .artwork-active-tag-value {
     font-size: 0.78rem;
     letter-spacing: 0.03em;
@@ -631,16 +606,12 @@
     justify-content: flex-start;
     padding: 7rem 4rem 3rem 5rem;
   }
-
   html.dark .artwork-filter-overlay {
     background: rgba(12, 12, 12, 0.78);
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
   }
-
-  .artwork-filter-overlay.hidden {
-    display: none;
-  }
+  .artwork-filter-overlay.hidden { display: none; }
 
   .artwork-filter-inner {
     display: flex;
@@ -648,20 +619,17 @@
     gap: 3rem;
     width: 100%;
   }
-
   .artwork-filter-columns {
     display: flex;
     gap: 4rem;
     flex-wrap: wrap;
   }
-
   .artwork-filter-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     min-width: 110px;
   }
-
   .artwork-filter-group-label {
     font-size: 0.72rem;
     letter-spacing: 0.1em;
@@ -671,18 +639,13 @@
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-
   .artwork-filter-options {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
+  .artwork-filter-option { position: relative; }
 
-  .artwork-filter-option {
-    position: relative;
-  }
-
-  /* stairs offset */
   .artwork-filter-option:nth-child(1) { margin-left: 0px; }
   .artwork-filter-option:nth-child(2) { margin-left: 8px; }
   .artwork-filter-option:nth-child(3) { margin-left: 16px; }
@@ -705,9 +668,7 @@
     transition: opacity 0.15s;
     font-family: inherit;
   }
-
   .artwork-filter-option:hover { opacity: 0.7; }
-
   .artwork-filter-option.active {
     opacity: 1;
     text-decoration: underline;
@@ -718,31 +679,31 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const toggle      = document.getElementById("filterToggle");
-  const overlay     = document.getElementById("filterOverlay");
-  const closeToggle = document.getElementById("filterCloseToggle");
-  const tagsEl      = document.getElementById("activeFilterTags");
-  const gallery     = document.getElementById("artworkGallery");
-  const items       = gallery ? Array.from(gallery.querySelectorAll(".artwork-item")) : [];
+  const toggle    = document.getElementById("filterToggle");
+  const filterBar = document.getElementById("artworkFilterBar");
+  const overlay   = document.getElementById("filterOverlay");
+  const tagsEl    = document.getElementById("activeFilterTags");
+  const gallery   = document.getElementById("artworkGallery");
+  const items     = gallery ? Array.from(gallery.querySelectorAll(".artwork-item")) : [];
 
   const active = { year: "all", availability: "all", collection: "all" };
   const filterLabels = { year: "Years", availability: "Availability", collection: "Collection" };
 
   function openOverlay() {
-  toggle.classList.add("open");
-  setTimeout(() => overlay.classList.remove("hidden"), 300);
+    toggle.classList.add("open");
+    filterBar.classList.add("filter-open");
+    overlay.classList.remove("hidden");
   }
 
   function closeOverlay() {
     overlay.classList.add("hidden");
     toggle.classList.remove("open");
+    filterBar.classList.remove("filter-open");
   }
 
   toggle.addEventListener("click", () => {
     overlay.classList.contains("hidden") ? openOverlay() : closeOverlay();
   });
-
-  closeToggle?.addEventListener("click", closeOverlay);
 
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) closeOverlay();
@@ -763,28 +724,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const galleryView = document.getElementById("artworkGallery");
       const treeView    = document.getElementById("treeCollectionView");
 
-      // SPECIAL COLLECTION MODE
       if (filter === "collection" && value === "The Tree, The Snake, The Fruit") {
         active.year = "all";
         active.availability = "all";
 
         document.querySelectorAll('[data-filter="year"], [data-filter="availability"]')
           .forEach(b => b.classList.remove("active"));
-
         document.querySelectorAll('[data-filter="year"][data-value="all"], [data-filter="availability"][data-value="all"]')
           .forEach(b => b.classList.add("active"));
 
         galleryView.style.display = "none";
         treeView.style.display = "block";
-
         renderTags();
         return;
       }
 
-      // NORMAL MODE
       treeView.style.display = "none";
       galleryView.style.display = "";
-
       applyFilters();
       renderTags();
     });
@@ -832,7 +788,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const collectionParam = params.get("collection");
   if (collectionParam) {
     active.collection = collectionParam;
-
     document.querySelectorAll('[data-filter="collection"]').forEach(b => {
       b.classList.remove("active");
       if (b.dataset.value === collectionParam) b.classList.add("active");
@@ -847,7 +802,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       applyFilters();
     }
-
     renderTags();
   }
 
