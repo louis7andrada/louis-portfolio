@@ -42,8 +42,8 @@
 
     <!-- Mobile Menu Toggle -->
     <button id="mobileMenuBtn" class="menu-toggle">
-      <span class="menu-plus">+</span>
-      <span class="menu-minus">−</span>
+      <span class="bar bar-h"></span>
+      <span class="bar bar-v"></span>
     </button>
 
   </div>
@@ -108,50 +108,60 @@
   }
 
   @media (max-width: 767px) {
-  #darkModeToggle {
-    display: none;
+    #darkModeToggle {
+      display: none;
+    }
+    body[data-menu-open] #darkModeToggle {
+      display: flex !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
   }
-  body[data-menu-open] #darkModeToggle {
-    display: flex !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-  }
-}
 
-  /* ── + / − TOGGLE BUTTON ── */
+  /* ── TOGGLE BUTTON ── */
   .menu-toggle {
     position: relative;
     background: none;
     border: none;
     cursor: pointer;
     color: inherit;
-    font-family: inherit;
-    font-size: 2.4rem;
-    line-height: 1;
     padding: 0;
     width: 2.4rem;
     height: 2.4rem;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .menu-toggle:hover { opacity: 0.6; }
 
-  /* both symbols stacked, crossfade between them */
-  .menu-toggle .menu-plus,
-  .menu-toggle .menu-minus {
+  /* ── BAR LINES ── */
+  .bar {
     position: absolute;
+    background: currentColor;
+    border-radius: 1px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(1);
-    transition: opacity 0.25s ease, transform 0.25s ease;
   }
 
-  .menu-toggle .menu-plus  { opacity: 1; }
-  .menu-toggle .menu-minus { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  .bar-h {
+    width: 22px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
 
-  .menu-toggle.open .menu-plus  { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
-  .menu-toggle.open .menu-minus { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  .bar-v {
+    width: 1.5px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    transition: transform 0.35s ease, opacity 0.25s ease;
+  }
+
+  .menu-toggle.open .bar-v {
+    transform: translate(-50%, -50%) scaleY(0);
+    opacity: 0;
+  }
 
   /* ── MOBILE MENU ── */
   #mobileMenu {
@@ -202,17 +212,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ── SCROLL HELPER ── */
   function scrollToSection(el) {
-  const headerHeight = siteHeader
-  ? siteHeader.offsetHeight
-  : 0;
-
-const top =
-  el.getBoundingClientRect().top +
-  window.scrollY -
-  headerHeight;
-
-  window.scrollTo({ top, behavior: "smooth" });
-}
+    const headerHeight = siteHeader ? siteHeader.offsetHeight : 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
 
   /* ── ARTWORKS LINK HANDLER ── */
   function artworksNavHandler(e) {
@@ -233,39 +236,36 @@ const top =
     if (target) {
       setTimeout(() => {
         scrollToSection(target);
-
-      setTimeout(() => {
-        if (homeDesktopNav) {
-          homeDesktopNav.style.opacity = "1";
-          homeDesktopNav.style.pointerEvents = "auto";
-        }
-      }, 60);
+        setTimeout(() => {
+          if (homeDesktopNav) {
+            homeDesktopNav.style.opacity = "1";
+            homeDesktopNav.style.pointerEvents = "auto";
+          }
+        }, 60);
       }, 60);
     } else {
-        sessionStorage.setItem("scrollTarget", "artworks-section");
-        window.location.href = "/";
-      }
-      }
+      sessionStorage.setItem("scrollTarget", "artworks-section");
+      window.location.href = "/";
+    }
+  }
 
   document.querySelectorAll('[data-scroll="artworks"]').forEach(link => {
-  link.addEventListener("click", artworksNavHandler);
-});
+    link.addEventListener("click", artworksNavHandler);
+  });
 
   /* ── HOME PAGE: watch home-section leaving viewport ── */
   if (homeSection && homeDesktopNav) {
     const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.intersectionRatio > 0.1) {
-      homeDesktopNav.style.opacity = "0";
-      homeDesktopNav.style.pointerEvents = "none";
-    } else {
-      homeDesktopNav.style.opacity = "1";
-      homeDesktopNav.style.pointerEvents = "auto";
-    }
-  });
-}, {
-  threshold: [0, 0.1]
-});
+      entries.forEach(entry => {
+        if (entry.intersectionRatio > 0.1) {
+          homeDesktopNav.style.opacity = "0";
+          homeDesktopNav.style.pointerEvents = "none";
+        } else {
+          homeDesktopNav.style.opacity = "1";
+          homeDesktopNav.style.pointerEvents = "auto";
+        }
+      });
+    }, { threshold: [0, 0.1] });
 
     observer.observe(homeSection);
   }
@@ -313,32 +313,27 @@ const top =
   /* ── HASH SCROLL on page load ── */
   const savedTarget = sessionStorage.getItem("scrollTarget");
 
-if (savedTarget) {
-  sessionStorage.removeItem("scrollTarget");
+  if (savedTarget) {
+    sessionStorage.removeItem("scrollTarget");
 
-  const target = document.getElementById(savedTarget);
-  if (target) {
-    setTimeout(() => {
-      scrollToSection(target);
+    const target = document.getElementById(savedTarget);
+    if (target) {
+      setTimeout(() => {
+        scrollToSection(target);
 
-      // FORCE correct state AFTER scroll
-      if (homeSection && homeDesktopNav) {
-        const rect = homeSection.getBoundingClientRect();
-
-        if (rect.top < 0) {
-          // home is above viewport → show nav
-          homeDesktopNav.style.opacity = "1";
-          homeDesktopNav.style.pointerEvents = "auto";
-        } else {
-          // home is visible → hide nav
-          homeDesktopNav.style.opacity = "0";
-          homeDesktopNav.style.pointerEvents = "none";
+        if (homeSection && homeDesktopNav) {
+          const rect = homeSection.getBoundingClientRect();
+          if (rect.top < 0) {
+            homeDesktopNav.style.opacity = "1";
+            homeDesktopNav.style.pointerEvents = "auto";
+          } else {
+            homeDesktopNav.style.opacity = "0";
+            homeDesktopNav.style.pointerEvents = "none";
+          }
         }
-      }
-
-    }, 100);
+      }, 100);
+    }
   }
-}
 
 });
 </script>
