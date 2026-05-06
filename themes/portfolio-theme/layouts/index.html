@@ -9,7 +9,8 @@
 <div class="homepage-wrapper">
 
   <div id="intro-door">
-    <img src="/logo.png" id="intro-logo" alt="Louis Andrada" />
+    <img src="/logo.png" id="intro-logo" alt="Louis Andrada"
+     onerror="this.outerHTML='<span id=\'intro-logo\' style=\'position:absolute;top:50%;left:50%;transform:translate(calc(-50% + 6px),calc(-50% - 3px));font-size:1rem;letter-spacing:0.1em;\'>Louis Andrada</span>'" />
   </div>
 
   {{ with $artwork }}
@@ -65,15 +66,13 @@
   /* transform: translate(-50%, -50%); */
 
   /* with this */
-  --offset-x: 6px;
-  --offset-y: -3px;
-  transform: translate(-50%, -50%) translate(var(--offset-x), var(--offset-y));
+  transform: translate(calc(-50% + 6px), calc(-50% - 3px));
 }
   html.dark #intro-logo { filter: invert(1); }
   #intro-logo:hover { opacity: 0.35; }
   #intro-door.logo-dim #intro-logo { opacity: 0.35; }
   #intro-door.logo-clicked #intro-logo {
-  transform: translate(-50%, -50%) translate(var(--offset-x), var(--offset-y)) scale(0.93);
+  transform: translate(calc(-50% + 6px), calc(-50% - 3px)) scale(0.93);
   opacity: 0.2;
 }
   #intro-door.dissolving { opacity: 0; pointer-events: none; }
@@ -126,25 +125,37 @@
 
 <script>
   (function() {
-    const door = document.getElementById('intro-door');
-    const logo = document.getElementById('intro-logo');
-    if (sessionStorage.getItem('intro-seen')) { door.style.display = 'none'; return; }
-    let dismissed = false;
-    function dismiss(fromClick) {
-      if (dismissed) return;
-      dismissed = true;
-      if (fromClick) {
-        door.classList.add('logo-clicked');
-        setTimeout(() => door.classList.add('dissolving'), 400);
-      } else {
-        door.classList.add('logo-dim');
-        setTimeout(() => door.classList.add('dissolving'), 600);
-      }
-      setTimeout(() => { door.style.display = 'none'; sessionStorage.setItem('intro-seen', '1'); }, 3200);
+  const door = document.getElementById('intro-door');
+  const logo = document.getElementById('intro-logo');
+
+  function sessionGet(key) {
+    try { return sessionStorage.getItem(key); } catch(e) { return null; }
+  }
+  function sessionSet(key, val) {
+    try { sessionStorage.setItem(key, val); } catch(e) {}
+  }
+
+  if (sessionGet('intro-seen')) { door.style.display = 'none'; return; }
+
+  let dismissed = false;
+  function dismiss(fromClick) {
+    if (dismissed) return;
+    dismissed = true;
+    if (fromClick) {
+      door.classList.add('logo-clicked');
+      setTimeout(() => door.classList.add('dissolving'), 400);
+    } else {
+      door.classList.add('logo-dim');
+      setTimeout(() => door.classList.add('dissolving'), 600);
     }
-    logo.addEventListener('click', () => dismiss(true));
-    setTimeout(() => dismiss(false), 5000);
-  })();
+    setTimeout(() => {
+      door.style.display = 'none';
+      sessionSet('intro-seen', '1');
+    }, 3200);
+  }
+  door.addEventListener('click', () => dismiss(true));
+  setTimeout(() => dismiss(false), 5000);
+})();
 </script>
 </section>
 
