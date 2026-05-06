@@ -44,10 +44,6 @@
   inset: 0;
   background: #ffffff;
   z-index: 999;
-  /* remove these */
-  /* display: flex;
-     align-items: center;
-     justify-content: center; */
   transition: opacity 2.5s ease;
 }
 
@@ -63,10 +59,6 @@
   top: 50%;
   left: 50%;
 
-  /* replace this line */
-  /* transform: translate(-50%, -50%); */
-
-  /* with this */
   transform: translate(calc(-50% - 6px), calc(-50% - 3px));
 }
   html.dark #intro-logo { filter: invert(1); }
@@ -163,22 +155,28 @@
 <section id="artworks-section" class="w-full px-4 py-12">
   <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Artworks</h1>
 
-  <!-- FILTER BAR — scrolls with page, gets blurred by overlay when open -->
+  <!-- FILTER BAR -->
   <div class="artwork-filter-bar" id="artworkFilterBar">
     <button id="filterToggle" class="artwork-filter-toggle">
-      Filters <span id="filterToggleSymbol">+</span>
+      <span class="filter-label">Filters</span>
+      <span class="filter-icon">
+        <span class="fbar fbar-h"></span>
+        <span class="fbar fbar-v"></span>
+      </span>
     </button>
     <div id="activeFilterTags" class="artwork-active-tags"></div>
   </div>
 
-  <!-- FILTER OVERLAY — fixed fullscreen frosted glass -->
+  <!-- FILTER OVERLAY -->
   <div id="filterOverlay" class="artwork-filter-overlay hidden">
-
-    <!-- Single row: Filters − on left, columns immediately beside it -->
     <div class="artwork-filter-inner">
 
       <button id="filterCloseToggle" class="artwork-filter-toggle open">
-        Filters <span>−</span>
+        <span class="filter-label">Filters</span>
+        <span class="filter-icon">
+          <span class="fbar fbar-h"></span>
+          <span class="fbar fbar-v"></span>
+        </span>
       </button>
 
       <div class="artwork-filter-columns">
@@ -251,9 +249,9 @@
           </div>
         </div>
 
-      </div><!-- end columns -->
-    </div><!-- end inner row -->
-  </div><!-- end overlay -->
+      </div>
+    </div>
+  </div>
 
   <!-- DATA CLEAN -->
   {{ $raw := where .Site.RegularPages "Section" "artworks" }}
@@ -452,7 +450,6 @@
 
 </section>
 
-
 </section>
 
 <style>
@@ -483,6 +480,7 @@
     padding-left: 2rem;
   }
 }
+
   /* ── END SECTION SPACERS ── */
   .end-spacer-1 { height: 20vh; }
   .end-spacer-2 { height: 30vh; }
@@ -499,32 +497,29 @@
     .end-spacer-2 { height: 20vh; }
     .end-spacer-3 { height: 5vh; }
   }
-  /* ── FILTER BAR — normal flow, scrolls with page, blurred by overlay ── */
+
+  /* ── FILTER BAR ── */
   .artwork-filter-bar {
-  position: sticky;
-  top: 100px;
-  z-index: 50;
+    position: sticky;
+    top: 100px;
+    z-index: 50;
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+    width: fit-content;
+    max-width: min(90vw, 900px);
+    margin-bottom: 1rem;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 0px;
+  }
+  html.dark .artwork-filter-bar {
+    background: rgba(20, 20, 20, 0.65);
+  }
 
-  display: inline-flex;            /* key change */
-  align-items: flex-start;
-  gap: 1.2rem;
-
-  width: fit-content;              /* shrink to content */
-  max-width: min(90vw, 900px);     /* hard cap */
-  
-  margin-bottom: 1rem;
-  padding: 0.6rem 0.9rem;
-
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-
-  border-radius: 0px;
-}
-html.dark .artwork-filter-bar {
-  background: rgba(20, 20, 20, 0.65);
-}
-
+  /* ── FILTER TOGGLE BUTTON ── */
   .artwork-filter-toggle {
     background: none;
     border: none;
@@ -536,11 +531,12 @@ html.dark .artwork-filter-bar {
     opacity: 0.55;
     padding: 0;
     transition: opacity 0.2s;
-    text-decoration: underline;
-    text-underline-offset: 3px;
     font-family: inherit;
     white-space: nowrap;
     flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .artwork-filter-toggle:hover,
@@ -548,12 +544,56 @@ html.dark .artwork-filter-bar {
     opacity: 1;
   }
 
+  /* underline only on the word */
+  .artwork-filter-toggle .filter-label {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ── FILTER ICON (small + / −) ── */
+  .filter-icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 11px;
+    height: 11px;
+    flex-shrink: 0;
+  }
+
+  .fbar {
+    position: absolute;
+    background: currentColor;
+    border-radius: 1px;
+    top: 50%;
+    left: 50%;
+  }
+
+  .fbar-h {
+    width: 11px;
+    height: 1.5px;
+    transform: translate(-50%, -50%);
+  }
+
+  .fbar-v {
+    width: 1.5px;
+    height: 11px;
+    transform: translate(-50%, -50%);
+    transform-origin: center center;
+    transition: transform 0.35s ease, opacity 0.25s ease;
+  }
+
+  .artwork-filter-toggle.open .fbar-v {
+    transform: translate(-50%, -50%) scaleY(0);
+    opacity: 0;
+  }
+
+  /* ── ACTIVE TAGS ── */
   .artwork-active-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-
-    max-width: 700px;      /* prevents infinite horizontal growth */
+    max-width: 700px;
   }
 
   .artwork-active-tag-group {
@@ -578,7 +618,7 @@ html.dark .artwork-filter-bar {
     opacity: 0.75;
   }
 
-  /* ── OVERLAY — fixed fullscreen ── */
+  /* ── OVERLAY ── */
   .artwork-filter-overlay {
     position: fixed;
     inset: 0;
@@ -589,7 +629,6 @@ html.dark .artwork-filter-bar {
     display: flex;
     align-items: flex-start;
     justify-content: flex-start;
-    /* top padding = sticky header height (~72px) + artworks-section top padding (~40px) */
     padding: 7rem 4rem 3rem 5rem;
   }
 
@@ -603,7 +642,6 @@ html.dark .artwork-filter-bar {
     display: none;
   }
 
-  /* ── INNER ROW: Filters − + columns side by side ── */
   .artwork-filter-inner {
     display: flex;
     align-items: flex-start;
@@ -611,7 +649,6 @@ html.dark .artwork-filter-bar {
     width: 100%;
   }
 
-  /* ── FILTER COLUMNS ── */
   .artwork-filter-columns {
     display: flex;
     gap: 4rem;
@@ -636,24 +673,24 @@ html.dark .artwork-filter-bar {
   }
 
   .artwork-filter-options {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
 
-.artwork-filter-option {
-  position: relative;
-}
+  .artwork-filter-option {
+    position: relative;
+  }
 
-/* stairs offset */
-.artwork-filter-option:nth-child(1) { margin-left: 0px; }
-.artwork-filter-option:nth-child(2) { margin-left: 8px; }
-.artwork-filter-option:nth-child(3) { margin-left: 16px; }
-.artwork-filter-option:nth-child(4) { margin-left: 24px; }
-.artwork-filter-option:nth-child(5) { margin-left: 32px; }
-.artwork-filter-option:nth-child(6) { margin-left: 40px; }
-.artwork-filter-option:nth-child(7) { margin-left: 48px; }
-.artwork-filter-option:nth-child(8) { margin-left: 56px; }
+  /* stairs offset */
+  .artwork-filter-option:nth-child(1) { margin-left: 0px; }
+  .artwork-filter-option:nth-child(2) { margin-left: 8px; }
+  .artwork-filter-option:nth-child(3) { margin-left: 16px; }
+  .artwork-filter-option:nth-child(4) { margin-left: 24px; }
+  .artwork-filter-option:nth-child(5) { margin-left: 32px; }
+  .artwork-filter-option:nth-child(6) { margin-left: 40px; }
+  .artwork-filter-option:nth-child(7) { margin-left: 48px; }
+  .artwork-filter-option:nth-child(8) { margin-left: 56px; }
 
   .artwork-filter-option {
     background: none;
@@ -682,7 +719,6 @@ html.dark .artwork-filter-bar {
 document.addEventListener("DOMContentLoaded", () => {
 
   const toggle      = document.getElementById("filterToggle");
-  const symbol      = document.getElementById("filterToggleSymbol");
   const overlay     = document.getElementById("filterOverlay");
   const closeToggle = document.getElementById("filterCloseToggle");
   const tagsEl      = document.getElementById("activeFilterTags");
@@ -694,13 +730,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openOverlay() {
     overlay.classList.remove("hidden");
-    symbol.textContent = "−";
     toggle.classList.add("open");
   }
 
   function closeOverlay() {
     overlay.classList.add("hidden");
-    symbol.textContent = "+";
     toggle.classList.remove("open");
   }
 
@@ -715,48 +749,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.querySelectorAll(".artwork-filter-option").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const filter = btn.dataset.filter;
-    const value  = btn.dataset.value;
+    btn.addEventListener("click", () => {
+      const filter = btn.dataset.filter;
+      const value  = btn.dataset.value;
 
-    btn.closest(".artwork-filter-options")
-       .querySelectorAll(".artwork-filter-option")
-       .forEach(b => b.classList.remove("active"));
+      btn.closest(".artwork-filter-options")
+         .querySelectorAll(".artwork-filter-option")
+         .forEach(b => b.classList.remove("active"));
 
-    btn.classList.add("active");
-    active[filter] = value;
+      btn.classList.add("active");
+      active[filter] = value;
 
-    const galleryView = document.getElementById("artworkGallery");
-    const treeView    = document.getElementById("treeCollectionView");
+      const galleryView = document.getElementById("artworkGallery");
+      const treeView    = document.getElementById("treeCollectionView");
 
-    // SPECIAL COLLECTION MODE
-    if (filter === "collection" && value === "The Tree, The Snake, The Fruit") {
-      active.year = "all";
-      active.availability = "all";
+      // SPECIAL COLLECTION MODE
+      if (filter === "collection" && value === "The Tree, The Snake, The Fruit") {
+        active.year = "all";
+        active.availability = "all";
 
-      // reset UI state visually
-      document.querySelectorAll('[data-filter="year"], [data-filter="availability"]')
-        .forEach(b => b.classList.remove("active"));
+        document.querySelectorAll('[data-filter="year"], [data-filter="availability"]')
+          .forEach(b => b.classList.remove("active"));
 
-      document.querySelectorAll('[data-filter="year"][data-value="all"], [data-filter="availability"][data-value="all"]')
-        .forEach(b => b.classList.add("active"));
+        document.querySelectorAll('[data-filter="year"][data-value="all"], [data-filter="availability"][data-value="all"]')
+          .forEach(b => b.classList.add("active"));
 
-      galleryView.style.display = "none";
-      treeView.style.display = "block";
+        galleryView.style.display = "none";
+        treeView.style.display = "block";
 
+        renderTags();
+        return;
+      }
+
+      // NORMAL MODE
+      treeView.style.display = "none";
+      galleryView.style.display = "";
+
+      applyFilters();
       renderTags();
-      return;
-    }
-
-    // NORMAL MODE
-    treeView.style.display = "none";
-    galleryView.style.display = "";
-
-    applyFilters();
-    renderTags();
+    });
   });
-});
-
 
   function applyFilters() {
     items.forEach(item => {
@@ -795,34 +827,29 @@ document.addEventListener("DOMContentLoaded", () => {
       window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - headerH, behavior: "smooth" });
     }, 150);
   }
-  
+
   const params = new URLSearchParams(window.location.search);
+  const collectionParam = params.get("collection");
+  if (collectionParam) {
+    active.collection = collectionParam;
 
-const collectionParam = params.get("collection");
-if (collectionParam) {
-  active.collection = collectionParam;
+    document.querySelectorAll('[data-filter="collection"]').forEach(b => {
+      b.classList.remove("active");
+      if (b.dataset.value === collectionParam) b.classList.add("active");
+    });
 
-  // activate correct button visually
-  document.querySelectorAll('[data-filter="collection"]').forEach(b => {
-    b.classList.remove("active");
-    if (b.dataset.value === collectionParam) {
-      b.classList.add("active");
+    const galleryView = document.getElementById("artworkGallery");
+    const treeView    = document.getElementById("treeCollectionView");
+
+    if (collectionParam === "The Tree, The Snake, The Fruit") {
+      galleryView.style.display = "none";
+      treeView.style.display = "block";
+    } else {
+      applyFilters();
     }
-  });
 
-  // trigger same logic as click
-  const galleryView = document.getElementById("artworkGallery");
-  const treeView    = document.getElementById("treeCollectionView");
-
-  if (collectionParam === "The Tree, The Snake, The Fruit") {
-    galleryView.style.display = "none";
-    treeView.style.display = "block";
-  } else {
-    applyFilters();
+    renderTags();
   }
-
-  renderTags();
-}
 
 });
 </script>
