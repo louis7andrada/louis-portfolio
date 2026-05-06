@@ -39,27 +39,43 @@
 
 <style>
   #intro-door {
-    position: fixed;
-    inset: 0;
-    background: #ffffff;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 2.5s ease;
-  }
-  html.dark #intro-door { background: #1a1a1a; }
-  #intro-logo {
-    width: clamp(160px, 20vw, 280px);
-    height: auto;
-    opacity: 1;
-    transition: opacity 0.5s ease, transform 0.4s ease;
-    cursor: pointer;
-  }
+  position: fixed;
+  inset: 0;
+  background: #ffffff;
+  z-index: 999;
+  /* remove these */
+  /* display: flex;
+     align-items: center;
+     justify-content: center; */
+  transition: opacity 2.5s ease;
+}
+
+#intro-logo {
+  width: clamp(120px, 14vw, 220px);
+  height: auto;
+  opacity: 1;
+  transition: opacity 0.5s ease, transform 0.4s ease;
+  cursor: pointer;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  /* replace this line */
+  /* transform: translate(-50%, -50%); */
+
+  /* with this */
+  --offset-x: 6px;
+  --offset-y: -3px;
+  transform: translate(-50%, -50%) translate(var(--offset-x), var(--offset-y));
+}
   html.dark #intro-logo { filter: invert(1); }
   #intro-logo:hover { opacity: 0.35; }
   #intro-door.logo-dim #intro-logo { opacity: 0.35; }
-  #intro-door.logo-clicked #intro-logo { transform: scale(0.93); opacity: 0.2; }
+  #intro-door.logo-clicked #intro-logo {
+  transform: translate(-50%, -50%) translate(var(--offset-x), var(--offset-y)) scale(0.93);
+  opacity: 0.2;
+}
   #intro-door.dissolving { opacity: 0; pointer-events: none; }
   .homepage-wrapper { min-height: calc(100vh - 80px); }
   .homepage-layout {
