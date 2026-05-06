@@ -4,7 +4,7 @@
 
   <h1 class="text-2xl font-semibold mb-6 text-left">Archive</h1>
 
-  <!-- FILTER BAR -->
+  <!-- FILTER BAR — z-index 110, sits above overlay so toggle never moves -->
   <div class="archive-filter-bar" id="archiveFilterBar">
     <button id="filterToggle" class="archive-filter-toggle">
       <span class="filter-label">Filters</span>
@@ -20,13 +20,14 @@
   <div id="filterOverlay" class="archive-filter-overlay hidden">
     <div class="archive-filter-inner">
 
-      <button id="filterCloseToggle" class="archive-filter-toggle open">
+      <!-- invisible spacer: same dimensions as filterToggle, keeps columns aligned -->
+      <div class="archive-filter-toggle filter-spacer" aria-hidden="true">
         <span class="filter-label">Filters</span>
         <span class="filter-icon">
           <span class="fbar fbar-h"></span>
           <span class="fbar fbar-v"></span>
         </span>
-      </button>
+      </div>
 
       <div class="archive-filter-columns">
 
@@ -66,7 +67,6 @@
   {{/* Load all archive pages */}}
   {{ $raw := where .Site.RegularPages "Section" "archive" }}
 
-  {{/* Build clean list with computed sort keys */}}
   {{ $clean := slice }}
   {{ range $raw }}
     {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
@@ -115,20 +115,14 @@
 
 <style>
   #archive-section > h1,
-  #archive-section > .archive-filter-bar {
-    margin-left: 4rem;
-  }
+  #archive-section > .archive-filter-bar { margin-left: 4rem; }
   @media (max-width: 1200px) {
     #archive-section > h1,
-    #archive-section > .archive-filter-bar {
-      margin-left: 3rem;
-    }
+    #archive-section > .archive-filter-bar { margin-left: 3rem; }
   }
   @media (max-width: 699px) {
     #archive-section > h1,
-    #archive-section > .archive-filter-bar {
-      margin-left: 1rem;
-    }
+    #archive-section > .archive-filter-bar { margin-left: 1rem; }
   }
   @media (max-width: 1200px) {
     .archive-filter-overlay { padding-left: 4rem; }
@@ -137,11 +131,9 @@
     .archive-filter-overlay { padding-left: 2rem; }
   }
 
-  /* ── END SECTION SPACERS ── */
   .end-spacer-1 { height: 20vh; }
   .end-spacer-2 { height: 30vh; }
   .end-spacer-3 { height: 10vh; }
-
   @media (max-width: 768px) {
     .end-spacer-1 { height: 15vh; }
     .end-spacer-2 { height: 30vh; }
@@ -153,11 +145,11 @@
     .end-spacer-3 { height: 5vh; }
   }
 
-  /* ── FILTER BAR ── */
+  /* ── FILTER BAR — raised above overlay so toggle never moves ── */
   .archive-filter-bar {
     position: sticky;
     top: 100px;
-    z-index: 50;
+    z-index: 110;
     display: inline-flex;
     align-items: flex-start;
     gap: 1.2rem;
@@ -169,9 +161,17 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-radius: 0px;
+    transition: background 0.2s ease;
   }
   html.dark .archive-filter-bar {
     background: rgba(20, 20, 20, 0.65);
+  }
+
+  /* strip background when overlay is open so bar blends into overlay */
+  .archive-filter-bar.filter-open {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
 
   /* ── FILTER TOGGLE BUTTON ── */
@@ -193,19 +193,22 @@
     align-items: center;
     gap: 0.5rem;
   }
-
   .archive-filter-toggle:hover,
-  .archive-filter-toggle.open {
-    opacity: 1;
-  }
+  .archive-filter-toggle.open { opacity: 1; }
 
-  /* underline only on the word */
   .archive-filter-toggle .filter-label {
     text-decoration: underline;
     text-underline-offset: 3px;
   }
 
-  /* ── FILTER ICON (small + / −) ── */
+  /* invisible spacer inside overlay — layout only, not interactive */
+  .archive-filter-toggle.filter-spacer {
+    opacity: 0;
+    pointer-events: none;
+    cursor: default;
+  }
+
+  /* ── FILTER ICON ── */
   .filter-icon {
     position: relative;
     display: inline-flex;
@@ -250,14 +253,12 @@
     gap: 1rem;
     max-width: 700px;
   }
-
   .archive-active-tag-group {
     display: flex;
     flex-direction: column;
     gap: 0.1rem;
     white-space: nowrap;
   }
-
   .archive-active-tag-label {
     font-size: 0.65rem;
     letter-spacing: 0.1em;
@@ -266,7 +267,6 @@
     text-decoration: underline;
     text-underline-offset: 2px;
   }
-
   .archive-active-tag-value {
     font-size: 0.78rem;
     letter-spacing: 0.03em;
@@ -286,16 +286,12 @@
     justify-content: flex-start;
     padding: 7rem 4rem 3rem 5rem;
   }
-
   html.dark .archive-filter-overlay {
     background: rgba(12, 12, 12, 0.78);
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
   }
-
-  .archive-filter-overlay.hidden {
-    display: none;
-  }
+  .archive-filter-overlay.hidden { display: none; }
 
   .archive-filter-inner {
     display: flex;
@@ -303,20 +299,17 @@
     gap: 3rem;
     width: 100%;
   }
-
   .archive-filter-columns {
     display: flex;
     gap: 4rem;
     flex-wrap: wrap;
   }
-
   .archive-filter-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     min-width: 110px;
   }
-
   .archive-filter-group-label {
     font-size: 0.72rem;
     letter-spacing: 0.1em;
@@ -326,18 +319,13 @@
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-
   .archive-filter-options {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
   }
+  .archive-filter-option { position: relative; }
 
-  .archive-filter-option {
-    position: relative;
-  }
-
-  /* stairs offset */
   .archive-filter-option:nth-child(1) { margin-left: 0px; }
   .archive-filter-option:nth-child(2) { margin-left: 8px; }
   .archive-filter-option:nth-child(3) { margin-left: 16px; }
@@ -360,9 +348,7 @@
     transition: opacity 0.15s;
     font-family: inherit;
   }
-
   .archive-filter-option:hover { opacity: 0.7; }
-
   .archive-filter-option.active {
     opacity: 1;
     text-decoration: underline;
@@ -373,31 +359,31 @@
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  const toggle      = document.getElementById("filterToggle");
-  const overlay     = document.getElementById("filterOverlay");
-  const closeToggle = document.getElementById("filterCloseToggle");
-  const tagsEl      = document.getElementById("activeFilterTags");
-  const gallery     = document.getElementById("archiveGallery");
-  const items       = gallery ? Array.from(gallery.querySelectorAll(".archive-item")) : [];
+  const toggle     = document.getElementById("filterToggle");
+  const filterBar  = document.getElementById("archiveFilterBar");
+  const overlay    = document.getElementById("filterOverlay");
+  const tagsEl     = document.getElementById("activeFilterTags");
+  const gallery    = document.getElementById("archiveGallery");
+  const items      = gallery ? Array.from(gallery.querySelectorAll(".archive-item")) : [];
 
   const active = { year: "all", category: "all" };
   const filterLabels = { year: "Years", category: "Category" };
 
   function openOverlay() {
     toggle.classList.add("open");
-    setTimeout(() => overlay.classList.remove("hidden"), 300);
+    filterBar.classList.add("filter-open");
+    overlay.classList.remove("hidden");
   }
 
   function closeOverlay() {
     overlay.classList.add("hidden");
     toggle.classList.remove("open");
+    filterBar.classList.remove("filter-open");
   }
 
   toggle.addEventListener("click", () => {
     overlay.classList.contains("hidden") ? openOverlay() : closeOverlay();
   });
-
-  closeToggle?.addEventListener("click", closeOverlay);
 
   overlay.addEventListener("click", (e) => {
     if (e.target === overlay) closeOverlay();
