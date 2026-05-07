@@ -1,623 +1,623 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
 
-@font-face {
-  font-family: 'AndradaMono';
-  src: url('/fonts/AndradaMono.woff2') format('woff2'),
-       url('/fonts/AndradaMono.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-img {
-  -webkit-user-drag: none;
-  user-drag: none;
-  -webkit-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
-}
-
-/* No pointer-events: none on images at all */
-/* Right-click blocking is handled in JS only */
-
-/* ----------------------------------------
-   HEADER IMPROVEMENT
------------------------------------------ */
-
-header {
-  height: 64px;
-  display: flex;
-  align-items: center;
-  backdrop-filter: blur(8px);
-  transition: box-shadow 0.25s ease, background-color 0.25s ease;
-  z-index: 50;
-  position: relative;
-}
-
-header:hover {
-  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-}
-
-nav a {
-  position: relative;
-  transition: opacity 0.25s ease;
-  text-decoration: none !important;
-}
-
-nav a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0%;
-  height: 1px;
-  background: currentColor;
-  transition: width 0.25s ease;
-}
-
-nav a:hover::after {
-  width: 100%;
-}
-
-/* ----------------------------------------
-   END SECTION SPACERS
------------------------------------------ */
-.end-spacer-1 { height: 30vh; }
-.end-spacer-2 { height: 60vh; }
-.end-spacer-3 { height: 15vh; }
-
-@media (max-width: 768px) {
-  .end-spacer-1 { height: 15vh; }
-  .end-spacer-2 { height: 30vh; }
-  .end-spacer-3 { height: 8vh; }
-}
-
-@media (max-width: 480px) {
-  .end-spacer-1 { height: 10vh; }
-  .end-spacer-2 { height: 20vh; }
-  .end-spacer-3 { height: 5vh; }
-}
-
-/* ----------------------------------------
-   FEATURED FADE
------------------------------------------ */
-
-.featured-fade {
-  transition: opacity 0.6s ease-in-out;
-  opacity: 1;
-}
-
-.featured-fade.hidden {
-  opacity: 0;
-}
-
-/* ----------------------------------------
-   SINGLE ARTWORK PAGE
------------------------------------------ */
-
-.single-image-box {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.single-image {
-  width: auto;
-  max-width: 1000px;
-  object-fit: contain;
-  display: block;
-  max-height: 92vh;
-  pointer-events: auto;  /* add this line */
-}
-
-@media (max-aspect-ratio: 1/1) {
-  .single-image {
-    max-height: 85vh;
+  @font-face {
+    font-family: 'AndradaMono';
+    src: url('/fonts/AndradaMono.woff2') format('woff2'),
+        url('/fonts/AndradaMono.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
   }
-}
+  img {
+    -webkit-user-drag: none;
+    user-drag: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
 
-.single-details {
-  margin-top: 20px;
-}
+  /* No pointer-events: none on images at all */
+  /* Right-click blocking is handled in JS only */
 
-/* Mobile */
+  /* ----------------------------------------
+    HEADER IMPROVEMENT
+  ----------------------------------------- */
 
-@media (max-width: 1024px) {
-  .single-image-box {
-    width: 100%;
-    flex: 1;
-    justify-content: center;
+  header {
+    height: 64px;
+    display: flex;
     align-items: center;
-    min-height: auto;
+    backdrop-filter: blur(8px);
+    transition: box-shadow 0.25s ease, background-color 0.25s ease;
+    z-index: 50;
+    position: relative;
+  }
+
+  header:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  }
+
+  nav a {
+    position: relative;
+    transition: opacity 0.25s ease;
+    text-decoration: none !important;
+  }
+
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 1px;
+    background: currentColor;
+    transition: width 0.25s ease;
+  }
+
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  /* ----------------------------------------
+    END SECTION SPACERS
+  ----------------------------------------- */
+  .end-spacer-1 { height: 30vh; }
+  .end-spacer-2 { height: 60vh; }
+  .end-spacer-3 { height: 15vh; }
+
+  @media (max-width: 768px) {
+    .end-spacer-1 { height: 15vh; }
+    .end-spacer-2 { height: 30vh; }
+    .end-spacer-3 { height: 8vh; }
+  }
+
+  @media (max-width: 480px) {
+    .end-spacer-1 { height: 10vh; }
+    .end-spacer-2 { height: 20vh; }
+    .end-spacer-3 { height: 5vh; }
+  }
+
+  /* ----------------------------------------
+    FEATURED FADE
+  ----------------------------------------- */
+
+  .featured-fade {
+    transition: opacity 0.6s ease-in-out;
+    opacity: 1;
+  }
+
+  .featured-fade.hidden {
+    opacity: 0;
+  }
+
+  /* ----------------------------------------
+    SINGLE ARTWORK PAGE
+  ----------------------------------------- */
+
+  .single-image-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   .single-image {
-    width: 100%;
-    max-width: 100%;
-    height: auto;
-    max-height: none;
-    margin: 0 auto;
+    width: auto;
+    max-width: 1000px;
+    object-fit: contain;
+    display: block;
+    max-height: 92vh;
+    pointer-events: auto;  /* add this line */
+  }
+
+  @media (max-aspect-ratio: 1/1) {
+    .single-image {
+      max-height: 85vh;
+    }
   }
 
   .single-details {
-    margin-top: 40px;
-    margin-left: auto;
-    margin-right: auto;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;   /* center block */
+    margin-top: 20px;
   }
 
-  .single-details p {
-    width: fit-content;    /* THIS is the real fix */
-    max-width: 100%;
-    text-align: left;
+  /* Mobile */
+
+  @media (max-width: 1024px) {
+    .single-image-box {
+      width: 100%;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      min-height: auto;
+    }
+
+    .single-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      max-height: none;
+      margin: 0 auto;
+    }
+
+    .single-details {
+      margin-top: 40px;
+      margin-left: auto;
+      margin-right: auto;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;   /* center block */
+    }
+
+    .single-details p {
+      width: fit-content;    /* THIS is the real fix */
+      max-width: 100%;
+      text-align: left;
+    }
+
+    .single-details a {
+      align-self: center;
+    }
   }
 
-  .single-details a {
-    align-self: center;
-  }
-}
+  /* ----------------------------------------
+    HOMEPAGE SLIDESHOW
+  ----------------------------------------- */
 
-/* ----------------------------------------
-   HOMEPAGE SLIDESHOW
------------------------------------------ */
-
-#featuredArtwork {
-  width: 100%;
-  height: auto;
-  max-width: 100%;
-  max-height: 92vh;       /* similar to single-image page */
-  object-fit: contain !important;
-  display: block;
-  margin: 0 auto;
-  transition: none !important;  /* prevent scroll-related resize glitches */
-}
-
-@media (max-width: 1024px) {
   #featuredArtwork {
     width: 100%;
     height: auto;
-    max-height: 85vh;      /* safer for vertical images on mobile */
-  }
-}
-
-html.dark {
-  color-scheme: dark;
-}
-
-/* ----------------------------------------
-   MOBILE MENU SYSTEM
------------------------------------------ */
-
-#mobileMenu {
-  opacity: 0;
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  transition: opacity 0.35s ease;
-  z-index: 40;
-}
-
-#mobileMenu.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-#mobileMenu a {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateY(8px);
-}
-
-#mobileMenu.open a {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-body {
-  margin: 0;
-  max-width: none;
-}
-
-/* ----------------------------------------
-   MODERN DARK MODE — UNIFIED BACKGROUND
------------------------------------------ */
-
-html.dark body {
-  background-color: #1a1a1a !important;
-  color: #e8e8e8 !important;
-}
-
-html.dark header {
-  border-color: #2d2d2d !important;
-  /* background and blur now handled per-element in nav partial */
-}
-html.dark a {
-  color: #e8e8e8 !important;
-}
-
-html.dark a:hover {
-  color: #ffffff !important;
-}
-
-html.dark p,
-html.dark span,
-html.dark li,
-html.dark h1,
-html.dark h2,
-html.dark h3,
-html.dark h4,
-html.dark h5,
-html.dark h6 {
-  color: #e8e8e8 !important;
-}
-
-html.dark .border-gray-300 {
-  border-color: #3a3a3a !important;
-}
-
-html.dark .shadow,
-html.dark .shadow-lg {
-  --tw-shadow-color: rgba(0,0,0,0.65);
-}
-
-html.dark .bg-gray-200 {
-  background-color: #2a2a2a !important;
-}
-
-html.dark #mobileMenu {
-  color: #e8e8e8 !important;
-  /* background and blur now handled in nav partial */
-}
-
-html.dark #artworkModal {
-  background-color: rgba(0,0,0,0.75) !important;
-}
-
-html.dark #artworkModal .modal-content {
-  background-color: #1a1a1a !important;
-  color: #e8e8e8 !important;
-}
-
-html.dark .group:hover .group-hover\:opacity-80 {
-  opacity: 0.55 !important;
-}
-
-/* ----------------------------------------
-   DARK MODE FIXES — FOOTER, FORMS, LINKS
------------------------------------------ */
-
-html.dark footer,
-html.dark footer * {
-  color: #e6e6e6 !important;
-}
-
-html.dark input,
-html.dark textarea,
-html.dark select,
-html.dark label {
-  color: #e6e6e6 !important;
-  background-color: #252525 !important;
-  border-color: #3a3a3a !important;
-}
-
-label {
-  color: #252525 !important;
-  background-color: #e6e6e6 !important;
-  border-color: #3a3a3a !important;
-}
-
-html.dark input::placeholder,
-html.dark textarea::placeholder {
-  color: #bfbfbf !important;
-}
-
-/* STANDARDIZED DARK MODE BUTTON COLORS */
-
-html.dark button[type="submit"],
-html.dark input[type="submit"] {
-  background-color: #3a3a3a !important;
-  color: #e8e8e8 !important;
-  border: 1px solid #3a3a3a !important;
-}
-
-html.dark button[type="submit"]:hover,
-html.dark input[type="submit"]:hover {
-  background-color: #4a4a4a !important;
-}
-
-html.dark #openArtworkSelector {
-  background-color: #3a3a3a !important;
-  color: #e8e8e8 !important;
-  border: 1px solid #3a3a3a !important;
-}
-
-html.dark #openArtworkSelector:hover {
-  background-color: #4a4a4a !important;
-}
-
-.about-page a {
-  color: #228cfd !important;
-  text-decoration: underline;
-}
-
-.about-page a:hover {
-  color: #4da3ff !important;
-}
-
-html.dark .about-page a {
-  color: #4da3ff !important;
-}
-
-html.dark .about-page a:hover {
-  color: #82c3ff !important;
-}
-
-html.dark .links-page a {
-  color: #4da3ff !important;
-}
-
-html.dark .links-page a:hover {
-  color: #82c3ff !important;
-}
-
-/* ----------------------------------------
-   FILTERS — KEEP GRAY BOXES, FIX LABELS
------------------------------------------ */
-
-label {
-  background: transparent !important;
-}
-
-select {
-  background-color: #e5e5e5;
-  color: #000;
-  border: 1px solid #ccc;
-}
-
-html.dark select {
-  background-color: #2a2a2a !important;
-  color: #e8e8e8 !important;
-  border-color: #3a3a3a !important;
-}
-
-html.dark option {
-  background-color: #1a1a1a !important;
-  color: #e8e8e8 !important;
-}
-
-html.dark .artworks-filters,
-html.dark .artworks-filters div,
-html.dark .artworks-filters label,
-html.dark .archive-filters,
-html.dark .archive-filters div,
-html.dark .archive-filters label {
-  background-color: transparent !important;
-}
-
-/* ----------------------------------------
-   DARK MODE – ARTWORK SELECTOR MODAL
------------------------------------------ */
-
-.dark #artworkSelectorModal > div {
-  background-color: #1a1a1a !important;
-  color: #ffffff !important;
-}
-
-.dark #artworkSelectorModal #closeArtworkSelector {
-  color: #ffffff !important;
-}
-
-.dark #artworkSelectorModal .artworkChoice {
-  border-color: #555555 !important;
-  background-color: #1a1a1a !important;
-}
-
-.dark #artworkSelectorModal .artworkChoice p {
-  color: #ffffff !important;
-}
-
-.dark #artworkSelectorModal .artworkChoice.ring-black {
-  --tw-ring-color: #ffffff !important;
-}
-
-.dark #artworkSelectorModal #confirmArtworkSelection {
-  background-color: #3a3a3a !important;
-  color: #ffffff !important;
-}
-
-.dark #artworkSelectorModal #confirmArtworkSelection:hover {
-  background-color: #4a4a4a !important;
-}
-
-/* ----------------------------------------
-   ARROWS SYSTEM — BASE
------------------------------------------ */
-
-
-/* ----------------------------------------
-   ARTWORKS FILTER DROPDOWN — VISUAL DESIGN
------------------------------------------ */
-
-.filter-dropdown {
-  position: relative;
-  display: inline-block;
-  text-align: left;
-}
-
-.filter-trigger {
-  background: #e5e5e5;
-  color: #000;
-  padding: 8px 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  min-width: 12rem;
-  text-align: left;
-  transition: background 0.25s ease, border-color 0.25s ease;
-}
-
-.filter-trigger:hover {
-  background: #dcdcdc;
-}
-
-html.dark .filter-trigger {
-  background: #2a2a2a;
-  color: #e8e8e8;
-  border-color: #3a3a3a;
-}
-
-html.dark .filter-trigger:hover {
-  background: #333;
-}
-
-.filter-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  margin-top: 4px;
-  background: #f2f2f2;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  overflow: hidden;
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-  z-index: 30;
-}
-
-html.dark .filter-menu {
-  background: #1a1a1a !important;
-  border-color: #3a3a3a;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-.filter-menu div {
-  padding: 10px 14px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  color: inherit;
-}
-
-.filter-menu div:hover {
-  background: #e0e0e0;
-}
-
-html.dark .filter-menu div:hover {
-  background: #2a2a2a;
-}
-
-.filter-dropdown.open .filter-menu {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-/* =================================
-   FORCE FORM BUTTON HOVER COLORS
-================================= */
-
-form button:hover,
-form input[type="submit"]:hover,
-form input[type="button"]:hover {
-  background-color: #9a9a9a !important;
-  border-color: #9a9a9a !important;
-}
-
-form button:focus,
-form input:focus,
-form textarea:focus,
-form select:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  --tw-ring-shadow: none !important;
-  --tw-ring-color: transparent !important;
-}
-
-/* Prevent Tailwind hover utilities from applying */
-form button.hover\:bg-gray-800:hover {
-  background-color: #575757 !important;
-}
-
-/* ----------------------------------------
-   LIGHT / DARK MODE TOGGLE ANIMATION
------------------------------------------ */
-
-#darkModeToggle.animating {
-  animation: rotateFade 0.5s ease forwards;
-}
-
-@keyframes rotateFade {
-  0% { transform: rotate(0deg) scale(1); opacity: 1; }
-  10% { transform: rotate(36deg) scale(1); opacity: 0.8; }
-  20% { transform: rotate(72deg) scale(1); opacity: 0.6; }
-  30% { transform: rotate(108deg) scale(1); opacity: 0.4; }
-  40% { transform: rotate(144deg) scale(1); opacity: 0.2; }
-  50% { transform: rotate(180deg) scale(1); opacity: 0.1; }
-  60% { transform: rotate(216deg) scale(1); opacity: 0.2; }
-  70% { transform: rotate(252deg) scale(1); opacity: 0.4; }
-  80% { transform: rotate(288deg) scale(1); opacity: 0.6; }
-  90% { transform: rotate(324deg) scale(1); opacity: 0.8; }
-  100% { transform: rotate(360deg) scale(1); opacity: 1; }
-}
-
-/* -----------------------------
-MOON / SUN ICONS
------------------------------ */
-
-#moonIcon, #sunIcon { display: none; }
-
-html.dark #sunIcon { display: inline-block; }
-html.dark #moonIcon { display: none; }
-
-html:not(.dark) #sunIcon { display: none; }
-html:not(.dark) #moonIcon { display: inline-block; }
-
-#moonIcon, #sunIcon { transform-origin: center; transition: all 0.25s ease; }
-
-.moonIconSpin { animation: rotateFade 0.25s linear forwards; }
-.sunIconSpin { animation: rotateFade 0.45s ease forwards; }
-
-html.dark #darkModeToggle:hover svg#sunIcon { filter: brightness(0.6) !important; }
-html:not(.dark) #darkModeToggle:hover svg#moonIcon { filter: brightness(1.5) !important; }
-
-/* -----------------------------
-MISC FIXES
------------------------------ */
-
-.grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
-
-@layer base {
-  h1, h2, h3, h4, h5, h6 {
-    font-family: theme('fontFamily.sans') !important;
-    font-weight: 425 !important;
+    max-width: 100%;
+    max-height: 92vh;       /* similar to single-image page */
+    object-fit: contain !important;
+    display: block;
+    margin: 0 auto;
+    transition: none !important;  /* prevent scroll-related resize glitches */
   }
 
-  p, li, blockquote {
-    font-family: theme('fontFamily.mono');
-    font-size: 1.02em !important;
+  @media (max-width: 1024px) {
+    #featuredArtwork {
+      width: 100%;
+      height: auto;
+      max-height: 85vh;      /* safer for vertical images on mobile */
+    }
   }
 
-  a {
-    @apply font-mono;
+  html.dark {
+    color-scheme: dark;
   }
-}
 
-@layer base {
-  button,
-  a,
-  select,
-  input[type="submit"],
-  input[type="button"] {
-    border-radius: 4px !important;
+  /* ----------------------------------------
+    MOBILE MENU SYSTEM
+  ----------------------------------------- */
+
+  #mobileMenu {
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    transition: opacity 0.35s ease;
+    z-index: 40;
   }
-}
+
+  #mobileMenu.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  #mobileMenu a {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  #mobileMenu.open a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  body {
+    margin: 0;
+    max-width: none;
+  }
+
+  /* ----------------------------------------
+    MODERN DARK MODE — UNIFIED BACKGROUND
+  ----------------------------------------- */
+
+  html.dark body {
+    background-color: #1a1a1a !important;
+    color: #e8e8e8 !important;
+  }
+
+  html.dark header {
+    border-color: #2d2d2d !important;
+    /* background and blur now handled per-element in nav partial */
+  }
+  html.dark a {
+    color: #e8e8e8 !important;
+  }
+
+  html.dark a:hover {
+    color: #ffffff !important;
+  }
+
+  html.dark p,
+  html.dark span,
+  html.dark li,
+  html.dark h1,
+  html.dark h2,
+  html.dark h3,
+  html.dark h4,
+  html.dark h5,
+  html.dark h6 {
+    color: #e8e8e8 !important;
+  }
+
+  html.dark .border-gray-300 {
+    border-color: #3a3a3a !important;
+  }
+
+  html.dark .shadow,
+  html.dark .shadow-lg {
+    --tw-shadow-color: rgba(0,0,0,0.65);
+  }
+
+  html.dark .bg-gray-200 {
+    background-color: #2a2a2a !important;
+  }
+
+  html.dark #mobileMenu {
+    color: #e8e8e8 !important;
+    /* background and blur now handled in nav partial */
+  }
+
+  html.dark #artworkModal {
+    background-color: rgba(0,0,0,0.75) !important;
+  }
+
+  html.dark #artworkModal .modal-content {
+    background-color: #1a1a1a !important;
+    color: #e8e8e8 !important;
+  }
+
+  html.dark .group:hover .group-hover\:opacity-80 {
+    opacity: 0.55 !important;
+  }
+
+  /* ----------------------------------------
+    DARK MODE FIXES — FOOTER, FORMS, LINKS
+  ----------------------------------------- */
+
+  html.dark footer,
+  html.dark footer * {
+    color: #e6e6e6 !important;
+  }
+
+  html.dark input,
+  html.dark textarea,
+  html.dark select,
+  html.dark label {
+    color: #e6e6e6 !important;
+    background-color: #252525 !important;
+    border-color: #3a3a3a !important;
+  }
+
+  label {
+    color: #252525 !important;
+    background-color: #e6e6e6 !important;
+    border-color: #3a3a3a !important;
+  }
+
+  html.dark input::placeholder,
+  html.dark textarea::placeholder {
+    color: #bfbfbf !important;
+  }
+
+  /* STANDARDIZED DARK MODE BUTTON COLORS */
+
+  html.dark button[type="submit"],
+  html.dark input[type="submit"] {
+    background-color: #3a3a3a !important;
+    color: #e8e8e8 !important;
+    border: 1px solid #3a3a3a !important;
+  }
+
+  html.dark button[type="submit"]:hover,
+  html.dark input[type="submit"]:hover {
+    background-color: #4a4a4a !important;
+  }
+
+  html.dark #openArtworkSelector {
+    background-color: #3a3a3a !important;
+    color: #e8e8e8 !important;
+    border: 1px solid #3a3a3a !important;
+  }
+
+  html.dark #openArtworkSelector:hover {
+    background-color: #4a4a4a !important;
+  }
+
+  .about-page a {
+    color: #228cfd !important;
+    text-decoration: underline;
+  }
+
+  .about-page a:hover {
+    color: #4da3ff !important;
+  }
+
+  html.dark .about-page a {
+    color: #4da3ff !important;
+  }
+
+  html.dark .about-page a:hover {
+    color: #82c3ff !important;
+  }
+
+  html.dark .links-page a {
+    color: #4da3ff !important;
+  }
+
+  html.dark .links-page a:hover {
+    color: #82c3ff !important;
+  }
+
+  /* ----------------------------------------
+    FILTERS — KEEP GRAY BOXES, FIX LABELS
+  ----------------------------------------- */
+
+  label {
+    background: transparent !important;
+  }
+
+  select {
+    background-color: #e5e5e5;
+    color: #000;
+    border: 1px solid #ccc;
+  }
+
+  html.dark select {
+    background-color: #2a2a2a !important;
+    color: #e8e8e8 !important;
+    border-color: #3a3a3a !important;
+  }
+
+  html.dark option {
+    background-color: #1a1a1a !important;
+    color: #e8e8e8 !important;
+  }
+
+  html.dark .artworks-filters,
+  html.dark .artworks-filters div,
+  html.dark .artworks-filters label,
+  html.dark .archive-filters,
+  html.dark .archive-filters div,
+  html.dark .archive-filters label {
+    background-color: transparent !important;
+  }
+
+  /* ----------------------------------------
+    DARK MODE – ARTWORK SELECTOR MODAL
+  ----------------------------------------- */
+
+  .dark #artworkSelectorModal > div {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+  }
+
+  .dark #artworkSelectorModal #closeArtworkSelector {
+    color: #ffffff !important;
+  }
+
+  .dark #artworkSelectorModal .artworkChoice {
+    border-color: #555555 !important;
+    background-color: #1a1a1a !important;
+  }
+
+  .dark #artworkSelectorModal .artworkChoice p {
+    color: #ffffff !important;
+  }
+
+  .dark #artworkSelectorModal .artworkChoice.ring-black {
+    --tw-ring-color: #ffffff !important;
+  }
+
+  .dark #artworkSelectorModal #confirmArtworkSelection {
+    background-color: #3a3a3a !important;
+    color: #ffffff !important;
+  }
+
+  .dark #artworkSelectorModal #confirmArtworkSelection:hover {
+    background-color: #4a4a4a !important;
+  }
+
+  /* ----------------------------------------
+    ARROWS SYSTEM — BASE
+  ----------------------------------------- */
+
+
+  /* ----------------------------------------
+    ARTWORKS FILTER DROPDOWN — VISUAL DESIGN
+  ----------------------------------------- */
+
+  .filter-dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+  }
+
+  .filter-trigger {
+    background: #e5e5e5;
+    color: #000;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    min-width: 12rem;
+    text-align: left;
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+
+  .filter-trigger:hover {
+    background: #dcdcdc;
+  }
+
+  html.dark .filter-trigger {
+    background: #2a2a2a;
+    color: #e8e8e8;
+    border-color: #3a3a3a;
+  }
+
+  html.dark .filter-trigger:hover {
+    background: #333;
+  }
+
+  .filter-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    margin-top: 4px;
+    background: #f2f2f2;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    z-index: 30;
+  }
+
+  html.dark .filter-menu {
+    background: #1a1a1a !important;
+    border-color: #3a3a3a;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  .filter-menu div {
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    color: inherit;
+  }
+
+  .filter-menu div:hover {
+    background: #e0e0e0;
+  }
+
+  html.dark .filter-menu div:hover {
+    background: #2a2a2a;
+  }
+
+  .filter-dropdown.open .filter-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* =================================
+    FORCE FORM BUTTON HOVER COLORS
+  ================================= */
+
+  form button:hover,
+  form input[type="submit"]:hover,
+  form input[type="button"]:hover {
+    background-color: #9a9a9a !important;
+    border-color: #9a9a9a !important;
+  }
+
+  form button:focus,
+  form input:focus,
+  form textarea:focus,
+  form select:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    --tw-ring-shadow: none !important;
+    --tw-ring-color: transparent !important;
+  }
+
+  /* Prevent Tailwind hover utilities from applying */
+  form button.hover\:bg-gray-800:hover {
+    background-color: #575757 !important;
+  }
+
+  /* ----------------------------------------
+    LIGHT / DARK MODE TOGGLE ANIMATION
+  ----------------------------------------- */
+
+  #darkModeToggle.animating {
+    animation: rotateFade 0.5s ease forwards;
+  }
+
+  @keyframes rotateFade {
+    0% { transform: rotate(0deg) scale(1); opacity: 1; }
+    10% { transform: rotate(36deg) scale(1); opacity: 0.8; }
+    20% { transform: rotate(72deg) scale(1); opacity: 0.6; }
+    30% { transform: rotate(108deg) scale(1); opacity: 0.4; }
+    40% { transform: rotate(144deg) scale(1); opacity: 0.2; }
+    50% { transform: rotate(180deg) scale(1); opacity: 0.1; }
+    60% { transform: rotate(216deg) scale(1); opacity: 0.2; }
+    70% { transform: rotate(252deg) scale(1); opacity: 0.4; }
+    80% { transform: rotate(288deg) scale(1); opacity: 0.6; }
+    90% { transform: rotate(324deg) scale(1); opacity: 0.8; }
+    100% { transform: rotate(360deg) scale(1); opacity: 1; }
+  }
+
+  /* -----------------------------
+  MOON / SUN ICONS
+  ----------------------------- */
+
+  #moonIcon, #sunIcon { display: none; }
+
+  html.dark #sunIcon { display: inline-block; }
+  html.dark #moonIcon { display: none; }
+
+  html:not(.dark) #sunIcon { display: none; }
+  html:not(.dark) #moonIcon { display: inline-block; }
+
+  #moonIcon, #sunIcon { transform-origin: center; transition: all 0.25s ease; }
+
+  .moonIconSpin { animation: rotateFade 0.25s linear forwards; }
+  .sunIconSpin { animation: rotateFade 0.45s ease forwards; }
+
+  html.dark #darkModeToggle:hover svg#sunIcon { filter: brightness(0.6) !important; }
+  html:not(.dark) #darkModeToggle:hover svg#moonIcon { filter: brightness(1.5) !important; }
+
+  /* -----------------------------
+  MISC FIXES
+  ----------------------------- */
+
+  .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+
+  @layer base {
+    h1, h2, h3, h4, h5, h6 {
+      font-family: theme('fontFamily.sans') !important;
+      font-weight: 425 !important;
+    }
+
+    p, li, blockquote {
+      font-family: theme('fontFamily.mono');
+      font-size: 1.02em !important;
+    }
+
+    a {
+      @apply font-mono;
+    }
+  }
+
+  @layer base {
+    button,
+    a,
+    select,
+    input[type="submit"],
+    input[type="button"] {
+      border-radius: 4px !important;
+    }
+  }

@@ -446,17 +446,22 @@ html.dark #nextBtnDesktop { color: #d0d0d0 !important; }
 
   /* MOBILE ARROWS */
   .sp-mobile-arrows {
-    position: fixed;
-    left: 50%;
-    bottom: 318px;
-    transform: translateX(-50%);
-    display: grid;
-    grid-template-columns: 48px 1fr 48px;
-    align-items: center;
-    width: 95vw;
-    min-height: 48px;
-    z-index: 50;
-  }
+  position: absolute;
+  left: 50%;
+  top: calc(45vh + 76px);
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
+  width: 95vw;
+  min-height: 48px;
+  z-index: 50;
+  pointer-events: none;
+}
+
+.sp-mobile-arrows > * {
+  pointer-events: auto;
+}
 
   #prevBtnDesktop,
   #nextBtnDesktop {
@@ -576,10 +581,9 @@ html.dark .lightbox-overlay {
 
 /* rotated state */
 .lightbox-img.is-rotated {
-  transform: rotate(90deg) scale(1);
-
-  max-width: 88vh;
-  max-height: 88vw;
+  transform: rotate(90deg) scale(0.88);
+  max-width: 76vh;
+  max-height: 76vw;
 }
 
 .lightbox-close {
@@ -605,6 +609,11 @@ html.dark .lightbox-overlay {
 
 .lightbox-close:hover {
   opacity: 1;
+}
+
+.lightbox-close,
+.rotate-hint {
+  z-index: 9999;
 }
 </style>
 
