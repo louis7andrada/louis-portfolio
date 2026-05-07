@@ -580,9 +580,17 @@ button,
   width: 100%;
 }
 
+.\!container {
+  width: 100% !important;
+}
+
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
+  }
+
+  .\!container {
+    max-width: 640px !important;
   }
 }
 
@@ -590,11 +598,19 @@ button,
   .container {
     max-width: 768px;
   }
+
+  .\!container {
+    max-width: 768px !important;
+  }
 }
 
 @media (min-width: 1024px) {
   .container {
     max-width: 1024px;
+  }
+
+  .\!container {
+    max-width: 1024px !important;
   }
 }
 
@@ -602,16 +618,28 @@ button,
   .container {
     max-width: 1280px;
   }
+
+  .\!container {
+    max-width: 1280px !important;
+  }
 }
 
 @media (min-width: 1536px) {
   .container {
     max-width: 1536px;
   }
+
+  .\!container {
+    max-width: 1536px !important;
+  }
 }
 
 .visible {
   visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
 }
 
 .collapse {
@@ -768,8 +796,8 @@ button,
   margin-bottom: 2.25rem;
 }
 
-.\!mt-16 {
-  margin-top: 4rem !important;
+.\!mt-12 {
+  margin-top: 3rem !important;
 }
 
 .mb-1 {
@@ -798,6 +826,10 @@ button,
 
 .mb-4 {
   margin-bottom: 1rem;
+}
+
+.mb-5 {
+  margin-bottom: 1.25rem;
 }
 
 .mb-6 {
@@ -870,10 +902,6 @@ button,
 
 .inline-block {
   display: inline-block;
-}
-
-.inline {
-  display: inline;
 }
 
 .flex {
@@ -989,6 +1017,10 @@ button,
   height: 2.25rem;
 }
 
+.h-\[400px\] {
+  height: 400px;
+}
+
 .h-\[500px\] {
   height: 500px;
 }
@@ -1089,8 +1121,8 @@ button,
   width: 2rem;
 }
 
-.w-\[800px\] {
-  width: 800px;
+.w-\[600px\] {
+  width: 600px;
 }
 
 .w-auto {
@@ -1125,6 +1157,10 @@ button,
   max-width: 1400px;
 }
 
+.max-w-\[360px\] {
+  max-width: 360px;
+}
+
 .max-w-\[420px\] {
   max-width: 420px;
 }
@@ -1149,12 +1185,12 @@ button,
   flex-shrink: 1;
 }
 
-.shrink {
-  flex-shrink: 1;
-}
-
 .shrink-0 {
   flex-shrink: 0;
+}
+
+.shrink {
+  flex-shrink: 1;
 }
 
 .border-collapse {
@@ -1597,6 +1633,11 @@ button,
   font-size: 13px;
 }
 
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -1708,6 +1749,10 @@ button,
 
 .opacity-60 {
   opacity: 0.6;
+}
+
+.opacity-70 {
+  opacity: 0.7;
 }
 
 .opacity-75 {
@@ -2278,88 +2323,6 @@ html.dark .archive-filters label {
    ARROWS SYSTEM — BASE
 ----------------------------------------- */
 
-#prevBtnDesktop,
-#nextBtnDesktop {
-  font-size: 16px !important;
-  transition: color 0.15s ease-out, opacity 0.15s ease-out;
-  opacity: 0.4 !important;
-  background-color: #3a3a3a !important;
-  color: white !important;
-  padding: 4px 12px !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-#prevBtnDesktop:hover,
-#nextBtnDesktop:hover {
-  background-color: #4a4a4a !important;
-  opacity: 0.6 !important;
-}
-
-#prevBtnDesktop:active,
-#nextBtnDesktop:active {
-  background-color: #2a2a2a !important;
-  opacity: 0.8 !important;
-}
-
-/* MOBILE: replace text with only arrows */
-
-@media (max-width: 1024px) {
-  #prevBtnDesktop,
-  #nextBtnDesktop {
-    font-size: 0 !important;
-    padding: 12px 12px !important;
-  }
-
-  #prevBtnDesktop::before {
-    content: "<";
-    font-size: 32px;
-  }
-
-  #nextBtnDesktop::before {
-    content: ">";
-    font-size: 32px;
-  }
-
-  #prevBtnDesktop {
-    left: 6px !important;
-  }
-
-  #nextBtnDesktop {
-    right: 6px !important;
-  }
-
-  #moonIcon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-}
-
-/* DESKTOP */
-
-@media (min-width: 1025px) {
-  #prevBtnDesktop {
-    left: 8vw !important;
-  }
-
-  #nextBtnDesktop {
-    right: 8vw !important;
-  }
-}
-
-#prevBtnDesktop,
-#nextBtnDesktop {
-  color: rgba(255, 255, 255, 0.99) !important;
-}
-
-#prevBtnDesktop::before,
-#nextBtnDesktop::before {
-  opacity: 0.99 !important;
-}
-
 /* ----------------------------------------
    ARTWORKS FILTER DROPDOWN — VISUAL DESIGN
 ----------------------------------------- */
@@ -2684,8 +2647,8 @@ MISC FIXES
     top: 2.5rem;
   }
 
-  .md\:mt-16 {
-    margin-top: 4rem;
+  .md\:top-8 {
+    top: 2rem;
   }
 
   .md\:flex {
@@ -2718,6 +2681,10 @@ MISC FIXES
 
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:gap-14 {
+    gap: 3.5rem;
   }
 
   .md\:gap-16 {
@@ -2784,6 +2751,10 @@ MISC FIXES
 
   .xl\:items-start {
     align-items: flex-start;
+  }
+
+  .xl\:items-center {
+    align-items: center;
   }
 
   .xl\:justify-center {
