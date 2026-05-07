@@ -607,10 +607,28 @@ html.dark .lightbox-overlay {
 }
 
 .lightbox-img.is-rotated {
-  transform: rotate(90deg) scale(0.88);
+  transform: rotate(90deg);
 
-  max-width: 76vh;
-  max-height: 76vw;
+  max-width: min(92vh, 1400px);
+  max-height: min(92vw, 1400px);
+}
+@media (max-width: 900px) {
+
+  .lightbox-img.is-rotated {
+
+    /* image aspect ratio */
+    aspect-ratio: attr(width) / attr(height);
+
+    /*
+      aggressive enlargement for medium landscapes
+      without overscaling ultra-wide paintings
+    */
+
+    max-width: 94vh;
+    max-height: 94vw;
+
+    object-fit: contain;
+  }
 }
 
 .lightbox-close {

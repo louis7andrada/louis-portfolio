@@ -718,10 +718,6 @@ button,
   top: 0.25rem;
 }
 
-.top-1\/2 {
-  top: 50%;
-}
-
 .top-10 {
   top: 2.5rem;
 }
@@ -1009,10 +1005,6 @@ button,
   height: 2.25rem;
 }
 
-.h-\[500px\] {
-  height: 500px;
-}
-
 .h-\[520px\] {
   height: 520px;
 }
@@ -1133,18 +1125,6 @@ button,
   max-width: 80rem;
 }
 
-.max-w-\[1000px\] {
-  max-width: 1000px;
-}
-
-.max-w-\[1400px\] {
-  max-width: 1400px;
-}
-
-.max-w-\[420px\] {
-  max-width: 420px;
-}
-
 .max-w-full {
   max-width: 100%;
 }
@@ -1175,11 +1155,6 @@ button,
 
 .-translate-y-1 {
   --tw-translate-y: -0.25rem;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-y-1\/2 {
-  --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1289,10 +1264,6 @@ button,
 
 .gap-4 {
   gap: 1rem;
-}
-
-.gap-5 {
-  gap: 1.25rem;
 }
 
 .gap-6 {
@@ -2606,14 +2577,6 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 }
 
 @media (min-width: 768px) {
-  .md\:left-6 {
-    left: 1.5rem;
-  }
-
-  .md\:top-10 {
-    top: 2.5rem;
-  }
-
   .md\:flex {
     display: flex;
   }
@@ -2646,15 +2609,6 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .md\:gap-16 {
-    gap: 4rem;
-  }
-
-  .md\:px-10 {
-    padding-left: 2.5rem;
-    padding-right: 2.5rem;
-  }
-
   .md\:px-8 {
     padding-left: 2rem;
     padding-right: 2rem;
@@ -2672,14 +2626,6 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 
   .lg\:mb-6 {
     margin-bottom: 1.5rem;
-  }
-
-  .lg\:w-\[800px\] {
-    width: 800px;
-  }
-
-  .lg\:w-auto {
-    width: auto;
   }
 
   .lg\:grid-cols-1 {
@@ -2702,17 +2648,5 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 
   .xl\:top-24 {
     top: 6rem;
-  }
-
-  .xl\:flex-row {
-    flex-direction: row;
-  }
-
-  .xl\:items-start {
-    align-items: flex-start;
-  }
-
-  .xl\:justify-center {
-    justify-content: center;
   }
 }
