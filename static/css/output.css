@@ -569,10 +569,10 @@ a {
 }
 
 button,
-  a,
-  select,
-  input[type="submit"],
-  input[type="button"] {
+    a,
+    select,
+    input[type="submit"],
+    input[type="button"] {
   border-radius: 4px !important;
 }
 
@@ -1811,7 +1811,7 @@ button,
   font-family: 'AndradaMono';
 
   src: url('/fonts/AndradaMono.woff2') format('woff2'),
-       url('/fonts/AndradaMono.woff') format('woff');
+        url('/fonts/AndradaMono.woff') format('woff');
 
   font-weight: normal;
 
@@ -1834,8 +1834,8 @@ img {
 /* Right-click blocking is handled in JS only */
 
 /* ----------------------------------------
-   HEADER IMPROVEMENT
------------------------------------------ */
+    HEADER IMPROVEMENT
+  ----------------------------------------- */
 
 header {
   height: 64px;
@@ -1873,8 +1873,8 @@ nav a:hover::after {
 }
 
 /* ----------------------------------------
-   END SECTION SPACERS
------------------------------------------ */
+    END SECTION SPACERS
+  ----------------------------------------- */
 
 .end-spacer-1 {
   height: 30vh;
@@ -1917,8 +1917,8 @@ nav a:hover::after {
 }
 
 /* ----------------------------------------
-   FEATURED FADE
------------------------------------------ */
+    FEATURED FADE
+  ----------------------------------------- */
 
 .featured-fade {
   transition: opacity 0.6s ease-in-out;
@@ -1930,8 +1930,8 @@ nav a:hover::after {
 }
 
 /* ----------------------------------------
-   SINGLE ARTWORK PAGE
------------------------------------------ */
+    SINGLE ARTWORK PAGE
+  ----------------------------------------- */
 
 .single-image-box {
   display: flex;
@@ -2003,8 +2003,8 @@ nav a:hover::after {
 }
 
 /* ----------------------------------------
-   HOMEPAGE SLIDESHOW
------------------------------------------ */
+    HOMEPAGE SLIDESHOW
+  ----------------------------------------- */
 
 #featuredArtwork {
   width: 100%;
@@ -2034,8 +2034,8 @@ html.dark {
 }
 
 /* ----------------------------------------
-   MOBILE MENU SYSTEM
------------------------------------------ */
+    MOBILE MENU SYSTEM
+  ----------------------------------------- */
 
 #mobileMenu {
   opacity: 0;
@@ -2071,8 +2071,8 @@ body {
 }
 
 /* ----------------------------------------
-   MODERN DARK MODE — UNIFIED BACKGROUND
------------------------------------------ */
+    MODERN DARK MODE — UNIFIED BACKGROUND
+  ----------------------------------------- */
 
 html.dark body {
   background-color: #1a1a1a !important;
@@ -2093,14 +2093,14 @@ html.dark a:hover {
 }
 
 html.dark p,
-html.dark span,
-html.dark li,
-html.dark h1,
-html.dark h2,
-html.dark h3,
-html.dark h4,
-html.dark h5,
-html.dark h6 {
+  html.dark span,
+  html.dark li,
+  html.dark h1,
+  html.dark h2,
+  html.dark h3,
+  html.dark h4,
+  html.dark h5,
+  html.dark h6 {
   color: #e8e8e8 !important;
 }
 
@@ -2109,7 +2109,7 @@ html.dark .border-gray-300 {
 }
 
 html.dark .shadow,
-html.dark .shadow-lg {
+  html.dark .shadow-lg {
   --tw-shadow-color: rgba(0,0,0,0.65);
 }
 
@@ -2136,18 +2136,18 @@ html.dark .group:hover .group-hover\:opacity-80 {
 }
 
 /* ----------------------------------------
-   DARK MODE FIXES — FOOTER, FORMS, LINKS
------------------------------------------ */
+    DARK MODE FIXES — FOOTER, FORMS, LINKS
+  ----------------------------------------- */
 
 html.dark footer,
-html.dark footer * {
+  html.dark footer * {
   color: #e6e6e6 !important;
 }
 
 html.dark input,
-html.dark textarea,
-html.dark select,
-html.dark label {
+  html.dark textarea,
+  html.dark select,
+  html.dark label {
   color: #e6e6e6 !important;
   background-color: #252525 !important;
   border-color: #3a3a3a !important;
@@ -2164,21 +2164,21 @@ html.dark input::-moz-placeholder, html.dark textarea::-moz-placeholder {
 }
 
 html.dark input::placeholder,
-html.dark textarea::placeholder {
+  html.dark textarea::placeholder {
   color: #bfbfbf !important;
 }
 
 /* STANDARDIZED DARK MODE BUTTON COLORS */
 
 html.dark button[type="submit"],
-html.dark input[type="submit"] {
+  html.dark input[type="submit"] {
   background-color: #3a3a3a !important;
   color: #e8e8e8 !important;
   border: 1px solid #3a3a3a !important;
 }
 
 html.dark button[type="submit"]:hover,
-html.dark input[type="submit"]:hover {
+  html.dark input[type="submit"]:hover {
   background-color: #4a4a4a !important;
 }
 
@@ -2218,8 +2218,8 @@ html.dark .links-page a:hover {
 }
 
 /* ----------------------------------------
-   FILTERS — KEEP GRAY BOXES, FIX LABELS
------------------------------------------ */
+    FILTERS — KEEP GRAY BOXES, FIX LABELS
+  ----------------------------------------- */
 
 label {
   background: transparent !important;
@@ -2243,17 +2243,17 @@ html.dark option {
 }
 
 html.dark .artworks-filters,
-html.dark .artworks-filters div,
-html.dark .artworks-filters label,
-html.dark .archive-filters,
-html.dark .archive-filters div,
-html.dark .archive-filters label {
+  html.dark .artworks-filters div,
+  html.dark .artworks-filters label,
+  html.dark .archive-filters,
+  html.dark .archive-filters div,
+  html.dark .archive-filters label {
   background-color: transparent !important;
 }
 
 /* ----------------------------------------
-   DARK MODE – ARTWORK SELECTOR MODAL
------------------------------------------ */
+    DARK MODE – ARTWORK SELECTOR MODAL
+  ----------------------------------------- */
 
 .dark #artworkSelectorModal > div {
   background-color: #1a1a1a !important;
@@ -2287,12 +2287,12 @@ html.dark .archive-filters label {
 }
 
 /* ----------------------------------------
-   ARROWS SYSTEM — BASE
------------------------------------------ */
+    ARROWS SYSTEM — BASE
+  ----------------------------------------- */
 
 /* ----------------------------------------
-   ARTWORKS FILTER DROPDOWN — VISUAL DESIGN
------------------------------------------ */
+    ARTWORKS FILTER DROPDOWN — VISUAL DESIGN
+  ----------------------------------------- */
 
 .filter-dropdown {
   position: relative;
@@ -2372,20 +2372,20 @@ html.dark .filter-menu div:hover {
 }
 
 /* =================================
-   FORCE FORM BUTTON HOVER COLORS
-================================= */
+    FORCE FORM BUTTON HOVER COLORS
+  ================================= */
 
 form button:hover,
-form input[type="submit"]:hover,
-form input[type="button"]:hover {
+  form input[type="submit"]:hover,
+  form input[type="button"]:hover {
   background-color: #9a9a9a !important;
   border-color: #9a9a9a !important;
 }
 
 form button:focus,
-form input:focus,
-form textarea:focus,
-form select:focus {
+  form input:focus,
+  form textarea:focus,
+  form select:focus {
   outline: none !important;
   box-shadow: none !important;
   --tw-ring-shadow: none !important;
@@ -2399,8 +2399,8 @@ form button.hover\:bg-gray-800:hover {
 }
 
 /* ----------------------------------------
-   LIGHT / DARK MODE TOGGLE ANIMATION
------------------------------------------ */
+    LIGHT / DARK MODE TOGGLE ANIMATION
+  ----------------------------------------- */
 
 #darkModeToggle.animating {
   animation: rotateFade 0.5s ease forwards;
@@ -2464,8 +2464,8 @@ form button.hover\:bg-gray-800:hover {
 }
 
 /* -----------------------------
-MOON / SUN ICONS
------------------------------ */
+  MOON / SUN ICONS
+  ----------------------------- */
 
 #moonIcon, #sunIcon {
   display: none;
@@ -2509,8 +2509,8 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 }
 
 /* -----------------------------
-MISC FIXES
------------------------------ */
+  MISC FIXES
+  ----------------------------- */
 
 .grecaptcha-badge {
   visibility: hidden !important;
