@@ -66,16 +66,16 @@
     top: 0;
     z-index: 50;
     background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-bottom-color: rgb(209 213 219);
-    transition: border-bottom-color 0.3s ease;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom-color: rgba(255, 255, 255, 0.75);
   }
 
   html.dark #siteHeader {
-    background: rgba(20, 20, 20, 0.65) !important;
+    background: rgba(26, 26, 26, 0.65) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
+    border-bottom-color: rgba(26, 26, 26, 0.65) !important;
   }
 
   /* ── MOBILE ONLY: hide toggle on desktop via CSS (not Tailwind, which may not scan this partial) ── */

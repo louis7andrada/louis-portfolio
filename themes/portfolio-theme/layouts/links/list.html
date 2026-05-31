@@ -1,163 +1,265 @@
 {{ define "main" }}
 
-<section class="flex flex-col items-center justify-start pt-16 pb-14 px-6">
+<section class="links-page flex flex-col items-center px-10 pt-4 pb-4">
 
-  <!-- Profile Image -->
-  <div class="w-32 h-32 rounded-full overflow-hidden shadow mb-6">
-    <img 
-      src="/profile3.jpeg" 
-      alt="Louis Andrada" 
-      class="w-full h-full object-cover"
-    />
+  <div class="name-band w-full flex justify-between items-center mt-2">
+    <span>Louis Andrada</span>
+    <div class="flex gap-6 md:gap-10">
+      <span>Artist</span>
+      <span>Toronto based</span>
+    </div>
   </div>
 
-  <!-- Name -->
-  <h1 class="text-2xl font-semibold mb-2">Louis Andrada</h1>
+  <!-- On mobile: large top margin is fine (page scrolls).
+       On md+: margin becomes auto so the block centers vertically in the section. -->
+  <div class="content-block flex flex-row items-start gap-10 md:gap-16 mt-14">
 
-  <!-- Tagline -->
-  <p class="text-gray-600 mb-8 text-center max-w-sm">
-    Artist
-    <br>Toronto based
-  </p>
+    <div class="links-col flex flex-col">
 
-  <!-- LINKS -->
-  <div class="w-full max-w-sm flex flex-col gap-4">
+      <nav class="flex flex-col items-end text-right">
+        <a href="https://www.louisandrada.com" target="_blank" rel="noopener noreferrer" class="tw-link">Portf<span class="ink">olio</span></a>
+        <a href="https://instagram.com/louisandrada" target="_blank" rel="noopener noreferrer" class="tw-link">Insta<span class="ink">gram</span></a>
+        <a href="https://www.louisandrada.com/inquire" target="_blank" rel="noopener noreferrer" class="tw-link"><span class="ink">Art</span>works Acqu<span class="ink">isition</span></a>
+        <a href="https://www.saatchiart.com/en-ca/louisandrada" target="_blank" rel="noopener noreferrer" class="tw-link">Saat<span class="ink">chi</span></a>
+        <a href="https://m.imdb.com/name/nm13775288/" target="_blank" rel="noopener noreferrer" class="tw-link">IM<span class="ink">Db</span></a>
+        <a href="https://open.spotify.com/user/nyancorn?si=0e4d05bfb35146dd" target="_blank" rel="noopener noreferrer" class="tw-link">Spot<span class="ink">ify</span></a>
+        <button id="toggleContact" type="button" class="tw-link">Contact <span class="ink">Me</span></button>
+      </nav>
 
-    <a href="https://www.louisandrada.com" target="_blank" rel="noopener noreferrer" class="link-btn">Portfolio</a>
-    <a href="https://instagram.com/louisandrada" target="_blank" rel="noopener noreferrer" class="link-btn">Instagram</a>
-    <a href="https://www.louisandrada.com/inquire" target="_blank" rel="noopener noreferrer" class="link-btn">Artwork Inquire</a>
-    <a href="https://www.saatchiart.com/en-ca/louisandrada" target="_blank" rel="noopener noreferrer" class="link-btn">Saatchi</a>
-    <a href="https://m.imdb.com/name/nm13775288/" target="_blank" rel="noopener noreferrer" class="link-btn">IMDb</a>
-    <a href="https://open.spotify.com/user/nyancorn?si=0e4d05bfb35146dd" target="_blank" rel="noopener noreferrer" class="link-btn">Spotify</a>
+      <div id="contactSection" class="hidden mt-6">
+        <div id="contactSuccessMessage" class="hidden mb-4 text-green-600 text-sm text-right">
+          Thank you &mdash; your message has been sent. Louis will get back to you soon.
+        </div>
+        <form id="contactForm" action="https://formspree.io/f/maqdkwkv" method="POST" class="flex flex-col items-end gap-1">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="text" name="_gotcha" class="hidden">
+          <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
+          <input type="text"  name="name"  placeholder="Full Name"    class="tw-field" required>
+          <input type="email" name="email" placeholder="Email"        class="tw-field" required>
+          <input type="tel"   name="phone" placeholder="Phone Number" class="tw-field" required>
+          <textarea name="message" placeholder="Your message" rows="4" class="tw-field tw-textarea" required></textarea>
+          <button type="button" id="submitBtn" class="tw-link tw-send mt-2">Send Message</button>
+        </form>
+      </div>
 
-    <!-- CONTACT TOGGLE BUTTON -->
-    <button id="toggleContact" class="link-btn">
-      Contact Me
-    </button>
+    </div>
+
+    <div class="shrink-0">
+      <img src="/profile4.jpeg" alt="Louis Andrada" class="links-photo" />
+    </div>
 
   </div>
-
-  <!-- CONTACT FORM (Hidden by default) -->
-  <div id="contactSection" class="hidden w-full max-w-sm mt-10 pb-16">
-
-  <div id="contactSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
-    Thank you — your message has been sent successfully. Louis will get back to you soon.
-  </div>
-
-  <form 
-    id="contactForm"
-    action="https://formspree.io/f/maqdkwkv"
-    method="POST"
-    class="grid grid-cols-1 gap-4"
-  >
-
-    <input type="hidden" name="_captcha" value="false">
-    <input type="text" name="_gotcha" class="hidden">
-
-    <!-- reCAPTCHA v3 token -->
-    <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
-
-    <input type="text" name="name" placeholder="Full Name" class="border bg-gray-100 border-gray-300 rounded p-3" required>
-    <input type="email" name="email" placeholder="Email" class="border bg-gray-100 border-gray-300 rounded p-3" required>
-    <input type="tel" name="phone" placeholder="Phone Number" class="border bg-gray-100 border-gray-300 rounded p-3" required>
-    <textarea name="message" placeholder="Your message..." rows="5" class="border bg-gray-100 border-gray-300 rounded p-3" required></textarea>
-
-    <button type="submit" class="px-6 py-3 bg-[#575757] dark:bg-[#3a3a3a] text-white rounded-lg font-medium hover:bg-[#9a9a9a] dark:hover:bg-[#4a4a4a] transition">
-      Send Message
-    </button>
-
-  </form>
-
-  <script>
-  const form = document.getElementById("contactForm");
-  const successMessage = document.getElementById("contactSuccessMessage");
-
-  form.addEventListener("submit", async function(event) {
-    event.preventDefault();
-
-    if (typeof grecaptcha === "undefined") {
-      alert("reCAPTCHA not loaded.");
-      return;
-    }
-
-    // 1. Generate reCAPTCHA v3 token
-    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-
-    // 2. Verify token via Netlify backend
-    const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-
-    const verifyData = await verifyRes.json();
-
-    // 3. Validate score
-    if (!verifyData.success || verifyData.score < 0.5) {
-      alert("Your submission was flagged by our security check. Please try completing the form again later.");
-      return;
-    }
-
-    // 4. Attach token to form
-    form.querySelector(".recaptcha-token-field").value = token;
-
-    // 5. Submit to Formspree
-    const data = new FormData(form);
-
-    const response = await fetch(form.action, {
-      method: "POST",
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (response.ok) {
-      form.reset();
-      successMessage.classList.remove("hidden");
-    } else {
-      alert("There was an error. Please try again later.");
-    }
-  });
-  </script>
-
-</div>
-
 </section>
 
 <style>
-.link-btn {
-  width: 100%;
-  padding: 0.75rem;
-  text-align: center;
-  background: #575757;
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  transition: 0.2s;
-}
-.link-btn:hover {
-  background: #9a9a9a;
-}
-.dark .link-btn {
-  background: #3a3a3a;
-}
-.dark .link-btn:hover {
-  background: #4a4a4a;
-}
+  /*
+   * On md+ the section fills the space between nav and footer so the
+   * content block can center itself with margin: auto.
+   * 120px = estimated nav (~65px) + footer (~55px). Adjust if your layout differs.
+   */
+  @media (min-width: 641px) {
+    .links-page {
+      min-height: calc(100vh - 155px);
+    }
+    .content-block {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+    .tw-textarea {
+      min-height: 5rem;
+    }
+  }
+
+  .name-band {
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+    color: #161616;
+  }
+  .dark .name-band { color: #ececec; }
+
+  /* width locked by JS once rendered so the form can't shift it */
+  .content-block { width: fit-content; }
+  .links-col     { width: fit-content; }
+
+  .tw-link {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-block;
+    position: relative;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 1.35rem;
+    line-height: 1.32;
+    letter-spacing: 0.01em;
+    color: #161616;
+    text-decoration: none !important;
+    transition: color 0.15s ease;
+  }
+  .tw-link::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 3px;
+    height: 1px;
+    background: currentColor;
+    display: none;
+  }
+  .tw-link:hover {
+    background: transparent !important;
+    font-weight: 700;
+    color: #000;
+    text-decoration: none !important;
+  }
+  .tw-link:hover::after { display: block; }
+  .dark .tw-link { color: #ececec; }
+  .dark .tw-link:hover { color: #fff; }
+
+  .tw-send { font-size: 1.1rem; }
+
+  .tw-link .ink {
+    font-weight: 800;
+    color: #000;
+    text-shadow: 0 0 0.5px currentColor, 0 0 0.5px currentColor;
+  }
+  .dark .tw-link .ink { color: #fff; }
+
+  .tw-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+    padding: 0.2rem 0;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #5a5a5a;
+    resize: none;
+    transition: color 0.15s ease;
+  }
+  .tw-field::placeholder { color: #9a9a9a; opacity: 1; }
+  .tw-field:hover { font-weight: 700; color: #161616; }
+  .tw-field:hover::placeholder { font-weight: 700; color: #5f5f5f; }
+  .dark .tw-field { color: #b4b4b4; }
+  .dark .tw-field::placeholder { color: #7d7d7d; }
+  .dark .tw-field:hover { color: #ececec; }
+
+  .tw-textarea {
+    width: min(28rem, 75vw);
+    min-height: 8rem;
+    line-height: 1.4;
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: #bdbdbd #ededed;
+  }
+  .tw-textarea::-webkit-scrollbar { width: 15px; }
+  .tw-textarea::-webkit-scrollbar-track { background: #ededed; border-left: 1px solid #c4c4c4; }
+  .tw-textarea::-webkit-scrollbar-thumb { background: #c9c9c9; border: 1px solid #9a9a9a; }
+  .tw-textarea::-webkit-scrollbar-thumb:hover { background: #bbbbbb; }
+  .tw-textarea::-webkit-scrollbar-button {
+    height: 15px; background-color: #e6e6e6; border: 1px solid #c4c4c4;
+    background-repeat: no-repeat; background-position: center; background-size: 8px 8px;
+  }
+  .tw-textarea::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 2.5 L8.5 7.5 L1.5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
+  }
+  .tw-textarea::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 2.5 L8.5 2.5 L5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
+  }
+  .tw-textarea::-webkit-scrollbar-button:vertical:start:increment,
+  .tw-textarea::-webkit-scrollbar-button:vertical:end:decrement { display: none; }
+  .dark .tw-textarea { scrollbar-color: #5a5a5a #2b2b2b; }
+  .dark .tw-textarea::-webkit-scrollbar-track { background: #2b2b2b; border-left-color: #3d3d3d; }
+  .dark .tw-textarea::-webkit-scrollbar-thumb { background: #555; border-color: #777; }
+  .dark .tw-textarea::-webkit-scrollbar-button { background-color: #333; border-color: #3d3d3d; }
+
+  /* Desktop photo: height driven by viewport so it never causes scroll */
+  .links-photo {
+    width: clamp(200px, 24vw, 280px);
+    height: clamp(280px, 52vh, 430px);
+    object-fit: cover;
+    object-position: center;
+    filter: grayscale(100%) contrast(1.05);
+    display: block;
+  }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    .name-band { font-size: 0.95rem; }
+    .content-block {
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      width: 100% !important;
+    }
+    .links-col { align-items: center; width: 100% !important; }
+    .links-col nav { align-items: center; text-align: center; }
+    #contactSection { text-align: center; }
+    #contactSection form { align-items: center; }
+    .tw-field { text-align: center; }
+    .tw-textarea { width: 100%; min-height: 8rem; }
+    /* Small portrait photo on mobile so it doesn't shove the links down */
+    .links-photo {
+      width: min(240px, 62vw);
+      height: auto;
+      aspect-ratio: 2 / 3;
+    }
+  }
 </style>
 
 <script>
-const toggleBtn = document.getElementById("toggleContact");
-const contactSection = document.getElementById("contactSection");
+(function () {
+  /* Lock column width so opening the form never shifts the centered layout */
+  requestAnimationFrame(function () {
+    var col = document.querySelector('.links-col');
+    if (col) col.style.width = col.getBoundingClientRect().width + 'px';
+  });
 
-toggleBtn.onclick = () => {
-  contactSection.classList.toggle("hidden");
-};
+  var toggleBtn = document.getElementById('toggleContact');
+  var contactSection = document.getElementById('contactSection');
+  if (toggleBtn && contactSection) {
+    toggleBtn.onclick = function () {
+      contactSection.classList.toggle('hidden');
+    };
+  }
 
-const params = new URLSearchParams(window.location.search);
-if (params.get("success") === "true") {
-  contactSection.classList.remove("hidden");
-  document.getElementById("contactSuccessMessage").classList.remove("hidden");
-}
+  var submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async function () {
+      var form = document.getElementById('contactForm');
+      var successMessage = document.getElementById('contactSuccessMessage');
+      if (typeof grecaptcha === 'undefined') { alert('reCAPTCHA not loaded.'); return; }
+      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+      const verifyRes = await fetch('/.netlify/functions/verifyRecaptcha', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyData.success || verifyData.score < 0.5) {
+        alert('Your submission was flagged. Please try again.'); return;
+      }
+      form.querySelector('.recaptcha-token-field').value = token;
+      const res = await fetch(form.action, {
+        method: 'POST', body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) { form.reset(); successMessage.classList.remove('hidden'); }
+      else { alert('There was an error. Please try again.'); }
+    });
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true' && contactSection) {
+    contactSection.classList.remove('hidden');
+    var sm = document.getElementById('contactSuccessMessage');
+    if (sm) sm.classList.remove('hidden');
+  }
+})();
 </script>
 
 {{ end }}
