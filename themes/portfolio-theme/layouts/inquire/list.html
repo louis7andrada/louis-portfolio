@@ -757,7 +757,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (cf) cf.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
       } else {
         var form = document.getElementById(currentSection + "Form");
-        if (form) form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+        form.requestSubmit();
       }
     });
   }
@@ -1013,21 +1013,18 @@ document.addEventListener("DOMContentLoaded", function() {
         if (notListedInput) notListedInput.value = "";
       }
     }
-    document.querySelectorAll(".inq-mobile-submit").forEach(function(btn) {
+  });
+
+}); /* end DOMContentLoaded */
+document.querySelectorAll(".inq-mobile-submit").forEach(function(btn) {
   btn.addEventListener("click", function() {
     var targetId = btn.dataset.target;
     var form = document.getElementById(targetId);
     if (!form) return;
 
-    form.dispatchEvent(new Event("submit", {
-      bubbles: true,
-      cancelable: true
-    }));
+    form.requestSubmit(); // correct modern API
   });
 });
-  });
-
-}); /* end DOMContentLoaded */
 </script>
 
 {{ end }}
