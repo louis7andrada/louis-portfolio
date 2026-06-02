@@ -1,742 +1,1021 @@
 {{ define "main" }}
 
-<section class="max-w-7xl mx-auto px-4 py-10 inquire-page">
+<div class="inq-wrap" id="inqWrap">
 
-  <h1 class="inquire-title">Inquire</h1>
-
-  <div id="pageSuccessMessage" class="hidden mb-10 text-green-600 font-medium text-center">
-    Thank you — your request has been sent successfully.
+  <!-- ① DOOR -->
+  <div class="inq-door" id="inqDoor">
+    <div class="inq-door-row">
+      <button class="inq-door-opt" data-section="purchase">Purchase</button>
+      <button class="inq-door-opt" data-section="commission">Commission</button>
+      <button class="inq-door-opt" data-section="contact">Contact</button>
+    </div>
   </div>
 
-  <!-- MOBILE TAB NAV (visible below 1200px) -->
-  <nav class="inquire-tab-nav" id="inquireTabNav">
-    <button class="inquire-tab active" data-target="col-purchase">Purchase</button>
-    <span class="inquire-tab-sep">|</span>
-    <button class="inquire-tab" data-target="col-commission">Commission</button>
-    <span class="inquire-tab-sep">|</span>
-    <button class="inquire-tab" data-target="col-contact">Contact</button>
-  </nav>
+  <!-- ② ACTIVE VIEW -->
+  <div class="inq-active" id="inqActive">
 
-  <div class="inquire-columns-grid">
+    <nav class="inq-mob-tabs" id="inqMobTabs">
+      <button class="inq-mob-tab" data-section="purchase">Purchase</button>
+      <span class="inq-mob-sep">|</span>
+      <button class="inq-mob-tab" data-section="commission">Commission</button>
+      <span class="inq-mob-sep">|</span>
+      <button class="inq-mob-tab" data-section="contact">Contact</button>
+    </nav>
 
-    <!-- PURCHASE -->
-    <div id="col-purchase" class="inquire-col">
-      <h2 class="inquire-section-title">Purchase Existing Artwork</h2>
-      <p class="inquire-desc">
-        To purchase an existing artwork by Louis Andrada, please submit the Purchase form below. Once submitted, Louis will reach out with the selected piece(s) information, price(s), and assist with finalizing your purchase.
-      </p>
-      <br>
-      <button id="openArtworkSelector" class="inquire-btn mb-6">
-        Select Artwork(s)
-      </button>
+    <div class="inq-body">
 
-      <div id="selectedArtworksPreview" class="flex flex-wrap gap-3 mb-6"></div>
+      <aside class="inq-sidebar">
+        <nav class="inq-side-nav" id="inqSideNav"></nav>
+        <button class="inq-side-submit" id="inqSideSubmit" style="display:none;"></button>
+      </aside>
 
-      <div id="purchaseSuccessMessage" class="hidden mb-6 text-green-600 text-center inquire-small">
-        Thank you — your purchase request has been sent successfully. Louis will contact you soon.
-      </div>
+      <div class="inq-panels" id="inqPanels">
 
-      <form id="purchaseForm" action="https://formspree.io/f/xeeldjwj" method="POST" class="grid grid-cols-1 gap-4">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="text" name="_gotcha" class="hidden">
-        <input type="hidden" name="formType" value="Artwork Purchase Request">
-        <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
-
-        <textarea name="selectedArtworks" id="selectedArtworkIDs" placeholder="Please select artwork(s) above" class="hidden" readonly required></textarea>
-
-        <div class="inquire-fieldset">
-          <p class="inquire-fieldset-label">What format would you like the artwork(s) in?</p>
-
-          <label class="inquire-radio-label">
-            <input type="radio" name="artworkType" value="original" class="w-3.5 h-3.5 accent-black" required>
-            <span>Original(s)</span>
-          </label>
-          <label class="inquire-radio-label">
-            <input type="radio" name="artworkType" value="print" class="w-3.5 h-3.5 accent-black">
-            <span>Print(s)</span>
-          </label>
-          <label class="inquire-radio-label">
-            <input type="radio" name="artworkType" value="license" class="w-3.5 h-3.5 accent-black" id="artworkLicenseRadio">
-            <span>Artwork License</span>
-          </label>
-          <input type="text" name="artworkLicenseText" placeholder="Please specify" class="inquire-input mt-2 hidden" id="artworkLicenseInput" />
-
-          <label class="inquire-radio-label">
-            <input type="radio" name="artworkType" value="other" class="w-3.5 h-3.5 accent-black" id="artworkOtherRadio">
-            <span>Other</span>
-          </label>
-          <input type="text" name="artworkOtherText" placeholder="Please specify" class="inquire-input mt-2 hidden" id="artworkOtherInput" />
+        <!-- PURCHASE -->
+        <div class="inq-panel" id="panel-purchase">
+          <h2 class="inq-ptitle">Buy Existing Artwork</h2>
+          <p class="inq-pdesc">Select one or more available artworks. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.</p>
+          <div id="purchaseSuccessMessage" class="inq-success hidden">Thank you — your purchase request has been sent. Louis will contact you soon.</div>
+          <form id="purchaseForm" action="https://formspree.io/f/xeeldjwj" method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="text" name="_gotcha" class="hidden">
+            <input type="hidden" name="formType" value="Artwork Purchase Request">
+            <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
+            <textarea name="selectedArtworks" id="selectedArtworkIDs" class="hidden" readonly required></textarea>
+            <div class="inq-top-block">
+              <button type="button" id="openArtworkSelector" class="inq-txt-btn">Select Artwork(s)* + </button>
+              <div id="selectedArtworksPreview" class="inq-preview"></div>
+              <p class="inq-sub-lbl">Artwork(s) format?*</p>
+              <div class="inq-indent">
+                <label class="inq-opt"><input type="radio" name="artworkType" value="original" required> Original(s)</label>
+                <label class="inq-opt"><input type="radio" name="artworkType" value="print"> Print(s)</label>
+                <label class="inq-opt"><input type="radio" name="artworkType" value="license" id="artworkLicenseRadio"> Artwork(s) License</label>
+                <input type="text" name="artworkLicenseText" placeholder="Please specify" class="inq-field hidden" id="artworkLicenseInput">
+                <label class="inq-opt"><input type="radio" name="artworkType" value="other" id="artworkOtherRadio"> Other</label>
+                <input type="text" name="artworkOtherText" placeholder="Please specify" class="inq-field hidden" id="artworkOtherInput">
+              </div>
+            </div>
+            <div class="inq-two-col inq-grow">
+              <div class="inq-flex-col">
+                <p class="inq-col-head">Your Information*</p>
+                <div class="inq-indent inq-flex-col">
+                  <input type="text"  name="buyerName"    placeholder="Full name"         class="inq-field" required>
+                  <input type="email" name="buyerEmail"   placeholder="Email"        class="inq-field" required>
+                  <input type="tel"   name="buyerPhone"   placeholder="Phone number" class="inq-field" required>
+                  <input type="text"  name="buyerCity"    placeholder="City"         class="inq-field" required>
+                  <input type="text"  name="buyerCountry" placeholder="Country"      class="inq-field" required>
+                </div>
+              </div>
+              <div class="inq-flex-col">
+                <p class="inq-col-head">Extra Information</p>
+                <div class="inq-indent inq-grow">
+                  <textarea name="purchaseComments" id="purchaseComments" placeholder="Additional comments or questions (optional)" class="inq-field inq-ta-fill"></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button"
+        class="inq-mobile-submit"
+        data-target="purchaseForm">
+  Submit Purchase Request
+</button>
+          </form>
         </div>
 
-        <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          const otherRadio = document.getElementById("artworkOtherRadio");
-          const otherInput = document.getElementById("artworkOtherInput");
-          const licenseRadio = document.getElementById("artworkLicenseRadio");
-          const licenseInput = document.getElementById("artworkLicenseInput");
-          const radios = document.querySelectorAll('input[name="artworkType"]');
-          radios.forEach(radio => {
-            radio.addEventListener("change", () => {
-              otherInput.classList.toggle("hidden", !otherRadio.checked);
-              otherInput.required = otherRadio.checked;
-              if (!otherRadio.checked) otherInput.value = "";
-              licenseInput.classList.toggle("hidden", !licenseRadio.checked);
-              licenseInput.required = licenseRadio.checked;
-              if (!licenseRadio.checked) licenseInput.value = "";
-            });
-          });
-        });
-        </script>
-
-        <input type="text" name="buyerName" placeholder="Full Name *" class="inquire-input" required />
-        <input type="email" name="buyerEmail" placeholder="Email *" class="inquire-input" required />
-        <input type="tel" name="buyerPhone" placeholder="Phone Number *" class="inquire-input" required />
-        <input type="text" name="buyerlocation" placeholder="Where are you located? (City, Country) *" class="inquire-input" required />
-        <textarea id="purchaseComments" name="purchaseComments" placeholder="Additional comments or questions (optional)" class="inquire-textarea"></textarea>
-
-        <button type="submit" class="inquire-btn">Submit Purchase Request</button>
-      </form>
-    </div>
-
-    <div class="block md:hidden border-t border-gray-300 my-9 inquire-divider"></div>
-
-    <!-- COMMISSION -->
-    <div id="col-commission" class="inquire-col">
-      <h2 class="inquire-section-title">Commission New Artwork</h2>
-      <p class="inquire-desc mb-6">
-        Commissions are open. To commission a new artwork by Louis Andrada, please submit the Commission form below. Once submitted, Louis will reach out with more information.
-      </p>
-
-      <div id="commissionSuccessMessage" class="hidden mb-6 text-green-600 text-center inquire-small">
-        Thank you — your commission request has been sent successfully. Louis will contact you soon.
-      </div>
-
-      <form id="commissionForm" action="https://formspree.io/f/xgolqwbv" method="POST" class="grid grid-cols-1 gap-4">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="text" name="_gotcha" class="hidden">
-        <input type="hidden" name="formType" value="Commission Request">
-        <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
-
-        <input type="text" name="commissionName" placeholder="Full Name *" class="inquire-input" required />
-        <input type="email" name="commissionEmail" placeholder="Email *" class="inquire-input" required />
-        <input type="tel" name="commissionPhone" placeholder="Phone Number *" class="inquire-input" required />
-        <input type="text" name="commissionLocation" placeholder="Where are you located? (City, Country) *" class="inquire-input" required />
-        <input type="text" name="commissionSize" placeholder="Preferred Size in inches (HxWxL e.g., 40x30x1.5 in) *" class="inquire-input" required />
-
-        <div class="inquire-fieldset">
-          <button type="button" id="toggleCommissionTypes" class="w-full text-left flex justify-between items-center inquire-fieldset-label">
-            Type of Commission (select one or more)
-            <span id="commissionArrow">+</span>
-          </button>
-          <div id="commissionOptions" class="hidden pt-3 space-y-2">
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="canvas" class="w-3.5 h-3.5 accent-black" /><span>Canvas painting</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="mural" class="w-3.5 h-3.5 accent-black" /><span>Mural</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="sculpture" class="w-3.5 h-3.5 accent-black" /><span>Sculpture / Object / Furniture</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="clothing" class="w-3.5 h-3.5 accent-black" /><span>Clothing</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="brand" class="w-3.5 h-3.5 accent-black" /><span>Brand / Partnership / Event / Invitation</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="digital" class="w-3.5 h-3.5 accent-black" /><span>Digital media / Print</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="tattoo" class="w-3.5 h-3.5 accent-black" /><span>Tattoo</span></label>
-            <label class="inquire-radio-label"><input type="checkbox" name="commissionType[]" value="other" class="w-3.5 h-3.5 accent-black" /><span>Other (please specify below)</span></label>
-          </div>
+        <!-- COMMISSION -->
+        <div class="inq-panel" id="panel-commission">
+          <h2 class="inq-ptitle">Commission New Artwork</h2>
+          <p class="inq-pdesc">Commissions are open. To commission a new artwork by Louis Andrada, please submit the form below. Once submitted, Louis will reach out with more information.<br><span class="inq-note">* The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas, or control over the creative process will not be accepted.</span></p>
+          <div id="commissionSuccessMessage" class="inq-success hidden">Thank you — your commission request has been sent. Louis will contact you soon.</div>
+          <form id="commissionForm" action="https://formspree.io/f/xgolqwbv" method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="text" name="_gotcha" class="hidden">
+            <input type="hidden" name="formType" value="Commission Request">
+            <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
+            <div class="inq-two-col inq-top-block">
+              <div>
+                <p class="inq-col-head">Your Information*</p>
+                <div class="inq-indent">
+                  <input type="text"  name="commissionName"    placeholder="Full name"                      class="inq-field" required>
+                  <input type="email" name="commissionEmail"   placeholder="Email"                     class="inq-field" required>
+                  <input type="tel"   name="commissionPhone"   placeholder="Phone number"              class="inq-field" required>
+                  <input type="text"  name="commissionCity"    placeholder="City"                      class="inq-field" required>
+                  <input type="text"  name="commissionCountry" placeholder="Country"                   class="inq-field" required>
+                  <input type="text"  name="commissionSize"    placeholder="Preferred size (HxWxL in)" class="inq-field" required>
+                </div>
+              </div>
+              <div>
+                <p class="inq-col-head">Commission Type*</p>
+                <p class="inq-col-sub">Select all that apply</p>
+                <div class="inq-indent">
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="canvas">    Physical painting</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="digital">   Digital media, Tattoo, Print</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="sculpture"> Sculpture, Object, Furniture, Mural</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="clothing">  Clothing related</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="brand">     Brand, Partnership or Event related</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="other">     Other (please specify in more details)</label>
+                </div>
+              </div>
+            </div>
+            <div class="inq-two-col inq-grow">
+              <div class="inq-flex-col">
+                <div class="inq-sub-block">
+                  <p class="inq-col-head">Your budget range*</p>
+                  <div class="inq-indent"><input type="text" name="commissionBudget" placeholder="Specify your budget range" class="inq-field" required></div>
+                </div>
+                <div class="inq-sub-block">
+                  <p class="inq-col-head">Concept</p>
+                  <div class="inq-indent"><textarea name="commissionConcept" placeholder="Describe your concept (optional)" class="inq-field inq-ta-sm"></textarea></div>
+                </div>
+                <div class="inq-sub-block">
+                  <p class="inq-col-head">Intended space (home, office, etc.)</p>
+                  <div class="inq-indent"><input type="text" name="commissionSpace" placeholder="Describe the intended space (optional)" class="inq-field"></div>
+                </div>
+              </div>
+              <div class="inq-flex-col">
+                <p class="inq-col-head">More Details</p>
+                <div class="inq-indent inq-grow">
+                  <textarea name="commissionComments" id="commissionTextarea" placeholder="Additional details or comments (optional)" class="inq-field inq-ta-fill"></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="button"
+        class="inq-mobile-submit"
+        data-target="commissionForm">
+  Submit Commission Request
+</button>
+          </form>
         </div>
 
-        <input type="text" name="commissionBudget" placeholder="Budget Range *" class="inquire-input" required />
-        <input type="text" name="commissionSpace" placeholder="Intended Space (home, office, etc.)" class="inquire-input" />
-        <textarea id="commissionTextarea" name="commissionComments" placeholder="Additional comments or questions (optional)" class="inquire-textarea"></textarea>
+        <!-- CONTACT -->
+        <div class="inq-panel" id="panel-contact">
+          <h2 class="inq-ptitle">Contact-me</h2>
+          <p class="inq-pdesc">Please fill the form below for any inquiries unrelated to purchase or commission of my artworks.</p>
+          <div class="inq-contact-wrap">
+  {{ partial "contact-form.html" . }}
 
-        <button type="submit" class="inquire-btn">Submit Commission Request</button>
-      </form>
-    </div>
-
-    <!-- CONTACT -->
-    <div id="col-contact" class="inquire-col">
-      <h2 class="inquire-section-title">Contact Me</h2>
-      <p class="inquire-desc mb-6">
-        Please fill the form below for any inquiries unrelated to purchase or commission of my artworks.
-      </p>
-      <div class="w-full max-w-sm">
-        {{ partial "contact-form.html" . }}
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ARTWORK SELECTOR MODAL -->
-<div id="artworkSelectorModal" class="fixed inset-0 bg-[#575757] bg-opacity-70 hidden items-center justify-center p-6 z-50">
-  <div class="bg-white dark:bg-[#1a1a1a] max-w-4xl w-full rounded-lg relative max-h-[80vh] md:max-h-[85vh] flex flex-col">
-
-    <button id="closeArtworkSelector" class="absolute top-3 right-3 text-black dark:text-white text-2xl">&times;</button>
-
-    <h2 class="inquire-section-title p-6 pb-0">Select Artwork(s)</h2>
-
-    <div class="overflow-y-auto p-6 flex-1">
-      <div class="mb-4 flex flex-col items-start gap-2">
-        <button type="button" id="notListedBtn" class="inquire-small px-3 py-1.5 bg-gray-200 dark:bg-[#2a2a2a] rounded hover:bg-gray-300 transition">
-          Artwork not listed? Click here to specify
-        </button>
-        <input type="text" id="notListedInput" placeholder="Specify artwork" class="inquire-input hidden w-64 max-w-full" />
-      </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pr-2">
-        {{ $raw := where .Site.RegularPages "Section" "artworks" }}
-        {{ $clean := slice }}
-        {{ range $raw }}
-          {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
-          {{ if .Params.inprogress }}{{ continue }}{{ end }}
-          {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
-          {{ if ne (lower .Params.availability) "available" }}{{ continue }}{{ end }}
-          {{ $clean = $clean | append . }}
-        {{ end }}
-        {{ $sorted := sort $clean "Params.worknum" "desc" }}
-        {{ range $sorted }}
-        <div class="artworkChoice relative border border-gray-300 rounded cursor-pointer hover:opacity-80 transition p-1"
-          data-id="{{ .File.BaseFileName }}" data-title="{{ .Title }}" data-image="{{ .Params.image }}">
-          <img src="{{ .Params.image }}" class="w-full h-auto rounded">
-          <div class="checkmark-overlay hidden absolute top-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">✓</div>
-          <p class="text-center inquire-small mt-1">{{ .Title }}</p>
+  <button type="button"
+          class="inq-mobile-submit"
+          data-target="contactForm">
+    Send Message
+  </button>
+</div>
         </div>
-        {{ end }}
-      </div>
-    </div>
 
-    <div class="p-4">
-      <button id="confirmArtworkSelection" class="inquire-btn w-full">Confirm Selection</button>
+      </div>
     </div>
   </div>
 </div>
 
+<!-- ARTWORK SELECTOR -->
+<div id="artworkSelectorModal" class="inq-sel-overlay hidden">
+  <div class="inq-sel-inner">
+  <div class="inq-sel-head">
+    <h2 class="inq-sel-title">Select Artwork(s)</h2>
+    <div class="inq-sel-not-listed">
+    <input type="text" id="notListedInput" placeholder="Artwork not listed? Specify here" class="inq-not-listed-input">
+  </div>
+    <div class="inq-sel-actions">
+      <div class="inq-sel-action-group">
+        <button class="inq-sel-confirm hidden" id="selConfirmText">Confirm selection</button>
+        <button class="inq-deselect-all hidden" id="selDeselectAll">Deselect all</button>
+      </div>
+      <button id="closeArtworkSelector" class="inq-sel-close">&times;</button>
+    </div>
+  </div>
+
+  <!-- Masonry grid — items laid out by JS (same algorithm as homepage) -->
+  <div class="inq-sel-grid" id="inqSelGrid">
+    {{ $raw := where .Site.RegularPages "Section" "artworks" }}
+    {{ $clean := slice }}
+    {{ range $raw }}
+      {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
+      {{ if .Params.inprogress }}{{ continue }}{{ end }}
+      {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
+      {{ if ne (lower .Params.availability) "available" }}{{ continue }}{{ end }}
+      {{ $clean = $clean | append . }}
+    {{ end }}
+    {{ $sorted := sort $clean "Params.worknum" "desc" }}
+    {{ range $sorted }}
+    <div class="artworkChoice" data-id="{{ .File.BaseFileName }}" data-title="{{ .Title }}" data-image="{{ .Params.image }}">
+      <img src="{{ .Params.image }}" alt="{{ .Title }}">
+      <div class="checkmark-overlay hidden">&#x2713;</div>
+      <p class="artwork-sel-label">{{ .Title }}</p>
+    </div>
+    {{ end }}
+  </div>
+
+  <button id="confirmArtworkSelection" style="display:none;"></button>
+  </div>
+</div>
+
 <style>
-  .inquire-page {
-    font-size: 0.88rem;
-    max-width: 100% !important;
-    padding-left: 9rem !important;
-    padding-right: 9rem !important;
+
+/* Scoped: only hides .hidden within inq elements — does NOT affect site nav */
+.inq-wrap .hidden,
+#artworkSelectorModal.hidden,
+#artworkSelectorModal .hidden {
+  display: none !important;
+}
+
+:root {
+  --vspace-xs: 0.25rem;
+  --vspace-sm: 0.5rem;
+  --vspace-md: 0.9rem;
+  --vspace-lg: 1.4rem;
+  --vspace-xl: 2rem;
+}
+
+/* ── WRAP ── */
+.inq-wrap { display: flex; flex-direction: column; }
+@media (min-width: 901px) {
+  .inq-wrap {
+    min-height: calc(100vh - 130px);
+  }
+}
+
+/* ── DOOR ── */
+.inq-door { flex: 1; display: flex; align-items: center; justify-content: center; }
+.inq-door.hidden { display: none !important; }
+.inq-door-row { display: flex; align-items: center; gap: 7rem; }
+.inq-door-opt {
+  -webkit-appearance: none; appearance: none; background: transparent; border: none;
+  cursor: pointer; font-family: inherit; font-size: 1.35rem; line-height: 1.32;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #161616; padding: 0;
+  position: relative; display: inline-block; text-decoration: none !important;
+  transition: color 0.15s; white-space: nowrap;
+}
+.inq-door-opt::after { content: ''; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; display: none; }
+.inq-door-opt:hover { font-weight: 700; color: #000; }
+.inq-door-opt:hover::after { display: block; }
+.dark .inq-door-opt { color: #ececec; }
+.dark .inq-door-opt:hover { color: #fff; }
+
+/* ── DARK MODE ──
+   color-scheme:light on .inq-wrap tells the browser to render ALL form widgets
+   inside it (inputs, textareas, labels, buttons, selects) using its LIGHT mode
+   defaults — so it stops injecting dark backgrounds on any of them.
+   We then control all colors explicitly. This is the only reliable cross-browser fix.
+── */
+html.dark .inq-wrap {
+  /* NO color-scheme here — it would make the browser render buttons with light-mode
+     appearance (gray box). color-scheme:light goes ONLY on input/textarea below. */
+  color: #e0e0e0;
+}
+html.dark .inq-wrap input,
+html.dark .inq-wrap textarea {
+  color-scheme: light; /* stops browser dark-mode widget backgrounds on fields only */
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+}
+html.dark .inq-wrap label {
+  background: transparent !important;
+  color: #e0e0e0 !important;
+}
+html.dark .inq-wrap button {
+  /* Explicit reset — do NOT use color-scheme:light on buttons */
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+html.dark .inq-wrap input::placeholder,
+html.dark .inq-wrap textarea::placeholder {
+  color: rgba(224,224,224,0.5) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: rgba(224,224,224,0.5) !important;
+}
+/* Restore intentional non-text button colors */
+html.dark .inq-wrap button { color: #e0e0e0 !important; }
+.dark .inq-door-opt:hover  { color: #fff !important; }
+.dark .inq-side-item.inactive { color: #555 !important; }
+.dark .inq-side-item.inactive:hover { color: #aaa !important; }
+
+/* ── ACTIVE ── */
+.inq-active { display: none; }
+.inq-active.is-on { display: flex; flex-direction: column; flex: 1; }
+@media (min-width: 901px) { .inq-active.is-on { overflow: hidden; } }
+
+/* MOBILE TABS */
+.inq-mob-tabs { display: none; justify-content: center; align-items: center; gap: 0.5rem; padding: 1.25rem 1rem 0.75rem; font-size: 0.8rem; letter-spacing: 0.06em; flex-shrink: 0; }
+.inq-mob-tab { -webkit-appearance: none; appearance: none; background: none; border: none; cursor: pointer; font-family: inherit; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: inherit; opacity: 0.4; padding: 0.2rem 0; transition: opacity 0.2s; }
+.inq-mob-tab.active { opacity: 1; border-bottom: 1px solid currentColor; }
+.inq-mob-tab:hover { opacity: 0.75; }
+.inq-mob-sep { opacity: 0.25; font-size: 0.75rem; }
+
+/* ── BODY
+   Left-only centering: sidebar appears centrally positioned while the form
+   stretches to the right edge of the viewport.
+── */
+.inq-body { display: flex; flex: 1; width: 100%; }
+@media (min-width: 901px) {
+  .inq-body {
+    margin-left: max(0px, calc(50vw - 600px));
   }
 
-  .inquire-title {
-    font-size: 1.2rem;
-    letter-spacing: 0.04em;
-    margin-bottom: 2.5rem;
-    text-align: center;
-    opacity: 0.6;
+  .inq-panels {
+    padding-left: 4.5rem;
   }
+}
 
-  .inquire-section-title {
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    margin-bottom: 0.75rem;
-  }
+/* ── SIDEBAR ── */
+.inq-sidebar {
+  flex-shrink: 0;
+  width: auto;
+  min-width: 180px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.5rem 5rem 2.5rem clamp(2.5rem, 6%, 2.5rem);
+}
+@media (min-width: 901px) { .inq-sidebar { overflow: hidden; } }
+.inq-side-nav { display: flex; flex-direction: column; gap: 0.4rem; }
+.inq-side-item { -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0; text-align: left; line-height: 1.5; white-space: nowrap; display: inline-block; transition: color 0.15s; }
+.inq-side-item.active  { font-weight: 700; color: #161616; cursor: default; }
+.inq-side-item.inactive{ color: #b0b0b0; }
+.inq-side-item.inactive:hover { color: #555; }
 
-  .inquire-desc {
-    font-size: 0.85rem !important;
-    line-height: 1.75;
-    opacity: 0.8;
-  }
+.inq-side-submit { -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.82rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; display: none; margin-top: 2.5rem; transition: color 0.15s; }
+.inq-side-submit:hover { color: #999; }
 
-  .inquire-small {
-    font-size: 0.8rem !important;
-  }
 
-  .inquire-fieldset {
-    border: 1px solid #d1d1d1;
-    border-radius: 6px;
-    padding: 0.75rem 1rem;
-    background: #f5f5f5;
-    font-size: 0.85rem;
-  }
 
-  html.dark .inquire-fieldset {
-    background: #252525;
-    border-color: #3a3a3a;
-  }
-
-  .inquire-fieldset-label {
-    font-size: 0.85rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-
-  .inquire-radio-label {
+/* ── PANELS — flex:1, no right cap ── */
+.inq-panels {
+  flex: 1;
+  min-width: 0;
+  max-width: 1200px;
+  padding: 1.75rem 5rem 1rem 3.5rem;
+}
+@media (min-width: 901px) { .inq-panels { min-height: 0; overflow: hidden; } }
+.inq-panel { display: none; }
+.inq-panel.active { display: flex; flex-direction: column; }
+@media (min-width: 901px) {
+  .inq-panel.active { height: 100%; overflow: hidden; }
+  @media (min-width: 901px) {
+  .inq-panel.active {
+    height: 100%;
     display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    font-size: 0.85rem;
-    padding: 0.2rem 0;
+    flex-direction: column;
   }
 
-  .inquire-input {
-    width: 100%;
-    border: 1px solid #d1d1d1;
-    border-radius: 4px;
-    padding: 0.55rem 0.75rem;
-    font-size: 0.85rem;
-    background: #f5f5f5;
-    color: inherit;
+  .inq-panel.active > form {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
   }
+}
+  .inq-contact-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .inq-contact-wrap > form { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+}
 
-  html.dark .inquire-input {
-    background: #252525;
-    border-color: #3a3a3a;
-    color: #e8e8e8;
+/* Titles + description span the FULL form area */
+.inq-ptitle { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 0.25rem; flex-shrink: 0; width: 100%; }
+.inq-pdesc  { font-size: 0.9rem !important; line-height: 1.5; opacity: 0.75; margin-bottom: 0.5rem; flex-shrink: 0; width: 80%; }
+.inq-note   { font-size: 0.8rem; opacity: 0.55; display: block; margin-top: 0.3rem; margin-bottom: 1rem;}
+.inq-success{ font-size: 0.78rem; color: #16a34a; margin-bottom: 0.75rem; flex-shrink: 0; }
+
+.inq-top-block { flex-shrink: 0; margin-bottom: 1.4rem; }
+.inq-grow { flex: 1; min-height: 0; }
+.inq-flex-col { display: flex; flex-direction: column; }
+.inq-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+@media (min-width: 901px) { .inq-two-col.inq-grow { align-items: stretch; } }
+.inq-sub-block { margin-bottom: 1.4rem; flex-shrink: 0; }
+.inq-col-head  { font-size: 0.72rem; letter-spacing: 0.04em; opacity: 1; margin-bottom: 0.4rem;}
+.inq-col-sub   { font-size: 0.72rem !important; opacity: 0.5; margin-bottom: 0.3rem; }
+.inq-sub-lbl   { font-size: 0.72rem; opacity: 1; margin: 0.6rem 0 0.35rem; }
+@media (min-width: 901px) {.inq-sub-lbl{margin-bottom: 0.5rem;} .inq-col-head {margin-bottom: 0.4rem;} }
+.inq-indent { padding-left: 0.75rem; }
+
+/* ── FIELDS ── */
+.inq-field { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent; border: none; outline: none; padding: 0.25rem 0; font-family: inherit; font-size: 0.78rem; color: inherit; margin-bottom: 0.55rem; box-sizing: border-box; }
+.inq-field:focus { outline: none; }
+.inq-field::placeholder { opacity: 0.55; font-size: 0.9rem; color: #1a1a1a; }
+.inq-ta-sm   { min-height: 2rem; resize: none; line-height: 1.4; }
+.inq-ta-fill { width: 100%; resize: none; line-height: 1.5; }
+@media (min-width: 901px) { .inq-ta-fill { height: 100%; min-height: 0; } }
+
+/* ── TEXT BUTTON ── */
+.inq-txt-btn { margin-top: 0.5rem; -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.90rem; color: #161616; padding: 0; position: relative; display: inline-block; text-decoration: none !important; }
+.inq-txt-btn::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: currentColor; display: none; }
+.inq-txt-btn:hover::after { display: block; }
+.inq-txt-btn:hover,
+.inq-txt-btn:focus,
+.inq-txt-btn:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+/* Nuke any background the browser or site CSS applies to this button */
+html.dark .inq-txt-btn,
+html.dark #openArtworkSelector {
+  background: none !important;
+  background-color: transparent !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  padding: 0 !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+
+/* ── ARTWORK PREVIEW ── */
+.inq-preview { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 2rem; }
+.inq-preview img { width: 45px; height: 45px; object-fit: cover; border-radius: 2px; }
+.inq-preview > div { font-size: 0.7rem; padding: 2px 7px; background: #e8e8e8; color: #161616; border-radius: 2px; display: flex; align-items: center; }
+html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
+
+/* ── OPTIONS ── */
+.inq-opt { display: block; font-size: 0.9rem; cursor: pointer; opacity: 0.82; margin-top: 0.4rem; user-select: none; transition: opacity 0.1s; }
+.inq-opt:hover { opacity: 1; }
+.inq-opt input { display: none !important; }
+.inq-opt.is-checked { opacity: 1; text-decoration: line-through; text-decoration-thickness: 1px; }
+
+/* ── CONTACT WRAP ── */
+.inq-contact-wrap input[type="hidden"], .inq-contact-wrap .hidden { display: none !important; }
+.inq-contact-wrap input[type="text"], .inq-contact-wrap input[type="email"], .inq-contact-wrap input[type="tel"] { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent !important; border: none !important; outline: none; padding: 0.25rem 0 !important; font-family: inherit !important; font-size: 0.78rem !important; color: inherit !important; margin-bottom: 0.55rem; box-sizing: border-box; }
+.inq-contact-wrap textarea { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent !important; border: none !important; outline: none; padding: 0.25rem 0 !important; font-family: inherit !important; font-size: 0.78rem !important; color: inherit !important; resize: none; line-height: 1.5; box-sizing: border-box; }
+@media (min-width: 901px) { .inq-contact-wrap textarea { flex: 1; min-height: 0; } }
+.inq-contact-wrap input::placeholder, .inq-contact-wrap textarea::placeholder { opacity: 0.55; color: #1a1a1a; font-size: 0.9rem; }
+.inq-contact-wrap input:focus, .inq-contact-wrap textarea:focus { outline: none !important; }
+.inq-contact-wrap button[type="submit"], .inq-contact-wrap input[type="submit"] { display: none !important; }
+
+#panel-contact .inq-pdesc {
+  margin-bottom: 1.8rem;
+}
+
+.inq-contact-wrap form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-left: 0.75rem;
+}
+/* ════════════════════════
+   ARTWORK SELECTOR OVERLAY
+   ════════════════════════ */
+.inq-sel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(24px) saturate(1.15);
+  -webkit-backdrop-filter: blur(24px) saturate(1.15);
+
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+}
+.inq-sel-inner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+.inq-sel-overlay.hidden { display: none !important; }
+html.dark .inq-sel-overlay {
+  background: transparent;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+/* Sticky header */
+.inq-sel-head {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding-bottom: 0.75rem; margin-bottom: 1rem;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+html.dark .inq-sel-head { background: rgba(15,15,15,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.inq-sel-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding-top: 0.2rem;
+}
+.inq-sel-actions { display: flex; align-items: flex-start; gap: 1.25rem; }
+.inq-sel-action-group { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+.inq-sel-confirm {font-size: 0.9rem !important; letter-spacing: 0.02em; }
+.inq-deselect-all {font-size: 0.9rem !important; letter-spacing: 0.02em; }
+
+.inq-sel-confirm { -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 0.78rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; transition: opacity 0.15s; }
+.inq-sel-confirm:hover { opacity: 0.65; }
+.dark .inq-sel-confirm { color: #e0e0e0; }
+
+.inq-deselect-all { -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 0.7rem; letter-spacing: 0.02em; color: #161616; padding: 0; opacity: 0.5; transition: opacity 0.15s; }
+.inq-deselect-all:hover { opacity: 1; }
+.dark .inq-deselect-all { color: #e0e0e0; }
+
+.inq-sel-close { background: none; border: none; cursor: pointer; font-size: 2rem; color: inherit; padding: 0; line-height: 1; font-weight: 300; transition: opacity 0.15s; }
+.inq-sel-close:hover { opacity: 0.55; }
+
+/* "Not listed" input — always visible, darker placeholder */
+.inq-sel-not-listed { margin-bottom: 2rem; }
+.inq-not-listed-input { -webkit-appearance: none; appearance: none; background: transparent; border: none; outline: none; font-family: inherit; font-size: 0.85rem; color: inherit; padding: 0.2rem 0; width: 360px; max-width: 100%; }
+.inq-not-listed-input::placeholder {
+  opacity: 1 !important;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+html.dark .inq-not-listed-input::placeholder { color: rgba(224,224,224,0.65); opacity: 1; }
+.inq-not-listed-input:focus { outline: none; }
+
+/* Masonry grid container — JS sets positions and height */
+.inq-sel-grid {
+  position: relative;
+  width: 100%;
+}
+
+/* artworkChoice: positioned by JS layout algorithm (same as homepage) */
+.artworkChoice {
+  position: relative; /* JS overrides left/top/width */
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.artworkChoice:hover { opacity: 0.82; }
+.artworkChoice img { width: 100%; height: auto; display: block; }
+.artworkChoice.selected { outline: 2px solid #161616; }
+html.dark .artworkChoice.selected { outline-color: #e0e0e0; }
+.checkmark-overlay { position: absolute; top: 6px; right: 6px; background: #161616; color: #fff; font-size: 1rem; padding: 2px 5px; }
+html.dark .checkmark-overlay { background: #e0e0e0; color: #000; }
+
+/* Selector modal dark mode — color-scheme:light on INPUTS ONLY, never the container
+   (setting it on the div itself makes Safari/Chrome give the div a light background) */
+html.dark #artworkSelectorModal {
+  color: #e0e0e0;
+}
+html.dark #artworkSelectorModal input {
+  color-scheme: light;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+}
+html.dark #artworkSelectorModal button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+html.dark #artworkSelectorModal input::placeholder {
+  color: rgba(224,224,224,0.6) !important;
+  opacity: 1 !important;
+}
+.artwork-sel-label {
+  font-size: 0.58rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+  margin-top: 0.3rem;
+  line-height: 1.3;
+}
+
+/* ── RESPONSIVE ── */
+
+/* Medium screens 901–1280px: tighter paddings and spacing */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .inq-sidebar {
+    padding: 1.5rem 2rem 1.5rem 1.5rem;
+    min-width: 130px;
   }
-
-  .inquire-input::placeholder {
-    font-size: 0.82rem;
-    opacity: 0.6;
+  .inq-panels {
+    padding: 1.25rem 2rem 0.75rem 1.75rem;
   }
+  .inq-two-col { gap: 1.25rem; }
+  .inq-col-head { margin-bottom: 0.2rem; }
+  .inq-sub-block { margin-bottom: 1rem; }
+  .inq-top-block { margin-bottom: 1rem; }
+  .inq-opt { margin-top: 0.3rem; }
+  .inq-field { margin-bottom: 0.35rem; }
+  .inq-ptitle { font-size: 1.05rem; }
+  .inq-pdesc  { margin-bottom: 0.35rem; }
+  .inq-note   { margin-top: 0.2rem; margin-bottom: 0.5rem; }
+}
+@media (max-width: 900px) {
+  .inq-sidebar { display: none; }
+  .inq-mob-tabs { display: flex; }
+  .inq-two-col {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .inq-two-col.inq-top-block,
+  .inq-two-col.inq-grow {
+    gap: 2.5rem;
+  }
+  .inq-panels { padding: 1.25rem 1.5rem 2rem; }
+  .inq-door-row { gap: 3rem; }
+}
+@media (max-width: 500px) {
+  .inq-door-row { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+  .inq-door-opt { font-size: 1.1rem; }
+  .inq-panels { padding: 1rem 1rem 2rem; }
+  .inq-sel-overlay { padding: 1.5rem 1.25rem 3rem; }
+}
+@media (max-width: 700px) {
+  .artworkChoice {
+    position: relative !important;
+    width: 100% !important;
+  }
+  /* Selector header: wrap into 2 rows so confirm/deselect buttons don't disappear */
+  .inq-sel-head {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+  .inq-sel-title   { flex: 1 1 auto; }
+  .inq-sel-actions { flex-shrink: 0; }
+  /* Not-listed input drops to its own full-width row below */
+  .inq-sel-not-listed {
+    order: 3;
+    flex: 0 0 100%;
+    margin-bottom: 0.25rem;
+  }
+  .inq-not-listed-input { width: 100%; max-width: 100%; }
+}
 
-  .inquire-textarea {
-    width: 100%;
-    border: 1px solid #d1d1d1;
-    border-radius: 4px;
-    padding: 0.75rem;
-    font-size: 0.85rem;
-    background: #f5f5f5;
-    color: inherit;
+@media (max-width: 900px) {
+  #panel-commission .inq-col-head {
     line-height: 1.6;
-    resize: vertical;
-    min-height: 90px;
-    box-sizing: border-box;
   }
 
-  html.dark .inquire-textarea {
-    background: #252525;
-    border-color: #3a3a3a;
-    color: #e8e8e8;
+  #panel-commission .inq-col-head:has(+ .inq-indent input[name="commissionBudget"]) {
+    margin-bottom: 1rem;
   }
 
-  .inquire-textarea::placeholder {
-    font-size: 0.82rem;
-    opacity: 0.6;
+  #panel-commission .inq-sub-block:has(input[name="commissionBudget"]) {
+    margin-top: 2.2rem;
   }
+}
 
-  .inquire-btn {
-    padding: 0.55rem 1rem;
-    background: #575757;
-    color: white;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    border: none;
-  }
+.inq-mobile-submit {
+  display: none;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-  .inquire-btn:hover {
-    background: #9a9a9a;
-  }
-
-  /* Force contact form inputs and button to match other columns */
-  .inquire-page input[type="text"],
-  .inquire-page input[type="email"],
-  .inquire-page input[type="tel"],
-  .inquire-page textarea {
-    width: 100%;
-    border: 1px solid #d1d1d1;
-    border-radius: 4px;
-    padding: 0.55rem 0.75rem;
-    font-size: 0.85rem;
-    background: #f5f5f5;
-    color: inherit;
-    box-sizing: border-box;
-  }
-
-  html.dark .inquire-page input[type="text"],
-  html.dark .inquire-page input[type="email"],
-  html.dark .inquire-page input[type="tel"],
-  html.dark .inquire-page textarea {
-    background: #252525;
-    border-color: #3a3a3a;
-    color: #e8e8e8;
-  }
-
-  .inquire-page input::placeholder,
-  .inquire-page textarea::placeholder {
-    font-size: 0.82rem;
-    opacity: 0.6;
-  }
-
-  /* Contact form submit button — matches inquire-btn exactly */
-  .inquire-page button[type="submit"],
-  .inquire-page input[type="submit"] {
-    padding: 0.55rem 1rem !important;
-    background: #575757 !important;
-    color: white !important;
-    border-radius: 4px !important;
-    font-size: 0.85rem !important;
-    cursor: pointer !important;
-    transition: background 0.2s ease !important;
-    border: none !important;
-    width: 100%;
-  }
-
-  .inquire-page button[type="submit"]:hover,
-  .inquire-page input[type="submit"]:hover {
-    background: #9a9a9a !important;
-  }
-
-  /* Remove max-width constraint on contact form wrapper */
-  .inquire-page .w-full.max-w-sm {
-    max-width: 100% !important;
-  }
-
-  /* Outer 3-column layout — controlled entirely by our CSS, not Tailwind */
-  .inquire-columns-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 3rem;
-  }
-
-  /* All columns visible on desktop */
-  .inquire-col {
+@media (max-width: 900px) {
+  .inq-mobile-submit {
     display: block;
   }
+}
 
-  /* ── TAB NAV ── hidden on desktop, shown via media query below ── */
-  .inquire-tab-nav {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-    letter-spacing: 0.06em;
-    font-size: 0.8rem;
-  }
-
-  .inquire-tab {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: inherit;
-    opacity: 0.4;
-    font-size: 0.8rem;
-    letter-spacing: 0.06em;
-    padding: 0.25rem 0.1rem;
-    transition: opacity 0.2s ease;
-    text-transform: uppercase;
-  }
-
-  .inquire-tab.active {
-    opacity: 1;
-    border-bottom: 1px solid currentColor;
-  }
-
-  .inquire-tab:hover {
-    opacity: 0.75;
-  }
-
-  .inquire-tab-sep {
-    opacity: 0.25;
-    font-size: 0.75rem;
-  }
-
-  /* RESPONSIVE: below 1200px switch to tab mode */
-  @media (max-width: 1199px) {
-
-    .inquire-page {
-      padding-left: 4rem !important;
-      padding-right: 4rem !important;
-    }
-
-    .inquire-tab-nav {
-      display: flex;
-    }
-
-    /* collapse only the outer 3-col wrapper, not inner form grids */
-    .inquire-columns-grid,
-    .inquire-page .inquire-columns-grid,
-    section .inquire-columns-grid {
-      display: block !important;
-      grid-template-columns: none !important;
-    }
-
-    /* hide all columns by default — triple specificity to beat Tailwind */
-    .inquire-page .inquire-columns-grid .inquire-col {
-      display: none !important;
-    }
-
-    /* show only the active column */
-    .inquire-page .inquire-columns-grid .inquire-col.active {
-      display: block !important;
-    }
-
-    /* restore proper grid display and spacing on forms inside active column */
-    .inquire-col.active form.grid {
-      display: grid !important;
-      gap: 1rem !important;
-    }
-
-    .inquire-divider {
-      display: none !important;
-    }
-  }
-
-  @media (max-width: 600px) {
-    .inquire-page {
-      padding-left: 1.25rem !important;
-      padding-right: 1.25rem !important;
-    }
-  }
 </style>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
 
-  /* ── TAB SWITCHING ── */
-  const tabNav = document.getElementById("inquireTabNav");
-  const tabs = tabNav ? tabNav.querySelectorAll(".inquire-tab") : [];
-  const cols = document.querySelectorAll(".inquire-col");
+  var SECTIONS = {
+    purchase:   { label: "PURCHASE",   submit: "Submit Purchase Request" },
+    commission: { label: "COMMISSION", submit: "Submit Commission Request" },
+    contact:    { label: "CONTACT",    submit: "Send Message" }
+  };
+  var SIDEBAR_ORDER = {
+    purchase:   ["contact", "purchase", "commission"],
+    commission: ["contact", "commission", "purchase"],
+    contact:    ["purchase", "contact", "commission"]
+  };
 
-  function isTabMode() {
-    return window.innerWidth < 1200;
-  }
+  var door       = document.getElementById("inqDoor");
+  var activeView = document.getElementById("inqActive");
+  var sideNav    = document.getElementById("inqSideNav");
+  var sideSubmit = document.getElementById("inqSideSubmit");
+  var mobTabs    = document.querySelectorAll(".inq-mob-tab");
+  var currentSection = null;
 
-  function applyTabMode() {
-    if (isTabMode()) {
-      // find which tab is marked active
-      const activeTab = Array.from(tabs).find(t => t.classList.contains("active")) || tabs[0];
-      const targetId = activeTab.dataset.target;
-      // strip active from all cols, then add only to the selected one
-      tabs.forEach(t => t.classList.remove("active"));
-      cols.forEach(c => c.classList.remove("active"));
-      activeTab.classList.add("active");
-      const targetCol = document.getElementById(targetId);
-      if (targetCol) targetCol.classList.add("active");
-    } else {
-      // desktop: all cols visible, no tab active state needed
-      tabs.forEach(t => t.classList.remove("active"));
-      cols.forEach(c => c.classList.add("active"));
+  function showSection(section) {
+    if (!SECTIONS[section]) return;
+    currentSection = section;
+    sessionStorage.setItem("inquire_section", section);
+    door.classList.add("hidden");
+    activeView.classList.add("is-on");
+    document.querySelectorAll(".inq-panel").forEach(function(p) { p.classList.remove("active"); });
+    var target = document.getElementById("panel-" + section);
+    if (target) target.classList.add("active");
+    renderSideNav(section);
+    if (sideSubmit) {
+      sideSubmit.textContent = SECTIONS[section].submit || "";
+      sideSubmit.style.display = SECTIONS[section].submit ? "inline-block" : "none";
     }
+    mobTabs.forEach(function(t) { t.classList.toggle("active", t.dataset.section === section); });
   }
 
-  // Run immediately on load — do not wait for resize
-  applyTabMode();
-
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      if (!isTabMode()) return;
-      tabs.forEach(t => t.classList.remove("active"));
-      cols.forEach(c => c.classList.remove("active"));
-      tab.classList.add("active");
-      const target = document.getElementById(tab.dataset.target);
-      if (target) target.classList.add("active");
+  function renderSideNav(active) {
+    if (!sideNav) return;
+    sideNav.innerHTML = "";
+    ["purchase", "commission", "contact"].forEach(function(s) {
+      var btn = document.createElement("button");
+      btn.className = "inq-side-item " + (s === active ? "active" : "inactive");
+      btn.textContent = SECTIONS[s].label;
+      btn.dataset.section = s;
+      if (s !== active) btn.addEventListener("click", function() { showSection(s); });
+      sideNav.appendChild(btn);
     });
+  }
+
+  document.querySelectorAll(".inq-door-opt").forEach(function(b) {
+    b.addEventListener("click", function() { showSection(b.dataset.section); });
   });
-
-  window.addEventListener("resize", applyTabMode);
-
-  /* ── COMMISSION TEXTAREA AUTO-RESIZE ── */
-  const commissionTextarea = document.getElementById("commissionTextarea");
-  // no longer auto-resizing — comments box uses fixed height like purchase form
-
-  /* ── COMMISSION TYPE TOGGLE ── */
-  const toggleBtn = document.getElementById("toggleCommissionTypes");
-  const options = document.getElementById("commissionOptions");
-  const arrow = document.getElementById("commissionArrow");
-  if (toggleBtn && options && arrow) {
-    toggleBtn.addEventListener("click", () => {
-      options.classList.toggle("hidden");
-      arrow.textContent = options.classList.contains("hidden") ? "+" : "−";
+  mobTabs.forEach(function(t) {
+    t.addEventListener("click", function() { showSection(t.dataset.section); });
+  });
+  if (sideSubmit) {
+    sideSubmit.addEventListener("click", function() {
+      if (!currentSection) return;
+      if (currentSection === "contact") {
+        var cf = document.querySelector("#panel-contact form");
+        if (cf) cf.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      } else {
+        var form = document.getElementById(currentSection + "Form");
+        if (form) form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      }
     });
   }
 
-  /* ── ARTWORK SELECTOR MODAL ── */
-  const modal = document.getElementById("artworkSelectorModal");
-  const openBtn = document.getElementById("openArtworkSelector");
-  const closeBtn = document.getElementById("closeArtworkSelector");
-  const preview = document.getElementById("selectedArtworksPreview");
-  const selectedTextarea = document.getElementById("selectedArtworkIDs");
-  const notListedBtn = document.getElementById("notListedBtn");
-  const notListedInput = document.getElementById("notListedInput");
-
-  notListedInput.value = localStorage.getItem("notListedCustom") || "";
-  const savedCustom = localStorage.getItem("notListedCustom");
-  if (savedCustom && savedCustom.trim() !== "") {
-    notListedInput.classList.remove("hidden");
-    notListedBtn.classList.add("ring-2", "ring-black");
+  var params = new URLSearchParams(window.location.search);
+  var addId  = params.get("add");
+  if (addId) {
+    showSection("purchase");
+    window.history.replaceState({}, document.title, window.location.pathname);
+  } else {
+    var saved = sessionStorage.getItem("inquire_section");
+    if (saved && SECTIONS[saved]) showSection(saved);
   }
 
-  let selected = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
-  const items = Array.from(document.getElementsByClassName("artworkChoice"));
+  function initOptions() {
+    document.querySelectorAll(".inq-opt").forEach(function(label) {
+      var input = label.querySelector("input");
+      if (!input) return;
+      if (input.checked) label.classList.add("is-checked");
+      input.addEventListener("change", function() {
+        if (input.type === "radio") {
+          document.querySelectorAll('input[name="' + input.name + '"]').forEach(function(r) {
+            var l = r.closest(".inq-opt");
+            if (l) l.classList.toggle("is-checked", r.checked);
+          });
+          handleFormatReveal();
+        } else {
+          label.classList.toggle("is-checked", input.checked);
+        }
+      });
+    });
+  }
+  initOptions();
 
-  const params = new URLSearchParams(window.location.search);
-  const addId = params.get("add");
-  if (addId) {
-    selected.add(addId);
-    localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
-    window.history.replaceState({}, document.title, window.location.pathname);
+  var otherRadio   = document.getElementById("artworkOtherRadio");
+  var otherInput   = document.getElementById("artworkOtherInput");
+  var licenseRadio = document.getElementById("artworkLicenseRadio");
+  var licenseInput = document.getElementById("artworkLicenseInput");
+  function handleFormatReveal() {
+    if (otherInput)   { var c = otherRadio && otherRadio.checked;      otherInput.classList.toggle("hidden", !c);   otherInput.required = !!c;   if (!c) otherInput.value = ""; }
+    if (licenseInput) { var c2 = licenseRadio && licenseRadio.checked; licenseInput.classList.toggle("hidden", !c2); licenseInput.required = !!c2; if (!c2) licenseInput.value = ""; }
+  }
+
+  var modal          = document.getElementById("artworkSelectorModal");
+  var openBtn        = document.getElementById("openArtworkSelector");
+  var closeBtn       = document.getElementById("closeArtworkSelector");
+  var selConfirmBtn  = document.getElementById("selConfirmText");
+  var selDeselectAll = document.getElementById("selDeselectAll");
+  var preview        = document.getElementById("selectedArtworksPreview");
+  var selectedTA     = document.getElementById("selectedArtworkIDs");
+  var notListedInput = document.getElementById("notListedInput");
+  var selected       = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
+  var artItems       = Array.from(document.getElementsByClassName("artworkChoice"));
+
+  if (addId) { selected.add(addId); localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected))); }
+  var savedCustom = localStorage.getItem("notListedCustom");
+  if (notListedInput && savedCustom) notListedInput.value = savedCustom;
+
+  function updateConfirmVis() {
+    var hasAny = selected.size > 0 || (notListedInput && notListedInput.value.trim().length > 0);
+    var hasSel = selected.size > 0;
+    if (selConfirmBtn)  selConfirmBtn.classList.toggle("hidden", !hasAny);
+    if (selDeselectAll) selDeselectAll.classList.toggle("hidden", !hasSel);
   }
 
   function rebuildPreview() {
     if (!preview) return;
     preview.innerHTML = "";
-    const ids = Array.from(selected);
-    const customText = notListedInput ? notListedInput.value.trim() : "";
-    if (selectedTextarea) {
-      if (ids.length === 0 && !customText) {
-        selectedTextarea.value = "Please select artworks above or choose from 'Artworks' Page";
-      } else {
-        selectedTextarea.value = JSON.stringify({ selected: ids, custom: customText || null });
-      }
+    var ids = Array.from(selected);
+    var custom = notListedInput ? notListedInput.value.trim() : "";
+    if (selectedTA) {
+      selectedTA.value = (ids.length === 0 && !custom)
+        ? "Please select artworks above"
+        : JSON.stringify({ selected: ids, custom: custom || null });
     }
-    ids.forEach(id => {
-      const item = document.querySelector(`.artworkChoice[data-id="${id}"]`);
+    ids.forEach(function(id) {
+      var item = document.querySelector('.artworkChoice[data-id="' + id + '"]');
       if (!item) return;
-      const img = document.createElement("img");
-      img.src = item.dataset.image;
-      img.style.width = "48px";
-      img.style.height = "48px";
-      img.style.objectFit = "cover";
-      img.style.borderRadius = "6px";
+      var img = document.createElement("img"); img.src = item.dataset.image;
       preview.appendChild(img);
     });
-    if (customText) {
-      const tag = document.createElement("div");
-      tag.className = "px-3 py-2 bg-gray-200 rounded inquire-small";
-      tag.textContent = customText;
-      preview.appendChild(tag);
-    }
+    if (custom) { var tag = document.createElement("div"); tag.textContent = custom; preview.appendChild(tag); }
+    updateConfirmVis();
   }
 
-  function syncUISelection() {
-    items.forEach(item => {
-      const id = item.dataset.id;
-      const check = item.querySelector(".checkmark-overlay");
-      if (selected.has(id)) {
-        item.classList.add("ring-4", "ring-black");
-        if (check) check.classList.remove("hidden");
-      } else {
-        item.classList.remove("ring-4", "ring-black");
-        if (check) check.classList.add("hidden");
-      }
+  function syncSel() {
+    artItems.forEach(function(item) {
+      var id = item.dataset.id;
+      var chk = item.querySelector(".checkmark-overlay");
+      if (selected.has(id)) { item.classList.add("selected"); if (chk) chk.classList.remove("hidden"); }
+      else { item.classList.remove("selected"); if (chk) chk.classList.add("hidden"); }
     });
+    updateConfirmVis();
   }
+  syncSel(); rebuildPreview();
 
-  syncUISelection();
-  rebuildPreview();
+  function closeAndConfirm() { rebuildPreview(); if (modal) modal.classList.add("hidden"); }
 
-  if (openBtn && modal) {
-    openBtn.addEventListener("click", () => {
-      const savedCustom = localStorage.getItem("notListedCustom");
-      if (savedCustom && savedCustom.trim() !== "") {
-        notListedInput.value = savedCustom;
-        notListedInput.classList.remove("hidden");
-        notListedBtn.classList.add("ring-2", "ring-black");
-      } else {
-        notListedInput.value = "";
-        notListedInput.classList.add("hidden");
-        notListedBtn.classList.remove("ring-2", "ring-black");
-      }
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    });
-  }
+  openBtn && openBtn.addEventListener("click", function() {
+    modal.classList.remove("hidden");
+    updateConfirmVis();
+    requestAnimationFrame(function() { requestAnimationFrame(layoutSelectorGrid); });
+  });
+  closeBtn      && closeBtn.addEventListener("click", closeAndConfirm);
+  selConfirmBtn && selConfirmBtn.addEventListener("click", closeAndConfirm);
+  modal && modal.addEventListener("click", function(e) { if (e.target === modal) closeAndConfirm(); });
+  document.getElementById("confirmArtworkSelection") &&
+    document.getElementById("confirmArtworkSelection").addEventListener("click", closeAndConfirm);
 
-  function closeModal() {
-    modal.classList.add("hidden");
-    modal.classList.remove("flex");
-  }
+  selDeselectAll && selDeselectAll.addEventListener("click", function() {
+    selected.clear();
+    localStorage.setItem("selectedArtworks", "[]");
+    syncSel(); rebuildPreview();
+  });
 
-  if (closeBtn) closeBtn.addEventListener("click", closeModal);
-  modal?.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-
-  items.forEach(item => {
-    item.addEventListener("click", () => {
-      const id = item.dataset.id;
-      const check = item.querySelector(".checkmark-overlay");
+  artItems.forEach(function(item) {
+    item.addEventListener("click", function() {
+      var id = item.dataset.id;
       if (selected.has(id)) { selected.delete(id); } else { selected.add(id); }
       localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
-      syncUISelection();
-      rebuildPreview();
+      syncSel(); rebuildPreview();
     });
   });
 
-  if (notListedBtn && notListedInput) {
-    notListedBtn.addEventListener("click", () => {
-      const isHidden = notListedInput.classList.contains("hidden");
-      if (isHidden) {
-        notListedInput.classList.remove("hidden");
-        notListedBtn.classList.add("ring-2", "ring-black");
-      } else {
-        notListedInput.classList.add("hidden");
-        notListedInput.value = "";
-        notListedBtn.classList.remove("ring-2", "ring-black");
-        localStorage.removeItem("notListedCustom");
+  notListedInput && notListedInput.addEventListener("input", function() {
+    rebuildPreview(); localStorage.setItem("notListedCustom", notListedInput.value);
+    updateConfirmVis();
+  });
+  notListedInput && notListedInput.addEventListener("click", function(e) { e.stopPropagation(); });
+
+  /* ── MASONRY LAYOUT (same algorithm as homepage gallery) ── */
+  var SEL_GAP_H = 40, SEL_GAP_V = 90, SEL_TEXT = 38;
+  var SEL_HEIGHTS = [340, 400, 280, 360, 310, 420, 290];
+  var SEL_SCALES  = [0.82, 0.92, 0.76, 0.88, 0.84, 0.95, 0.79];
+  var SEL_ANCHORS = ['left', 'right', 'center', 'left', 'right', 'left', 'center'];
+  var SEL_STAGGERS = {
+    1: [[0]],
+    2: [[0, 90], [90, 0], [0, 60], [60, 0], [40, 0], [0, 40]],
+    3: [[0, 80, 30], [60, 0, 90], [30, 90, 0], [80, 20, 60], [0, 50, 80], [70, 30, 0]]
+  };
+  var SEL_HEIGHT_MULTS = [0.93, 0.97, 1.05, 0.91, 1.08, 0.95, 1.03, 0.89, 1.06, 0.92];
+
+  function layoutSelectorGrid() {
+    var grid = document.getElementById("inqSelGrid");
+    if (!grid || modal.classList.contains("hidden")) return;
+    if (window.innerWidth <= 700) {
+      artItems.forEach(function(el) { el.style.left = ""; el.style.top = ""; el.style.width = ""; });
+      grid.style.height = ""; return;
+    }
+    var W = grid.offsetWidth;
+    if (W <= 0) return;
+    var data = artItems.map(function(el, i) {
+      var img = el.querySelector("img");
+      var ar  = (img && img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight : 0;
+      return { el: el, ar: ar, mult: SEL_HEIGHT_MULTS[i % SEL_HEIGHT_MULTS.length] };
+    });
+    var loaded = data.filter(function(d) { return d.ar > 0; }).length;
+    if (loaded < data.length * 0.5 && data.length > 2) { setTimeout(layoutSelectorGrid, 250); return; }
+    data.forEach(function(d) { if (d.ar === 0) d.ar = 0.75; });
+    var rows = [], i = 0, ri = 0;
+    while (i < data.length) {
+      var targetH = SEL_HEIGHTS[ri % SEL_HEIGHTS.length];
+      var landscape = data[i] && data[i].ar > 1.05;
+      var solo = (ri % 8 === 5) && landscape;
+      var maxItems = solo ? 2 : 3;
+      var row = [], rowRawW = 0;
+      while (i < data.length && row.length < maxItems) {
+        var d = data[i], itemW = targetH * d.mult * d.ar, gapsW = row.length * SEL_GAP_H;
+        if (row.length > 0 && rowRawW + gapsW + itemW > W * 1.1) break;
+        row.push(d); rowRawW += itemW; i++;
       }
-      rebuildPreview();
+      rows.push({ items: row, targetH: targetH, solo: solo }); ri++;
+    }
+    var y = 0, gi = 0;
+    rows.forEach(function(row, rIdx) {
+      var rowItems = row.items, targetH = row.targetH, solo = row.solo;
+      var isLast = rIdx === rows.length - 1;
+      var count = rowItems.length;
+      var rawTotal = rowItems.reduce(function(s, d) { return s + targetH * d.mult * d.ar; }, 0);
+      var gaps = SEL_GAP_H * (count - 1);
+      var scale = solo ? (W * 0.78) / rawTotal : (isLast && rawTotal + gaps < W * 0.5) ? 1 : (W - gaps) / rawTotal;
+      var patterns = SEL_STAGGERS[count] || [[0]];
+      var stagger = patterns[rIdx % patterns.length];
+      var x = 0, maxBottom = 0;
+      rowItems.forEach(function(d, idx) {
+        var slotW = targetH * d.mult * d.ar * scale;
+        if (solo && d.ar > 1.15) slotW *= 1.18;
+        var sc = SEL_SCALES[gi % SEL_SCALES.length];
+        var anchor = SEL_ANCHORS[gi % SEL_ANCHORS.length];
+        var imgW = slotW * sc;
+        var slack = slotW - imgW;
+        var shiftX = anchor === 'left' ? 0 : anchor === 'right' ? slack : slack / 2;
+        d.el.style.position = 'absolute';
+        d.el.style.left = (x + shiftX) + 'px';
+        d.el.style.top = (y + stagger[idx]) + 'px';
+        d.el.style.width = imgW + 'px';
+        var imgH = imgW / d.ar;
+        var bottom = stagger[idx] + imgH + SEL_TEXT;
+        maxBottom = Math.max(maxBottom, bottom);
+        x += slotW + SEL_GAP_H; gi++;
+      });
+      y += maxBottom + SEL_GAP_V;
     });
-    notListedInput.addEventListener("input", () => {
-      rebuildPreview();
-      localStorage.setItem("notListedCustom", notListedInput.value);
-    });
-    notListedInput.addEventListener("click", (e) => e.stopPropagation());
+    grid.style.height = y + 'px';
   }
 
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("#confirmArtworkSelection")) return;
-    rebuildPreview();
-    closeModal();
+  artItems.forEach(function(item) {
+    var img = item.querySelector("img");
+    if (img && !img.complete) {
+      img.addEventListener("load",  function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, { once: true });
+      img.addEventListener("error", function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, { once: true });
+    }
+  });
+  var selRt;
+  window.addEventListener("resize", function() {
+    clearTimeout(selRt);
+    selRt = setTimeout(function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, 150);
   });
 
+  /* ── FORM SUBMISSION ── */
   document.addEventListener("submit", async function(e) {
     e.preventDefault();
-    const form = e.target;
-    const formId = form.id;
-    if (formId !== "purchaseForm" && formId !== "commissionForm") return;
-
-    const successId = formId === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
-    const successMessage = document.getElementById(successId);
-
-    let parsed = null;
-    try { parsed = selectedTextarea.value ? JSON.parse(selectedTextarea.value) : null; } catch { parsed = null; }
-
-    if (formId === "purchaseForm" && (!parsed || (parsed.selected.length === 0 && !parsed.custom))) {
-      alert("Please select at least one artwork before submitting.");
-      return;
+    var form = e.target, fid = form.id;
+    if (fid !== "purchaseForm" && fid !== "commissionForm") return;
+    var sid = fid === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
+    var sEl = document.getElementById(sid);
+    if (fid === "purchaseForm") {
+      var parsed = null;
+      try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
+      if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
+        alert("Please select at least one artwork before submitting."); return;
+      }
     }
-
-    let token = null;
+    var token = null;
     try {
-      token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-      const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token })
-      });
-      const verifyData = await verifyRes.json();
-      if (!verifyData.success || verifyData.score < 0.5) return;
-    } catch { return; }
-
-    form.querySelector(".recaptcha-token-field").value = token;
-    const data = new FormData(form);
-    const response = await fetch(form.action, {
-      method: "POST",
-      body: data,
-      headers: { "Accept": "application/json" }
-    });
-
-    if (response.ok) {
-      form.reset();
-      successMessage?.classList.remove("hidden");
-      if (formId === "purchaseForm") {
-        preview.innerHTML = "";
-        selectedTextarea.value = "";
-        localStorage.removeItem("selectedArtworks");
-        localStorage.removeItem("notListedCustom");
-        selected.clear();
-        if (notListedInput) {
-          notListedInput.value = "";
-          notListedInput.classList.add("hidden");
-        }
-        syncUISelection();
+      if (typeof grecaptcha !== "undefined") {
+        token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+        var vr = await fetch("/.netlify/functions/verifyRecaptcha", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token }) });
+        var vd = await vr.json();
+        if (!vd.success || vd.score < 0.5) return;
+      }
+    } catch(x) { return; }
+    if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
+    var res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { "Accept": "application/json" } });
+    if (res.ok) {
+      form.reset(); initOptions();
+      sEl && sEl.classList.remove("hidden");
+      if (fid === "purchaseForm") {
+        if (preview) preview.innerHTML = "";
+        if (selectedTA) selectedTA.value = "";
+        localStorage.removeItem("selectedArtworks"); localStorage.removeItem("notListedCustom");
+        selected.clear(); syncSel();
+        if (notListedInput) notListedInput.value = "";
       }
     }
   });
 
-});
+}); /* end DOMContentLoaded */
 </script>
 
 {{ end }}

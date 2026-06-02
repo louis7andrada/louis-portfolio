@@ -74,6 +74,35 @@
     gap: 10rem;
     min-height: calc(100vh - 80px);
   }
+
+  html.dark #intro-door {
+    position: fixed;
+    inset: 0;
+    background: #1a1a1a;
+    z-index: 999;
+    transition: opacity 2.5s ease;
+  }
+  html.dark #intro-logo {
+    width: clamp(180px, 22vw, 220px);
+    height: clamp(64px, 8vw, 79px);
+    object-fit: fill;
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 0.4s ease;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-50% - 6px), calc(-50% - 3px));
+  }
+  html.dark #intro-logo { filter: invert(1); }
+  html.dark #intro-logo:hover { opacity: 0.35; }
+  html.dark #intro-door.logo-dim #intro-logo { opacity: 0.35; }
+  html.dark #intro-door.logo-clicked #intro-logo {
+    transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93);
+    opacity: 0.2;
+  }
+  html.dark #intro-door.dissolving { opacity: 0; pointer-events: none; }
+
   .hp-left { flex: 0 0 auto; width: clamp(420px, 62vw, 900px); display: flex; flex-direction: column; }
   .hp-title { font-size: 0.9rem; letter-spacing: 0.02em; margin: 0 0 0.6rem 0; }
   .hp-image-link { display: block; }
