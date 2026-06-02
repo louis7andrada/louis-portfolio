@@ -33,13 +33,25 @@
     <div class="about-table-label">Exhibitions</div>
     <div class="about-table-rows">
       <div class="about-table-row">
+      <span class="about-table-year">2026</span>
+      <span class="about-table-name">Works on Display</span>
+      <span class="about-table-venue">Carbonic Cafe</span>
+      <span class="about-table-location">Toronto, Ontario</span>
+    </div>
+    <div class="about-table-row">
+      <span class="about-table-year">2026</span>
+      <span class="about-table-name">Group Exhibition</span>
+      <span class="about-table-venue">RCHIVE: Art Gallery</span>
+      <span class="about-table-location">Toronto, Ontario</span>
+    </div>
+      <div class="about-table-row">
         <span class="about-table-year">2026</span>
         <span class="about-table-name">Group Exhibition</span>
         <span class="about-table-venue">Pancakes and Booze</span>
         <span class="about-table-location">Toronto, Canada</span>
       </div>
       <div class="about-table-row">
-        <span class="about-table-year">2025–2024</span>
+        <span class="about-table-year">2025-2024</span>
         <span class="about-table-name">Works on Display</span>
         <span class="about-table-venue">The Chess Gallery</span>
         <span class="about-table-location">Toronto, Canada</span>
@@ -66,24 +78,29 @@
 
   <!-- COLLECTIONS -->
   <div class="about-table-section">
-    <div class="about-table-label">Collections</div>
-    <div class="about-table-rows">
-      <div class="about-table-row about-collections-row">
-        <span class="about-table-year">Private</span>
-        <span class="about-table-location">Athens, Greece</span>
-        <span class="about-table-location">Rapid City, USA</span>
-        <span class="about-table-location">Suncheon, South Korea</span>
-        <span class="about-table-location">Toronto, Canada</span>
-      </div>
+  <div class="about-table-label">Collections</div>
+
+  <div class="about-collections-grid">
+
+    <div class="about-collections-title">Private</div>
+
+    <div class="about-collections-items">
+      <div>Athens, Greece</div>
+      <div>Rapid City, USA</div>
+      <div>Suncheon, South Korea</div>
+      <div>Toronto, Canada</div>
+      <div>Montreal, Canada</div>
     </div>
+
   </div>
+</div>
 
   <hr class="about-rule" />
 
   <!-- CONTACT -->
   <div class="about-contact">
     <a href="/inquire" class="about-contact-link">Purchase or Commission Artworks</a>
-    <a href="/inquire" class="about-contact-link">Contact Me</a>
+    <a href="/inquire" class="about-contact-link">Contact-me</a>
     <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="about-contact-link">View My CV</a>
   </div>
 
@@ -93,7 +110,7 @@
   .about-wrapper {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 3rem 3rem 1rem;
+    padding: 3rem 3rem rem;
   }
 
   .about-hero-title {
@@ -152,9 +169,9 @@
 
   .about-table-section {
     display: grid;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 200px 1fr;
     padding: 1.8rem 0;
-    gap: 1rem;
+    gap: 5rem;
     font-size: 0.80rem;
   }
 
@@ -172,14 +189,27 @@
 
   .about-table-row {
     display: grid;
-    grid-template-columns: 90px 1fr 1fr 1fr;
+    grid-template-columns: 200px 1fr 1fr 1fr;
     gap: 0.5rem;
     align-items: baseline;
   }
 
-  .about-collections-row {
-    grid-template-columns: 90px 1fr 1fr 1fr 1fr;
-  }
+  .about-collections-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  align-items: start;
+}
+
+.about-collections-title {
+  font-weight: 600;
+  font-size: 0.80rem;
+}
+
+.about-collections-items {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  font-size: 0.80rem;
+}
 
   .about-table-year {
     font-weight: 600;
@@ -212,37 +242,52 @@
   }
 
   @media (max-width: 768px) {
-    .about-wrapper {
-      padding: 2rem 1.5rem 4rem;
-    }
 
-    .about-bio-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .stair-1, .stair-2, .stair-3,
-    .stair-4, .stair-5, .stair-6,
-    .inv-1, .inv-2, .inv-3,
-    .inv-4, .inv-5 {
-      padding-left: 0 !important;
-      padding-right: 0 !important;
-    }
-
-    .about-table-section {
-      grid-template-columns: 1fr;
-      gap: 0.5rem;
-    }
-
-    .about-table-row {
-      grid-template-columns: 1fr 1fr;
-      gap: 0.3rem;
-    }
-
-    .about-collections-row {
-      grid-template-columns: 1fr 1fr;
-    }
+  .about-wrapper {
+    padding: 2.5rem 1.5rem 5rem;
   }
+
+  .about-bio-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+  }
+
+  .about-bio-left p,
+  .about-bio-right p {
+    margin-bottom: 0.6rem;
+    line-height: 2.1;
+  }
+
+  .about-table-section {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 3rem 0;
+  }
+
+  .about-table-rows {
+    gap: 1.2rem;
+  }
+
+  .about-table-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1rem;
+  }
+
+  .about-collections-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about-contact {
+    padding: 4rem 0 3rem;
+    gap: 1rem;
+  }
+
+  .about-contact-link {
+    padding: 0.25rem 0;
+    font-size: 0.9rem;
+  }
+}
 </style>
 
 {{ end }}
