@@ -2454,6 +2454,21 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
   pointer-events: none !important;
 }
 
+:root {
+  --z-base: 1;
+  --z-content: 10;
+  --z-sidebar: 100;
+  --z-header: 1000;
+  --z-overlay: 2000;
+  --z-mobile-menu: 3000;
+}
+
+#siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}
+
 .hover\:bg-\[\#9a9a9a\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(154 154 154 / var(--tw-bg-opacity, 1));
@@ -2501,6 +2516,13 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 .dark\:hover\:text-white:hover:is(.dark *) {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+@media (min-width: 640px) {
+  .sm\:px-10 {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
 }
 
 @media (min-width: 768px) {

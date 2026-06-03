@@ -469,12 +469,16 @@ html.dark .arch-popup-bg {
     right: 20px;
     width: auto;
     transform: none;
-    z-index: 999;
   }
+
+  .arch-sidebar {
+  z-index: var(--z-sidebar);
+}
 
   .arch-section {
     padding-top: 80px;
   }
+  
 }
 
 @media (max-width: 600px) {
@@ -490,6 +494,12 @@ html.dark .arch-popup-bg {
   .arch-popup-vert { display: none; }
 }
 
+@media (max-width: 900px) {
+  .arch-sidebar {
+    z-index: var(--z-sidebar);
+  }
+
+  /* Right — reads top→bottom, capped height so it doesn't invade next row */
 </style>
 
 <script>
@@ -586,10 +596,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       /* Cap label size to image dimensions — prevents crossing neighbours */
       if (isVert && imgH > 0) {
-        lbl.style.maxHeight = Math.round(imgH * 0.88) + 'px';
+        lbl.style.maxHeight = Math.round(imgH * 0.65) + 'px';
       }
       if (!isVert && imgW > 0) {
-        lbl.style.maxWidth = Math.round(imgW * 0.95) + 'px';
+        lbl.style.maxWidth = Math.round(imgW * 0.85) + 'px';
       }
 
       item.appendChild(lbl);
@@ -602,9 +612,11 @@ document.addEventListener('DOMContentLoaded', () => {
         - V_GAP reduced to avoid excess empty space
         - PAD_L clears the fixed sidebar
      ═══════════════════════════════════════════ */
-  const H_GAP     = 70;   /* minimum horizontal gap between images */
-  const V_GAP_MIN = 60;   /* minimum vertical gap between images */
-  const V_GAP_MAX = 80;   /* max extra vertical gap (was 80, reduced) */
+  const isMobile = window.innerWidth <= 900;
+
+  const H_GAP     = 70;
+  const V_GAP_MIN = isMobile ? 75 : 60;
+  const V_GAP_MAX = isMobile ? 90 : 80;
   const PAD_L     = 50;   /* left padding within grid */
   const PAD_R     = 60;   /* right padding (room for right-side labels) */
 

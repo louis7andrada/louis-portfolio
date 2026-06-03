@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-<section class="links-page flex flex-col items-center px-10 pt-4 pb-4">
+<section class="links-page flex flex-col items-center pt-4 pb-4 px-4 sm:px-10">
 
   <div class="name-band w-full flex justify-between items-center mt-2">
     <span>Louis Andrada</span>
@@ -52,6 +52,19 @@
 </section>
 
 <style>
+  .links-page {
+  --tw-prose-links: #ececec !important;
+}
+.dark .tw-link,
+.dark .tw-link:visited,
+.dark .tw-link:active {
+  color: #ececec !important;
+  text-decoration: none !important;
+}
+
+.dark .tw-link:hover {
+  color: #ffffff !important;
+}
   /*
    * On md+ the section fills the space between nav and footer so the
    * content block can center itself with margin: auto.
@@ -209,6 +222,13 @@
       height: auto;
       aspect-ratio: 2 / 3;
     }
+  }
+
+  html.dark .links-page .tw-link,
+  html.dark .links-page .tw-link:visited,
+  html.dark .links-page .tw-link:hover,
+  html.dark .links-page .tw-link:active {
+    color: #ececec !important;
   }
 </style>
 
