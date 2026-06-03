@@ -122,14 +122,21 @@
   .hp-nav--archive     { margin-left: 5%;  }
   .hp-nav--about       { margin-left: 30%; }
   .hp-nav--links       { margin-left: 60%; }
+  @media (max-width: 1500px) {
+    .hp-nav--artworks    { margin-left: -20%;  }
+  .hp-nav--acquisition { margin-left: 20%; }
+  .hp-nav--archive     { margin-left: -15%;  }
+  .hp-nav--about       { margin-left: 12%; }
+  .hp-nav--links       { margin-left: 40%; }
+  }
   @media (max-width: 1200px) {
     .homepage-layout { flex-direction: column; padding: 2rem 2.5rem; gap: 3rem; align-items: center; }
     .hp-left { width: 100%; max-width: 680px; }
     .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
     .hp-nav-inner { height: auto; gap: 1rem; width: 100%; display: flex; flex-direction: column; align-items: center; }
     .hp-nav-link { font-size: 1.3rem; }
-    .hp-nav--artworks { margin-left: -4%; } .hp-nav--acquisition { margin-left: 8%; }
-    .hp-nav--archive { margin-left: -2%; } .hp-nav--about { margin-left: 6%; } .hp-nav--links { margin-left: 10%; }
+    .hp-nav--artworks { margin-left: -20%; } .hp-nav--acquisition { margin-left: 20%; }
+    .hp-nav--archive { margin-left: -15%; } .hp-nav--about { margin-left: 12%; } .hp-nav--links { margin-left: 40%; }
   }
   @media (max-width: 699px) {
     .homepage-layout { flex-direction: column; padding: 1.5rem 1.2rem; gap: 2.5rem; align-items: center; }
@@ -137,8 +144,8 @@
     .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
     .hp-nav-inner { height: auto; gap: 0.9rem; display: flex; flex-direction: column; align-items: center; width: 100%; }
     .hp-nav-link { font-size: 1.1rem; }
-    .hp-nav--artworks { margin-left: -4%; } .hp-nav--acquisition { margin-left: 6%; }
-    .hp-nav--archive { margin-left: -2%; } .hp-nav--about { margin-left: 4%; } .hp-nav--links { margin-left: 8%; }
+    .hp-nav--artworks { margin-left: -20%; } .hp-nav--acquisition { margin-left: 20%; }
+    .hp-nav--archive { margin-left: -15%; } .hp-nav--about { margin-left: 12%; } .hp-nav--links { margin-left: 40%; }
   }
 </style>
 
@@ -191,7 +198,7 @@
         <span class="fbar fbar-v"></span>
       </span>
     </div>
-    <button id="filterResetBtn" class="artwork-filter-reset-btn">RESET ALL</button>
+    <button id="filterResetBtn" class="artwork-filter-reset-btn">DESELECT ALL</button>
   </div>
       <div class="artwork-filter-columns">
         <div class="artwork-filter-group">

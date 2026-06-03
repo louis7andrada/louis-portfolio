@@ -621,3 +621,18 @@
       border-radius: 4px !important;
     }
   }
+
+  :root {
+  --z-base: 1;
+  --z-content: 10;
+  --z-sidebar: 100;
+  --z-header: 1000;
+  --z-overlay: 2000;
+  --z-mobile-menu: 3000;
+}
+
+#siteHeader {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+}

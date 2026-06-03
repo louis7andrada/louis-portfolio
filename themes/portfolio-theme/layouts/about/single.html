@@ -119,7 +119,7 @@
     margin-bottom: 1.5rem;
     margin-top: 1.5rem;
     text-align: center;
-    opacity: 0.5;
+    opacity: 1;
   }
 
   .about-bio-grid {
@@ -287,6 +287,34 @@
   .about-contact-link {
     padding: 0.25rem 0;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .about-collections-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .about-collections-items {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.25rem 0.75rem;
+  }
+
+  .about-collections-title {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 360px) {
+
+  .about-collections-items {
+    grid-template-columns: 1fr !important;
+  }
+
+  .about-collections-grid {
+    gap: 0.75rem !important;
   }
 }
 </style>
