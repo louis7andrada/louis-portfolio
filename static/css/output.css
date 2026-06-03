@@ -638,10 +638,6 @@ button,
   visibility: visible;
 }
 
-.invisible {
-  visibility: hidden;
-}
-
 .collapse {
   visibility: collapse;
 }
@@ -1004,20 +1000,12 @@ button,
   height: 2.25rem;
 }
 
-.h-\[520px\] {
-  height: 520px;
-}
-
 .h-auto {
   height: auto;
 }
 
 .h-full {
   height: 100%;
-}
-
-.max-h-\[520px\] {
-  max-height: 520px;
 }
 
 .max-h-full {
@@ -2480,10 +2468,6 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
   text-decoration-line: underline;
 }
 
-.group:hover .group-hover\:opacity-80 {
-  opacity: 0.8;
-}
-
 .dark\:bg-\[\#111\]:is(.dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(17 17 17 / var(--tw-bg-opacity, 1));
@@ -2530,14 +2514,6 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 
   .md\:w-5 {
     width: 1.25rem;
-  }
-
-  .md\:w-\[300px\] {
-    width: 300px;
-  }
-
-  .md\:w-auto {
-    width: auto;
   }
 
   .md\:gap-10 {
