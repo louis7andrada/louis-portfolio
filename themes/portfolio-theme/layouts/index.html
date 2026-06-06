@@ -469,6 +469,15 @@ html.dark .artwork-cell-placeholder { background: #1a1a1a; color: #555; }
 @media (max-width: 768px) { .end-spacer-1 { height: 15vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 8vh; } }
 @media (max-width: 480px) { .end-spacer-1 { height: 10vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 5vh; } }
 
+/* Force right-alignment on end text — text-right may be purged by Tailwind */
+.end-message2 {
+  display: block;
+  width: 100%;
+  text-align: right !important;
+  box-sizing: border-box;
+  padding-right: 1.5rem;
+}
+
 /* ── FILTER BAR ── */
 .artwork-filter-bar {
   position: sticky;
@@ -600,6 +609,7 @@ html.dark .artwork-filter-overlay {
   font-family: inherit;
   transition: opacity 0.15s;
   margin-left: 0;
+  margin-top: 1.5rem;
 }
 .artwork-filter-reset-btn:hover { opacity: 1; }
 
