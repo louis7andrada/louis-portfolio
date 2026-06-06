@@ -12,7 +12,7 @@
 
 <section class="arch-section" id="archSection">
 
-  {{/* ── FIXED LEFT SIDEBAR — both filters side by side, always visible ── */}}
+  {{/* ── FILTER SIDEBAR — fixed left, vertically centred on desktop ── */}}
   <div class="arch-sidebar" id="archSidebar">
 
     <button class="arch-deselect" id="archDeselect">Deselect all</button>
@@ -23,6 +23,7 @@
         <button class="arch-f-btn" id="archYearBtn">
           Years <span class="arch-f-icon" id="archYearIcon"></span>
         </button>
+        <span class="arch-f-selected" id="archYearSelected"></span>
         <div class="arch-f-drop" id="archYearDrop">
           <button class="arch-f-opt on" data-filter="year" data-val="all">All Years</button>
           {{ $yrs := slice }}
@@ -37,6 +38,7 @@
         <button class="arch-f-btn" id="archCatBtn">
           Categories <span class="arch-f-icon" id="archCatIcon"></span>
         </button>
+        <span class="arch-f-selected" id="archCatSelected"></span>
         <div class="arch-f-drop" id="archCatDrop">
           <button class="arch-f-opt on" data-filter="category" data-val="all">All Categories</button>
           <button class="arch-f-opt" data-filter="category" data-val="photos">Louis</button>
@@ -69,7 +71,7 @@
 {{/* ── POPUP ── */}}
 <div class="arch-popup" id="archPopup">
   <div class="arch-popup-bg" id="archPopupBg"></div>
-  <div class="arch-popup-pane" id="archPopupPane">
+  <div class="arch-popup-pane">
     <button class="arch-popup-x" id="archPopupX">&times;</button>
     <div class="arch-popup-img-col">
       <img class="arch-popup-img" id="archPopupImg" src="" alt="">
@@ -87,17 +89,16 @@
 <style>
 
 /* ═══════════════════════════════════
-   ARCHIVE — editorial scatter
+   ARCHIVE — editorial scatter grid
    ═══════════════════════════════════ */
 
 .arch-section {
   overflow-x: hidden;
-  /* left padding clears the fixed sidebar */
-  padding: 48px 0 200px 220px;
+  padding: 48px 0 220px 230px; /* left clears the fixed sidebar */
   box-sizing: border-box;
 }
 
-/* ── FIXED SIDEBAR — left side, vertically centered ── */
+/* ── FIXED SIDEBAR — left, vertically centred ── */
 .arch-sidebar {
   position: fixed;
   left: 8%;
@@ -111,7 +112,7 @@
 }
 
 .arch-deselect {
-  display: none; /* shown by JS when a filter is active */
+  display: none;
   background: none;
   border: none;
   cursor: pointer;
@@ -128,20 +129,18 @@
 }
 .arch-deselect:hover { opacity: 1; }
 
-/* Row containing both filter pills — side by side */
+/* Side-by-side filter row */
 .arch-filters-row {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 90px;
+  gap: 32px;
   background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(30px) saturate(1.1);
-  -webkit-backdrop-filter: blur(30px) saturate(1.1);
-  padding: 10px 14px 12px;
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  padding: 10px 16px 12px;
 }
-html.dark .arch-filters-row {
-  background: rgba(14,14,14,0.80);
-}
+html.dark .arch-filters-row { background: rgba(14,14,14,0.80); }
 
 .arch-f {
   position: relative;
@@ -160,72 +159,65 @@ html.dark .arch-filters-row {
   padding: 0;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   opacity: 0.65;
   transition: opacity 0.15s;
   white-space: nowrap;
 }
-.arch-f-btn:hover,
-.arch-f-btn.open { opacity: 1; }
+.arch-f-btn:hover, .arch-f-btn.open { opacity: 1; }
 
+/* +/− icon */
 .arch-f-icon {
   position: relative;
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   display: inline-block;
   flex-shrink: 0;
 }
-
-.arch-f-icon::before,
-.arch-f-icon::after {
+.arch-f-icon::before, .arch-f-icon::after {
   content: "";
   position: absolute;
-  left: 50%;
-  top: 50%;
+  left: 50%; top: 50%;
   background: currentColor;
   transform: translate(-50%, -50%);
-  transition:
-    height 0.28s ease,
-    transform 0.28s ease,
-    opacity 0.28s ease;
+  transition: height 0.25s, opacity 0.25s;
+}
+.arch-f-icon::before { width: 9px; height: 1px; }
+.arch-f-icon::after  { width: 1px; height: 9px; }
+.arch-f-btn.open .arch-f-icon::after { height: 0; opacity: 0; }
+
+/* Selected value shown below the button */
+.arch-f-selected {
+  display: block;
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-top: 3px;
+  min-height: 0.9em;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
-/* horizontal line */
-.arch-f-icon::before {
-  width: 8px;
-  height: 1px;
-}
-
-/* vertical line */
-.arch-f-icon::after {
-  width: 1px;
-  height: 8px;
-}
-
-/* + → − */
-.arch-f-btn.open .arch-f-icon::after {
-  height: 0;
-  opacity: 0;
-}
-
-/* Dropdown — opens downward from the button */
+/* Dropdown */
 .arch-f-drop {
   display: none;
   flex-direction: column;
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 4px);
   left: 0;
-  min-width: 130px;
+  min-width: 135px;
   padding: 6px 0;
-  background: rgba(255,255,255,0.96);
-  backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.09);
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
   z-index: 10;
 }
 html.dark .arch-f-drop {
-  background: rgba(18,18,18,0.96);
-  box-shadow: 0 4px 18px rgba(0,0,0,0.38);
+  background: rgba(18,18,18,0.97);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 .arch-f-drop.open { display: flex; }
 
@@ -236,7 +228,7 @@ html.dark .arch-f-drop {
   font-family: inherit;
   font-size: 0.7rem;
   color: inherit;
-  padding: 4px 14px;
+  padding: 5px 14px;
   text-align: left;
   width: 100%;
   opacity: 0.28;
@@ -267,55 +259,46 @@ html.dark .arch-f-drop {
   overflow: visible;
   transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
 }
-.arch-item:hover {
-  transform: scale(1.055);
-  z-index: 20 !important;
-}
+.arch-item:hover { transform: scale(1.055); z-index: 20 !important; }
 
-.arch-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  pointer-events: none;
-}
+.arch-img { display: block; width: 100%; height: auto; pointer-events: none; }
 
 /* ── TEXT LABELS ──
-   Each text piece is its own element at a unique position.
-   Max sizes prevent labels from extending too far and crossing labels from
-   adjacent images.
+   RULE — each text type has a fixed position role:
+     year    → right or left vertical (seeded)
+     category → OPPOSITE vertical side (can never overlap year)
+     title   → below (horizontal)
+     comment → above (horizontal, very rare)
+   Same-image labels therefore NEVER overlap.
+   Cross-image overlap is handled by V_GAP.
 ── */
 .arch-lbl {
   position: absolute;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   letter-spacing: 0.055em;
   line-height: 1.5;
-  opacity: 0.70;
+  opacity: 0.55;
   pointer-events: none;
   color: inherit;
   font-family: inherit;
 }
 
-/* Right — reads top→bottom, capped height so it doesn't invade next row */
 .arch-lbl-r {
   left: calc(100% + 12px);
   top: 0;
   writing-mode: vertical-lr;
   white-space: nowrap;
-  overflow: hidden;
-  /* max-height set per-item by JS proportional to image height */
+  overflow: hidden; /* max-height set per-item in JS */
 }
 
-/* Left — reads top→bottom */
 .arch-lbl-l {
   right: calc(100% + 12px);
   top: 0;
   writing-mode: vertical-rl;
   white-space: nowrap;
   overflow: hidden;
-  /* max-height set per-item by JS */
 }
 
-/* Below — wraps at max-width to stay within the image's column */
 .arch-lbl-b {
   top: calc(100% + 9px);
   left: 0;
@@ -323,10 +306,9 @@ html.dark .arch-f-drop {
   white-space: normal;
   word-break: break-word;
   overflow: hidden;
-  /* max-width set per-item by JS */
+  /* max-width + max-height set per-item in JS */
 }
 
-/* Above — wraps too */
 .arch-lbl-a {
   bottom: calc(100% + 9px);
   left: 0;
@@ -334,7 +316,6 @@ html.dark .arch-f-drop {
   white-space: normal;
   word-break: break-word;
   overflow: hidden;
-  /* max-width set per-item by JS */
 }
 
 .arch-item.arch-off { display: none !important; }
@@ -349,7 +330,7 @@ html.dark .arch-f-drop {
   justify-content: center;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.05s ease;
+  transition: opacity 0.38s ease;
 }
 .arch-popup.open { opacity: 1; pointer-events: all; }
 
@@ -357,13 +338,13 @@ html.dark .arch-f-drop {
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,0.48);
-  backdrop-filter: blur(40px) saturate(1.15);
-  -webkit-backdrop-filter: blur(40px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
 }
 html.dark .arch-popup-bg {
   background: rgba(0,0,0,0.52);
-  backdrop-filter: blur(40px) brightness(0.65);
-  -webkit-backdrop-filter: blur(40px) brightness(0.65);
+  backdrop-filter: blur(20px) brightness(0.65);
+  -webkit-backdrop-filter: blur(20px) brightness(0.65);
 }
 
 .arch-popup-pane {
@@ -382,103 +363,108 @@ html.dark .arch-popup-bg {
 
 .arch-popup-x {
   position: absolute;
-  top: 12px;
-  right: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 2.2rem;
-  color: inherit;
-  padding: 0;
-  line-height: 1;
-  font-weight: 200;
-  opacity: 0.5;
+  top: 12px; right: 20px;
+  background: none; border: none; cursor: pointer;
+  font-size: 2.2rem; color: inherit; padding: 0;
+  line-height: 1; font-weight: 200; opacity: 0.5;
   transition: opacity 0.15s;
 }
 .arch-popup-x:hover { opacity: 1; }
 
 .arch-popup-img-col { flex-shrink: 0; }
-
 .arch-popup-img {
   display: block;
-  max-height: 78vh;
-  max-width: 52vw;
-  width: auto;
-  height: auto;
-  object-fit: contain;
+  max-height: 78vh; max-width: 52vw;
+  width: auto; height: auto; object-fit: contain;
 }
 
 .arch-popup-text-col {
-  flex: 1;
-  min-width: 160px;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-top: 4px;
+  flex: 1; min-width: 160px; max-width: 300px;
+  display: flex; flex-direction: column; gap: 14px; padding-top: 4px;
 }
 
 .arch-popup-year {
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  opacity: 0.4;
-  display: block;
+  font-size: 0.68rem; letter-spacing: 0.12em; opacity: 0.4; display: block;
 }
-
 .arch-popup-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  margin: 0;
+  font-size: 1.05rem; font-weight: 600;
+  line-height: 1.35; letter-spacing: 0.02em; margin: 0;
 }
-
 .arch-popup-comment {
-  font-size: 0.78rem;
-  line-height: 1.7;
-  opacity: 0.7;
-  margin: 0;
+  font-size: 0.78rem; line-height: 1.7; opacity: 0.7; margin: 0;
 }
-
 .arch-popup-catline {
-  font-size: 0.65rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  opacity: 0.35;
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  text-transform: uppercase; opacity: 0.35;
 }
-
 .arch-popup-vert {
-  position: absolute;
-  right: 18px;
-  top: 50%;
+  position: absolute; right: 18px; top: 50%;
   transform: translateY(-50%);
   writing-mode: vertical-lr;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.22;
+  font-size: 0.6rem; letter-spacing: 0.14em;
+  text-transform: uppercase; opacity: 0.22;
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 900px) {
-  .arch-section { padding-left: 20px; padding-right: 20px; }
+/* ══════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════ */
+
+/* Medium screens — sidebar still fixed but section has less left-padding */
+@media (max-width: 1100px) {
+  .arch-section { padding-left: 190px; }
+  .arch-sidebar { left: 16px; }
+}
+
+/* Small screens — sidebar fixed at TOP (same behaviour as desktop fixed-left) */
+@media (max-width: 800px) {
+  .arch-section {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 72px; /* clears the fixed top bar */
+  }
+
+  /* Sidebar becomes a compact rectangle — NOT full width.
+     Background moves here so deselect is inside the box. */
   .arch-sidebar {
     position: fixed;
-    top: 100px;
-    left: 20px;
-    right: 20px;
+    top: 60px;
+    left: 20px;        /* compact, anchored left */
+    right: auto;       /* don't stretch */
     width: auto;
     transform: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    z-index: 40;
+    padding: 8px 16px 10px;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(16px) saturate(1.1);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  }
+  html.dark .arch-sidebar {
+    background: rgba(14,14,14,0.80);
   }
 
-  .arch-sidebar {
-  z-index: var(--z-sidebar);
-}
-
-  .arch-section {
-    padding-top: 80px;
+  /* Deselect sits inside the box above the filter buttons */
+  .arch-deselect {
+    padding: 0 0 2px 0;
+    margin: 0;
   }
-  
+
+  /* Remove the inner row's own background — sidebar is now the box */
+  .arch-filters-row {
+    background: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0;
+    gap: 24px;
+    width: auto;
+  }
+
+  .arch-grid {
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
 }
 
 @media (max-width: 600px) {
@@ -494,18 +480,12 @@ html.dark .arch-popup-bg {
   .arch-popup-vert { display: none; }
 }
 
-@media (max-width: 900px) {
-  .arch-sidebar {
-    z-index: var(--z-sidebar);
-  }
-
-  /* Right — reads top→bottom, capped height so it doesn't invade next row */
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ── Mulberry32 seeded PRNG ── */
+  /* ── Mulberry32 PRNG ── */
   function mkRng(seed) {
     let s = seed >>> 0;
     return () => {
@@ -515,20 +495,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  function seededShuffle(arr, r) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(r() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
   const CAT_LABELS = {
-    photos: 'Louis',
-    photography: 'Photography',
-    studios: 'Studios',
-    galleries: 'Galleries & Exhibitions'
+    photos: 'Louis', photography: 'Photography',
+    studios: 'Studios', galleries: 'Galleries & Exhibitions'
   };
   const fmtCat = c => CAT_LABELS[c] || c || '';
 
@@ -544,21 +513,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const pVert  = document.getElementById('archPopupVert');
   const pX     = document.getElementById('archPopupX');
   const desBt  = document.getElementById('archDeselect');
+  const yearSelEl = document.getElementById('archYearSelected');
+  const catSelEl  = document.getElementById('archCatSelected');
   const activeF = { year: 'all', category: 'all' };
 
-  /* ═══════════════════════════════════════════
-     1. TEXT LABELS
-        - Each text at a UNIQUE position
-        - Hard max on length to prevent cross-over
-        - max-height / max-width set per-item
-          relative to image size
-     ═══════════════════════════════════════════ */
-  const ALL_POS = ['r', 'l', 'b', 'a'];
-  const MAX_VERT  = 38;   /* chars before truncating vertical labels */
-  const MAX_HORIZ = 45;   /* chars before truncating horizontal labels */
+  /* ═══════════════════════════════════════════════════════
+     TEXT LABELS — deterministic positions per text type
+     so same-image labels CAN NEVER overlap each other:
+
+       year     → one vertical side  (r or l, seeded)
+       category → OPPOSITE vertical side
+       title    → below (b)
+       comment  → above (a) — very rare
+
+     Cross-image overlap prevented by V_GAP minimum.
+     ═══════════════════════════════════════════════════════ */
+  const MAX_H = 42;   /* max chars for horizontal labels (b/a) */
+  const MAX_V = 36;   /* max chars for vertical labels (r/l) */
 
   function addLabels(item, imgW, imgH) {
-    /* Remove any previously added labels (for re-layout calls) */
     item.querySelectorAll('.arch-lbl').forEach(l => l.remove());
 
     const idx = parseInt(item.dataset.idx, 10) || 0;
@@ -569,66 +542,86 @@ document.addEventListener('DOMContentLoaded', () => {
     const title   = (item.dataset.title   || '').trim();
     const comment = (item.dataset.comment || '').trim();
 
+    /* Seeded side preference — year goes right or left, category goes opposite */
+    const yearRight   = r() < 0.5;
     const showCat     = cat     && r() < 0.92;
     const showTitle   = title   && r() < 0.82;
     const showComment = comment && r() < 0.18;
 
-    const texts = [];
-    if (year)        texts.push({ text: year,    type: 'vert' });
-    if (showCat)     texts.push({ text: cat,     type: 'vert' });
-    if (showTitle)   texts.push({ text: title,   type: 'horiz' });
-    if (showComment) texts.push({ text: comment, type: 'horiz' });
+    const lbDefs = [];
 
-    /* Assign each text a unique position from the shuffled pool */
-    const posPool = seededShuffle(ALL_POS, r);
+    if (year) {
+      lbDefs.push({
+        text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
+        pos: yearRight ? 'r' : 'l',
+        maxH: Math.round(imgH * 0.70),
+        maxW: null
+      });
+    }
 
-    texts.forEach(({ text, type }, i) => {
-      const pos = posPool[i % posPool.length];
-      const isVert = pos === 'r' || pos === 'l';
+    if (showCat) {
+      const catText = cat.length > MAX_V ? cat.slice(0, MAX_V - 1) + '…' : cat;
+      lbDefs.push({
+        text: catText,
+        pos: yearRight ? 'l' : 'r',  /* always OPPOSITE of year */
+        maxH: Math.round(imgH * 0.70),
+        maxW: null
+      });
+    }
 
-      /* Truncate to prevent labels running too long */
-      const maxChars = isVert ? MAX_VERT : MAX_HORIZ;
-      const displayText = text.length > maxChars ? text.slice(0, maxChars - 1) + '…' : text;
+    if (showTitle) {
+      const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
+      lbDefs.push({
+        text: t,
+        pos: 'b',
+        maxH: Math.round(1.5 * 0.86 * 16 * 2.2), /* ~2 lines max */
+        maxW: Math.round(imgW * 0.88)
+      });
+    }
 
-      const lbl = document.createElement('div');
-      lbl.className = `arch-lbl arch-lbl-${pos}`;
-      lbl.textContent = displayText;
+    if (showComment) {
+      const c = comment.length > MAX_H ? comment.slice(0, MAX_H - 1) + '…' : comment;
+      lbDefs.push({
+        text: c,
+        pos: 'a',
+        maxH: Math.round(1.5 * 0.86 * 16 * 1.2), /* ~1 line max */
+        maxW: Math.round(imgW * 0.88)
+      });
+    }
 
-      /* Cap label size to image dimensions — prevents crossing neighbours */
-      if (isVert && imgH > 0) {
-        lbl.style.maxHeight = Math.round(imgH * 0.65) + 'px';
-      }
-      if (!isVert && imgW > 0) {
-        lbl.style.maxWidth = Math.round(imgW * 0.85) + 'px';
-      }
-
-      item.appendChild(lbl);
+    lbDefs.forEach(({ text, pos, maxH, maxW }) => {
+      const el = document.createElement('div');
+      el.className   = `arch-lbl arch-lbl-${pos}`;
+      el.textContent = text;
+      if (maxH) el.style.maxHeight = maxH + 'px';
+      if (maxW) el.style.maxWidth  = maxW + 'px';
+      item.appendChild(el);
     });
   }
 
-  /* ═══════════════════════════════════════════
-     2. SCATTER LAYOUT
-        - H_GAP ensures images never touch
-        - V_GAP reduced to avoid excess empty space
-        - PAD_L clears the fixed sidebar
-     ═══════════════════════════════════════════ */
-  const isMobile = window.innerWidth <= 900;
-
-  const H_GAP     = 70;
-  const V_GAP_MIN = isMobile ? 75 : 60;
-  const V_GAP_MAX = isMobile ? 90 : 80;
-  const PAD_L     = 50;   /* left padding within grid */
-  const PAD_R     = 60;   /* right padding (room for right-side labels) */
-
+  /* ═══════════════════════════════════════════════════
+     SCATTER LAYOUT
+     — layout constants adapt to screen size
+     — images are larger on small screens (fewer cols)
+     ═══════════════════════════════════════════════════ */
   function layout() {
     const W = grid.offsetWidth;
     if (!W) { requestAnimationFrame(layout); return; }
+
+    const mobile = window.innerWidth <= 800;
+
+    /* On mobile use fewer, wider columns so photos are bigger */
+    const NCOLS   = W > 1100 ? 11 : W > 900 ? 9 : W > 680 ? 6 : W > 480 ? 3 : 2;
+    const H_GAP   = mobile ? 24 : 50;   /* gap between images */
+    const PAD_L   = mobile ? 0  : 30;
+    const PAD_R   = mobile ? 0  : 50;
+    const V_MIN   = mobile ? 50 : 70;   /* minimum vertical gap — enough for label lines */
+    const V_EXTRA = mobile ? 40 : 50;   /* random extra on top of V_MIN */
 
     const vis = items.filter(it => !it.classList.contains('arch-off'));
     if (!vis.length) { grid.style.height = '300px'; return; }
 
     const usableW = W - PAD_L - PAD_R;
-    const NCOLS   = W > 1100 ? 11 : W > 800 ? 8 : W > 560 ? 5 : 3;
     const colW    = usableW / NCOLS;
     const bots    = new Array(NCOLS).fill(40);
 
@@ -636,43 +629,43 @@ document.addEventListener('DOMContentLoaded', () => {
       const idx = parseInt(item.dataset.idx, 10) || vi;
       const r   = mkRng(idx * 3331 + 113);
 
+      /* Width: 2–4 cols; every 7th item is large */
       const isLarge = idx % 7 === 0;
       const wBase   = isLarge ? 3 : 2;
       const wExtra  = Math.floor(r() * (isLarge ? 2 : 3));
       const wCols   = Math.min(NCOLS, wBase + wExtra);
 
-      const maxStart = Math.max(0, NCOLS - wCols);
+      /* On small screens cap width so nothing is wider than ~80% */
+      const wColsCapped = mobile ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8))) : wCols;
+
+      const maxStart = Math.max(0, NCOLS - wColsCapped);
       const startCol = Math.floor(r() * (maxStart + 1));
 
-      const spanMax = Math.max(...bots.slice(startCol, startCol + wCols));
-      const vGap    = V_GAP_MIN + Math.floor(r() * V_GAP_MAX);
+      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
+      const vGap    = V_MIN + Math.floor(r() * V_EXTRA);
       const topY    = spanMax + vGap;
 
-      /* Actual image width accounts for H_GAP on each side */
-      const slotW = wCols * colW;
-      const imgW  = slotW - H_GAP;
+      const slotW = wColsCapped * colW;
+      const imgW  = Math.max(60, slotW - H_GAP);
       const leftX = PAD_L + startCol * colW + H_GAP / 2;
 
       item.style.left  = leftX + 'px';
       item.style.top   = topY  + 'px';
       item.style.width = imgW  + 'px';
 
-      /* Compute image height */
       const img = item.querySelector('img');
       const ar  = (img.naturalWidth > 0 && img.naturalHeight > 0)
                   ? img.naturalHeight / img.naturalWidth : 1.25;
       const imgH = imgW * ar;
 
-      /* Add / update text labels with size constraints based on this image */
       addLabels(item, imgW, imgH);
 
-      /* Update column bottoms */
-      for (let c = startCol; c < startCol + wCols; c++) {
+      for (let c = startCol; c < startCol + wColsCapped; c++) {
         bots[c] = topY + imgH;
       }
     });
 
-    grid.style.height = (Math.max(...bots) + 200) + 'px';
+    grid.style.height = (Math.max(...bots) + 220) + 'px';
   }
 
   let loaded = 0;
@@ -686,9 +679,16 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 180); });
 
   /* ═══════════════════════════════════════════
-     3. FILTERS — each toggles independently
-        (both can be open simultaneously)
+     FILTERS
+     — each toggles independently
+     — dropdowns stay open after selecting
+     — selected value shown below button
      ═══════════════════════════════════════════ */
+  function updateSelectedLabels() {
+    if (yearSelEl) yearSelEl.textContent = activeF.year     === 'all' ? '' : activeF.year;
+    if (catSelEl)  catSelEl.textContent  = activeF.category === 'all' ? '' : fmtCat(activeF.category);
+  }
+
   function applyFilters() {
     items.forEach(it => {
       const yo = activeF.year     === 'all' || String(it.dataset.year) === String(activeF.year);
@@ -697,6 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     const anyOn = activeF.year !== 'all' || activeF.category !== 'all';
     desBt.style.display = anyOn ? 'block' : 'none';
+    updateSelectedLabels();
     setTimeout(layout, 40);
   }
 
@@ -704,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn  = document.getElementById(btnId);
     const drop = document.getElementById(dropId);
 
-    /* Toggle THIS dropdown independently — does NOT close the other */
+    /* Toggle this dropdown independently — does NOT close the other */
     btn.addEventListener('click', e => {
       e.stopPropagation();
       const isOpen = drop.classList.contains('open');
@@ -719,14 +720,12 @@ document.addEventListener('DOMContentLoaded', () => {
         opt.classList.add('on');
         activeF[key] = opt.dataset.val;
         applyFilters();
-        /* Close only this dropdown after selection */
-        drop.classList.remove('open');
-        btn.classList.remove('open');
+        /* Dropdown stays OPEN — user can keep browsing options */
       });
     });
   }
 
-  /* Close both dropdowns only when clicking outside the sidebar entirely */
+  /* Close both only when clicking completely outside the sidebar */
   document.addEventListener('click', e => {
     if (!e.target.closest('.arch-sidebar')) {
       document.querySelectorAll('.arch-f-drop').forEach(d => d.classList.remove('open'));
@@ -745,23 +744,18 @@ document.addEventListener('DOMContentLoaded', () => {
   wireFilter('archCatBtn',  'archCatDrop',  'category');
 
   /* ═══════════════════════════════════════════
-     4. POPUP
+     POPUP
      ═══════════════════════════════════════════ */
   function openPopup(item) {
-    const year    = item.dataset.year    || '';
-    const title   = item.dataset.title   || '';
-    const comment = item.dataset.comment || '';
-    const cat     = fmtCat(item.dataset.cat || '');
-
-    pImg.src            = item.dataset.img || '';
-    pImg.alt            = title;
-    pTitle.textContent  = title;
-    pYear.textContent   = year;
-    pCom.textContent    = comment;
-    pCom.style.display  = comment ? 'block' : 'none';
-    pCat.textContent    = [cat, year].filter(Boolean).join(' · ');
-    pVert.textContent   = cat;
-
+    pImg.src           = item.dataset.img || '';
+    pImg.alt           = item.dataset.title;
+    pTitle.textContent = item.dataset.title || '';
+    pYear.textContent  = item.dataset.year  || '';
+    pCom.textContent   = item.dataset.comment || '';
+    pCom.style.display = item.dataset.comment ? 'block' : 'none';
+    const cat = fmtCat(item.dataset.cat || '');
+    pCat.textContent  = [cat, item.dataset.year].filter(Boolean).join(' · ');
+    pVert.textContent = cat;
     popup.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
