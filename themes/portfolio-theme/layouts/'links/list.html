@@ -1,44 +1,61 @@
 {{ define "main" }}
 
-<section class="link-page flex flex-col items-center px-10 pt-4 pb-4">
+<section class="link-page flex flex-col items-center pt-4 pb-4 px-4 sm:px-10">
 
   <div class="name-band w-full flex justify-between items-center mt-2">
-    <span>Louis Andrada</span>
-    <div class="flex gap-4 md:gap-8">
-      <span>Artist &amp; Research Coordinator</span>
-      <span>Toronto based</span>
+    <span class="nb-left">Louis Andrada</span>
+    <div class="nb-right flex gap-6 md:gap-10">
+      <span class="nb-mid">Artist&nbsp;&amp; UofT&nbsp;CRC</span>
+      <span class="nb-end">Toronto based</span>
     </div>
   </div>
 
   <div class="content-block flex flex-row items-start gap-10 md:gap-16 mt-14">
-
     <div class="links-col flex flex-col">
       <nav class="flex flex-col items-end text-right">
-        <a href="https://instagram.com/louisandrada"                             target="_blank" rel="noopener noreferrer" class="tw-link">Insta<span class="ink">gram</span></a>
-        <a href="https://www.louisandrada.com"                                   target="_blank" rel="noopener noreferrer" class="tw-link">Portf<span class="ink">olio</span></a>
-        <a href="https://www.linkedin.com/in/luis7andrada/"                      target="_blank" rel="noopener noreferrer" class="tw-link">Link<span class="ink">edIn</span></a>
-        <a href="https://instagram.com/louis7andrada"                            target="_blank" rel="noopener noreferrer" class="tw-link"><span class="ink">Pers</span>onal <span class="ink">IG</span></a>
-        <a href="https://linkbio.co/IOHRGUofT"                                   target="_blank" rel="noopener noreferrer" class="tw-link">IOH<span class="ink">RG</span>-Uof<span class="ink">T</span></a>
-        <a href="https://m.imdb.com/name/nm13775288/"                            target="_blank" rel="noopener noreferrer" class="tw-link">IM<span class="ink">Db</span></a>
-        <a href="https://open.spotify.com/user/nyancorn?si=0e4d05bfb35146dd"     target="_blank" rel="noopener noreferrer" class="tw-link">Spot<span class="ink">ify</span></a>
+        <a href="https://instagram.com/louisandrada"                         target="_blank" rel="noopener noreferrer" class="tw-link">Insta<span class="ink i1">g</span><span class="ink i2">r</span><span class="ink i3">a</span><span class="ink i4">m</span></a>
+        <a href="https://www.louisandrada.com"                               target="_blank" rel="noopener noreferrer" class="tw-link">Portf<span class="ink i1">o</span><span class="ink i2">l</span><span class="ink i3">i</span><span class="ink i4">o</span></a>
+        <a href="https://www.linkedin.com/in/luis7andrada/"                  target="_blank" rel="noopener noreferrer" class="tw-link">Link<span class="ink i1">e</span><span class="ink i2">d</span><span class="ink i3">I</span><span class="ink i4">n</span></a>
+        <a href="https://instagram.com/louis7andrada"                        target="_blank" rel="noopener noreferrer" class="tw-link"><span class="ink i1">P</span><span class="ink i2">e</span><span class="ink i3">r</span><span class="ink i4">s</span>onal <span class="ink i1">I</span><span class="ink i2">G</span></a>
+        <a href="https://linkbio.co/IOHRGUofT"                               target="_blank" rel="noopener noreferrer" class="tw-link">IOH<span class="ink i1">R</span><span class="ink i2">G</span>-Uof<span class="ink i1">T</span></a>
+        <a href="https://m.imdb.com/name/nm13775288/"                        target="_blank" rel="noopener noreferrer" class="tw-link">IM<span class="ink i1">D</span><span class="ink i2">b</span></a>
+        <a href="https://open.spotify.com/user/nyancorn?si=0e4d05bfb35146dd" target="_blank" rel="noopener noreferrer" class="tw-link">Spot<span class="ink i1">i</span><span class="ink i2">f</span><span class="ink i3">y</span></a>
       </nav>
     </div>
-
     <div class="shrink-0">
       <img src="/profile2.jpeg" alt="Louis Andrada" class="links-photo" />
     </div>
-
   </div>
 </section>
 
 <style>
+  .links-page {
+  --tw-prose-links: #ececec !important;
+}
+.dark .tw-link,
+.dark .tw-link:visited,
+.dark .tw-link:active {
+  color: #ececec !important;
+  text-decoration: none !important;
+}
+
+.dark .tw-link:hover {
+  color: #ffffff !important;
+}
+  /*
+   * On md+ the section fills the space between nav and footer so the
+   * content block can center itself with margin: auto.
+   * 120px = estimated nav (~65px) + footer (~55px). Adjust if your layout differs.
+   */
   @media (min-width: 641px) {
-    .link-page {
-      min-height: calc(100vh - 60px);
+    .links-page {
+      min-height: calc(100vh - 155px);
     }
     .content-block {
-      margin-top: auto;
       margin-bottom: auto;
+    }
+    .tw-textarea {
+      min-height: 5rem;
     }
   }
 
@@ -50,7 +67,8 @@
   }
   .dark .name-band { color: #ececec; }
 
-  .content-block { width: fit-content; }
+  /* width locked by JS once rendered so the form can't shift it */
+  .content-block { width: fit-content; margin-top: 20vh;}
   .links-col     { width: fit-content; }
 
   .tw-link {
@@ -89,14 +107,91 @@
   .dark .tw-link { color: #ececec; }
   .dark .tw-link:hover { color: #fff; }
 
-  .tw-link .ink {
-    font-weight: 800;
-    color: #000;
+  .tw-send { font-size: 1.1rem; }
+
+  /* ── INK — per-character stacking ── */
+  .ink { font-weight: 900; color: #000; display: inline; }
+  .dark .ink { color: #fff; }
+
+  .i0{
+    text-shadow: 0 0 0.5px currentColor,
+  }
+  .i1 {
     text-shadow: 0 0 0.5px currentColor, 0 0 0.5px currentColor;
   }
-  .dark .tw-link .ink { color: #fff; }
+  .i2 {
+    text-shadow:
+      0 0 0.5px currentColor,
+      0 0 0.5px currentColor,
+      1.5px 0.3px 0.6px currentColor;
+  }
+  .i3 {
+    text-shadow:
+      0 0 0.5px currentColor,
+      0 0 0.5px currentColor,
+      1.5px 0.3px 0.6px currentColor,
+      3px 0.6px 1.2px currentColor;
+  }
+  .i4 {
+    text-shadow:
+      0 0 0.5px currentColor,
+      0 0 0.5px currentColor,
+      1.5px 0.3px 0.6px currentColor,
+      3px 0.6px 1.2px currentColor,
+      4.5px 0.9px 1.8px currentColor;
+  }
 
-  /* Desktop photo */
+  .tw-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    text-align: right;
+    padding: 0.2rem 0;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: #5a5a5a;
+    resize: none;
+    transition: color 0.15s ease;
+  }
+  .tw-field::placeholder { color: #9a9a9a; opacity: 1; }
+  .tw-field:hover { font-weight: 700; color: #161616; }
+  .tw-field:hover::placeholder { font-weight: 700; color: #5f5f5f; }
+  .dark .tw-field { color: #b4b4b4; }
+  .dark .tw-field::placeholder { color: #7d7d7d; }
+  .dark .tw-field:hover { color: #ececec; }
+
+  .tw-textarea {
+    width: min(28rem, 75vw);
+    min-height: 8rem;
+    line-height: 1.4;
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: #bdbdbd #ededed;
+  }
+  .tw-textarea::-webkit-scrollbar { width: 15px; }
+  .tw-textarea::-webkit-scrollbar-track { background: #ededed; border-left: 1px solid #c4c4c4; }
+  .tw-textarea::-webkit-scrollbar-thumb { background: #c9c9c9; border: 1px solid #9a9a9a; }
+  .tw-textarea::-webkit-scrollbar-thumb:hover { background: #bbbbbb; }
+  .tw-textarea::-webkit-scrollbar-button {
+    height: 15px; background-color: #e6e6e6; border: 1px solid #c4c4c4;
+    background-repeat: no-repeat; background-position: center; background-size: 8px 8px;
+  }
+  .tw-textarea::-webkit-scrollbar-button:vertical:decrement {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 2.5 L8.5 7.5 L1.5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
+  }
+  .tw-textarea::-webkit-scrollbar-button:vertical:increment {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 2.5 L8.5 2.5 L5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
+  }
+  .tw-textarea::-webkit-scrollbar-button:vertical:start:increment,
+  .tw-textarea::-webkit-scrollbar-button:vertical:end:decrement { display: none; }
+  .dark .tw-textarea { scrollbar-color: #5a5a5a #2b2b2b; }
+  .dark .tw-textarea::-webkit-scrollbar-track { background: #2b2b2b; border-left-color: #3d3d3d; }
+  .dark .tw-textarea::-webkit-scrollbar-thumb { background: #555; border-color: #777; }
+  .dark .tw-textarea::-webkit-scrollbar-button { background-color: #333; border-color: #3d3d3d; }
+
+  /* Desktop photo: height driven by viewport so it never causes scroll */
   .links-photo {
     width: clamp(200px, 24vw, 280px);
     height: clamp(280px, 52vh, 430px);
@@ -107,8 +202,7 @@
 
   /* Mobile */
   @media (max-width: 640px) {
-    .name-band { font-size: 0.9rem; }
-    .name-band > div { font-size: 0.85rem; gap: 0.5rem; }
+    .name-band { font-size: 0.95rem; }
 
     .content-block {
       flex-direction: column-reverse;
@@ -118,17 +212,24 @@
       width: 100% !important;
     }
     .links-col { align-items: center; width: 100% !important; }
-    .links-col nav { align-items: center; text-align: center; gap: 0.75rem; }
-
+    .links-col nav { align-items: center; text-align: center; }
+    #contactSection { text-align: center; }
+    #contactSection form { align-items: center; }
+    .tw-field { text-align: center; }
+    .tw-textarea { width: 100%; min-height: 8rem; }
+    /* Small portrait photo on mobile so it doesn't shove the links down */
     .links-photo {
-      margin-top: 4rem;
-      margin-bottom: 3rem;
-      width: min(150px, 52vw);
-      height: min(150px, 52vw);
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
-      object-position: center top;
+      width: min(240px, 62vw);
+      height: auto;
+      aspect-ratio: 2 / 3;
     }
+  }
+
+  html.dark .links-page .tw-link,
+  html.dark .links-page .tw-link:visited,
+  html.dark .links-page .tw-link:hover,
+  html.dark .links-page .tw-link:active {
+    color: #ececec !important;
   }
 </style>
 
@@ -138,6 +239,44 @@
     var col = document.querySelector('.links-col');
     if (col) col.style.width = col.getBoundingClientRect().width + 'px';
   });
+
+   var toggleBtn = document.getElementById('toggleContact');
+  var contactSection = document.getElementById('contactSection');
+  if (toggleBtn && contactSection) {
+    toggleBtn.onclick = function () {
+      contactSection.classList.toggle('hidden');
+    };
+  }
+  var submitBtn = document.getElementById('submitBtn');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async function () {
+      var form = document.getElementById('contactForm');
+      var successMessage = document.getElementById('contactSuccessMessage');
+      if (typeof grecaptcha === 'undefined') { alert('reCAPTCHA not loaded.'); return; }
+      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+      const verifyRes = await fetch('/.netlify/functions/verifyRecaptcha', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyData.success || verifyData.score < 0.5) {
+        alert('Your submission was flagged. Please try again.'); return;
+      }
+      form.querySelector('.recaptcha-token-field').value = token;
+      const res = await fetch(form.action, {
+        method: 'POST', body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) { form.reset(); successMessage.classList.remove('hidden'); }
+      else { alert('There was an error. Please try again.'); }
+    });
+  }
+  var params = new URLSearchParams(window.location.search);
+  if (params.get('success') === 'true' && contactSection) {
+    contactSection.classList.remove('hidden');
+    var sm = document.getElementById('contactSuccessMessage');
+    if (sm) sm.classList.remove('hidden');
+  }
 })();
 </script>
 
