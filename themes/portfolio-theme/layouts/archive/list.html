@@ -66,6 +66,12 @@
     {{ end }}
   </div>
 
+  {{/* ── END SPACER ── */}}
+  <div class="arch-end">
+    <span class="arch-end-1">The End :)</span>
+    <span class="arch-end-2">Please stop scrolling!!</span>
+  </div>
+
 </section>
 
 {{/* ── POPUP ── */}}
@@ -94,7 +100,7 @@
 
 .arch-section {
   overflow-x: hidden;
-  padding: 48px 0 220px 230px; /* left clears the fixed sidebar */
+  padding: 48px 0 0 230px; /* bottom handled by grid extra + end-spacer */
   box-sizing: border-box;
 }
 
@@ -478,6 +484,40 @@ html.dark .arch-popup-bg {
   .arch-popup-img { max-width: 88vw; max-height: 52vh; }
   .arch-popup-text-col { max-width: none; }
   .arch-popup-vert { display: none; }
+}
+
+/* ── END SPACER ── */
+.arch-end {
+  position: relative;
+  width: 90%;            /* fills the section's content box */
+  box-sizing: border-box;    /* right breathing room */
+  margin-top: 9vh;        /* small gap after grid */
+  padding-bottom: 80px;
+}
+
+.arch-end-1 {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+/* Right-aligned — needs explicit width:100% so it spans the full content box */
+.arch-end-2 {
+  display: block;
+  width: 100%;
+  text-align: right;
+  font-size: inherit;
+  letter-spacing: inherit;
+  margin-top: 30vh;       /* pushes it well below the first line */
+  padding-right: 10vw;
+  margin-bottom: 7vh;
+}
+
+@media (max-width: 800px) {
+  .arch-end {margin-top: -4vh; width: 100%;}
+  .arch-end-2 { margin-top: 30vh; padding-right: 10vw; margin-bottom: 4vh;}
 }
 
 </style>
