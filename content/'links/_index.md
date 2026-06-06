@@ -1,7 +1,7 @@
 ---
 title: "Links"
-url: "/link"
-type: "link"
+url: "/'links"
+type: "'links"
 menu: false
 hideHeader: true
 ---
