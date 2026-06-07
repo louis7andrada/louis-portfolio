@@ -1,3 +1,7 @@
+<!--/*  All Rights Reserved - Louis Andrada - 2026  */-->
+<!--/*    Webdesign by Jinah Park & Louis Andrada   */-->
+<!--/*      AndradaMono Font by Louis Andrada       */-->
+<!--/*        Codes by Louis Andrada                */-->
 # Louis Andrada – Portfolio Website
 
 This repository contains the source code for louisandrada.com, a static portfolio website built using Hugo and TailwindCSS, deployed on Netlify.
