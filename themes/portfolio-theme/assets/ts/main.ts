@@ -1,7 +1,7 @@
-/*  All Rights Reserved - Louis Andrada - 2026  */
-/*    Webdesign by Jinah Park & Louis Andrada   */
-/*      AndradaMono Font by Louis Andrada       */
-/*        Codes by Louis Andrada                */
+//  All Rights Reserved - Louis Andrada - 2026  
+//    Webdesign by Jinah Park & Louis Andrada   
+//      AndradaMono Font by Louis Andrada      
+//        Codes by Louis Andrada               
 const btn = document.getElementById("mobileMenuBtn");
 const menu = document.getElementById("mobileMenu");
 
