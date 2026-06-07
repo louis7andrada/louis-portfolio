@@ -40,69 +40,27 @@
 
 <style>
   #intro-door {
-    position: fixed;
-    inset: 0;
-    background: #ffffff;
-    z-index: 999;
-    transition: opacity 2.5s ease;
+    position: fixed; inset: 0; background: #ffffff; z-index: 999; transition: opacity 2.5s ease;
   }
   #intro-logo {
-    width: clamp(180px, 22vw, 220px);
-    height: clamp(64px, 8vw, 79px);
-    object-fit: fill;
-    opacity: 1;
-    transition: opacity 0.5s ease, transform 0.4s ease;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    left: 50%;
+    width: clamp(180px, 22vw, 220px); height: clamp(64px, 8vw, 79px);
+    object-fit: fill; opacity: 1; transition: opacity 0.5s ease, transform 0.4s ease;
+    cursor: pointer; position: absolute; top: 50%; left: 50%;
     transform: translate(calc(-50% - 6px), calc(-50% - 3px));
   }
   html.dark #intro-logo { filter: invert(1); }
   #intro-logo:hover { opacity: 0.35; }
   #intro-door.logo-dim #intro-logo { opacity: 0.35; }
-  #intro-door.logo-clicked #intro-logo {
-    transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93);
-    opacity: 0.2;
-  }
+  #intro-door.logo-clicked #intro-logo { transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93); opacity: 0.2; }
   #intro-door.dissolving { opacity: 0; pointer-events: none; }
-  .homepage-wrapper { min-height: calc(100vh - 80px); }
-  .homepage-layout {
-    display: flex;
-    align-items: stretch;
-    padding: 3rem 1rem 2rem 8rem;
-    gap: 10rem;
-    min-height: calc(100vh - 80px);
-  }
-
-  html.dark #intro-door {
-    position: fixed;
-    inset: 0;
-    background: #1a1a1a;
-    z-index: 999;
-    transition: opacity 2.5s ease;
-  }
-  html.dark #intro-logo {
-    width: clamp(180px, 22vw, 220px);
-    height: clamp(64px, 8vw, 79px);
-    object-fit: fill;
-    opacity: 1;
-    transition: opacity 0.5s ease, transform 0.4s ease;
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(calc(-50% - 6px), calc(-50% - 3px));
-  }
+  html.dark #intro-door { position: fixed; inset: 0; background: #1a1a1a; z-index: 999; transition: opacity 2.5s ease; }
   html.dark #intro-logo { filter: invert(1); }
   html.dark #intro-logo:hover { opacity: 0.35; }
   html.dark #intro-door.logo-dim #intro-logo { opacity: 0.35; }
-  html.dark #intro-door.logo-clicked #intro-logo {
-    transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93);
-    opacity: 0.2;
-  }
+  html.dark #intro-door.logo-clicked #intro-logo { transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93); opacity: 0.2; }
   html.dark #intro-door.dissolving { opacity: 0; pointer-events: none; }
-
+  .homepage-wrapper { min-height: calc(100vh - 80px); }
+  .homepage-layout { display: flex; align-items: stretch; padding: 3rem 1rem 2rem 8rem; gap: 10rem; min-height: calc(100vh - 80px); }
   .hp-left { flex: 0 0 auto; width: clamp(420px, 62vw, 900px); display: flex; flex-direction: column; }
   .hp-title { font-size: 0.9rem; letter-spacing: 0.02em; margin: 0 0 0.6rem 0; }
   .hp-image-link { display: block; }
@@ -111,23 +69,13 @@
   .hp-year { font-size: 0.85rem; letter-spacing: 0.05em; align-self: flex-end; margin-top: 0.5rem; }
   .hp-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
   .hp-nav-inner { display: flex; flex-direction: column; justify-content: space-between; height: 60%; }
-  .hp-nav-link {
-    font-size: 1.1rem; text-decoration: none; color: inherit;
-    letter-spacing: 0.04em; display: inline-block; padding: 0.3rem 0;
-    transition: font-weight 0.1s ease; white-space: nowrap;
-  }
+  .hp-nav-link { font-size: 1.1rem; text-decoration: none; color: inherit; letter-spacing: 0.04em; display: inline-block; padding: 0.3rem 0; transition: font-weight 0.1s ease; white-space: nowrap; }
   .hp-nav-link:hover { text-decoration: underline; font-weight: 700; }
-  .hp-nav--artworks    { margin-left: 0%;  }
-  .hp-nav--acquisition { margin-left: 35%; }
-  .hp-nav--archive     { margin-left: 5%;  }
-  .hp-nav--about       { margin-left: 30%; }
-  .hp-nav--links       { margin-left: 60%; }
+  .hp-nav--artworks { margin-left: 0%; } .hp-nav--acquisition { margin-left: 35%; }
+  .hp-nav--archive { margin-left: 5%; } .hp-nav--about { margin-left: 30%; } .hp-nav--links { margin-left: 60%; }
   @media (max-width: 1500px) {
-    .hp-nav--artworks    { margin-left: -20%;  }
-  .hp-nav--acquisition { margin-left: 20%; }
-  .hp-nav--archive     { margin-left: -15%;  }
-  .hp-nav--about       { margin-left: 12%; }
-  .hp-nav--links       { margin-left: 40%; }
+    .hp-nav--artworks { margin-left: -20%; } .hp-nav--acquisition { margin-left: 20%; }
+    .hp-nav--archive { margin-left: -15%; } .hp-nav--about { margin-left: 12%; } .hp-nav--links { margin-left: 40%; }
   }
   @media (max-width: 1200px) {
     .homepage-layout { flex-direction: column; padding: 2rem 2.5rem; gap: 3rem; align-items: center; }
@@ -157,15 +105,9 @@
   if (sessionGet('intro-seen')) { door.style.display = 'none'; return; }
   let dismissed = false;
   function dismiss(fromClick) {
-    if (dismissed) return;
-    dismissed = true;
-    if (fromClick) {
-      door.classList.add('logo-clicked');
-      setTimeout(() => door.classList.add('dissolving'), 400);
-    } else {
-      door.classList.add('logo-dim');
-      setTimeout(() => door.classList.add('dissolving'), 600);
-    }
+    if (dismissed) return; dismissed = true;
+    if (fromClick) { door.classList.add('logo-clicked'); setTimeout(() => door.classList.add('dissolving'), 400); }
+    else { door.classList.add('logo-dim'); setTimeout(() => door.classList.add('dissolving'), 600); }
     setTimeout(() => { door.style.display = 'none'; sessionSet('intro-seen', '1'); }, 3200);
   }
   door.addEventListener('click', () => dismiss(true));
@@ -180,26 +122,20 @@
   <div class="artwork-filter-bar" id="artworkFilterBar">
     <button id="filterToggle" class="artwork-filter-toggle">
       <span class="filter-label">Filters</span>
-      <span class="filter-icon">
-        <span class="fbar fbar-h"></span>
-        <span class="fbar fbar-v"></span>
-      </span>
+      <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
     </button>
     <div id="activeFilterTags" class="artwork-active-tags"></div>
   </div>
 
   <div id="filterOverlay" class="artwork-filter-overlay hidden">
     <div class="artwork-filter-inner">
-  <div class="artwork-filter-left-col">
-    <div class="artwork-filter-toggle filter-spacer" aria-hidden="true">
-      <span class="filter-label">Filters</span>
-      <span class="filter-icon">
-        <span class="fbar fbar-h"></span>
-        <span class="fbar fbar-v"></span>
-      </span>
-    </div>
-    <button id="filterResetBtn" class="artwork-filter-reset-btn">DESELECT ALL</button>
-  </div>
+      <div class="artwork-filter-left-col">
+        <div class="artwork-filter-toggle filter-spacer" aria-hidden="true">
+          <span class="filter-label">Filters</span>
+          <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
+        </div>
+        <button id="filterResetBtn" class="artwork-filter-reset-btn">DESELECT ALL</button>
+      </div>
       <div class="artwork-filter-columns">
         <div class="artwork-filter-group">
           <div class="artwork-filter-group-label">Years</div>
@@ -207,32 +143,22 @@
             <button class="artwork-filter-option active" data-filter="year" data-value="all">All</button>
             {{ $years := slice }}
             {{ range where .Site.RegularPages "Section" "artworks" }}
-              {{ if and (.Params.year) (ne .Params.year 2022) }}
-                {{ $years = $years | append .Params.year }}
-              {{ end }}
+              {{ if and (.Params.year) (ne .Params.year 2022) }}{{ $years = $years | append .Params.year }}{{ end }}
             {{ end }}
             {{ range sort (uniq $years) "value" "desc" }}
               <button class="artwork-filter-option" data-filter="year" data-value="{{ . }}">{{ . }}</button>
             {{ end }}
           </div>
         </div>
-
         <div class="artwork-filter-group">
           <div class="artwork-filter-group-label">Availability</div>
           <div class="artwork-filter-options">
             <button class="artwork-filter-option active" data-filter="availability" data-value="all">All</button>
             {{ $availabilities := slice }}
-            {{ range where .Site.RegularPages "Section" "artworks" }}
-              {{ with .Params.availability }}
-                {{ $availabilities = $availabilities | append . }}
-              {{ end }}
-            {{ end }}
-            {{ range sort (uniq $availabilities) }}
-              <button class="artwork-filter-option" data-filter="availability" data-value="{{ . }}">{{ . }}</button>
-            {{ end }}
+            {{ range where .Site.RegularPages "Section" "artworks" }}{{ with .Params.availability }}{{ $availabilities = $availabilities | append . }}{{ end }}{{ end }}
+            {{ range sort (uniq $availabilities) }}<button class="artwork-filter-option" data-filter="availability" data-value="{{ . }}">{{ . }}</button>{{ end }}
           </div>
         </div>
-
         <div class="artwork-filter-group">
           <div class="artwork-filter-group-label">Collections</div>
           <div class="artwork-filter-options">
@@ -242,27 +168,15 @@
               {{ $worknum := .Params.worknum }}
               {{ with .Params.collection }}
                 {{ if reflect.IsSlice . }}
-                  {{ range . }}
-                    {{ $existing := index $collectionMap . | default 0 }}
-                    {{ if gt $worknum $existing }}
-                      {{ $collectionMap = merge $collectionMap (dict . $worknum) }}
-                    {{ end }}
-                  {{ end }}
+                  {{ range . }}{{ $existing := index $collectionMap . | default 0 }}{{ if gt $worknum $existing }}{{ $collectionMap = merge $collectionMap (dict . $worknum) }}{{ end }}{{ end }}
                 {{ else }}
-                  {{ $existing := index $collectionMap . | default 0 }}
-                  {{ if gt $worknum $existing }}
-                    {{ $collectionMap = merge $collectionMap (dict . $worknum) }}
-                  {{ end }}
+                  {{ $existing := index $collectionMap . | default 0 }}{{ if gt $worknum $existing }}{{ $collectionMap = merge $collectionMap (dict . $worknum) }}{{ end }}
                 {{ end }}
               {{ end }}
             {{ end }}
             {{ $collections := slice }}
-            {{ range $name, $num := $collectionMap }}
-              {{ $collections = $collections | append (dict "name" $name "worknum" $num) }}
-            {{ end }}
-            {{ range sort $collections "worknum" "desc" }}
-              <button class="artwork-filter-option" data-filter="collection" data-value="{{ .name }}">{{ .name }}</button>
-            {{ end }}
+            {{ range $name, $num := $collectionMap }}{{ $collections = $collections | append (dict "name" $name "worknum" $num) }}{{ end }}
+            {{ range sort $collections "worknum" "desc" }}<button class="artwork-filter-option" data-filter="collection" data-value="{{ .name }}">{{ .name }}</button>{{ end }}
           </div>
         </div>
       </div>
@@ -279,7 +193,6 @@
   {{ end }}
   {{ $sorted := sort $clean "Params.worknum" "desc" }}
 
-  <!-- GALLERY -->
   <div id="artworkGallery" class="artwork-masonry-grid">
     {{ range $sorted }}
     <a href="{{ .RelPermalink }}"
@@ -291,13 +204,12 @@
        data-size="{{ .Params.size }}"
        data-availability="{{ .Params.availability }}"
        data-price="{{ .Params.price }}"
-       data-image="{{ .Params.image }}">
+       data-image="{{ .Params.image }}"
+       data-id="{{ .Params.id }}"
+       data-comment="{{ .Params.comment }}">
       <span class="artwork-cell-title">{{ .Title }}</span>
-      {{ if .Params.image }}
-        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="artwork-cell-img" />
-      {{ else }}
-        <div class="artwork-cell-placeholder">No image yet</div>
-      {{ end }}
+      {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" class="artwork-cell-img" />
+      {{ else }}<div class="artwork-cell-placeholder">No image yet</div>{{ end }}
       <span class="artwork-cell-year">{{ .Params.year }}</span>
     </a>
     {{ end }}
@@ -311,11 +223,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h2>
           <div class="grid grid-cols-3 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "tree") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}
-                <div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
-              {{ else }}
-                <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>
-              {{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -323,11 +232,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h2>
           <div class="grid grid-cols-4 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "snake") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}
-                <div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
-              {{ else }}
-                <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>
-              {{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -335,59 +241,30 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h2>
           <div class="grid grid-cols-3 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}
-                <div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
-              {{ else }}
-                <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>
-              {{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
       </div>
-
       <div class="mt-24 grid items-start" style="grid-template-columns: 3fr 4fr 3fr; gap:3px;">
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h3>
-          {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}
-          {{ with index $treeFull 0 }}
-            <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" /></a>
-          {{ end }}
+          {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}{{ with index $treeFull 0 }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" /></a>{{ end }}
         </div>
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h3>
-          {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}
-          {{ with index $snakeFull 0 }}
-            {{ if .Params.inprogress }}
-              <div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;"/></div>
-            {{ else }}
-              <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>
-            {{ end }}
-          {{ end }}
+          {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}{{ with index $snakeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}{{ end }}
         </div>
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h3>
-          {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}
-          {{ with index $fruitFull 0 }}
-            {{ if .Params.inprogress }}
-              <div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;"/></div>
-            {{ else }}
-              <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>
-            {{ end }}
-          {{ end }}
+          {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}{{ with index $fruitFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}{{ end }}
         </div>
       </div>
-
       <h1 class="text-2xl font-semibold mt-24 mb-10 text-center whitespace-nowrap">The Tree, The Snake, The Fruit</h1>
       <div class="grid grid-cols-1" style="gap:0px;">
         <div class="flex flex-col items-center">
-          {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}
-          {{ with index $completeFull 0 }}
-            {{ if .Params.inprogress }}
-              <div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;"/></div>
-            {{ else }}
-              <a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>
-            {{ end }}
-          {{ end }}
+          {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}{{ with index $completeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}{{ end }}
         </div>
       </div>
     </section>
@@ -403,59 +280,65 @@
 
 </section>
 
+<!-- ═══════════════════════════════════════════════════
+     ARTWORK POPUP MODAL + LIGHTBOX
+     ═══════════════════════════════════════════════════ -->
+<div id="arwModal" class="arw-modal">
+  <div class="arw-modal-bg" id="arwModalBg"></div>
+  <button class="arw-close" id="arwClose" aria-label="Close">&#x2715;</button>
+  <div class="arw-modal-pane">
+    <div class="arw-sp-row" id="arwRow">
+
+      <div class="sp-img-wrap">
+        <img class="sp-img" id="arwImg" src="" alt="" />
+      </div>
+
+      <div class="sp-info">
+        <div class="sp-info-top">
+          <h1 class="sp-title" id="arwTitle"></h1>
+          <p id="arwYear"></p>
+          <p id="arwSize"></p>
+          <p id="arwMedium"></p>
+          <p id="arwCollection"></p>
+          <p class="sp-comment" id="arwComment"></p>
+        </div>
+        <div class="sp-info-bottom">
+          <p id="arwAvailability"></p>
+          <p id="arwPrice"></p>
+          <a href="#" class="sp-purchase" id="arwPurchase">Purchase Artwork</a>
+        </div>
+      </div>
+
+      <!-- Mobile arrow row -->
+      <div class="sp-mobile-arrows" id="arwMobArrows"></div>
+
+    </div>
+
+    <!-- Desktop fixed arrows (inside modal so they appear above the bg) -->
+    <a class="sp-arrow sp-arrow-prev arw-nav-arrow" id="arwPrevBtn" aria-label="Previous"></a>
+    <a class="sp-arrow sp-arrow-next arw-nav-arrow" id="arwNextBtn" aria-label="Next"></a>
+  </div>
+</div>
+
+<!-- Lightbox for the popup (separate from single.html's lightbox) -->
+<div id="arwLightbox" class="lightbox-overlay" onclick="closeArwLightbox()">
+  <button class="lightbox-close" onclick="event.stopPropagation(); closeArwLightbox()">&#x2715;</button>
+  <img id="arwLightboxImg" src="" alt="" class="lightbox-img" onclick="event.stopPropagation()" />
+  <div id="arwRotateHint" class="rotate-hint" onclick="event.stopPropagation(); toggleArwRotate();">Rotate image &#x27F3;</div>
+</div>
+
+
 <style>
 /* ── ARTWORK GRID ── */
-.artwork-masonry-grid {
-  position: relative;
-  width: 100%;
-  padding: 0 clamp(4rem, 7vw, 9rem);
-  box-sizing: border-box;
-  margin-top: 2rem;
-}
-.artwork-cell {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-}
-.artwork-cell-title {
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  line-height: 1.35;
-  opacity: 0.55;
-  margin-bottom: 0.5rem;
-  transition: opacity 0.3s ease;
-}
-.artwork-cell-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: opacity 0.4s ease;
-}
-.artwork-cell-year {
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  opacity: 0.38;
-  margin-top: 0.4rem;
-  align-self: flex-end;
-  transition: opacity 0.3s ease;
-}
-.artwork-cell:hover .artwork-cell-img  { opacity: 0.68; }
-.artwork-cell:hover .artwork-cell-title,
-.artwork-cell:hover .artwork-cell-year { opacity: 0.9; }
-.artwork-cell-placeholder {
-  background: #f2f2f2;
-  width: 100%;
-  height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: #aaa;
-}
+.artwork-masonry-grid { position: relative; width: 100%; padding: 0 clamp(4rem, 7vw, 9rem); box-sizing: border-box; margin-top: 2rem; }
+.artwork-cell { position: absolute; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.artwork-cell-title { font-size: 0.78rem; letter-spacing: 0.02em; line-height: 1.35; opacity: 0.55; margin-bottom: 0.5rem; transition: opacity 0.3s ease; }
+.artwork-cell-img { display: block; width: 100%; height: auto; transition: opacity 0.4s ease; }
+.artwork-cell-year { font-size: 0.72rem; letter-spacing: 0.06em; opacity: 0.38; margin-top: 0.4rem; align-self: flex-end; transition: opacity 0.3s ease; }
+.artwork-cell:hover .artwork-cell-img { opacity: 0.68; }
+.artwork-cell:hover .artwork-cell-title, .artwork-cell:hover .artwork-cell-year { opacity: 0.9; }
+.artwork-cell-placeholder { background: #f2f2f2; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #aaa; }
 html.dark .artwork-cell-placeholder { background: #1a1a1a; color: #555; }
-
 @media (max-width: 700px) {
   .artwork-masonry-grid { padding: 0 1.5rem; }
   .artwork-cell { position: static !important; width: 100% !important; margin-bottom: 2.5rem; }
@@ -463,163 +346,187 @@ html.dark .artwork-cell-placeholder { background: #1a1a1a; color: #555; }
 }
 
 /* ── SPACERS ── */
-.end-spacer-1 { height: 20vh; }
-.end-spacer-2 { height: 30vh; }
-.end-spacer-3 { height: 10vh; }
+.end-spacer-1 { height: 20vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 10vh; }
 @media (max-width: 768px) { .end-spacer-1 { height: 15vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 8vh; } }
 @media (max-width: 480px) { .end-spacer-1 { height: 10vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 5vh; } }
-
-/* Force right-alignment on end text — text-right may be purged by Tailwind */
-.end-message2 {
-  display: block;
-  width: 100%;
-  text-align: right !important;
-  box-sizing: border-box;
-  padding-right: 1.5rem;
-}
+.end-message2 { display: block; width: 100%; text-align: right !important; box-sizing: border-box; padding-right: 1.5rem; }
 
 /* ── FILTER BAR ── */
-.artwork-filter-bar {
-  position: sticky;
-  top: 100px;
-  z-index: 110;
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 1.2rem;
-  width: fit-content;
-  max-width: min(90vw, 900px);
-  margin-bottom: 1rem;
-  padding: 0.6rem 0.9rem;
-  background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  transition: background 0.2s ease;
-}
-html.dark .artwork-filter-bar { background: rgba(26, 26, 26, 0.65); }
-.artwork-filter-bar.filter-open {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
+.artwork-filter-bar { position: sticky; top: 100px; z-index: 110; display: inline-flex; align-items: flex-start; gap: 1.2rem; width: fit-content; max-width: min(90vw, 900px); margin-bottom: 1rem; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.65); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); transition: background 0.2s ease; }
+html.dark .artwork-filter-bar { background: rgba(26,26,26,0.65); }
+.artwork-filter-bar.filter-open { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
 .artwork-filter-bar.filter-open .artwork-active-tags { display: none; }
-
-/* ── FILTER TOGGLE ── */
-.artwork-filter-toggle {
-  background: none; border: none; cursor: pointer;
-  font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
-  color: inherit; opacity: 0.55; padding: 0; transition: opacity 0.2s;
-  font-family: inherit; white-space: nowrap; flex-shrink: 0;
-  display: inline-flex; align-items: center; gap: 0.5rem;
-}
-.artwork-filter-toggle:hover,
-.artwork-filter-toggle.open { opacity: 1; }
+.artwork-filter-toggle { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: inherit; opacity: 0.55; padding: 0; transition: opacity 0.2s; font-family: inherit; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.5rem; }
+.artwork-filter-toggle:hover, .artwork-filter-toggle.open { opacity: 1; }
 .artwork-filter-toggle .filter-label { text-decoration: underline; text-underline-offset: 3px; }
 .artwork-filter-toggle.filter-spacer { opacity: 0; pointer-events: none; cursor: default; }
-
-/* ── FILTER ICON ── */
-.filter-icon {
-  position: relative; display: inline-flex; align-items: center;
-  justify-content: center; width: 11px; height: 11px; flex-shrink: 0;
-}
+.filter-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 11px; height: 11px; flex-shrink: 0; }
 .fbar { position: absolute; background: currentColor; border-radius: 1px; top: 50%; left: 50%; }
 .fbar-h { width: 11px; height: 1.5px; transform: translate(-50%,-50%); }
-.fbar-v {
-  width: 1.5px; height: 11px; transform: translate(-50%,-50%);
-  transform-origin: center center; transition: transform 0.35s ease, opacity 0.25s ease;
-}
+.fbar-v { width: 1.5px; height: 11px; transform: translate(-50%,-50%); transform-origin: center center; transition: transform 0.35s ease, opacity 0.25s ease; }
 .artwork-filter-toggle.open .fbar-v { transform: translate(-50%,-50%) scaleY(0); opacity: 0; }
-
-/* ── ACTIVE TAGS ── */
 .artwork-active-tags { display: flex; flex-wrap: wrap; gap: 1rem; max-width: 700px; }
 .artwork-active-tag-group { display: flex; flex-direction: column; gap: 0.1rem; white-space: nowrap; }
-.artwork-active-tag-label {
-  font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
-  opacity: 0.35; text-decoration: underline; text-underline-offset: 2px;
-}
+.artwork-active-tag-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; text-decoration: underline; text-underline-offset: 2px; }
 .artwork-active-tag-value { font-size: 0.78rem; letter-spacing: 0.03em; opacity: 0.75; }
-
-/* ── OVERLAY ── */
-.artwork-filter-overlay {
-  position: fixed; inset: 0; z-index: 100;
-  background: rgba(255,255,255,0.72);
-  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-  display: flex; align-items: flex-start; justify-content: flex-start;
-  padding: 7rem 4rem 3rem 5rem;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
-@media (max-width: 700px) {
-  .artwork-filter-overlay {
-    padding: 6rem 1.5rem 4rem 1.5rem;
-  }
-
-  .artwork-filter-inner {
-    padding-bottom: 3rem;
-  }
-}
-body.filter-lock {
-  overflow: hidden;
-}
-
-.artwork-filter-overlay {
-  overflow-y: auto;
-}
-
-html.dark .artwork-filter-overlay {
-  background: rgba(12,12,12,0.78);
-  backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important;
-}
+.artwork-filter-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(255,255,255,0.72); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: flex-start; justify-content: flex-start; padding: 7rem 4rem 3rem 5rem; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+@media (max-width: 700px) { .artwork-filter-overlay { padding: 6rem 1.5rem 4rem 1.5rem; } .artwork-filter-inner { padding-bottom: 3rem; } }
+body.filter-lock { overflow: hidden; }
+html.dark .artwork-filter-overlay { background: rgba(12,12,12,0.78); backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; }
 .artwork-filter-overlay.hidden { display: none; }
 .artwork-filter-inner { display: flex; align-items: flex-start; gap: 3rem; width: 100%; }
 .artwork-filter-columns { display: flex; gap: 4rem; flex-wrap: wrap; }
 .artwork-filter-group { display: flex; flex-direction: column; gap: 0.5rem; min-width: 110px; }
-.artwork-filter-group-label {
-  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
-  opacity: 0.35; margin-bottom: 0.3rem; text-decoration: underline; text-underline-offset: 3px;
-}
+.artwork-filter-group-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; margin-bottom: 0.3rem; text-decoration: underline; text-underline-offset: 3px; }
 .artwork-filter-options { display: flex; flex-direction: column; gap: 0.25rem; }
-.artwork-filter-option { position: relative; }
-.artwork-filter-option:nth-child(1) { margin-left: 0px; }
-.artwork-filter-option:nth-child(2) { margin-left: 8px; }
-.artwork-filter-option:nth-child(3) { margin-left: 16px; }
-.artwork-filter-option:nth-child(4) { margin-left: 24px; }
-.artwork-filter-option:nth-child(5) { margin-left: 32px; }
-.artwork-filter-option:nth-child(6) { margin-left: 40px; }
-.artwork-filter-option:nth-child(7) { margin-left: 48px; }
-.artwork-filter-option:nth-child(8) { margin-left: 56px; }
-.artwork-filter-option {
-  background: none; border: none; cursor: pointer; font-size: 0.82rem;
-  letter-spacing: 0.03em; color: inherit; opacity: 0.3; text-align: left;
-  padding: 0.1rem 0; transition: opacity 0.15s; font-family: inherit;
-}
+.artwork-filter-option:nth-child(1) { margin-left: 0px; } .artwork-filter-option:nth-child(2) { margin-left: 8px; } .artwork-filter-option:nth-child(3) { margin-left: 16px; } .artwork-filter-option:nth-child(4) { margin-left: 24px; } .artwork-filter-option:nth-child(5) { margin-left: 32px; } .artwork-filter-option:nth-child(6) { margin-left: 40px; } .artwork-filter-option:nth-child(7) { margin-left: 48px; } .artwork-filter-option:nth-child(8) { margin-left: 56px; }
+.artwork-filter-option { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.03em; color: inherit; opacity: 0.3; text-align: left; padding: 0.1rem 0; transition: opacity 0.15s; font-family: inherit; }
 .artwork-filter-option:hover { opacity: 0.7; }
 .artwork-filter-option.active { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
-
-.artwork-filter-reset-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.82rem;
-  letter-spacing: 0.03em;
-  color: inherit;
-  opacity: 0.45;
-  text-align: left;
-  padding: 0.1rem 0;
-  font-family: inherit;
-  transition: opacity 0.15s;
-  margin-left: 0;
-  margin-top: 1.5rem;
-}
+.artwork-filter-reset-btn { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.03em; color: inherit; opacity: 0.45; text-align: left; padding: 0.1rem 0; font-family: inherit; transition: opacity 0.15s; margin-left: 0; margin-top: 1.5rem; }
 .artwork-filter-reset-btn:hover { opacity: 1; }
+.artwork-filter-left-col { display: flex; flex-direction: column; gap: 1.2rem; flex-shrink: 0; }
 
-.artwork-filter-left-col {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  flex-shrink: 0;
+/* ══════════════════════════════════════════
+   ARTWORK POPUP MODAL
+   ══════════════════════════════════════════ */
+.arw-modal {
+  position: fixed; inset: 0; z-index: 200;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.38s ease;
 }
+.arw-modal.open { opacity: 1; pointer-events: all; }
+
+.arw-modal-bg {
+  position: absolute; inset: 0; cursor: pointer;
+  background: rgba(255,255,255,0.48);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+}
+html.dark .arw-modal-bg {
+  background: rgba(0,0,0,0.52);
+  backdrop-filter: blur(20px) brightness(0.65);
+  -webkit-backdrop-filter: blur(20px) brightness(0.65);
+}
+
+.arw-close {
+  position: fixed; top: 20px; right: 24px; z-index: 280;
+  background: none; border: none; cursor: pointer;
+  font-size: 2rem; color: inherit; padding: 0;
+  line-height: 1; font-weight: 200; opacity: 0.5;
+  transition: opacity 0.15s;
+}
+.arw-close:hover { opacity: 1; }
+
+.arw-modal-pane {
+  position: absolute; inset: 0; z-index: 1;
+}
+
+/* The artwork row fills the modal pane — same geometry as single.html .sp-row */
+.arw-sp-row {
+  position: relative; width: 100%; height: 100%;
+}
+
+/* Reuse single.html layout classes verbatim */
+.arw-modal-pane .sp-img-wrap {
+  position: absolute; top: 50%; left: 34%;
+  transform: translate(-50%, -50%);
+  width: clamp(320px, 52vw, 980px);
+  max-width: min(52vw, 980px);
+  height: calc(100% - 100px);
+  display: flex; align-items: center; justify-content: center;
+}
+.arw-modal-pane .sp-img {
+  display: block; max-width: 100%; max-height: 100%;
+  width: auto; height: auto; object-fit: contain; cursor: pointer;
+}
+.arw-modal-pane .sp-info {
+  position: absolute; top: 50%; left: 78%;
+  transform: translate(-50%, -50%);
+  width: clamp(240px, 26vw, 320px);
+  display: flex; flex-direction: column; gap: 28px;
+}
+.arw-modal-pane .sp-info-top { display: flex; flex-direction: column; gap: 2px; }
+.arw-modal-pane .sp-title { font-size: clamp(1rem, 3.8vw, 1.2rem); font-weight: 600; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.01em; }
+.arw-modal-pane .sp-info-top p { margin: 0; font-size: clamp(0.78rem, 2.2vw, 0.93rem); line-height: 1.45; opacity: 0.62; }
+.arw-modal-pane .sp-comment { font-size: 0.83rem !important; margin-top: 6px !important; }
+.arw-modal-pane .sp-info-bottom { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.arw-modal-pane .sp-info-bottom p { margin: 0; font-size: 0.93rem; line-height: 1.75; opacity: 0.62; text-align: right; }
+.arw-modal-pane .sp-purchase { display: inline-block; margin-top: 6px; font-size: 0.93rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; color: inherit !important; background: none !important; border: none !important; padding: 0 !important; opacity: 0.85; transition: opacity 0.22s; }
+.arw-modal-pane .sp-purchase:hover { opacity: 0.3; }
+
+/* Desktop arrows — fixed to viewport, above modal bg */
+.arw-nav-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center;
+  color: inherit; opacity: 0.6;
+  background: none !important; border: none !important;
+  text-decoration: none !important; box-shadow: none !important;
+  padding: 16px 10px !important; z-index: 260;
+  transition: opacity 0.22s; line-height: 0; cursor: pointer;
+  display: none; /* shown by JS when modal opens */
+}
+.arw-nav-arrow:hover { opacity: 0.2; }
+.sp-arrow-prev.arw-nav-arrow { left: 16px; }
+.sp-arrow-next.arw-nav-arrow { right: 16px; }
+
+/* Mobile arrows inside modal */
+.arw-modal-pane .sp-mobile-arrows { display: none; }
+/* (title-row arrows removed — fixed-side arrows used on mobile instead) */
+
+/* ── MOBILE popup ── */
+@media (max-width: 900px) {
+  .arw-sp-row {
+    position: static; display: flex; flex-direction: column;
+    align-items: center; padding: 52px 20px 20px; gap: 0; height: auto;
+    min-height: 100%;
+  }
+  .arw-modal-pane .sp-img-wrap {
+    position: static; transform: none;
+    width: 100%; height: auto; min-height: 45vh; max-height: 45vh;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .arw-modal-pane .sp-img { width: auto; height: auto; max-width: 90vw; max-height: 46vh; }
+  .arw-modal-pane .sp-info {
+    position: static; transform: none;
+    width: 100%; max-width: 74vw;
+    margin: 18px auto 0;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+  }
+  .arw-modal-pane .sp-info-top { text-align: left; width: 100%; max-width: 520px; }
+  .arw-modal-pane .sp-info-bottom { align-items: flex-start; text-align: left; width: 100%; max-width: 520px; }
+  .arw-modal-pane .sp-info-bottom p { text-align: left; }
+  /* Show fixed side-arrows on mobile (position:fixed top:50% lands at the title) */
+  .arw-nav-arrow { display: flex !important; }
+  /* Push info block slightly right */
+  .arw-modal-pane .sp-info { padding-left: 1.2rem; }
+  /* Hide the old bottom arrow row completely */
+  .arw-modal-pane .sp-mobile-arrows { display: none !important; }
+}
+
+/* ══════════════════════════════════════════
+   LIGHTBOX (for popup)
+   ══════════════════════════════════════════ */
+.lightbox-overlay {
+  position: fixed; inset: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(18px) saturate(0.7);
+  -webkit-backdrop-filter: blur(18px) saturate(0.7);
+  opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+}
+html.dark .lightbox-overlay { background: rgba(15,15,15,0.35); }
+.lightbox-overlay.active { opacity: 1; pointer-events: auto; }
+.lightbox-img { max-width: 88vw; max-height: 88vh; width: auto; height: auto; object-fit: contain; cursor: default; transform-origin: center center; transition: transform 0.18s linear, max-width 0.18s linear, max-height 0.18s linear; }
+.lightbox-img:not(.is-rotated) { transform: scale(1); }
+.lightbox-img.is-rotated { transform: rotate(90deg) scale(0.96); max-width: 84vh; max-height: 84vw; }
+@media (max-width: 900px) { .lightbox-img.is-rotated { max-width: min(92vh,140vw); max-height: min(92vw,140vh); transform: rotate(90deg) scale(0.94); } }
+.lightbox-close { position: fixed; top: 1rem; right: 50%; font-size: 1.3rem; font-family: inherit; font-weight: bold; text-transform: uppercase; background: none; border: none; cursor: pointer; color: inherit; opacity: 0.8; letter-spacing: 0.05em; transition: opacity 0.2s ease; z-index: 9999; }
+.lightbox-close:hover { opacity: 1; }
+.rotate-hint { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; opacity: 0.65; color: inherit; display: none; cursor: pointer; z-index: 9999; text-align: center; user-select: none; }
+.rotate-hint:hover { opacity: 0.3; }
 </style>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
@@ -633,31 +540,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterLabels = { year: "Years", availability: "Availability", collection: "Collection" };
 
   function openOverlay()  { toggle.classList.add("open"); filterBar.classList.add("filter-open"); overlay.classList.remove("hidden"); document.body.classList.add("filter-lock"); }
-  function closeOverlay() { overlay.classList.add("hidden"); toggle.classList.remove("open"); filterBar.classList.remove("filter-open"); document.body.classList.remove("filter-lock");}
+  function closeOverlay() { overlay.classList.add("hidden"); toggle.classList.remove("open"); filterBar.classList.remove("filter-open"); document.body.classList.remove("filter-lock"); }
   document.getElementById('filterResetBtn')?.addEventListener('click', () => {
-  active.year = 'all';
-  active.availability = 'all';
-  active.collection = 'all';
-  document.querySelectorAll('.artwork-filter-option').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.artwork-filter-option[data-value="all"]').forEach(b => b.classList.add('active'));
-  const galleryView = document.getElementById("artworkGallery");
-  const treeView    = document.getElementById("treeCollectionView");
-  treeView.style.display    = 'none';
-  galleryView.style.display = '';
-  applyFilters();
-  renderTags();
-});
+    active.year = 'all'; active.availability = 'all'; active.collection = 'all';
+    document.querySelectorAll('.artwork-filter-option').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.artwork-filter-option[data-value="all"]').forEach(b => b.classList.add('active'));
+    const galleryView = document.getElementById("artworkGallery");
+    const treeView    = document.getElementById("treeCollectionView");
+    treeView.style.display = 'none'; galleryView.style.display = '';
+    applyFilters(); renderTags();
+  });
 
   toggle.addEventListener("click", () => overlay.classList.contains("hidden") ? openOverlay() : closeOverlay());
   overlay.addEventListener("click", (e) => { if (e.target === overlay) closeOverlay(); });
 
   document.querySelectorAll(".artwork-filter-option").forEach(btn => {
     btn.addEventListener("click", () => {
-      const filter = btn.dataset.filter;
-      const value  = btn.dataset.value;
+      const filter = btn.dataset.filter; const value = btn.dataset.value;
       btn.closest(".artwork-filter-options").querySelectorAll(".artwork-filter-option").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      active[filter] = value;
+      btn.classList.add("active"); active[filter] = value;
       const galleryView = document.getElementById("artworkGallery");
       const treeView    = document.getElementById("treeCollectionView");
       if (filter === "collection" && value === "The Tree, The Snake, The Fruit") {
@@ -682,7 +583,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const matchCol   = active.collection === "all" || col.split(",").map(s => s.trim()).includes(active.collection);
       item.style.display = (matchYear && matchAvail && matchCol) ? "" : "none";
     });
-    window._artworkLayout?.(); // ← add this line
+    window._artworkLayout?.();
   }
 
   function renderTags() {
@@ -696,7 +597,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // NEW — replace with this:
   if (window.location.hash === "#artworks-section") {
     document.documentElement.style.opacity = '0';
     const target = document.getElementById("artworks-section");
@@ -706,10 +606,7 @@ document.addEventListener("DOMContentLoaded", () => {
       requestAnimationFrame(() => {
         document.documentElement.style.transition = 'opacity 0.2s ease';
         document.documentElement.style.opacity = '1';
-        setTimeout(() => {
-          document.documentElement.style.opacity = '';
-          document.documentElement.style.transition = '';
-        }, 250);
+        setTimeout(() => { document.documentElement.style.opacity = ''; document.documentElement.style.transition = ''; }, 250);
       });
     }, 200);
   }
@@ -718,166 +615,222 @@ document.addEventListener("DOMContentLoaded", () => {
   const collectionParam = params.get("collection");
   if (collectionParam) {
     active.collection = collectionParam;
-    document.querySelectorAll('[data-filter="collection"]').forEach(b => {
-      b.classList.remove("active");
-      if (b.dataset.value === collectionParam) b.classList.add("active");
-    });
+    document.querySelectorAll('[data-filter="collection"]').forEach(b => { b.classList.remove("active"); if (b.dataset.value === collectionParam) b.classList.add("active"); });
     const galleryView = document.getElementById("artworkGallery");
     const treeView    = document.getElementById("treeCollectionView");
-    if (collectionParam === "The Tree, The Snake, The Fruit") {
-      galleryView.style.display = "none"; treeView.style.display = "block";
-    } else { applyFilters(); }
+    if (collectionParam === "The Tree, The Snake, The Fruit") { galleryView.style.display = "none"; treeView.style.display = "block"; }
+    else { applyFilters(); }
     renderTags();
   }
 });
-// ── JUSTIFIED GALLERY LAYOUT ──
+
+/* ── JUSTIFIED GALLERY LAYOUT ── */
 (function () {
   const gallery = document.getElementById('artworkGallery');
   if (!gallery) return;
-
-  const GAP_H = 50;
-  const GAP_V = 110;
-  const TEXT  = 50;
-
+  const GAP_H = 50; const GAP_V = 110; const TEXT = 50;
   const HEIGHTS = [340, 400, 280, 360, 310, 420, 290];
   const SCALES  = [0.82, 0.92, 0.76, 0.88, 0.84, 0.95, 0.79];
   const ANCHORS = ['left', 'right', 'center', 'left', 'right', 'left', 'center'];
-  const STAGGERS = {
-    1: [[0]],
-    2: [[0, 90], [90, 0], [0, 60], [60, 0], [40, 0], [0, 40]],
-    3: [[0, 80, 30], [60, 0, 90], [30, 90, 0], [80, 20, 60], [0, 50, 80], [70, 30, 0]],
-  };
-
-  function visible() {
-    return Array.from(gallery.querySelectorAll('.artwork-item'))
-      .filter(el => el.style.display !== 'none');
-  }
-
+  const STAGGERS = { 1: [[0]], 2: [[0,90],[90,0],[0,60],[60,0],[40,0],[0,40]], 3: [[0,80,30],[60,0,90],[30,90,0],[80,20,60],[0,50,80],[70,30,0]] };
+  function visible() { return Array.from(gallery.querySelectorAll('.artwork-item')).filter(el => el.style.display !== 'none'); }
   function layout() {
     if (window.innerWidth <= 700) return;
-    const items = visible();
-    if (!items.length) { gallery.style.height = '0'; return; }
-
-    const pl = parseFloat(getComputedStyle(gallery).paddingLeft)  || 0;
+    const items = visible(); if (!items.length) { gallery.style.height = '0'; return; }
+    const pl = parseFloat(getComputedStyle(gallery).paddingLeft) || 0;
     const pr = parseFloat(getComputedStyle(gallery).paddingRight) || 0;
-    const W  = gallery.offsetWidth - pl - pr;
-    if (W <= 0) return;
-
-    const HEIGHT_MULTS = [0.93, 0.97, 1.05, 0.91, 1.08, 0.95, 1.03, 0.89, 1.06, 0.92];
-
-    const data = items.map((el, itemIdx) => {
-      const img  = el.querySelector('img');
-      const ar   = (img && img.naturalWidth && img.naturalHeight)
-        ? img.naturalWidth / img.naturalHeight : 0;
-      const mult = HEIGHT_MULTS[itemIdx % HEIGHT_MULTS.length];
-      return { el, ar, mult };
-    });
-
+    const W  = gallery.offsetWidth - pl - pr; if (W <= 0) return;
+    const HEIGHT_MULTS = [0.93,0.97,1.05,0.91,1.08,0.95,1.03,0.89,1.06,0.92];
+    const data = items.map((el, itemIdx) => { const img = el.querySelector('img'); const ar = (img && img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight : 0; return { el, ar, mult: HEIGHT_MULTS[itemIdx % HEIGHT_MULTS.length] }; });
     const loadedCount = data.filter(d => d.ar > 0).length;
-    if (loadedCount < data.length * 0.5 && data.length > 2) {
-      setTimeout(layout, 250);
-      return;
-    }
+    if (loadedCount < data.length * 0.5 && data.length > 2) { setTimeout(layout, 250); return; }
     data.forEach(d => { if (d.ar === 0) d.ar = 0.75; });
-
-    const rows = [];
-    let i = 0, ri = 0;
-
+    const rows = []; let i = 0, ri = 0;
     while (i < data.length) {
-      const targetH     = HEIGHTS[ri % HEIGHTS.length];
-      const isLandscape = data[i] && data[i].ar > 1.05;
-      const soloRow     = (ri % 8 === 5) && isLandscape;
-      const maxItems    = soloRow ? 2 : 3;
-      const row = [];
-      let rowRawW = 0;
-
-      while (i < data.length && row.length < maxItems) {
-        const d     = data[i];
-        const itemW = targetH * d.mult * d.ar;
-        const gapsW = row.length * GAP_H;
-        if (row.length > 0 && rowRawW + gapsW + itemW > W * 1.1) break;
-        row.push(d);
-        rowRawW += itemW;
-        i++;
-      }
-
-      rows.push({ items: row, targetH, solo: soloRow });
-      ri++;
+      const targetH = HEIGHTS[ri % HEIGHTS.length]; const isLandscape = data[i] && data[i].ar > 1.05; const soloRow = (ri % 8 === 5) && isLandscape; const maxItems = soloRow ? 2 : 3;
+      const row = []; let rowRawW = 0;
+      while (i < data.length && row.length < maxItems) { const d = data[i]; const itemW = targetH * d.mult * d.ar; const gapsW = row.length * GAP_H; if (row.length > 0 && rowRawW + gapsW + itemW > W * 1.1) break; row.push(d); rowRawW += itemW; i++; }
+      rows.push({ items: row, targetH, solo: soloRow }); ri++;
     }
-
-    let y = 0;
-    let globalIdx = 0;
-
+    let y = 0; let globalIdx = 0;
     rows.forEach(({ items: rowItems, targetH, solo }, rIdx) => {
-      const isLast   = rIdx === rows.length - 1;
-      const count    = rowItems.length;
-      const rawTotal = rowItems.reduce((s, d) => s + targetH * d.mult * d.ar, 0);
-      const gaps     = GAP_H * (count - 1);
-
-      const scale = solo
-  ? (W * 0.78) / rawTotal
-  : (isLast && rawTotal + gaps < W * 0.5)
-    ? 1
-    : (W - gaps) / rawTotal;
-
-const patterns = STAGGERS[count] || [[0]];
-const stagger  = patterns[rIdx % patterns.length];
-
-let x = pl;
-let maxBottom = 0;
-
-rowItems.forEach(({ el, ar, mult }, idx) => {
-
-  let slotW = targetH * mult * ar * scale;
-
-  // enlarge landscape piece naturally
-  if (solo && ar > 1.15) {
-    slotW *= 1.18;
-  }
-
-  const sc = SCALES[globalIdx % SCALES.length];
-
-  const anchor = ANCHORS[globalIdx % ANCHORS.length];
-
-  const imgW = slotW * sc;
-        const slack  = slotW - imgW;
-        const shiftX = anchor === 'left'   ? 0
-                     : anchor === 'right'  ? slack
-                     :                      slack / 2;
-
-        el.style.left  = (x + shiftX) + 'px';
-        el.style.top   = (y + stagger[idx]) + 'px';
-        el.style.width = imgW + 'px';
-
-        const imgH   = imgW / ar;
-        const bottom = stagger[idx] + imgH + TEXT;
-        maxBottom    = Math.max(maxBottom, bottom);
-
-        x += slotW + GAP_H;
-        globalIdx++;
+      const isLast = rIdx === rows.length - 1; const count = rowItems.length;
+      const rawTotal = rowItems.reduce((s, d) => s + targetH * d.mult * d.ar, 0); const gaps = GAP_H * (count - 1);
+      const scale = solo ? (W * 0.78) / rawTotal : (isLast && rawTotal + gaps < W * 0.5) ? 1 : (W - gaps) / rawTotal;
+      const patterns = STAGGERS[count] || [[0]]; const stagger = patterns[rIdx % patterns.length];
+      let x = pl; let maxBottom = 0;
+      rowItems.forEach(({ el, ar, mult }, idx) => {
+        let slotW = targetH * mult * ar * scale; if (solo && ar > 1.15) slotW *= 1.18;
+        const sc = SCALES[globalIdx % SCALES.length]; const anchor = ANCHORS[globalIdx % ANCHORS.length];
+        const imgW = slotW * sc; const slack = slotW - imgW;
+        const shiftX = anchor === 'left' ? 0 : anchor === 'right' ? slack : slack / 2;
+        el.style.left = (x + shiftX) + 'px'; el.style.top = (y + stagger[idx]) + 'px'; el.style.width = imgW + 'px';
+        const imgH = imgW / ar; const bottom = stagger[idx] + imgH + TEXT; maxBottom = Math.max(maxBottom, bottom);
+        x += slotW + GAP_H; globalIdx++;
       });
-
       y += maxBottom + GAP_V;
     });
-
     gallery.style.height = y + 'px';
   }
-
   window._artworkLayout = layout;
-
   window.addEventListener('load', layout);
   document.addEventListener('DOMContentLoaded', () => setTimeout(layout, 100));
-  document.addEventListener('DOMContentLoaded', () => {
-    gallery.querySelectorAll('img').forEach(img => {
-      if (!img.complete) {
-        img.addEventListener('load',  layout, { once: true });
-        img.addEventListener('error', layout, { once: true });
-      }
+  document.addEventListener('DOMContentLoaded', () => { gallery.querySelectorAll('img').forEach(img => { if (!img.complete) { img.addEventListener('load', layout, { once: true }); img.addEventListener('error', layout, { once: true }); } }); });
+  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 150); });
+})();
+
+/* ══════════════════════════════════════════════════════
+   ARTWORK POPUP — opens single.html layout as overlay
+   ══════════════════════════════════════════════════════ */
+(function () {
+  const leftArrowSVG  = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  const rightArrowSVG = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+
+  const modal      = document.getElementById('arwModal');
+  const closeBtn   = document.getElementById('arwClose');
+  const arwImg     = document.getElementById('arwImg');
+  const arwTitle   = document.getElementById('arwTitle');
+  const arwYear    = document.getElementById('arwYear');
+  const arwSize    = document.getElementById('arwSize');
+  const arwMedium  = document.getElementById('arwMedium');
+  const arwColl    = document.getElementById('arwCollection');
+  const arwComment = document.getElementById('arwComment');
+  const arwAvail   = document.getElementById('arwAvailability');
+  const arwPrice   = document.getElementById('arwPrice');
+  const arwPurch   = document.getElementById('arwPurchase');
+  const prevBtn    = document.getElementById('arwPrevBtn');
+  const nextBtn    = document.getElementById('arwNextBtn');
+
+  prevBtn.innerHTML = leftArrowSVG;
+  nextBtn.innerHTML = rightArrowSVG;
+
+  let visibleItems = [];
+  let currentIdx   = -1;
+
+  function setField(el, val) {
+    if (!el) return;
+    if (val && String(val).trim()) { el.textContent = val; el.style.display = ''; }
+    else { el.style.display = 'none'; }
+  }
+
+  function formatCollection(raw) {
+    if (!raw) return '';
+    const cols = raw.split(',').map(s => s.trim()).filter(Boolean);
+    if (!cols.length) return '';
+    if (cols.length === 1) return '"' + cols[0] + '" Collection';
+    return cols.map(c => '"' + c + '"').join(', ') + ' Collections';
+  }
+
+  function updateNavArrows() {
+    prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
+    nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
+    positionArrowsAtTitle();
+  }
+
+  /* On mobile, move fixed arrows so they sit at the title's vertical centre,
+     not at 50% of the viewport (which is the image). */
+  function positionArrowsAtTitle() {
+    if (window.innerWidth > 900) return;
+    requestAnimationFrame(() => {
+      const titleEl = document.getElementById('arwTitle');
+      if (!titleEl) return;
+      const rect = titleEl.getBoundingClientRect();
+      const y = rect.top + rect.height / 2;
+      [prevBtn, nextBtn].forEach(btn => {
+        btn.style.top       = y + 'px';
+        btn.style.transform = 'translateY(-50%)';
+      });
+    });
+  }
+
+  function populateModal(el) {
+    const d = el.dataset;
+    arwImg.src = d.image || '';
+    arwImg.alt = d.title || '';
+    setField(arwTitle, d.title);
+    setField(arwYear, d.year);
+    setField(arwSize, d.size);
+    setField(arwMedium, d.medium);
+    setField(arwColl, formatCollection(d.collection));
+    setField(arwComment, d.comment);
+    setField(arwAvail, d.availability);
+    if (d.availability === 'Available' && d.price) { arwPrice.textContent = '$ ' + d.price; arwPrice.style.display = ''; }
+    else { arwPrice.style.display = 'none'; }
+    if (d.availability === 'Available') { arwPurch.href = '/inquire/?add=' + (d.id || ''); arwPurch.style.display = ''; }
+    else { arwPurch.style.display = 'none'; }
+    updateNavArrows();
+  }
+
+  function navTo(dir) {
+    const newIdx = currentIdx + dir;
+    if (newIdx < 0 || newIdx >= visibleItems.length) return;
+    currentIdx = newIdx;
+    populateModal(visibleItems[currentIdx]);
+  }
+
+  function openModal(el) {
+    visibleItems = Array.from(document.querySelectorAll('#artworkGallery .artwork-item'))
+      .filter(i => i.style.display !== 'none');
+    currentIdx = visibleItems.indexOf(el);
+    populateModal(el);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { if (!modal.classList.contains('open')) arwImg.src = ''; }, 420);
+    closeArwLightbox();
+  }
+
+  arwImg.addEventListener('click', () => { if (arwImg.src) openArwLightbox(arwImg.src, arwImg.alt); });
+
+  document.querySelectorAll('#artworkGallery .artwork-item').forEach(item => {
+    item.addEventListener('click', e => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
+      e.preventDefault();
+      openModal(item);
     });
   });
 
-  let rt;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 150); });
+  // Close on empty-space click
+  modal.addEventListener('click', e => {
+    if (!e.target.closest('.sp-img-wrap, .sp-info, .arw-nav-arrow, .arw-close')) {
+      closeModal();
+    }
+  });
+  closeBtn.addEventListener('click', closeModal);
+  prevBtn.addEventListener('click', e => { e.preventDefault(); navTo(-1); });
+  nextBtn.addEventListener('click', e => { e.preventDefault(); navTo(1); });
+  document.addEventListener('keydown', e => {
+    if (!modal.classList.contains('open')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft')  navTo(-1);
+    if (e.key === 'ArrowRight') navTo(1);
+  });
+
+  /* ── LIGHTBOX (for popup) ── */
+  window.openArwLightbox = function(src, alt) {
+    const lb  = document.getElementById('arwLightbox');
+    const img = document.getElementById('arwLightboxImg');
+    img.classList.remove('is-rotated');
+    img.src = src; img.alt = alt || '';
+    lb.classList.add('active');
+    img.onload = updateArwRotateHint;
+    updateArwRotateHint();
+  };
+  window.closeArwLightbox = function() { document.getElementById('arwLightbox').classList.remove('active'); };
+  window.toggleArwRotate  = function() { document.getElementById('arwLightboxImg').classList.toggle('is-rotated'); };
+
+  function updateArwRotateHint() {
+    const img  = document.getElementById('arwLightboxImg');
+    const hint = document.getElementById('arwRotateHint');
+    if (!img || !hint) return;
+    hint.style.display = (window.innerWidth <= 900 && img.naturalWidth > img.naturalHeight) ? 'block' : 'none';
+  }
+
+  document.getElementById('arwLightbox').addEventListener('click', () => window.closeArwLightbox());
 })();
 </script>
 

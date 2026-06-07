@@ -122,524 +122,104 @@
 </section>
 
 <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button class="lightbox-close" onclick="closeLightbox()">&#x2715;</button>
   <img id="lightbox-img" src="" alt="" class="lightbox-img" onclick="event.stopPropagation()" />
-  <div id="rotateHint" class="rotate-hint" onclick="event.stopPropagation(); toggleRotate();">
-  Rotate image ⟳
-</div>
+  <div id="rotateHint" class="rotate-hint" onclick="event.stopPropagation(); toggleRotate();">Rotate image &#x27F3;</div>
 </div>
 
 <style>
-/* =====================================================
-   SINGLE ARTWORK PAGE
-   Desktop: image at (33%, 50%), info at (66%, 50%)
-   ===================================================== */
+.rotate-hint { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; opacity: 0.65; color: inherit; display: none; cursor: pointer; z-index: 902; text-align: center; user-select: none; }
+.rotate-hint:hover { opacity: 0.3; }
 
-   .rotate-hint {
-  position: fixed;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.85rem;
-  opacity: 0.65;
-  color: inherit;
-  display: none;
-  cursor: pointer;
-  z-index: 902;
-  text-align: center;
-  user-select: none;
-}
-.rotate-hint:hover {
-  opacity: 0.3;
-}
+.sp-section { position: relative; box-sizing: border-box; display: flex; flex-direction: column; min-height: calc(100vh - 130px); }
+.sp-row { position: relative; flex: 1; width: 100%; min-height: 0; }
 
-.sp-section {
-  position: relative;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  min-height: calc(100vh - 130px); /* CSS fallback; JS sets exact value */
-}
-
-.sp-row {
-  position: relative;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-}
-
-/* ── Back link ──────────────────────── */
-.sp-back {
-  position: absolute;
-  top: 20px;
-  left: 24px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 0.88rem;
-  text-decoration: none;
-  z-index: 10;
-  color: #111 !important;
-  opacity: 0.65;
-  transition: opacity 0.22s;
-  line-height: 1;
-}
+.sp-back { position: absolute; top: 20px; left: 24px; display: inline-flex; align-items: center; gap: 9px; font-size: 0.88rem; text-decoration: none; z-index: 10; color: #111 !important; opacity: 0.65; transition: opacity 0.22s; line-height: 1; }
 .sp-back svg { flex-shrink: 0; }
 .sp-back:hover { opacity: 0.25; }
 html.dark .sp-back { color: #d0d0d0 !important; opacity: 0.65; }
 html.dark .sp-back:hover { opacity: 0.25; }
 
-/* ── Image wrap ─────────────────────── */
-/* Width formula: 40vw minus gap allowance, capped at 700px.
-   This gives landscape paintings much more room than before
-   (previously capped at 600px) while still staying clear of
-   the info panel at the 2/3 mark on any viewport width ≥ 900px. */
-.sp-img-wrap {
-  position: absolute;
-  top: 50%;
-  left: 34%;
-  transform: translate(-50%, -50%);
-  width: clamp(320px, 52vw, 980px);
-  max-width: min(52vw, 980px);
-  height: calc(100% - 100px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.sp-img-wrap { position: absolute; top: 50%; left: 34%; transform: translate(-50%, -50%); width: clamp(320px, 52vw, 980px); max-width: min(52vw, 980px); height: calc(100% - 100px); display: flex; align-items: center; justify-content: center; }
+.sp-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: pointer; }
+.sp-no-image { width: 100%; height: 300px; background: #e5e5e5; display: flex; align-items: center; justify-content: center; color: #888; }
 
-.sp-img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  cursor: pointer;
-}
-
-.sp-no-image {
-  width: 100%;
-  height: 300px;
-  background: #e5e5e5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-}
-
-/* ── Info panel ─────────────────────── */
-.sp-info {
-  position: absolute;
-  top: 50%;
-  left: 78%;
-  transform: translate(-50%, -50%);
-  width: clamp(240px, 26vw, 320px);
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-}
-
+.sp-info { position: absolute; top: 50%; left: 78%; transform: translate(-50%, -50%); width: clamp(240px, 26vw, 320px); display: flex; flex-direction: column; gap: 28px; }
 .sp-info-top { display: flex; flex-direction: column; gap: 2px; }
-
-.sp-title {
-  font-size: clamp(1rem, 3.8vw, 1.2rem);
-
-  font-weight: 600;
-
-  line-height: 1.15;
-
-  margin: 0 0 8px;
-
-  letter-spacing: -0.01em;
-}
-
-.sp-info-top p {
-  margin: 0;
-
-  font-size: clamp(0.78rem, 2.2vw, 0.93rem);
-
-  line-height: 1.45;
-
-  opacity: 0.62;
-}
-
+.sp-title { font-size: clamp(1rem, 3.8vw, 1.2rem); font-weight: 600; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.01em; }
+.sp-info-top p { margin: 0; font-size: clamp(0.78rem, 2.2vw, 0.93rem); line-height: 1.45; opacity: 0.62; }
 .sp-comment { font-size: 0.83rem !important; margin-top: 6px !important; }
-
-.sp-info-bottom {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-}
-
-.sp-info-bottom p {
-  margin: 0;
-  font-size: 0.93rem;
-  line-height: 1.75;
-  opacity: 0.62;
-  text-align: right;
-}
-
-.sp-purchase {
-  display: inline-block;
-  margin-top: 6px;
-  font-size: 0.93rem;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  color: inherit !important;
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  opacity: 0.85;
-  transition: opacity 0.22s;
-}
+.sp-info-bottom { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.sp-info-bottom p { margin: 0; font-size: 0.93rem; line-height: 1.75; opacity: 0.62; text-align: right; }
+.sp-purchase { display: inline-block; margin-top: 6px; font-size: 0.93rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; color: inherit !important; background: none !important; border: none !important; padding: 0 !important; opacity: 0.85; transition: opacity 0.22s; }
 .sp-purchase:hover { opacity: 0.3; }
 
-/* Mobile arrow container — hidden on desktop */
 .sp-mobile-arrows { display: none; }
 
-/* ── Desktop fixed arrows ───────────── */
-.sp-arrow {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  color: #111 !important;
-  opacity: 0.6;
-  background: none !important;
-  border: none !important;
-  text-decoration: none !important;
-  box-shadow: none !important;
-  padding: 16px 10px !important;
-  z-index: 40;
-  transition: opacity 0.22s;
-  line-height: 0;
-}
+.sp-arrow { position: fixed; top: 50%; transform: translateY(-50%); display: flex; align-items: center; color: #111 !important; opacity: 0.6; background: none !important; border: none !important; text-decoration: none !important; box-shadow: none !important; padding: 16px 10px !important; z-index: 40; transition: opacity 0.22s; line-height: 0; }
 .sp-arrow:hover { opacity: 0.2 !important; background: none !important; }
 html.dark .sp-arrow { color: #d0d0d0 !important; opacity: 0.6; }
 html.dark .sp-arrow:hover { opacity: 0.2 !important; }
 .sp-arrow-prev { left: 16px; }
 .sp-arrow-next { right: 16px; }
 
-/* Kill old main.css rules on these IDs */
-#prevBtnDesktop, #nextBtnDesktop {
-  all: unset !important;
-  position: fixed !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  display: flex !important;
-  align-items: center !important;
-  line-height: 0 !important;
-  color: #111 !important;
-  opacity: 0.6 !important;
-  background: none !important;
-  padding: 16px 10px !important;
-  z-index: 40 !important;
-  transition: opacity 0.22s !important;
-  cursor: pointer !important;
-  text-decoration: none !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-html.dark #prevBtnDesktop,
-html.dark #nextBtnDesktop { color: #d0d0d0 !important; }
+#prevBtnDesktop, #nextBtnDesktop { all: unset !important; position: fixed !important; top: 50% !important; transform: translateY(-50%) !important; display: flex !important; align-items: center !important; line-height: 0 !important; color: #111 !important; opacity: 0.6 !important; background: none !important; padding: 16px 10px !important; z-index: 40 !important; transition: opacity 0.22s !important; cursor: pointer !important; text-decoration: none !important; border: none !important; box-shadow: none !important; }
+html.dark #prevBtnDesktop, html.dark #nextBtnDesktop { color: #d0d0d0 !important; }
 #prevBtnDesktop { left: 16px !important; }
 #nextBtnDesktop { right: 16px !important; }
-#prevBtnDesktop:hover, #nextBtnDesktop:hover {
-  opacity: 0.2 !important; background: none !important;
-}
+#prevBtnDesktop:hover, #nextBtnDesktop:hover { opacity: 0.2 !important; background: none !important; }
 
-/* Optional markdown body */
-.sp-body {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(900px, 80vw);
-  font-size: 0.9rem;
-  opacity: 0.65;
-  text-align: center;
-}
+.sp-body { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); width: min(900px, 80vw); font-size: 0.9rem; opacity: 0.65; text-align: center; }
 
-/* =====================================================
-   MOBILE (≤ 900px)
-   ===================================================== */
+/* ── MOBILE ── */
 @media (max-width: 900px) {
+  .sp-section { min-height: unset; height: auto !important; overflow-x: hidden; }
+  .sp-row { position: static; flex: none; display: flex; flex-direction: column; align-items: center; padding: 52px 20px 20px; gap: 0; height: auto; }
 
-  .sp-section {
-    min-height: unset;
-    height: auto !important;
-    overflow-x: hidden;
-  }
+  .sp-img-wrap { position: static; transform: none; width: 100%; height: auto; min-height: 45vh; max-height: 45vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sp-img { width: auto; height: auto; max-width: 90vw; max-height: 46vh; object-fit: contain; }
 
-  .sp-row {
-    position: static;
-    flex: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 52px 20px 20px;
-    gap: 0;
-    height: auto;
-  }
+  .sp-info-top, .sp-info-bottom { width: 100%; max-width: 520px; }
 
-  /* IMAGE */
-  .sp-img-wrap {
-    position: static;
-    transform: none;
-    width: 100%;
-    height: auto;
-    min-height: 45vh;
-    max-height: 45vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
+  /* INFO — padded slightly right, same as popup */
+  .sp-info { position: static; transform: none; width: 100%; max-width: 74vw; margin: 18px auto 0; padding-left: 1.2rem; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
-  .sp-img {
-    width: auto;
-    height: auto;
-    max-width: 90vw;
-    max-height: 46vh;
-    object-fit: contain;
-  }
+  .sp-info-top { text-align: left; }
+  .sp-info-bottom { align-items: flex-start; text-align: left; }
+  .sp-info-bottom p { text-align: left; }
 
-  .sp-info-top,
-  .sp-info-bottom {
-    width: 100%;
-    max-width: 520px;
-  }
+  /* MOBILE ARROWS — fixed at viewport sides at title height (top: 50%) */
+  .sp-mobile-arrows { position: fixed; top: 50%; left: 0; right: 0; transform: translateY(-50%); display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; width: 100%; min-height: 48px; z-index: 50; pointer-events: none; }
+  .sp-mobile-arrows > * { pointer-events: auto; }
+  .sp-mobile-arrows > span:first-child { display: flex; justify-content: flex-start; }
+  .sp-mobile-arrows > span:last-child  { display: flex; justify-content: flex-end; }
+  .sp-ma-spacer { width: 100%; }
 
-  /* INFO */
-  .sp-info {
-  position: static;
-  transform: none;
+  #prevBtnDesktop, #nextBtnDesktop { display: none !important; }
 
-  width: 100%;
-  max-width: 74vw;
+  [data-mc] { position: static !important; transform: none !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 48px !important; height: 48px !important; opacity: 0.6 !important; color: #111 !important; text-decoration: none !important; background: none !important; border: none !important; box-shadow: none !important; line-height: 0 !important; cursor: pointer !important; transition: opacity 0.22s !important; }
+  [data-mc] svg { width: 34px; height: 10px; display: block; }
+  html.dark [data-mc] { color: #d0d0d0 !important; }
+  [data-mc]:hover { opacity: 0.25 !important; }
 
-  margin: 18px auto 0;
-
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-
-  gap: 10px;
+  .sp-body { position: static; transform: none; width: 100%; text-align: left; margin: 12px 0 0; }
 }
 
-  .sp-info-top {
-    text-align: left;
-  }
-
-  .sp-info-bottom {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .sp-info-bottom p {
-    text-align: left;
-  }
-
-  /* MOBILE ARROWS */
-  .sp-mobile-arrows {
-  position: absolute;
-  left: 50%;
-  top: calc(45vh + 76px);
-  transform: translateX(-50%);
-  display: grid;
-  grid-template-columns: 48px 1fr 48px;
-  align-items: center;
-  width: 95vw;
-  min-height: 48px;
-  z-index: 50;
-  pointer-events: none;
-}
-
-.sp-mobile-arrows > * {
-  pointer-events: auto;
-}
-
-  #prevBtnDesktop,
-  #nextBtnDesktop {
-    display: none !important;
-  }
-
-  .sp-mobile-arrows > span:first-child {
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  .sp-mobile-arrows > span:last-child {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .sp-ma-spacer {
-    width: 100%;
-  }
-
-  [data-mc] {
-    position: static !important;
-    transform: none !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 48px !important;
-    height: 48px !important;
-    opacity: 0.6 !important;
-    color: #111 !important;
-    text-decoration: none !important;
-    background: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    line-height: 0 !important;
-    cursor: pointer !important;
-    transition: opacity 0.22s !important;
-  }
-
-  [data-mc] svg {
-    width: 34px;
-    height: 10px;
-    display: block;
-  }
-
-  html.dark [data-mc] {
-    color: #d0d0d0 !important;
-  }
-
-  [data-mc]:hover {
-    opacity: 0.25 !important;
-  }
-
-  .sp-body {
-    position: static;
-    transform: none;
-    width: 100%;
-    text-align: left;
-    margin: 12px 0 0;
-  }
-}
-
-/* =====================================================
-   LIGHTBOX
-   ===================================================== */
-
-.lightbox-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(18px) saturate(0.7);
-  -webkit-backdrop-filter: blur(18px) saturate(0.7);
-
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-html.dark .lightbox-overlay {
-  background: rgba(15,15,15,0.35);
-}
-
-.lightbox-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* base image state */
-.lightbox-img {
-  max-width: 88vw;
-  max-height: 88vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-
-  cursor: default;
-  border-radius: 2px;
-
-  transform-origin: center center;
-
-  transition:
-    transform 0.18s linear,
-    max-width 0.18s linear,
-    max-height 0.18s linear;
-}
-
-/* default open state */
-.lightbox-img:not(.is-rotated) {
-  transform: scale(1);
-}
-
-/* rotated state */
-.lightbox-img.is-rotated {
-  transform: rotate(90deg) scale(0.96);
-
-  /* allow larger expansion */
-  max-width: 84vh;
-  max-height: 84vw;
-}
-@media (max-width: 900px) {
-
-  .lightbox-img.is-rotated {
-
-    /*
-      Dynamic sizing:
-      medium landscapes expand much more,
-      ultra-wide paintings still stay contained.
-    */
-
-    max-width: min(92vh, 140vw);
-    max-height: min(92vw, 140vh);
-
-    transform: rotate(90deg) scale(0.94);
-  }
-
-}
-
-.lightbox-close {
-  position: fixed;
-  top: 1rem;
-  right: 50%;
-  font-size: 1.3rem;
-  font-family: 'AndradaMono','Courier Prime',monospace;
-  font-weight: bold;
-  text-transform: uppercase;
-
-  background: none;
-  border: none;
-  cursor: pointer;
-
-  color: inherit;
-  opacity: 0.8;
-  letter-spacing: 0.05em;
-
-  transition: opacity 0.2s ease;
-  z-index: 901;
-}
-
-.lightbox-close:hover {
-  opacity: 1;
-}
-
-.lightbox-close,
-.rotate-hint {
-  z-index: 9999;
-}
+/* ── LIGHTBOX ── */
+.lightbox-overlay { position: fixed; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(255,255,255,0.18); backdrop-filter: blur(18px) saturate(0.7); -webkit-backdrop-filter: blur(18px) saturate(0.7); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+html.dark .lightbox-overlay { background: rgba(15,15,15,0.35); }
+.lightbox-overlay.active { opacity: 1; pointer-events: auto; }
+.lightbox-img { max-width: 88vw; max-height: 88vh; width: auto; height: auto; object-fit: contain; cursor: default; border-radius: 2px; transform-origin: center center; transition: transform 0.18s linear, max-width 0.18s linear, max-height 0.18s linear; }
+.lightbox-img:not(.is-rotated) { transform: scale(1); }
+.lightbox-img.is-rotated { transform: rotate(90deg) scale(0.96); max-width: 84vh; max-height: 84vw; }
+@media (max-width: 900px) { .lightbox-img.is-rotated { max-width: min(92vh, 140vw); max-height: min(92vw, 140vh); transform: rotate(90deg) scale(0.94); } }
+.lightbox-close { position: fixed; top: 1rem; right: 50%; font-size: 1.3rem; font-family: 'AndradaMono','Courier Prime',monospace; font-weight: bold; text-transform: uppercase; background: none; border: none; cursor: pointer; color: inherit; opacity: 0.8; letter-spacing: 0.05em; transition: opacity 0.2s ease; z-index: 901; }
+.lightbox-close:hover { opacity: 1; }
+.lightbox-close, .rotate-hint { z-index: 9999; }
 </style>
 
 <script>
 (function () {
-
-  /* Desktop: fit section exactly between header and footer */
   function fitSection() {
     var header  = document.querySelector('header');
     var footer  = document.querySelector('footer');
@@ -654,125 +234,58 @@ html.dark .lightbox-overlay {
     }
   }
 
-  /* Mobile: clone the desktop arrows into the in-flow row.
-     Clones are marked data-mc so CSS can target them without
-     accidentally affecting the originals via shared class names. */
   function setupMobileArrows() {
+    var container = document.querySelector('.sp-mobile-arrows');
+    if (!container) return;
+    container.innerHTML = '';
+    if (window.innerWidth > 900) return;
+    var prev = document.getElementById('prevBtnDesktop');
+    var next = document.getElementById('nextBtnDesktop');
+    if (!prev && !next) { container.style.display = 'none'; return; }
+    container.style.display = 'grid';
+    var leftSlot = document.createElement('span');
+    if (prev) { var pc = prev.cloneNode(true); pc.removeAttribute('id'); pc.setAttribute('data-mc', ''); leftSlot.appendChild(pc); }
+    container.appendChild(leftSlot);
+    var spacer = document.createElement('span'); spacer.className = 'sp-ma-spacer'; container.appendChild(spacer);
+    var rightSlot = document.createElement('span');
+    if (next) { var nc = next.cloneNode(true); nc.removeAttribute('id'); nc.setAttribute('data-mc', ''); rightSlot.appendChild(nc); }
+    container.appendChild(rightSlot);
 
-  var container = document.querySelector('.sp-mobile-arrows');
-  if (!container) return;
-
-  container.innerHTML = '';
-
-  if (window.innerWidth > 900) return;
-
-  var prev = document.getElementById('prevBtnDesktop');
-  var next = document.getElementById('nextBtnDesktop');
-
-  if (!prev && !next) {
-    container.style.display = 'none';
-    return;
+    /* Move the arrow row to sit at the title's vertical centre, not at 50% of viewport */
+    requestAnimationFrame(function() {
+      var titleEl = document.querySelector('.sp-title');
+      if (!titleEl) return;
+      var rect = titleEl.getBoundingClientRect();
+      var y = rect.top + rect.height / 2;
+      container.style.top       = y + 'px';
+      container.style.transform = 'translateY(-50%)';
+    });
   }
 
-  container.style.display = 'grid';
+  function init() { fitSection(); setupMobileArrows(); }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+  window.addEventListener('resize', function () { fitSection(); setupMobileArrows(); });
 
-  var leftSlot = document.createElement('span');
-
-  if (prev) {
-    var pc = prev.cloneNode(true);
-    pc.removeAttribute('id');
-    pc.setAttribute('data-mc', '');
-    leftSlot.appendChild(pc);
+  /* LIGHTBOX */
+  function updateRotateHint() {
+    const img = document.getElementById('lightbox-img'); const hint = document.getElementById('rotateHint');
+    if (!img || !hint || !img.src) return;
+    hint.style.display = (window.innerWidth <= 900 && img.naturalWidth > img.naturalHeight) ? 'block' : 'none';
   }
 
-  container.appendChild(leftSlot);
-
-  var spacer = document.createElement('span');
-  spacer.className = 'sp-ma-spacer';
-  container.appendChild(spacer);
-
-  var rightSlot = document.createElement('span');
-
-  if (next) {
-    var nc = next.cloneNode(true);
-    nc.removeAttribute('id');
-    nc.setAttribute('data-mc', '');
-    rightSlot.appendChild(nc);
-  }
-
-  container.appendChild(rightSlot);
-}
-
-  function init() {
-    fitSection();
-    setupMobileArrows();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-  window.addEventListener('resize', function () {
-  fitSection();
-  setupMobileArrows();
-});
-
-  /* =========================
-   LIGHTBOX
-   ========================= */
-
-function updateRotateHint() {
-  const img = document.getElementById('lightbox-img');
-  const hint = document.getElementById('rotateHint');
-
-  if (!img || !hint || !img.src) return;
-
-  const isLandscape = img.naturalWidth > img.naturalHeight;
-  const isMobile = window.innerWidth <= 900;
-
-  hint.style.display = (isMobile && isLandscape) ? 'block' : 'none';
-}
-
-window.openLightbox = function (src, alt) {
-  const lb = document.getElementById('lightbox');
-  const img = document.getElementById('lightbox-img');
-
-  img.classList.remove('is-rotated');
-
-  img.src = src;
-  img.alt = alt || '';
-
-  lb.classList.add('active');
-
-  document.body.setAttribute('data-lightbox-open', 'true');
-  document.body.style.overflow = 'hidden';
-
-  const run = () => updateRotateHint();
-
-  img.onload = run;
-  run();
-};
-
-window.toggleRotate = function () {
-  const img = document.getElementById('lightbox-img');
-  img.classList.toggle('is-rotated');
-};
-
-window.closeLightbox = function () {
-  const lb = document.getElementById('lightbox');
-
-  lb.classList.remove('active');
-  document.body.removeAttribute('data-lightbox-open');
-  document.body.style.overflow = '';
-};
-
-document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape') window.closeLightbox();
-});
-
-window.addEventListener('resize', updateRotateHint);
-
+  window.openLightbox = function (src, alt) {
+    const lb = document.getElementById('lightbox'); const img = document.getElementById('lightbox-img');
+    img.classList.remove('is-rotated'); img.src = src; img.alt = alt || '';
+    lb.classList.add('active'); document.body.setAttribute('data-lightbox-open', 'true'); document.body.style.overflow = 'hidden';
+    img.onload = updateRotateHint; updateRotateHint();
+  };
+  window.toggleRotate  = function () { document.getElementById('lightbox-img').classList.toggle('is-rotated'); };
+  window.closeLightbox = function () {
+    const lb = document.getElementById('lightbox'); lb.classList.remove('active');
+    document.body.removeAttribute('data-lightbox-open'); document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') window.closeLightbox(); });
+  window.addEventListener('resize', updateRotateHint);
 })();
 </script>
 
