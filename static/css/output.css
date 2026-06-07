@@ -879,10 +879,6 @@ button,
   margin-top: 2rem;
 }
 
-.ml-auto {
-  margin-left: auto;
-}
-
 .block {
   display: block;
 }
@@ -2552,10 +2548,6 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 
   .md\:gap-16 {
     gap: 4rem;
-  }
-
-  .md\:gap-8 {
-    gap: 2rem;
   }
 
   .md\:px-8 {
