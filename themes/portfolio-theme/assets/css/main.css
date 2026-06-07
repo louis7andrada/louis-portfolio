@@ -1,11 +1,12 @@
-  /*  All Rights Reserved - Louis Andrada - 2026  */
-  /*    Webdesign by Jinah Park & Louis Andrada   */
-  /*      AndradaMono Font by Louis Andrada       */
-  /*        Codes by Louis Andrada                */
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
 
+  /*  All Rights Reserved - Louis Andrada - 2026  */
+  /*    Webdesign by Jinah Park & Louis Andrada   */
+  /*      AndradaMono Font by Louis Andrada       */
+  /*        Codes by Louis Andrada                */
+  
   @font-face {
     font-family: 'AndradaMono';
     src: url('/fonts/AndradaMono.woff2') format('woff2'),
