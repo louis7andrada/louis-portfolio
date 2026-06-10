@@ -95,6 +95,9 @@
     </div>
     <span class="arch-popup-vert" id="archPopupVert"></span>
   </div>
+  <!-- Arrows are siblings of the pane so the pane's scale transform never affects their fixed position -->
+  <a class="arch-arrow arch-arrow-prev" id="archPrevBtn" aria-label="Previous"></a>
+  <a class="arch-arrow arch-arrow-next" id="archNextBtn" aria-label="Next"></a>
 </div>
 
 <style>
@@ -416,6 +419,21 @@ html.dark .arch-popup-bg {
   text-transform: uppercase; opacity: 0.22;
 }
 
+/* ── POPUP ARROWS ── */
+.arch-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center;
+  color: inherit; opacity: 0.6;
+  background: none !important; border: none !important;
+  text-decoration: none !important; box-shadow: none !important;
+  padding: 16px 10px !important; z-index: 560;
+  transition: opacity 0.22s; line-height: 0; cursor: pointer;
+  display: none;
+}
+.arch-arrow:hover { opacity: 0.2; }
+.arch-arrow-prev { left: 16px; }
+.arch-arrow-next { right: 16px; }
+
 /* ══════════════════════════════
    RESPONSIVE
    ══════════════════════════════ */
@@ -482,13 +500,15 @@ html.dark .arch-popup-bg {
   .arch-popup-pane {
     flex-direction: column;
     gap: 20px;
-    padding: 44px 20px 24px;
+    padding: 44px 20px 80px;
     overflow-y: auto;
     max-height: 92vh;
   }
   .arch-popup-img { max-width: 88vw; max-height: 52vh; }
   .arch-popup-text-col { max-width: none; }
   .arch-popup-vert { display: none; }
+  /* Anchor arrows to bottom corners on mobile */
+  .arch-arrow { top: auto !important; bottom: 28px; transform: none !important; }
 }
 
 /* ── END SPACER ── */
@@ -791,7 +811,28 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ═══════════════════════════════════════════
      POPUP
      ═══════════════════════════════════════════ */
-  function openPopup(item) {
+  const leftArrowSVG  = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  const rightArrowSVG = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+
+  const prevBtn = document.getElementById('archPrevBtn');
+  const nextBtn = document.getElementById('archNextBtn');
+  prevBtn.innerHTML = leftArrowSVG;
+  nextBtn.innerHTML = rightArrowSVG;
+
+  let visibleItems   = [];
+  let currentIdx     = -1;
+  let currentItemRef = null;
+
+  function getFilteredItems() {
+    return items.filter(it => !it.classList.contains('arch-off'));
+  }
+
+  function updateNavArrows() {
+    prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
+    nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
+  }
+
+  function populatePopup(item) {
     pImg.src           = item.dataset.img || '';
     pImg.alt           = item.dataset.title;
     pTitle.textContent = item.dataset.title || '';
@@ -801,6 +842,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const cat = fmtCat(item.dataset.cat || '');
     pCat.textContent  = [cat, item.dataset.year].filter(Boolean).join(' · ');
     pVert.textContent = cat;
+    updateNavArrows();
+  }
+
+  function openPopup(item) {
+    visibleItems   = getFilteredItems();
+    currentIdx     = visibleItems.indexOf(item);
+    currentItemRef = item;
+    populatePopup(item);
     popup.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -808,13 +857,35 @@ document.addEventListener('DOMContentLoaded', () => {
   function closePopup() {
     popup.classList.remove('open');
     document.body.style.overflow = '';
+    currentItemRef = null;
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
     setTimeout(() => { if (!popup.classList.contains('open')) pImg.src = ''; }, 420);
+  }
+
+  function navTo(dir) {
+    const fresh = getFilteredItems();
+    const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
+    visibleItems = fresh;
+    if (freshIdx !== -1) currentIdx = freshIdx;
+    const newIdx = currentIdx + dir;
+    if (newIdx < 0 || newIdx >= visibleItems.length) return;
+    currentIdx = newIdx;
+    currentItemRef = visibleItems[currentIdx];
+    populatePopup(currentItemRef);
   }
 
   items.forEach(it => it.addEventListener('click', () => openPopup(it)));
   pX.addEventListener('click', closePopup);
   pBg.addEventListener('click', closePopup);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+  prevBtn.addEventListener('click', e => { e.preventDefault(); navTo(-1); });
+  nextBtn.addEventListener('click', e => { e.preventDefault(); navTo(1); });
+  document.addEventListener('keydown', e => {
+    if (!popup.classList.contains('open')) return;
+    if (e.key === 'Escape')      closePopup();
+    if (e.key === 'ArrowLeft')   navTo(-1);
+    if (e.key === 'ArrowRight')  navTo(1);
+  });
 
 });
 </script>

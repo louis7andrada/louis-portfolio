@@ -21,7 +21,17 @@
   <div class="homepage-layout">
     <div class="hp-left">
       <p class="hp-title">{{ .Title }}</p>
-      <a href="{{ .RelPermalink }}" class="hp-image-link">
+      <a href="{{ .RelPermalink }}" class="hp-image-link"
+         data-year="{{ .Params.year }}"
+         data-title="{{ .Title }}"
+         data-medium="{{ .Params.medium }}"
+         data-size="{{ .Params.size }}"
+         data-availability="{{ .Params.availability }}"
+         data-price="{{ .Params.price }}"
+         data-image="{{ .Params.image }}"
+         data-id="{{ .Params.id }}"
+         data-comment="{{ .Params.comment }}"
+         data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}">
         <img src="{{ .Params.image }}" alt="{{ .Title }}" class="hp-image" />
       </a>
       <span class="hp-year">{{ .Params.year }}</span>
@@ -318,10 +328,10 @@
 
     </div>
 
-    <!-- Desktop fixed arrows (inside modal so they appear above the bg) -->
-    <a class="sp-arrow sp-arrow-prev arw-nav-arrow" id="arwPrevBtn" aria-label="Previous"></a>
-    <a class="sp-arrow sp-arrow-next arw-nav-arrow" id="arwNextBtn" aria-label="Next"></a>
   </div>
+  <!-- Arrows are siblings of the pane, not inside it, so the pane's scale transform never affects their fixed position -->
+  <a class="sp-arrow sp-arrow-prev arw-nav-arrow" id="arwPrevBtn" aria-label="Previous"></a>
+  <a class="sp-arrow sp-arrow-next arw-nav-arrow" id="arwNextBtn" aria-label="Next"></a>
 </div>
 
 <!-- Lightbox for the popup (separate from single.html's lightbox) -->
@@ -424,7 +434,10 @@ html.dark .arw-modal-bg {
 
 .arw-modal-pane {
   position: absolute; inset: 0; z-index: 1;
+  transform: scale(0.95);
+  transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
 }
+.arw-modal.open .arw-modal-pane { transform: scale(1); }
 
 /* The artwork row fills the modal pane — same geometry as single.html .sp-row */
 .arw-sp-row {
@@ -500,8 +513,10 @@ html.dark .arw-modal-bg {
   .arw-modal-pane .sp-info-top { text-align: left; width: 100%; max-width: 520px; }
   .arw-modal-pane .sp-info-bottom { align-items: flex-start; text-align: left; width: 100%; max-width: 520px; }
   .arw-modal-pane .sp-info-bottom p { text-align: left; }
-  /* Show fixed side-arrows on mobile (position:fixed top:50% lands at the title) */
-  .arw-nav-arrow { display: flex !important; }
+  /* On mobile, anchor arrows to bottom corners so they never overlap image/text */
+  .arw-nav-arrow { top: auto; bottom: 28px; transform: none; }
+  /* Extra bottom padding so content never hides behind the bottom arrows */
+  .arw-sp-row { padding-bottom: 80px; }
   /* Push info block slightly right */
   .arw-modal-pane .sp-info { padding-left: 1.2rem; }
   /* Hide the old bottom arrow row completely */
@@ -708,8 +723,14 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn.innerHTML = leftArrowSVG;
   nextBtn.innerHTML = rightArrowSVG;
 
-  let visibleItems = [];
-  let currentIdx   = -1;
+  let visibleItems    = [];
+  let currentIdx      = -1;
+  let currentItemRef  = null;
+
+  function getFilteredGalleryItems() {
+    return Array.from(document.querySelectorAll('#artworkGallery .artwork-item'))
+      .filter(i => i.style.display !== 'none');
+  }
 
   function setField(el, val) {
     if (!el) return;
@@ -728,23 +749,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateNavArrows() {
     prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
     nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
-    positionArrowsAtTitle();
-  }
-
-  /* On mobile, move fixed arrows so they sit at the title's vertical centre,
-     not at 50% of the viewport (which is the image). */
-  function positionArrowsAtTitle() {
-    if (window.innerWidth > 900) return;
-    requestAnimationFrame(() => {
-      const titleEl = document.getElementById('arwTitle');
-      if (!titleEl) return;
-      const rect = titleEl.getBoundingClientRect();
-      const y = rect.top + rect.height / 2;
-      [prevBtn, nextBtn].forEach(btn => {
-        btn.style.top       = y + 'px';
-        btn.style.transform = 'translateY(-50%)';
-      });
-    });
   }
 
   function populateModal(el) {
@@ -766,16 +770,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function navTo(dir) {
+    // Re-derive filtered list from current DOM state so arrows always respect active filters
+    const fresh = getFilteredGalleryItems();
+    // Re-locate the currently shown item in the updated list
+    const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
+    visibleItems = fresh;
+    if (freshIdx !== -1) currentIdx = freshIdx;
+
     const newIdx = currentIdx + dir;
     if (newIdx < 0 || newIdx >= visibleItems.length) return;
     currentIdx = newIdx;
-    populateModal(visibleItems[currentIdx]);
+    currentItemRef = visibleItems[currentIdx];
+    populateModal(currentItemRef);
   }
 
   function openModal(el) {
-    visibleItems = Array.from(document.querySelectorAll('#artworkGallery .artwork-item'))
-      .filter(i => i.style.display !== 'none');
+    visibleItems = getFilteredGalleryItems();
     currentIdx = visibleItems.indexOf(el);
+    currentItemRef = el;
     populateModal(el);
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -784,6 +796,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeModal() {
     modal.classList.remove('open');
     document.body.style.overflow = '';
+    currentItemRef = null;
     setTimeout(() => { if (!modal.classList.contains('open')) arwImg.src = ''; }, 420);
     closeArwLightbox();
   }
@@ -797,6 +810,19 @@ document.addEventListener("DOMContentLoaded", () => {
       openModal(item);
     });
   });
+
+  const hpLink = document.querySelector('.hp-image-link[data-image]');
+  if (hpLink) {
+    hpLink.addEventListener('click', e => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
+      e.preventDefault();
+      visibleItems = [hpLink];
+      currentIdx = 0;
+      populateModal(hpLink);
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  }
 
   // Close on empty-space click
   modal.addEventListener('click', e => {
