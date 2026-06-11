@@ -329,16 +329,32 @@
     </div>
 
   </div>
-  <!-- Arrows are siblings of the pane, not inside it, so the pane's scale transform never affects their fixed position -->
+  <!-- Arrows are siblings of the pane so pane's scale transform never affects their fixed position -->
   <a class="sp-arrow sp-arrow-prev arw-nav-arrow" id="arwPrevBtn" aria-label="Previous"></a>
   <a class="sp-arrow sp-arrow-next arw-nav-arrow" id="arwNextBtn" aria-label="Next"></a>
 </div>
 
-<!-- Lightbox for the popup (separate from single.html's lightbox) -->
+<!-- Lightbox for the popup -->
 <div id="arwLightbox" class="lightbox-overlay" onclick="closeArwLightbox()">
   <button class="lightbox-close" onclick="event.stopPropagation(); closeArwLightbox()">&#x2715;</button>
   <img id="arwLightboxImg" src="" alt="" class="lightbox-img" onclick="event.stopPropagation()" />
   <div id="arwRotateHint" class="rotate-hint" onclick="event.stopPropagation(); toggleArwRotate();">Rotate image &#x27F3;</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MAILING LIST FOOTER BAR
+     ═══════════════════════════════════════════════════ -->
+<div id="mlPopup" class="ml-popup" role="complementary" aria-label="Join the mailing list">
+  <button class="ml-close" id="mlClose" aria-label="Close">&#x2715;</button>
+  <div class="ml-inner">
+    <p class="ml-heading">Join the Newsletter</p>
+    <p class="ml-body">Sign up for Louis's newsletter to get notified when new work goes up. Subscribers also enter the monthly print draw giveaway as well as the annual original artwork draw — plus personal invitations to art shows and private events.</p>
+    <div class="ml-form-wrap">
+      <input type="email" id="mlEmail" class="ml-input" placeholder="Email address" autocomplete="email" required />
+      <button type="button" id="mlSubmit" class="ml-submit">Subscribe</button>
+    </div>
+    <p class="ml-note" id="mlNote">Unsubscribe anytime. Read our <a href="/privacy/" class="ml-privacy-link" target="_blank" rel="noopener">privacy policy</a> to learn about your rights and the use of your personal information.</p>
+  </div>
 </div>
 
 
@@ -410,7 +426,6 @@ html.dark .artwork-filter-overlay { background: rgba(12,12,12,0.78); backdrop-fi
   transition: opacity 0.38s ease;
 }
 .arw-modal.open { opacity: 1; pointer-events: all; }
-
 .arw-modal-bg {
   position: absolute; inset: 0; cursor: pointer;
   background: rgba(255,255,255,0.48);
@@ -422,7 +437,6 @@ html.dark .arw-modal-bg {
   backdrop-filter: blur(20px) brightness(0.65);
   -webkit-backdrop-filter: blur(20px) brightness(0.65);
 }
-
 .arw-close {
   position: fixed; top: 20px; right: 24px; z-index: 280;
   background: none; border: none; cursor: pointer;
@@ -431,20 +445,13 @@ html.dark .arw-modal-bg {
   transition: opacity 0.15s;
 }
 .arw-close:hover { opacity: 1; }
-
 .arw-modal-pane {
   position: absolute; inset: 0; z-index: 1;
   transform: scale(0.95);
   transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .arw-modal.open .arw-modal-pane { transform: scale(1); }
-
-/* The artwork row fills the modal pane — same geometry as single.html .sp-row */
-.arw-sp-row {
-  position: relative; width: 100%; height: 100%;
-}
-
-/* Reuse single.html layout classes verbatim */
+.arw-sp-row { position: relative; width: 100%; height: 100%; }
 .arw-modal-pane .sp-img-wrap {
   position: absolute; top: 50%; left: 34%;
   transform: translate(-50%, -50%);
@@ -453,10 +460,7 @@ html.dark .arw-modal-bg {
   height: calc(100% - 100px);
   display: flex; align-items: center; justify-content: center;
 }
-.arw-modal-pane .sp-img {
-  display: block; max-width: 100%; max-height: 100%;
-  width: auto; height: auto; object-fit: contain; cursor: pointer;
-}
+.arw-modal-pane .sp-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: pointer; }
 .arw-modal-pane .sp-info {
   position: absolute; top: 50%; left: 78%;
   transform: translate(-50%, -50%);
@@ -471,69 +475,35 @@ html.dark .arw-modal-bg {
 .arw-modal-pane .sp-info-bottom p { margin: 0; font-size: 0.93rem; line-height: 1.75; opacity: 0.62; text-align: right; }
 .arw-modal-pane .sp-purchase { display: inline-block; margin-top: 6px; font-size: 0.93rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; color: inherit !important; background: none !important; border: none !important; padding: 0 !important; opacity: 0.85; transition: opacity 0.22s; }
 .arw-modal-pane .sp-purchase:hover { opacity: 0.3; }
-
-/* Desktop arrows — fixed to viewport, above modal bg */
 .arw-nav-arrow {
   position: fixed; top: 50%; transform: translateY(-50%);
-  display: flex; align-items: center;
+  display: none; align-items: center;
   color: inherit; opacity: 0.6;
   background: none !important; border: none !important;
   text-decoration: none !important; box-shadow: none !important;
   padding: 16px 10px !important; z-index: 260;
   transition: opacity 0.22s; line-height: 0; cursor: pointer;
-  display: none; /* shown by JS when modal opens */
 }
 .arw-nav-arrow:hover { opacity: 0.2; }
 .sp-arrow-prev.arw-nav-arrow { left: 16px; }
 .sp-arrow-next.arw-nav-arrow { right: 16px; }
-
-/* Mobile arrows inside modal */
 .arw-modal-pane .sp-mobile-arrows { display: none; }
-/* (title-row arrows removed — fixed-side arrows used on mobile instead) */
-
-/* ── MOBILE popup ── */
 @media (max-width: 900px) {
-  .arw-sp-row {
-    position: static; display: flex; flex-direction: column;
-    align-items: center; padding: 52px 20px 20px; gap: 0; height: auto;
-    min-height: 100%;
-  }
-  .arw-modal-pane .sp-img-wrap {
-    position: static; transform: none;
-    width: 100%; height: auto; min-height: 45vh; max-height: 45vh;
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .arw-sp-row { position: static; display: flex; flex-direction: column; align-items: center; padding: 52px 20px 80px; gap: 0; height: auto; min-height: 100%; }
+  .arw-modal-pane .sp-img-wrap { position: static; transform: none; width: 100%; height: auto; min-height: 45vh; max-height: 45vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .arw-modal-pane .sp-img { width: auto; height: auto; max-width: 90vw; max-height: 46vh; }
-  .arw-modal-pane .sp-info {
-    position: static; transform: none;
-    width: 100%; max-width: 74vw;
-    margin: 18px auto 0;
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-  }
+  .arw-modal-pane .sp-info { position: static; transform: none; width: 100%; max-width: 74vw; margin: 18px auto 0; padding-left: 1.2rem; display: flex; flex-direction: column; align-items: center; gap: 10px; }
   .arw-modal-pane .sp-info-top { text-align: left; width: 100%; max-width: 520px; }
   .arw-modal-pane .sp-info-bottom { align-items: flex-start; text-align: left; width: 100%; max-width: 520px; }
   .arw-modal-pane .sp-info-bottom p { text-align: left; }
-  /* On mobile, anchor arrows to bottom corners so they never overlap image/text */
-  .arw-nav-arrow { top: auto; bottom: 28px; transform: none; }
-  /* Extra bottom padding so content never hides behind the bottom arrows */
-  .arw-sp-row { padding-bottom: 80px; }
-  /* Push info block slightly right */
-  .arw-modal-pane .sp-info { padding-left: 1.2rem; }
-  /* Hide the old bottom arrow row completely */
+  .arw-nav-arrow { display: flex !important; }
   .arw-modal-pane .sp-mobile-arrows { display: none !important; }
 }
 
 /* ══════════════════════════════════════════
    LIGHTBOX (for popup)
    ══════════════════════════════════════════ */
-.lightbox-overlay {
-  position: fixed; inset: 0; z-index: 300;
-  display: flex; align-items: center; justify-content: center; cursor: pointer;
-  background: rgba(255,255,255,0.18);
-  backdrop-filter: blur(18px) saturate(0.7);
-  -webkit-backdrop-filter: blur(18px) saturate(0.7);
-  opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-}
+.lightbox-overlay { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(255,255,255,0.18); backdrop-filter: blur(18px) saturate(0.7); -webkit-backdrop-filter: blur(18px) saturate(0.7); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
 html.dark .lightbox-overlay { background: rgba(15,15,15,0.35); }
 .lightbox-overlay.active { opacity: 1; pointer-events: auto; }
 .lightbox-img { max-width: 88vw; max-height: 88vh; width: auto; height: auto; object-fit: contain; cursor: default; transform-origin: center center; transition: transform 0.18s linear, max-width 0.18s linear, max-height 0.18s linear; }
@@ -544,6 +514,82 @@ html.dark .lightbox-overlay { background: rgba(15,15,15,0.35); }
 .lightbox-close:hover { opacity: 1; }
 .rotate-hint { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; opacity: 0.65; color: inherit; display: none; cursor: pointer; z-index: 9999; text-align: center; user-select: none; }
 .rotate-hint:hover { opacity: 0.3; }
+
+/* ══════════════════════════════════════════
+   MAILING LIST FOOTER BAR
+   ══════════════════════════════════════════ */
+.ml-popup {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
+  transform: translateY(100%); opacity: 0; pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.35s ease;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(14px) saturate(1.1);
+  -webkit-backdrop-filter: blur(14px) saturate(1.1);
+  border-top: 1px solid rgba(0,0,0,0.08);
+}
+.ml-popup.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+html.dark .ml-popup {
+  background: rgba(15,15,15,0.82);
+  backdrop-filter: blur(18px) brightness(0.75);
+  -webkit-backdrop-filter: blur(18px) brightness(0.75);
+  border-top-color: rgba(255,255,255,0.08);
+}
+.ml-close {
+  position: absolute; top: 1rem; right: 1.5rem;
+  background: none; border: none; cursor: pointer;
+  font-size: 1.15rem; color: inherit; padding: 0.2rem; opacity: 0.4; transition: opacity 0.15s;
+}
+.ml-close:hover { opacity: 1; }
+.ml-inner {
+  display: flex; flex-direction: column; align-items: center;
+  width: min(520px, 90vw); margin: 0 auto;
+  padding: 1.8rem 0 1.5rem;
+  box-sizing: border-box;
+}
+.ml-heading { font-size: 0.78rem !important; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; margin: 0 0 0.4rem; opacity: 0.9; width: 100%; }
+.ml-body { font-size: 0.75rem !important; line-height: 1.6; letter-spacing: 0.01em; opacity: 0.62; margin: 0 0 1rem; width: 100%; }
+.ml-form-wrap { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-bottom: 0.5rem; }
+.ml-input {
+  width: 100%; padding: 0.75rem 1rem; box-sizing: border-box;
+  font-family: inherit; font-size: 0.75rem; letter-spacing: 0.04em;
+  background: transparent; border: 1px solid rgba(0,0,0,0.22);
+  color: inherit; outline: none; transition: border-color 0.15s; border-radius: 0;
+}
+.ml-input::placeholder { color: inherit; opacity: 0.62; font-size: 0.75rem; }
+.ml-input:focus { border-color: rgba(0,0,0,0.6); }
+html.dark .ml-input { border-color: rgba(255,255,255,0.22); }
+html.dark .ml-input:focus { border-color: rgba(255,255,255,0.6); }
+.ml-submit {
+  width: 100%; padding: 0.75rem 1rem; font-family: inherit; font-size: 0.76rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
+  background: #111; color: #fff; border: none; border-radius: 0 !important; cursor: pointer;
+  transition: opacity 0.18s;
+}
+.ml-submit:hover { opacity: 0.75; }
+.ml-submit:disabled { opacity: 0.4; cursor: default; }
+html.dark .ml-submit { background: #efefef; color: #111; }
+.ml-note { margin: 0; font-size: 0.6rem !important; letter-spacing: 0.02em; opacity: 0.42; line-height: 1.65; width: 100%; }
+.ml-note.success { opacity: 0.85; font-size: 0.68rem !important; }
+.ml-note.error { opacity: 0.85; color: #c0392b; font-size: 0.68rem !important; }
+html.dark .ml-note.error { color: #e74c3c; }
+.ml-privacy-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.ml-privacy-link:hover { opacity: 0.5; }
+@media (max-width: 900px) {
+  .ml-body { font-size: 0.73rem !important; }
+  .ml-input { font-size: 0.73rem; }
+  .ml-input::placeholder { font-size: 0.73rem; }
+  .ml-note { font-size: 0.58rem !important; }
+}
+@media (max-width: 600px) {
+  .ml-inner { width: 88vw; padding: 1.5rem 0 1.3rem; }
+  .ml-close { top: 0.8rem; right: 1rem; }
+  .ml-heading { font-size: 0.72rem !important; }
+  .ml-body { font-size: 0.7rem !important; }
+  .ml-input { font-size: 0.7rem; }
+  .ml-input::placeholder { font-size: 0.7rem; }
+  .ml-submit { font-size: 0.7rem; }
+  .ml-note { font-size: 0.56rem !important; }
+}
 </style>
 
 
@@ -723,9 +769,9 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn.innerHTML = leftArrowSVG;
   nextBtn.innerHTML = rightArrowSVG;
 
-  let visibleItems    = [];
-  let currentIdx      = -1;
-  let currentItemRef  = null;
+  let visibleItems   = [];
+  let currentIdx     = -1;
+  let currentItemRef = null;
 
   function getFilteredGalleryItems() {
     return Array.from(document.querySelectorAll('#artworkGallery .artwork-item'))
@@ -749,6 +795,21 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateNavArrows() {
     prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
     nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
+    positionArrowsAtTitle();
+  }
+
+  function positionArrowsAtTitle() {
+    if (window.innerWidth > 900) return;
+    requestAnimationFrame(() => {
+      const titleEl = document.getElementById('arwTitle');
+      if (!titleEl) return;
+      const rect = titleEl.getBoundingClientRect();
+      const y = rect.top + rect.height / 2;
+      [prevBtn, nextBtn].forEach(btn => {
+        btn.style.top       = y + 'px';
+        btn.style.transform = 'translateY(-50%)';
+      });
+    });
   }
 
   function populateModal(el) {
@@ -770,13 +831,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function navTo(dir) {
-    // Re-derive filtered list from current DOM state so arrows always respect active filters
     const fresh = getFilteredGalleryItems();
-    // Re-locate the currently shown item in the updated list
     const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
     visibleItems = fresh;
     if (freshIdx !== -1) currentIdx = freshIdx;
-
     const newIdx = currentIdx + dir;
     if (newIdx < 0 || newIdx >= visibleItems.length) return;
     currentIdx = newIdx;
@@ -818,13 +876,13 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       visibleItems = [hpLink];
       currentIdx = 0;
+      currentItemRef = hpLink;
       populateModal(hpLink);
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
     });
   }
 
-  // Close on empty-space click
   modal.addEventListener('click', e => {
     if (!e.target.closest('.sp-img-wrap, .sp-info, .arw-nav-arrow, .arw-close')) {
       closeModal();
@@ -840,7 +898,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === 'ArrowRight') navTo(1);
   });
 
-  /* ── LIGHTBOX (for popup) ── */
   window.openArwLightbox = function(src, alt) {
     const lb  = document.getElementById('arwLightbox');
     const img = document.getElementById('arwLightboxImg');
@@ -861,6 +918,140 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById('arwLightbox').addEventListener('click', () => window.closeArwLightbox());
+})();
+
+/* ══════════════════════════════════════════════════════
+   MAILING LIST FOOTER BAR
+   ══════════════════════════════════════════════════════ */
+(function () {
+  const STORAGE_KEY  = 'la-ml-status';
+  const DISMISS_DAYS = 30;
+
+  const popup     = document.getElementById('mlPopup');
+  const closeBtn  = document.getElementById('mlClose');
+  const emailEl   = document.getElementById('mlEmail');
+  const submitBtn = document.getElementById('mlSubmit');
+  const noteEl    = document.getElementById('mlNote');
+
+  function shouldShow() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return true;
+      const { status, ts } = JSON.parse(raw);
+      if (status === 'subscribed') return false;
+      if (status === 'dismissed') return (Date.now() - ts) / 86400000 >= DISMISS_DAYS;
+    } catch {}
+    return true;
+  }
+
+  function saveStatus(status) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ status, ts: Date.now() })); } catch {}
+  }
+
+  function openPopup() {
+    if (document.getElementById('arwModal')?.classList.contains('open')) return;
+    if (!document.getElementById('filterOverlay')?.classList.contains('hidden')) return;
+    if (popup.classList.contains('open')) return;
+    popup.classList.add('open');
+  }
+
+  function closePopup() {
+    popup.classList.remove('open');
+    saveStatus('dismissed');
+  }
+
+  closeBtn.addEventListener('click', closePopup);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && popup.classList.contains('open')) closePopup(); });
+
+  if (shouldShow()) {
+    let triggered = false;
+    function trigger() {
+      if (triggered) return;
+      triggered = true;
+      clearTimeout(timer);
+      window.removeEventListener('scroll', onScroll);
+      setTimeout(openPopup, 400);
+    }
+    const timer = setTimeout(trigger, 15000);
+    function onScroll() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.5) trigger(); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  submitBtn.addEventListener('click', async () => {
+    const email = emailEl.value.trim();
+
+    if (!email) {
+      noteEl.textContent = 'Please enter your email address.';
+      noteEl.className   = 'ml-note error';
+      emailEl.focus();
+      return;
+    }
+    if (!emailEl.validity.valid) {
+      noteEl.textContent = 'Please enter a valid email address.';
+      noteEl.className   = 'ml-note error';
+      emailEl.focus();
+      return;
+    }
+
+    submitBtn.disabled    = true;
+    submitBtn.textContent = 'Sending…';
+    noteEl.textContent    = '';
+    noteEl.className      = 'ml-note';
+
+    try {
+      if (typeof grecaptcha !== 'undefined' && typeof RECAPTCHA_SITE_KEY !== 'undefined') {
+        const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+        const vr = await fetch('/.netlify/functions/verifyRecaptcha', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+        const vd = await vr.json();
+        if (!vd.success || vd.score < 0.5) {
+          noteEl.textContent    = 'Verification failed. Please try again.';
+          noteEl.className      = 'ml-note error';
+          submitBtn.disabled    = false;
+          submitBtn.textContent = 'Subscribe';
+          return;
+        }
+      }
+    } catch {
+      noteEl.textContent    = 'Verification error. Please try again.';
+      noteEl.className      = 'ml-note error';
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Subscribe';
+      return;
+    }
+
+    try {
+      const res  = await fetch('https://formspree.io/f/xbdezgbw', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        saveStatus('subscribed');
+        emailEl.style.display   = 'none';
+        submitBtn.style.display = 'none';
+        noteEl.textContent = 'You’re on the list.';
+        noteEl.className   = 'ml-note success';
+        setTimeout(closePopup, 2500);
+      } else {
+        noteEl.textContent    = (data.errors?.[0]?.message) || 'Something went wrong. Try again.';
+        noteEl.className      = 'ml-note error';
+        submitBtn.disabled    = false;
+        submitBtn.textContent = 'Subscribe';
+      }
+    } catch {
+      noteEl.textContent    = 'Network error. Please try again.';
+      noteEl.className      = 'ml-note error';
+      submitBtn.disabled    = false;
+      submitBtn.textContent = 'Subscribe';
+    }
+  });
+
+  emailEl.addEventListener('keydown', e => { if (e.key === 'Enter') submitBtn.click(); });
 })();
 </script>
 

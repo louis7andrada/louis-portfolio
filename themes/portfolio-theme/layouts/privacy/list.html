@@ -1,0 +1,157 @@
+{{ define "main" }}
+
+<!--  All Rights Reserved - Louis Andrada - 2026 -->
+<!--   Webdesign by Jinah Park & Louis Andrada   -->
+<!--     AndradaMono Font by Louis Andrada       -->
+<!--       Codes by Louis Andrada                -->
+
+{{ $leftArrow := `<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>` }}
+
+<section class="priv-section">
+
+  <a href="javascript:history.back()" class="priv-back">
+    {{ $leftArrow | safeHTML }}
+  </a>
+
+  <div class="priv-body">
+    <p class="priv-title">Privacy Policy</p>
+    <p class="priv-date">Last Updated: June 11, 2026</p>
+
+    <div class="priv-text">
+
+      <h2>Introduction</h2>
+      <p>Louis Andrada ("I," "me," or "my") is committed to protecting your privacy. This policy explains what personal information I collect when you visit louisandrada.com, subscribe to my mailing list, or submit an inquiry — and how that information is used.</p>
+      <p>By using this site, you agree to the practices described in this policy. If you do not agree, please discontinue use. I may update this policy periodically. Material changes will be noted by updating the date above.</p>
+
+      <h2>Information I Collect</h2>
+
+      <h3>Mailing List</h3>
+      <p>When you subscribe to the mailing list, I collect your email address. It is used solely to:</p>
+      <ul>
+        <li>Notify you when new artwork is posted</li>
+        <li>Enter you into the monthly print draw and the annual original artwork draw</li>
+        <li>Send personal invitations to private viewings and events</li>
+      </ul>
+      <p>Your email address is never sold, rented, or shared with any third party for their own purposes. Subscriptions are processed through Formspree, which is contractually bound to handle your data securely and only on my behalf.</p>
+
+      <h3>Artwork Inquiries and Commission Requests</h3>
+      <p>When you submit a purchase inquiry or commission request through the Inquire page, I collect your name, email address, phone number, city, and country. This information is used only to respond to your inquiry and to facilitate the purchase or commission process. It is submitted through Formspree and is not shared beyond what is necessary to fulfil your request.</p>
+
+      <h3>Website Analytics</h3>
+      <p>This site uses Google Analytics to collect anonymous data about how visitors use the site — such as general location, browser type, and pages visited. No personally identifiable information is collected through analytics. This data is used only to understand how the site performs and to improve the experience.</p>
+
+      <h3>Security and Spam Prevention</h3>
+      <p>This site uses Google reCAPTCHA v3 to protect forms from automated abuse. reCAPTCHA may collect hardware and software information, including device and application data, and send it to Google. Its use is subject to Google's <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a>.</p>
+
+      <h2>How I Use Your Information</h2>
+      <p>I use personal information only for the specific purposes described above. I do not engage in advertising, behavioral tracking, or profiling. I do not sell or share your data with any third party for marketing purposes.</p>
+
+      <h2>Data Retention</h2>
+      <p>Mailing list email addresses are retained for as long as you remain subscribed. You may unsubscribe at any time by clicking the unsubscribe link in any email, or by contacting me directly. Inquiry information is retained only as long as reasonably necessary to address your request.</p>
+
+      <h2>Your Rights</h2>
+      <p>Depending on where you reside, you may have rights under applicable privacy law, including the right to:</p>
+      <ul>
+        <li>Access the personal information I hold about you</li>
+        <li>Correct inaccurate information</li>
+        <li>Request deletion of your information</li>
+        <li>Withdraw consent at any time (for mailing list subscribers, simply unsubscribe)</li>
+        <li>Lodge a complaint with your local data protection authority</li>
+      </ul>
+      <p>To exercise any of these rights, please contact me using the form on the <a href="/inquire/">Inquire</a> page or by emailing me directly.</p>
+
+      <h2>Cookies</h2>
+      <p>This site uses cookies for analytics (Google Analytics) and security (Google reCAPTCHA). You may disable or manage cookies through your browser settings, though doing so may affect some site functionality.</p>
+
+      <h2>Children's Privacy</h2>
+      <p>This site is not directed to children under 13. I do not knowingly collect personal information from anyone under that age.</p>
+
+      <h2>Changes to This Policy</h2>
+      <p>Any updates to this policy will be posted on this page with a revised date. Continued use of the site after changes are posted constitutes acceptance of the updated policy.</p>
+
+      <h2>Contact</h2>
+      <p>If you have any questions about this policy, please reach out through the <a href="/inquire/">Inquire</a> page.</p>
+
+    </div>
+  </div>
+
+</section>
+
+<style>
+.priv-section {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  padding: 3.5rem 2rem 6rem;
+  box-sizing: border-box;
+}
+.priv-back {
+  position: fixed;
+  top: clamp(16px, 3.5vw, 28px);
+  left: clamp(16px, 3.5vw, 32px);
+  color: inherit;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+.priv-back:hover { opacity: 1; }
+.priv-body {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.priv-title {
+  font-size: clamp(0.78rem, 1.5vw, 0.86rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+.priv-date {
+  font-size: clamp(0.7rem, 1.2vw, 0.78rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.45;
+  margin: 0 0 3rem;
+}
+.priv-text h2 {
+  font-size: clamp(0.78rem, 1.4vw, 0.86rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 2.2rem 0 0.6rem;
+  opacity: 0.9;
+}
+.priv-text h3 {
+  font-size: clamp(0.76rem, 1.3vw, 0.84rem);
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  margin: 1.4rem 0 0.4rem;
+  opacity: 0.75;
+}
+.priv-text p, .priv-text li {
+  font-size: clamp(0.78rem, 1.4vw, 0.86rem);
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+  opacity: 0.65;
+  margin: 0 0 0.75rem;
+}
+.priv-text ul {
+  margin: 0 0 0.75rem;
+  padding-left: 1.2rem;
+}
+.priv-text li { margin-bottom: 0.2rem; }
+.priv-text a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.priv-text a:hover { opacity: 0.5; }
+@media (max-width: 700px) {
+  .priv-section { padding: 2.5rem 1.6rem 5rem; }
+  .priv-body { max-width: 100%; }
+}
+@media (max-width: 480px) {
+  .priv-text p, .priv-text li { font-size: 0.78rem; line-height: 1.8; }
+  .priv-text h2 { font-size: 0.78rem; }
+  .priv-text h3 { font-size: 0.76rem; }
+}
+</style>
+
+{{ end }}

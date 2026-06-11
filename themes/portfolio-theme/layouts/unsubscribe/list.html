@@ -1,0 +1,237 @@
+{{ define "main" }}
+
+<!--  All Rights Reserved - Louis Andrada - 2026 -->
+<!--   Webdesign by Jinah Park & Louis Andrada   -->
+<!--     AndradaMono Font by Louis Andrada       -->
+<!--       Codes by Louis Andrada                -->
+
+{{ $leftArrow := `<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>` }}
+
+<section class="unsub-section">
+
+  <a href="javascript:history.back()" class="unsub-back" aria-label="Go back">
+    {{ $leftArrow | safeHTML }}
+  </a>
+
+  <div class="unsub-body">
+
+    <div id="unsubForm">
+      <p class="unsub-title">Unsubscribe</p>
+      <p class="unsub-desc">Enter your email address to be removed from the mailing list.</p>
+      <div class="unsub-field-wrap">
+        <input type="email" id="unsubEmail" class="unsub-input" placeholder="Email address" autocomplete="email" required />
+      </div>
+      <button type="button" id="unsubBtn" class="unsub-btn">Unsubscribe</button>
+      <p class="unsub-note" id="unsubNote"></p>
+      <p class="unsub-disclaimer">By unsubscribing, you will be permanently removed from the mailing list. You will no longer receive notifications when new artwork is posted, will not be entered into the monthly print draw or the annual original artwork draw, and will not receive personal invitations to private viewings and events.</p>
+    </div>
+
+    <div id="unsubSuccess" class="unsub-success" style="display:none;">
+      <p class="unsub-success-msg">You have been unsubscribed.</p>
+      <p class="unsub-success-sub">You will no longer receive emails from Louis Andrada.</p>
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+.unsub-section {
+  position: relative;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+}
+.unsub-back {
+  position: fixed;
+  top: clamp(16px, 3.5vw, 28px);
+  left: clamp(16px, 3.5vw, 32px);
+  color: inherit;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
+.unsub-back:hover { opacity: 1; }
+.unsub-body {
+  width: min(560px, 90vw);
+}
+.unsub-title {
+  font-size: 0.78rem !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+  opacity: 0.9;
+}
+.unsub-desc {
+  font-size: 0.76rem !important;
+  line-height: 1.65;
+  opacity: 0.55;
+  margin: 0 0 1.6rem;
+  letter-spacing: 0.01em;
+}
+.unsub-field-wrap {
+  margin-bottom: 0.5rem;
+}
+.unsub-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.22);
+  color: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  border-radius: 0 !important;
+}
+.unsub-input::placeholder { color: inherit; opacity: 0.5; }
+.unsub-input:focus { border-color: rgba(0,0,0,0.6); }
+html.dark .unsub-input { border-color: rgba(255,255,255,0.22); }
+html.dark .unsub-input:focus { border-color: rgba(255,255,255,0.6); }
+.unsub-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 0 !important;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+.unsub-btn:hover { opacity: 0.75; }
+.unsub-btn:disabled { opacity: 0.4; cursor: default; }
+html.dark .unsub-btn { background: #efefef; color: #111; }
+.unsub-note {
+  margin: 0.8rem 0 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.unsub-note.visible { opacity: 0.85; }
+.unsub-note.error { color: #c0392b; }
+html.dark .unsub-note.error { color: #e74c3c; }
+.unsub-disclaimer {
+  margin: 1.4rem 0 0;
+  font-size: 0.6rem !important;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
+  opacity: 0.38;
+}
+.unsub-success {
+  text-align: left;
+}
+.unsub-success-msg {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+  opacity: 0.9;
+}
+.unsub-success-sub {
+  font-size: 0.74rem;
+  line-height: 1.65;
+  opacity: 0.5;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+</style>
+
+<script>
+(function () {
+  const emailEl  = document.getElementById('unsubEmail');
+  const btn      = document.getElementById('unsubBtn');
+  const noteEl   = document.getElementById('unsubNote');
+  const formEl   = document.getElementById('unsubForm');
+  const successEl = document.getElementById('unsubSuccess');
+
+  function showNote(msg, isError) {
+    noteEl.textContent = msg;
+    noteEl.className   = 'unsub-note visible' + (isError ? ' error' : '');
+  }
+
+  btn.addEventListener('click', async () => {
+    const email = emailEl.value.trim();
+
+    if (!email) {
+      showNote('Please enter your email address.', true);
+      emailEl.focus();
+      return;
+    }
+    if (!emailEl.validity.valid) {
+      showNote('Please enter a valid email address.', true);
+      emailEl.focus();
+      return;
+    }
+
+    btn.disabled    = true;
+    btn.textContent = 'Sending…';
+    noteEl.className = 'unsub-note';
+    noteEl.textContent = '';
+
+    try {
+      if (typeof grecaptcha !== 'undefined' && typeof RECAPTCHA_SITE_KEY !== 'undefined') {
+        const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+        const vr = await fetch('/.netlify/functions/verifyRecaptcha', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token }),
+        });
+        const vd = await vr.json();
+        if (!vd.success || vd.score < 0.5) {
+          showNote('Verification failed. Please try again.', true);
+          btn.disabled    = false;
+          btn.textContent = 'Unsubscribe';
+          return;
+        }
+      }
+    } catch {
+      showNote('Verification error. Please try again.', true);
+      btn.disabled    = false;
+      btn.textContent = 'Unsubscribe';
+      return;
+    }
+
+    try {
+      const res = await fetch('https://formspree.io/f/mwvjronb', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email, _subject: 'Unsubscribe Request' }),
+      });
+      if (res.ok) {
+        formEl.style.display    = 'none';
+        successEl.style.display = 'block';
+      } else {
+        const data = await res.json();
+        showNote((data.errors?.[0]?.message) || 'Something went wrong. Please try again.', true);
+        btn.disabled    = false;
+        btn.textContent = 'Unsubscribe';
+      }
+    } catch {
+      showNote('Network error. Please try again.', true);
+      btn.disabled    = false;
+      btn.textContent = 'Unsubscribe';
+    }
+  });
+
+  emailEl.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
+})();
+</script>
+
+{{ end }}

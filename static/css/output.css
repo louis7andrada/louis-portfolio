@@ -903,12 +903,12 @@ button,
   display: table;
 }
 
-.\!grid {
-  display: grid !important;
-}
-
 .grid {
   display: grid;
+}
+
+.\!grid {
+  display: grid !important;
 }
 
 .contents {
