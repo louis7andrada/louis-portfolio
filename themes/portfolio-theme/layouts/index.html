@@ -925,7 +925,7 @@ document.addEventListener("DOMContentLoaded", () => {
    ══════════════════════════════════════════════════════ */
 (function () {
   const STORAGE_KEY  = 'la-ml-status';
-  const DISMISS_DAYS = 30;
+  const DISMISS_DAYS = 10;
 
   const popup     = document.getElementById('mlPopup');
   const closeBtn  = document.getElementById('mlClose');
@@ -972,8 +972,8 @@ document.addEventListener("DOMContentLoaded", () => {
       window.removeEventListener('scroll', onScroll);
       setTimeout(openPopup, 400);
     }
-    const timer = setTimeout(trigger, 15000);
-    function onScroll() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.5) trigger(); }
+    const timer = setTimeout(trigger, 8000);
+    function onScroll() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.2) trigger(); }
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
