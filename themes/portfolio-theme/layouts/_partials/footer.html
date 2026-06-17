@@ -1,4 +1,4 @@
-<footer class="w-full border:none px-8 py-4 flex items-center justify-between text-gray-500 dark:text-gray-600">
+<footer class="w-full border:none px-8 py-4 flex items-center justify-between text-gray-500 dark:text-gray-600" style="position: relative;">
   <!--  All Rights Reserved - Louis Andrada - 2026  -->
   <!--    Webdesign by Jinah Park & Louis Andrada   -->
   <!--      AndradaMono Font by Louis Andrada       -->
@@ -6,14 +6,60 @@
   <span class="text-[13px]">
     Louis Andrada © {{ now.Format "2006" }} — All Rights Reserved
   </span>
+
+  <button type="button" id="footerJoinNewsletterBtn" class="footer-join-newsletter text-[10px]">
+    Join my newsletter
+  </button>
+
   <span class="text-right leading-tight text-[10px]">
     This site is protected by reCAPTCHA and<br>the Google Privacy Policy and Terms of Service apply.
   </span>
+
 <style>
   @media (max-width: 640px) {
     footer { flex-direction: column; gap: 0.75rem; }
     .text-right { text-align: center; }
   }
+
+  .footer-join-newsletter {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    opacity: 0.7;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    padding: 0;
+    margin: 0;
+    line-height: 1.2;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+  }
+  .footer-join-newsletter:hover { opacity: 1; }
+
+  @media (max-width: 640px) {
+    .footer-join-newsletter {
+      position: static;
+      transform: none;
+      order: 2;
+    }
+  }
 </style>
-  
+
+  <script>
+  (function () {
+    var btn = document.getElementById('footerJoinNewsletterBtn');
+    var popup = document.getElementById('mlPopup');
+    if (btn && popup) {
+      btn.addEventListener('click', function () {
+        popup.classList.add('open');
+      });
+    }
+  })();
+  </script>
+
 </footer>
