@@ -1034,9 +1034,9 @@ document.addEventListener("DOMContentLoaded", () => {
         saveStatus('subscribed');
         emailEl.style.display   = 'none';
         submitBtn.style.display = 'none';
-        noteEl.textContent = 'You’re on the list.';
+        noteEl.textContent = "You're on the list. - Check your spam folder if you don't see our emails and mark them as not spam.";
         noteEl.className   = 'ml-note success';
-        setTimeout(closePopup, 2500);
+        setTimeout(closePopup, 5000);
       } else {
         noteEl.textContent    = (data.errors?.[0]?.message) || 'Something went wrong. Try again.';
         noteEl.className      = 'ml-note error';
