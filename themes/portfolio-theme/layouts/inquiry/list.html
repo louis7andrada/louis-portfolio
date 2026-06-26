@@ -733,7 +733,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function showSection(section) {
     if (!SECTIONS[section]) return;
     currentSection = section;
-    sessionStorage.setItem("inquire_section", section);
+    sessionStorage.setItem("inquiry_section", section);
     door.classList.add("hidden");
     activeView.classList.add("is-on");
     document.querySelectorAll(".inq-panel").forEach(function(p) { p.classList.remove("active"); });
@@ -785,7 +785,7 @@ document.addEventListener("DOMContentLoaded", function() {
     showSection("purchase");
     window.history.replaceState({}, document.title, window.location.pathname);
   } else {
-    var saved = sessionStorage.getItem("inquire_section");
+    var saved = sessionStorage.getItem("inquiry_section");
     if (saved && SECTIONS[saved]) showSection(saved);
   }
 
