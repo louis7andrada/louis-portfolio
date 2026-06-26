@@ -17,7 +17,7 @@
     {{ if not .IsHome }}
     <nav id="desktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
       <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkDesktop" class="hover:underline dark:text-gray-300 dark:hover:text-white">Artworks</a>
-      <a href="/inquire" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquire</a>
+      <a href="/inquiry/" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="hover:underline dark:text-gray-300 dark:hover:text-white">Archive</a>
       <a href="/about" class="hover:underline dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/links" class="hover:underline dark:text-gray-300 dark:hover:text-white">Links</a>
@@ -28,7 +28,7 @@
     {{ if .IsHome }}
     <nav id="homeDesktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
       <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkHome" class="hover:underline dark:text-gray-300 dark:hover:text-white nav-link-active">Artworks</a>
-      <a href="/inquire" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquire</a>
+      <a href="/inquiry/" class="hover:underline dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="hover:underline dark:text-gray-300 dark:hover:text-white">Archive</a>
       <a href="/about" class="hover:underline dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/links" class="hover:underline dark:text-gray-300 dark:hover:text-white">Links</a>
@@ -58,7 +58,7 @@
 <!-- FULLSCREEN MOBILE MENU — outside header to avoid backdrop-filter stacking context conflict -->
 <nav id="mobileMenu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
   <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkMobile" class="block">Artworks</a>
-  <a href="/inquire" class="block">Inquire</a>
+  <a href="/inquiry/" class="block">Inquiry</a>
   <a href="/archive" class="block">Archive</a>
   <a href="/about" class="block">About</a>
   <a href="/links" class="block">Links</a>
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!homeSection) {
     let activePage = "";
-    if (pathname.includes("/inquire")) activePage = "inquire";
+    if (pathname.includes("/inquiry/")) activePage = "inquiry";
     else if (pathname.includes("/about")) activePage = "about";
     else if (pathname.includes("/archive")) activePage = "archive";
     else if (pathname.includes("/links")) activePage = "links";
@@ -306,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isHome && (href.includes("artworks") || href.includes("#artworks"))) {
         match = true;
       } else if (!isHome) {
-        if (pathname.includes("/inquire") && href.includes("inquire")) match = true;
+        if (pathname.includes("/inquiry/") && href.includes("inquiry/")) match = true;
         else if (pathname.includes("/about") && href.includes("about")) match = true;
         else if (pathname.includes("/archive") && href.includes("archive")) match = true;
         else if (pathname.includes("/links") && href.includes("links")) match = true;

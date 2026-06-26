@@ -1,5 +1,5 @@
 ---
-title: "Inquire"
-url: "/inquire"
-type: "inquire"
+title: "Inquiry"
+url: "/inquiry"
+type: "inquiry"
 ---

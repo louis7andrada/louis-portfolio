@@ -39,7 +39,7 @@
     <nav class="hp-nav">
       <div class="hp-nav-inner">
         <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkSection" class="hp-nav-link hp-nav--artworks">Artworks</a>
-        <a href="/inquire/" class="hp-nav-link hp-nav--acquisition">Inquire</a>
+        <a href="/inquiry/" class="hp-nav-link hp-nav--acquisition">Inquiry</a>
         <a href="/archive/" class="hp-nav-link hp-nav--archive">Archive</a>
         <a href="/about/" class="hp-nav-link hp-nav--about">About</a>
         <a href="/links/" class="hp-nav-link hp-nav--links">Links</a>
@@ -825,7 +825,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setField(arwAvail, d.availability);
     if (d.availability === 'Available' && d.price) { arwPrice.textContent = '$ ' + d.price; arwPrice.style.display = ''; }
     else { arwPrice.style.display = 'none'; }
-    if (d.availability === 'Available') { arwPurch.href = '/inquire/?add=' + (d.id || ''); arwPurch.style.display = ''; }
+    if (d.availability === 'Available') { arwPurch.href = '/inquiry/?add=' + (d.id || ''); arwPurch.style.display = ''; }
     else { arwPurch.style.display = 'none'; }
     updateNavArrows();
   }
