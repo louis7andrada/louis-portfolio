@@ -53,17 +53,9 @@
 </footer>
 
 <!-- ═══════════════════════════════════════════════════
-     MAILING LIST SLIDE-UP — bundled into the footer partial
-     so the "Join my newsletter" button works on every page
-     that includes the footer, regardless of other page-specific
-     mailing list markup. Button-triggered only: no localStorage,
-     no timers, no scroll triggers, no dismiss tracking.
-
-     NOTE: if this footer is included on index.html or links.html,
-     which already define their own #mlPopup element, do not include
-     this block a second time on those pages — an HTML document can
-     only have one element with a given id. Place the mailing-popup
-     markup in exactly one location per page.
+     MAILING LIST SLIDE-UP — single source of truth.
+     The popup, styles, and submit handler live here only.
+     Pages add their own trigger logic via window.openMailingPopup.
      ═══════════════════════════════════════════════════ -->
 <div id="mlPopup" class="ml-popup" role="complementary" aria-label="Join the mailing list">
   <button class="ml-close" id="mlClose" aria-label="Close">&#x2715;</button>
@@ -165,15 +157,41 @@
   const noteEl    = document.getElementById('mlNote');
   const footerBtn = document.getElementById('footerJoinNewsletterBtn');
 
-  if (!popup) return; // safety guard in case markup is missing on a given page
+  if (!popup) return;
 
-  function openPopup()  { popup.classList.add('open'); }
-  function closePopup() { popup.classList.remove('open'); }
+  function openPopup() {
+    if (document.getElementById('arwModal')?.classList.contains('open')) return;
+    if (!document.getElementById('filterOverlay')?.classList.contains('hidden')) return;
+    if (popup.classList.contains('open')) return;
+    popup.classList.add('open');
+  }
 
-  if (closeBtn) closeBtn.addEventListener('click', closePopup);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && popup.classList.contains('open')) closePopup(); });
+  function closePopup() {
+    popup.classList.remove('open');
+    try {
+      const raw = localStorage.getItem('la-ml-status');
+      const s   = raw ? JSON.parse(raw) : {};
+      if (s.status !== 'subscribed') {
+        localStorage.setItem('la-ml-status', JSON.stringify({ status: 'dismissed', ts: Date.now() }));
+      }
+    } catch {}
+  }
 
-  if (footerBtn) footerBtn.addEventListener('click', openPopup);
+  window.openMailingPopup = openPopup;
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closePopup);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && popup.classList.contains('open')) {
+      closePopup();
+    }
+  });
+
+  if (footerBtn) {
+    footerBtn.addEventListener('click', openPopup);
+  }
 
   if (submitBtn) {
     submitBtn.addEventListener('click', async () => {
@@ -181,50 +199,72 @@
 
       if (!email) {
         noteEl.textContent = 'Please enter your email address.';
-        noteEl.className   = 'ml-note error';
+        noteEl.className = 'ml-note error';
         emailEl.focus();
         return;
       }
+
       if (!emailEl.validity.valid) {
         noteEl.textContent = 'Please enter a valid email address.';
-        noteEl.className   = 'ml-note error';
+        noteEl.className = 'ml-note error';
         emailEl.focus();
         return;
       }
 
-      submitBtn.disabled    = true;
+      submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
-      noteEl.textContent    = '';
-      noteEl.className      = 'ml-note';
+      noteEl.textContent = '';
+      noteEl.className = 'ml-note';
 
       try {
-        const res  = await fetch('https://formspree.io/f/xbdezgbw', {
+        const res = await fetch(window.APP_CONFIG.googleScriptUrl, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ email }),
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify({ email })
         });
-        const data = await res.json();
-        if (res.ok) {
-          emailEl.style.display   = 'none';
+
+        const result = String(await res.text()).trim();
+
+        if (res.ok && result === "OK") {
+          try { localStorage.setItem('la-ml-status', JSON.stringify({ status: 'subscribed', ts: Date.now() })); } catch {}
+          emailEl.style.display = 'none';
           submitBtn.style.display = 'none';
-          noteEl.textContent = "You're on the list. - Check your spam folder if you don't see our emails and mark them as not spam.";
-          noteEl.className   = 'ml-note success';
+          noteEl.textContent = "You're on the list. Check spam if needed.";
+          noteEl.className = 'ml-note success';
           setTimeout(closePopup, 5000);
-        } else {
-          noteEl.textContent    = (data.errors?.[0]?.message) || 'Something went wrong. Try again.';
-          noteEl.className      = 'ml-note error';
-          submitBtn.disabled    = false;
-          submitBtn.textContent = 'Subscribe';
+          return;
         }
-      } catch {
-        noteEl.textContent    = 'Network error. Please try again.';
-        noteEl.className      = 'ml-note error';
-        submitBtn.disabled    = false;
+
+        if (result === "DUPLICATE") {
+          noteEl.textContent = "This email is already registered.";
+          noteEl.className = 'ml-note error';
+        } else if (result === "NO_EMAIL") {
+          noteEl.textContent = "Email missing.";
+          noteEl.className = 'ml-note error';
+        } else if (result === "SCHEMA_ERROR") {
+          noteEl.textContent = "Server configuration error.";
+          noteEl.className = 'ml-note error';
+        } else {
+          noteEl.textContent = "Unexpected server response.";
+          noteEl.className = 'ml-note error';
+        }
+
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+
+      } catch (err) {
+        noteEl.textContent = "Network error.";
+        noteEl.className = 'ml-note error';
+        submitBtn.disabled = false;
         submitBtn.textContent = 'Subscribe';
       }
     });
 
-    emailEl.addEventListener('keydown', e => { if (e.key === 'Enter') submitBtn.click(); });
+    emailEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        submitBtn.click();
+      }
+    });
   }
 })();
 </script>

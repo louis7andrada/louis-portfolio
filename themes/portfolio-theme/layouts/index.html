@@ -341,21 +341,6 @@
   <div id="arwRotateHint" class="rotate-hint" onclick="event.stopPropagation(); toggleArwRotate();">Rotate image &#x27F3;</div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     MAILING LIST FOOTER BAR
-     ═══════════════════════════════════════════════════ -->
-<div id="mlPopup" class="ml-popup" role="complementary" aria-label="Join the mailing list">
-  <button class="ml-close" id="mlClose" aria-label="Close">&#x2715;</button>
-  <div class="ml-inner">
-    <p class="ml-heading">Join My Newsletter</p>
-    <p class="ml-body">Sign up for Louis's newsletter to get notified when new work goes up. Subscribers also enter the monthly print draw giveaway as well as the annual original artwork draw — plus personal invitations to art shows and private events.</p>
-    <div class="ml-form-wrap">
-      <input type="email" id="mlEmail" class="ml-input" placeholder="Email address" autocomplete="email" required />
-      <button type="button" id="mlSubmit" class="ml-submit">Subscribe</button>
-    </div>
-    <p class="ml-note" id="mlNote">Unsubscribe anytime. Read our <a href="/privacy/" class="ml-privacy-link" target="_blank" rel="noopener">privacy policy</a> to learn about your rights and the use of your personal information.</p>
-  </div>
-</div>
 
 
 <style>
@@ -515,81 +500,6 @@ html.dark .lightbox-overlay { background: rgba(15,15,15,0.35); }
 .rotate-hint { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; opacity: 0.65; color: inherit; display: none; cursor: pointer; z-index: 9999; text-align: center; user-select: none; }
 .rotate-hint:hover { opacity: 0.3; }
 
-/* ══════════════════════════════════════════
-   MAILING LIST FOOTER BAR
-   ══════════════════════════════════════════ */
-.ml-popup {
-  position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
-  transform: translateY(100%); opacity: 0; pointer-events: none;
-  transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.35s ease;
-  background: rgba(255,255,255,0.75);
-  backdrop-filter: blur(14px) saturate(1.1);
-  -webkit-backdrop-filter: blur(14px) saturate(1.1);
-  border-top: 1px solid rgba(0,0,0,0.08);
-}
-.ml-popup.open { transform: translateY(0); opacity: 1; pointer-events: all; }
-html.dark .ml-popup {
-  background: rgba(15,15,15,0.82);
-  backdrop-filter: blur(18px) brightness(0.75);
-  -webkit-backdrop-filter: blur(18px) brightness(0.75);
-  border-top-color: rgba(255,255,255,0.08);
-}
-.ml-close {
-  position: absolute; top: 1rem; right: 1.5rem;
-  background: none; border: none; cursor: pointer;
-  font-size: 1.15rem; color: inherit; padding: 0.2rem; opacity: 0.4; transition: opacity 0.15s;
-}
-.ml-close:hover { opacity: 1; }
-.ml-inner {
-  display: flex; flex-direction: column; align-items: center;
-  width: min(520px, 90vw); margin: 0 auto;
-  padding: 1.8rem 0 1.5rem;
-  box-sizing: border-box;
-}
-.ml-heading { font-size: 0.78rem !important; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; margin: 0 0 0.4rem; opacity: 0.9; width: 100%; }
-.ml-body { font-size: 0.75rem !important; line-height: 1.6; letter-spacing: 0.01em; opacity: 0.62; margin: 0 0 1rem; width: 100%; }
-.ml-form-wrap { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-bottom: 0.5rem; }
-.ml-input {
-  width: 100%; padding: 0.75rem 1rem; box-sizing: border-box;
-  font-family: inherit; font-size: 0.75rem; letter-spacing: 0.04em;
-  background: transparent; border: 1px solid rgba(0,0,0,0.22);
-  color: inherit; outline: none; transition: border-color 0.15s; border-radius: 0;
-}
-.ml-input::placeholder { color: inherit; opacity: 0.62; font-size: 0.75rem; }
-.ml-input:focus { border-color: rgba(0,0,0,0.6); }
-html.dark .ml-input { border-color: rgba(255,255,255,0.22); }
-html.dark .ml-input:focus { border-color: rgba(255,255,255,0.6); }
-.ml-submit {
-  width: 100%; padding: 0.75rem 1rem; font-family: inherit; font-size: 0.76rem;
-  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
-  background: #111; color: #fff; border: none; border-radius: 0 !important; cursor: pointer;
-  transition: opacity 0.18s;
-}
-.ml-submit:hover { opacity: 0.75; }
-.ml-submit:disabled { opacity: 0.4; cursor: default; }
-html.dark .ml-submit { background: #efefef; color: #111; }
-.ml-note { margin: 0; font-size: 0.6rem !important; letter-spacing: 0.02em; opacity: 0.42; line-height: 1.65; width: 100%; }
-.ml-note.success { opacity: 0.85; font-size: 0.68rem !important; }
-.ml-note.error { opacity: 0.85; color: #c0392b; font-size: 0.68rem !important; }
-html.dark .ml-note.error { color: #e74c3c; }
-.ml-privacy-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-.ml-privacy-link:hover { opacity: 0.5; }
-@media (max-width: 900px) {
-  .ml-body { font-size: 0.73rem !important; }
-  .ml-input { font-size: 0.73rem; }
-  .ml-input::placeholder { font-size: 0.73rem; }
-  .ml-note { font-size: 0.58rem !important; }
-}
-@media (max-width: 600px) {
-  .ml-inner { width: 88vw; padding: 1.5rem 0 1.3rem; }
-  .ml-close { top: 0.8rem; right: 1rem; }
-  .ml-heading { font-size: 0.72rem !important; }
-  .ml-body { font-size: 0.7rem !important; }
-  .ml-input { font-size: 0.7rem; }
-  .ml-input::placeholder { font-size: 0.7rem; }
-  .ml-submit { font-size: 0.7rem; }
-  .ml-note { font-size: 0.56rem !important; }
-}
 </style>
 
 
@@ -921,17 +831,11 @@ document.addEventListener("DOMContentLoaded", () => {
 })();
 
 /* ══════════════════════════════════════════════════════
-   MAILING LIST FOOTER BAR
+   MAILING LIST AUTO-TRIGGER (homepage only)
    ══════════════════════════════════════════════════════ */
 (function () {
   const STORAGE_KEY  = 'la-ml-status';
   const DISMISS_DAYS = 10;
-
-  const popup     = document.getElementById('mlPopup');
-  const closeBtn  = document.getElementById('mlClose');
-  const emailEl   = document.getElementById('mlEmail');
-  const submitBtn = document.getElementById('mlSubmit');
-  const noteEl    = document.getElementById('mlNote');
 
   function shouldShow() {
     try {
@@ -944,114 +848,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  function saveStatus(status) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ status, ts: Date.now() })); } catch {}
+  if (!shouldShow()) return;
+
+  let triggered = false;
+  function trigger() {
+    if (triggered) return;
+    triggered = true;
+    clearTimeout(timer);
+    window.removeEventListener('scroll', onScroll);
+    setTimeout(() => window.openMailingPopup?.(), 400);
   }
-
-  function openPopup() {
-    if (document.getElementById('arwModal')?.classList.contains('open')) return;
-    if (!document.getElementById('filterOverlay')?.classList.contains('hidden')) return;
-    if (popup.classList.contains('open')) return;
-    popup.classList.add('open');
-  }
-
-  function closePopup() {
-    popup.classList.remove('open');
-    saveStatus('dismissed');
-  }
-
-  closeBtn.addEventListener('click', closePopup);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && popup.classList.contains('open')) closePopup(); });
-
-  if (shouldShow()) {
-    let triggered = false;
-    function trigger() {
-      if (triggered) return;
-      triggered = true;
-      clearTimeout(timer);
-      window.removeEventListener('scroll', onScroll);
-      setTimeout(openPopup, 400);
-    }
-    const timer = setTimeout(trigger, 8000);
-    function onScroll() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.2) trigger(); }
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
-
-  submitBtn.addEventListener('click', async () => {
-    const email = emailEl.value.trim();
-
-    if (!email) {
-      noteEl.textContent = 'Please enter your email address.';
-      noteEl.className   = 'ml-note error';
-      emailEl.focus();
-      return;
-    }
-    if (!emailEl.validity.valid) {
-      noteEl.textContent = 'Please enter a valid email address.';
-      noteEl.className   = 'ml-note error';
-      emailEl.focus();
-      return;
-    }
-
-    submitBtn.disabled    = true;
-    submitBtn.textContent = 'Sending…';
-    noteEl.textContent    = '';
-    noteEl.className      = 'ml-note';
-
-    try {
-      if (typeof grecaptcha !== 'undefined' && typeof RECAPTCHA_SITE_KEY !== 'undefined') {
-        const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
-        const vr = await fetch('/.netlify/functions/verifyRecaptcha', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token }),
-        });
-        const vd = await vr.json();
-        if (!vd.success || vd.score < 0.5) {
-          noteEl.textContent    = 'Verification failed. Please try again.';
-          noteEl.className      = 'ml-note error';
-          submitBtn.disabled    = false;
-          submitBtn.textContent = 'Subscribe';
-          return;
-        }
-      }
-    } catch {
-      noteEl.textContent    = 'Verification error. Please try again.';
-      noteEl.className      = 'ml-note error';
-      submitBtn.disabled    = false;
-      submitBtn.textContent = 'Subscribe';
-      return;
-    }
-
-    try {
-      const res  = await fetch('https://formspree.io/f/xbdezgbw', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        saveStatus('subscribed');
-        emailEl.style.display   = 'none';
-        submitBtn.style.display = 'none';
-        noteEl.textContent = "You're on the list. - Check your spam folder if you don't see our emails and mark them as not spam.";
-        noteEl.className   = 'ml-note success';
-        setTimeout(closePopup, 5000);
-      } else {
-        noteEl.textContent    = (data.errors?.[0]?.message) || 'Something went wrong. Try again.';
-        noteEl.className      = 'ml-note error';
-        submitBtn.disabled    = false;
-        submitBtn.textContent = 'Subscribe';
-      }
-    } catch {
-      noteEl.textContent    = 'Network error. Please try again.';
-      noteEl.className      = 'ml-note error';
-      submitBtn.disabled    = false;
-      submitBtn.textContent = 'Subscribe';
-    }
-  });
-
-  emailEl.addEventListener('keydown', e => { if (e.key === 'Enter') submitBtn.click(); });
+  const timer = setTimeout(trigger, 8000);
+  function onScroll() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.2) trigger(); }
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();
 </script>
 
