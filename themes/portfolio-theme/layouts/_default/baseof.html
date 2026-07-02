@@ -55,6 +55,7 @@
   <script src="https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}"></script>
   <script>
     const RECAPTCHA_SITE_KEY = "{{ .Site.Params.recaptcha_site_key }}";
+    window.APP_CONFIG = { googleScriptUrl: "{{ .Site.Params.webhook_url }}" };
   </script>
 
 </head>

@@ -21,3 +21,4 @@ enableRobotsTXT = true
 
 [params]
   recaptcha_site_key = "6LcOzL8sAAAAAAf811mO6GNulTWREGNzkzxTScVk"
+  webhook_url = "https://script.google.com/macros/s/AKfycbxxnqf8ImE2r9tkV60_7cIQJC4TvdzyDrDc0MovRvk9m4cN_lEntF1LS1EFV5VHmd19/exec"
