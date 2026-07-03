@@ -1,10 +1,13 @@
 {{ define "main" }}
+
 <!--  All Rights Reserved - Louis Andrada - 2026 -->
 <!--   Webdesign by Jinah Park & Louis Andrada   -->
 <!--     AndradaMono Font by Louis Andrada       -->
 <!--       Codes by Louis Andrada                -->
 
-<div class="inq-wrap" id="inqWrap">
+{{ $leftArrow := `<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>` }}
+
+<section class="inq-wrap" id="inqWrap">
 
   <!-- ① DOOR -->
   <div class="inq-door" id="inqDoor">
@@ -40,10 +43,7 @@
           <h2 class="inq-ptitle">Buy Existing Artwork</h2>
           <p class="inq-pdesc">Select one or more available artworks. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.</p>
           <div id="purchaseSuccessMessage" class="inq-success hidden">Thank you — your purchase request has been sent. Louis will contact you soon.</div>
-          <form id="purchaseForm" action="https://formspree.io/f/xeeldjwj" method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="text" name="_gotcha" class="hidden">
-            <input type="hidden" name="formType" value="Artwork Purchase Request">
+          <form id="purchaseForm">
             <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
             <textarea name="selectedArtworks" id="selectedArtworkIDs" class="hidden" readonly required></textarea>
             <div class="inq-top-block">
@@ -90,10 +90,7 @@
           <h2 class="inq-ptitle">Commission New Artwork</h2>
           <p class="inq-pdesc">Commissions are open. To commission a new artwork by Louis Andrada, please submit the form below. Once submitted, Louis will reach out with more information.<br><span class="inq-note">* The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas, or control over the creative process will not be accepted.</span></p>
           <div id="commissionSuccessMessage" class="inq-success hidden">Thank you — your commission request has been sent. Louis will contact you soon.</div>
-          <form id="commissionForm" action="https://formspree.io/f/xgolqwbv" method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="text" name="_gotcha" class="hidden">
-            <input type="hidden" name="formType" value="Commission Request">
+          <form id="commissionForm">
             <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
             <div class="inq-two-col inq-top-block">
               <div>
@@ -116,7 +113,8 @@
                   <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="sculpture"> Sculpture, Object, Furniture, Mural</label>
                   <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="clothing">  Clothing related</label>
                   <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="brand">     Brand, Partnership or Event related</label>
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="other">     Other (please specify in more details)</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="other" id="commissionOtherCheckbox">     Other (please specify in more details)</label>
+                  <input type="text" name="commissionOtherText" placeholder="Please specify" class="inq-field hidden" id="commissionOtherInput">
                 </div>
               </div>
             </div>
@@ -261,13 +259,11 @@
    We then control all colors explicitly. This is the only reliable cross-browser fix.
 ── */
 html.dark .inq-wrap {
-  /* NO color-scheme here — it would make the browser render buttons with light-mode
-     appearance (gray box). color-scheme:light goes ONLY on input/textarea below. */
   color: #e0e0e0;
 }
 html.dark .inq-wrap input,
 html.dark .inq-wrap textarea {
-  color-scheme: light; /* stops browser dark-mode widget backgrounds on fields only */
+  color-scheme: light;
   background: transparent !important;
   background-color: transparent !important;
   color: #e0e0e0 !important;
@@ -282,7 +278,6 @@ html.dark .inq-wrap label {
   color: #e0e0e0 !important;
 }
 html.dark .inq-wrap button {
-  /* Explicit reset — do NOT use color-scheme:light on buttons */
   -webkit-appearance: none !important;
   appearance: none !important;
   background: transparent !important;
@@ -300,7 +295,6 @@ html.dark .inq-wrap textarea::placeholder {
   opacity: 1 !important;
   -webkit-text-fill-color: rgba(224,224,224,0.5) !important;
 }
-/* Restore intentional non-text button colors */
 html.dark .inq-wrap button { color: #e0e0e0 !important; }
 .dark .inq-door-opt:hover  { color: #fff !important; }
 .dark .inq-side-item.inactive { color: #555 !important; }
@@ -318,10 +312,7 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
 .inq-mob-tab:hover { opacity: 0.75; }
 .inq-mob-sep { opacity: 0.25; font-size: 0.75rem; }
 
-/* ── BODY
-   Left-only centering: sidebar appears centrally positioned while the form
-   stretches to the right edge of the viewport.
-── */
+/* ── BODY ── */
 .inq-body { display: flex; flex: 1; width: 100%; }
 @media (min-width: 901px) {
   .inq-body {
@@ -351,9 +342,7 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
 .inq-side-submit { -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.82rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; display: none; margin-top: 2.5rem; transition: color 0.15s; }
 .inq-side-submit:hover { color: #999; }
 
-
-
-/* ── PANELS — flex:1, no right cap ── */
+/* ── PANELS ── */
 .inq-panels {
   flex: 1;
   min-width: 0;
@@ -382,7 +371,6 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
   .inq-contact-wrap > form { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 }
 
-/* Titles + description span the FULL form area */
 .inq-ptitle { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 0.25rem; flex-shrink: 0; width: 100%; }
 .inq-pdesc  { font-size: 0.9rem !important; line-height: 1.5; opacity: 0.75; margin-bottom: 0.5rem; flex-shrink: 0; width: 80%; }
 .inq-note   { font-size: 0.8rem; opacity: 0.55; display: block; margin-top: 0.3rem; margin-bottom: 1rem;}
@@ -420,7 +408,6 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
   box-shadow: none !important;
   outline: none !important;
 }
-/* Nuke any background the browser or site CSS applies to this button */
 html.dark .inq-txt-btn,
 html.dark #openArtworkSelector {
   background: none !important;
@@ -497,7 +484,6 @@ html.dark .inq-sel-overlay {
   -webkit-backdrop-filter: blur(18px);
 }
 
-/* Sticky header */
 .inq-sel-head {
   position: sticky; top: 0; z-index: 2;
   display: flex; align-items: flex-start; justify-content: space-between;
@@ -528,7 +514,6 @@ html.dark .inq-sel-head { background: rgba(15,15,15,0.8); backdrop-filter: blur(
 .inq-sel-close { background: none; border: none; cursor: pointer; font-size: 2rem; color: inherit; padding: 0; line-height: 1; font-weight: 300; transition: opacity 0.15s; }
 .inq-sel-close:hover { opacity: 0.55; }
 
-/* "Not listed" input — always visible, darker placeholder */
 .inq-sel-not-listed { margin-bottom: 2rem; }
 .inq-not-listed-input { -webkit-appearance: none; appearance: none; background: transparent; border: none; outline: none; font-family: inherit; font-size: 0.85rem; color: inherit; padding: 0.2rem 0; width: 360px; max-width: 100%; }
 .inq-not-listed-input::placeholder {
@@ -539,15 +524,13 @@ html.dark .inq-sel-head { background: rgba(15,15,15,0.8); backdrop-filter: blur(
 html.dark .inq-not-listed-input::placeholder { color: rgba(224,224,224,0.65); opacity: 1; }
 .inq-not-listed-input:focus { outline: none; }
 
-/* Masonry grid container — JS sets positions and height */
 .inq-sel-grid {
   position: relative;
   width: 100%;
 }
 
-/* artworkChoice: positioned by JS layout algorithm (same as homepage) */
 .artworkChoice {
-  position: relative; /* JS overrides left/top/width */
+  position: relative;
   cursor: pointer;
   transition: opacity 0.15s;
 }
@@ -558,8 +541,6 @@ html.dark .artworkChoice.selected { outline-color: #e0e0e0; }
 .checkmark-overlay { position: absolute; top: 6px; right: 6px; background: #161616; color: #fff; font-size: 1rem; padding: 2px 5px; }
 html.dark .checkmark-overlay { background: #e0e0e0; color: #000; }
 
-/* Selector modal dark mode — color-scheme:light on INPUTS ONLY, never the container
-   (setting it on the div itself makes Safari/Chrome give the div a light background) */
 html.dark #artworkSelectorModal {
   color: #e0e0e0;
 }
@@ -598,7 +579,6 @@ html.dark #artworkSelectorModal input::placeholder {
 
 /* ── RESPONSIVE ── */
 
-/* Medium screens 901–1280px: tighter paddings and spacing */
 @media (min-width: 901px) and (max-width: 1280px) {
   .inq-sidebar {
     padding: 1.5rem 2rem 1.5rem 1.5rem;
@@ -642,14 +622,12 @@ html.dark #artworkSelectorModal input::placeholder {
     position: relative !important;
     width: 100% !important;
   }
-  /* Selector header: wrap into 2 rows so confirm/deselect buttons don't disappear */
   .inq-sel-head {
     flex-wrap: wrap;
     row-gap: 0.5rem;
   }
   .inq-sel-title   { flex: 1 1 auto; }
   .inq-sel-actions { flex-shrink: 0; }
-  /* Not-listed input drops to its own full-width row below */
   .inq-sel-not-listed {
     order: 3;
     flex: 0 0 100%;
@@ -817,6 +795,16 @@ document.addEventListener("DOMContentLoaded", function() {
     if (otherInput)   { var c = otherRadio && otherRadio.checked;      otherInput.classList.toggle("hidden", !c);   otherInput.required = !!c;   if (!c) otherInput.value = ""; }
     if (licenseInput) { var c2 = licenseRadio && licenseRadio.checked; licenseInput.classList.toggle("hidden", !c2); licenseInput.required = !!c2; if (!c2) licenseInput.value = ""; }
   }
+
+  var commissionOtherCheckbox = document.getElementById("commissionOtherCheckbox");
+  var commissionOtherInput    = document.getElementById("commissionOtherInput");
+  function handleCommissionOtherReveal() {
+    if (!commissionOtherInput) return;
+    var checked = commissionOtherCheckbox && commissionOtherCheckbox.checked;
+    commissionOtherInput.classList.toggle("hidden", !checked);
+    if (!checked) commissionOtherInput.value = "";
+  }
+  commissionOtherCheckbox && commissionOtherCheckbox.addEventListener("change", handleCommissionOtherReveal);
 
   var modal          = document.getElementById("artworkSelectorModal");
   var openBtn        = document.getElementById("openArtworkSelector");
@@ -994,6 +982,67 @@ document.addEventListener("DOMContentLoaded", function() {
     selRt = setTimeout(function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, 150);
   });
 
+  /* ── PAYLOAD BUILDERS ── */
+  function buildPurchasePayload(form) {
+    var ids = Array.from(selected);
+    var custom = notListedInput ? notListedInput.value.trim() : "";
+    var titles = ids.map(function(id) {
+      var item = document.querySelector('.artworkChoice[data-id="' + id + '"]');
+      return item ? item.dataset.title : id;
+    });
+    if (custom) titles.push(custom + " (not listed)");
+
+    var checkedRadio = form.querySelector('input[name="artworkType"]:checked');
+    var artworkType  = checkedRadio ? checkedRadio.value : "";
+    var formatSpec   = "";
+    if (artworkType === "license" && licenseInput) formatSpec = licenseInput.value.trim();
+    if (artworkType === "other"   && otherInput)   formatSpec = otherInput.value.trim();
+
+    return {
+      action: "purchase",
+      email: form.querySelector('[name="buyerEmail"]').value.trim(),
+      fullName: form.querySelector('[name="buyerName"]').value.trim(),
+      phone: form.querySelector('[name="buyerPhone"]').value.trim(),
+      city: form.querySelector('[name="buyerCity"]').value.trim(),
+      country: form.querySelector('[name="buyerCountry"]').value.trim(),
+      selectedArtwork: titles.join(", "),
+      artworkFormat: artworkType,
+      artworkFormatSpec: formatSpec,
+      extraInfo: form.querySelector('[name="purchaseComments"]').value.trim()
+    };
+  }
+
+  function buildCommissionPayload(form) {
+    var typeLabels = {
+      canvas: "Physical painting",
+      digital: "Digital media, Tattoo, Print",
+      sculpture: "Sculpture, Object, Furniture, Mural",
+      clothing: "Clothing related",
+      brand: "Brand, Partnership or Event related",
+      other: "Other"
+    };
+    var checkedBoxes  = Array.from(form.querySelectorAll('input[name="commissionType[]"]:checked'));
+    var checkedLabels = checkedBoxes.map(function(cb) { return typeLabels[cb.value] || cb.value; });
+    var hasOther = checkedBoxes.some(function(cb) { return cb.value === "other"; });
+    var otherSpec = hasOther && commissionOtherInput ? commissionOtherInput.value.trim() : "";
+
+    return {
+      action: "commission",
+      email: form.querySelector('[name="commissionEmail"]').value.trim(),
+      fullName: form.querySelector('[name="commissionName"]').value.trim(),
+      phone: form.querySelector('[name="commissionPhone"]').value.trim(),
+      city: form.querySelector('[name="commissionCity"]').value.trim(),
+      country: form.querySelector('[name="commissionCountry"]').value.trim(),
+      comType: checkedLabels.join(", "),
+      comTypeSpec: otherSpec,
+      concept: form.querySelector('[name="commissionConcept"]').value.trim(),
+      prefSize: form.querySelector('[name="commissionSize"]').value.trim(),
+      intendedSpace: form.querySelector('[name="commissionSpace"]').value.trim(),
+      budget: form.querySelector('[name="commissionBudget"]').value.trim(),
+      extraInfo: form.querySelector('[name="commissionComments"]').value.trim()
+    };
+  }
+
   /* ── FORM SUBMISSION ── */
   document.addEventListener("submit", async function(e) {
     e.preventDefault();
@@ -1018,9 +1067,20 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     } catch(x) { return; }
     if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
-    var res = await fetch(form.action, { method: "POST", body: new FormData(form), headers: { "Accept": "application/json" } });
-    if (res.ok) {
+
+    var payload = fid === "purchaseForm" ? buildPurchasePayload(form) : buildCommissionPayload(form);
+
+    var res = await fetch(window.APP_CONFIG.googleScriptUrl, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(payload)
+    });
+    var result = String(await res.text()).trim();
+
+    if (res.ok && result === "OK") {
       form.reset(); initOptions();
+      handleFormatReveal();
+      handleCommissionOtherReveal();
       sEl && sEl.classList.remove("hidden");
       if (fid === "purchaseForm") {
         if (preview) preview.innerHTML = "";
@@ -1029,6 +1089,8 @@ document.addEventListener("DOMContentLoaded", function() {
         selected.clear(); syncSel();
         if (notListedInput) notListedInput.value = "";
       }
+    } else {
+      alert("Something went wrong. Please try again.");
     }
   });
 
