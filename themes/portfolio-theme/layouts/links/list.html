@@ -279,11 +279,18 @@
   }
 
   var submitBtn = document.getElementById('submitBtn');
-  if (submitBtn) {
-    submitBtn.addEventListener('click', async function () {
-      var form = document.getElementById('contactForm');
-      var successMessage = document.getElementById('contactSuccessMessage');
-      if (typeof grecaptcha === 'undefined') { alert('reCAPTCHA not loaded.'); return; }
+if (submitBtn) {
+  submitBtn.addEventListener('click', async function () {
+    var form = document.getElementById('contactForm');
+    var successMessage = document.getElementById('contactSuccessMessage');
+    if (typeof grecaptcha === 'undefined') { alert('reCAPTCHA not loaded.'); return; }
+
+    var originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = "0.5";
+    submitBtn.textContent = "Sending…";
+
+    try {
       const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
       const verifyRes = await fetch('/.netlify/functions/verifyRecaptcha', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -316,8 +323,13 @@
       } else {
         alert('There was an error. Please try again.');
       }
-    });
-  }
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.style.opacity = "";
+      submitBtn.textContent = originalLabel;
+    }
+  });
+}
 
   var params = new URLSearchParams(window.location.search);
   if (params.get('success') === 'true' && contactSection) {
