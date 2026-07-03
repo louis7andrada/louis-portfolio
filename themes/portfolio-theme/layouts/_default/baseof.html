@@ -47,6 +47,13 @@
   {{ $scripts := resources.Get "ts/main.ts" | js.Build }}
   <script defer src="{{ $scripts.Permalink }}"></script>
 
+  <!-- Google Script -->
+  <script>
+    window.APP_CONFIG = {
+      googleScriptUrl: "{{ .Site.Params.webhook_url }}"
+    };
+  </script>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
