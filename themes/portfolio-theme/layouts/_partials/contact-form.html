@@ -50,47 +50,55 @@
 <script>
 const form = document.getElementById("contactForm");
 const successMessage = document.getElementById("contactSuccessMessage");
+const submitBtn = form.querySelector('button[type="submit"]');
+const mobileBtn = document.querySelector('.inq-mobile-submit[data-target="contactForm"]');
+const triggerButtons = [submitBtn, mobileBtn].filter(Boolean);
+
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
   if (typeof grecaptcha === "undefined") {
     alert("reCAPTCHA not loaded.");
     return;
   }
-  // 1. Generate reCAPTCHA v3 token
-  const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-  // 2. Verify token via Netlify backend
-  const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ token })
-  });
-  const verifyData = await verifyRes.json();
-  // 3. Validate score
-  if (!verifyData.success || verifyData.score < 0.5) {
-    alert("Your submission was flagged by our security check. Please try completing the form again later.");
-    return;
-  }
-  // 4. Attach token to form
-  form.querySelector(".recaptcha-token-field").value = token;
-  // 5. Submit to Google Apps Script
-  const payload = {
-    action: "contact",
-    email: form.querySelector('[name="email"]').value.trim(),
-    fullName: form.querySelector('[name="name"]').value.trim(),
-    phone: form.querySelector('[name="phone"]').value.trim(),
-    message: form.querySelector('[name="message"]').value.trim()
-  };
-  const response = await fetch(window.APP_CONFIG.googleScriptUrl, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain" },
-    body: JSON.stringify(payload)
-  });
-  const result = String(await response.text()).trim();
-  if (response.ok && result === "OK") {
-    form.reset();
-    successMessage.classList.remove("hidden");
-  } else {
-    alert("There was an error. Please try again later.");
+
+  const originalLabels = triggerButtons.map(function(b){ return b.textContent; });
+  triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+
+  try {
+    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+    const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
+    const verifyData = await verifyRes.json();
+    if (!verifyData.success || verifyData.score < 0.5) {
+      alert("Your submission was flagged by our security check. Please try completing the form again later.");
+      return;
+    }
+    form.querySelector(".recaptcha-token-field").value = token;
+
+    const payload = {
+      action: "contact",
+      email: form.querySelector('[name="email"]').value.trim(),
+      fullName: form.querySelector('[name="name"]').value.trim(),
+      phone: form.querySelector('[name="phone"]').value.trim(),
+      message: form.querySelector('[name="message"]').value.trim()
+    };
+    const response = await fetch(window.APP_CONFIG.googleScriptUrl, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain" },
+      body: JSON.stringify(payload)
+    });
+    const result = String(await response.text()).trim();
+    if (response.ok && result === "OK") {
+      form.reset();
+      successMessage.classList.remove("hidden");
+    } else {
+      alert("There was an error. Please try again later.");
+    }
+  } finally {
+    triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
   }
 });
 </script>

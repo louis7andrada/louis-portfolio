@@ -1050,47 +1050,57 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fid !== "purchaseForm" && fid !== "commissionForm") return;
     var sid = fid === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
     var sEl = document.getElementById(sid);
-    if (fid === "purchaseForm") {
-      var parsed = null;
-      try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
-      if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
-        alert("Please select at least one artwork before submitting."); return;
-      }
-    }
-    var token = null;
+
+    var mobileBtn = document.querySelector('.inq-mobile-submit[data-target="' + fid + '"]');
+    var triggerButtons = [sideSubmit, mobileBtn].filter(Boolean);
+    var originalLabels = triggerButtons.map(function(b){ return b.textContent; });
+    triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+
     try {
-      if (typeof grecaptcha !== "undefined") {
-        token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-        var vr = await fetch("/.netlify/functions/verifyRecaptcha", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token }) });
-        var vd = await vr.json();
-        if (!vd.success || vd.score < 0.5) return;
-      }
-    } catch(x) { return; }
-    if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
-
-    var payload = fid === "purchaseForm" ? buildPurchasePayload(form) : buildCommissionPayload(form);
-
-    var res = await fetch(window.APP_CONFIG.googleScriptUrl, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    });
-    var result = String(await res.text()).trim();
-
-    if (res.ok && result === "OK") {
-      form.reset(); initOptions();
-      handleFormatReveal();
-      handleCommissionOtherReveal();
-      sEl && sEl.classList.remove("hidden");
       if (fid === "purchaseForm") {
-        if (preview) preview.innerHTML = "";
-        if (selectedTA) selectedTA.value = "";
-        localStorage.removeItem("selectedArtworks"); localStorage.removeItem("notListedCustom");
-        selected.clear(); syncSel();
-        if (notListedInput) notListedInput.value = "";
+        var parsed = null;
+        try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
+        if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
+          alert("Please select at least one artwork before submitting."); return;
+        }
       }
-    } else {
-      alert("Something went wrong. Please try again.");
+      var token = null;
+      try {
+        if (typeof grecaptcha !== "undefined") {
+          token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+          var vr = await fetch("/.netlify/functions/verifyRecaptcha", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token }) });
+          var vd = await vr.json();
+          if (!vd.success || vd.score < 0.5) return;
+        }
+      } catch(x) { return; }
+      if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
+
+      var payload = fid === "purchaseForm" ? buildPurchasePayload(form) : buildCommissionPayload(form);
+
+      var res = await fetch(window.APP_CONFIG.googleScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload)
+      });
+      var result = String(await res.text()).trim();
+
+      if (res.ok && result === "OK") {
+        form.reset(); initOptions();
+        handleFormatReveal();
+        handleCommissionOtherReveal();
+        sEl && sEl.classList.remove("hidden");
+        if (fid === "purchaseForm") {
+          if (preview) preview.innerHTML = "";
+          if (selectedTA) selectedTA.value = "";
+          localStorage.removeItem("selectedArtworks"); localStorage.removeItem("notListedCustom");
+          selected.clear(); syncSel();
+          if (notListedInput) notListedInput.value = "";
+        }
+      } else {
+        alert("Something went wrong. Please try again.");
+      }
+    } finally {
+      triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
     }
   });
 
