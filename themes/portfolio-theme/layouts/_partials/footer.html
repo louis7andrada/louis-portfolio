@@ -160,8 +160,9 @@
   if (!popup) return;
 
   function openPopup() {
+    const overlay = document.getElementById('filterOverlay');
     if (document.getElementById('arwModal')?.classList.contains('open')) return;
-    if (!document.getElementById('filterOverlay')?.classList.contains('hidden')) return;
+    if (overlay && !overlay.classList.contains('hidden')) return;
     if (popup.classList.contains('open')) return;
     popup.classList.add('open');
   }
