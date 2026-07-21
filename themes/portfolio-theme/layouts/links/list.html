@@ -29,7 +29,7 @@
         <a href="https://www.reddit.com/user/louis_20102/" target="_blank" rel="noopener noreferrer" class="tw-link">R<span class="ink i0">e</span><span class="ink i1">dd</span><span class="ink i3">i</span><span class="ink i4">t</span></a>
         <a href="https://www.saatchiart.com/en-ca/louisandrada" target="_blank" rel="noopener noreferrer" class="tw-link">Sa<span class="ink i0">a</span><span class="ink i1">t</span><span class="ink i2">c</span><span class="ink i3">h</span><span class="ink i4">i</span></a>
         <a><br></a>
-        <a href="https://artweektoronto.ca/" target="_blank" rel="noopener noreferrer" class="tw-link"><span class="ink i3">N</span><span class="ink i2">ext</span> <span class="ink i1">Exhibi</span><span class="ink i2">tion</span><span class="ink i2">:</span> Art Week Toronto</a>
+        <a href="https://artweektoronto.ca/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link"><span class="ink i3">N</span><span class="ink i2">ext</span> <span class="ink i1">Exhibi</span><span class="ink i2">tion</span><span class="ink i2">:</span> Art Week Toronto</a>
       </nav>
 
       <div id="contactSection" class="hidden mt-6">
@@ -137,6 +137,19 @@
   .dark .tw-link:hover { color: #fff; }
 
   .tw-send { font-size: 1.1rem; }
+
+  .exhibition-link {
+  white-space: normal;
+  max-width: 50%;
+  display: inline-block;
+}
+
+@media (max-width: 640px) {
+  .exhibition-link {
+    max-width: 50vw;
+    line-height: 1.25;
+  }
+}
 
   /* ── INK — per-character stacking ── */
   .ink { font-weight: 900; color: #000; display: inline; }
