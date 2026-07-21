@@ -34,36 +34,66 @@
   <div class="about-table-section">
     <div class="about-table-label">Exhibitions</div>
     <div class="about-table-rows">
-      <div class="about-table-row">
-        <span class="about-table-year">2026</span>
-        <span class="about-table-name">Group Exhibition</span>
-        <span class="about-table-venue">Art Week Toronto 2026</span>
-        <span class="about-table-location">Toronto, Canada</span>
+      <div class="about-collections-grid">
+        <div class="about-collections-title">Present</div>
+
+          <div class="about-collections-items">
+            <div>Carbonic Cafe</div>
+            <div>Works on Display</div>
+            <div>Toronto, Canada</div>
+          </div>
       </div>
-      <div class="about-table-row">
-        <span class="about-table-year">2026-Present</span>
-        <span class="about-table-name">Works on Display</span>
-        <span class="about-table-venue">Carbonic Cafe</span>
-        <span class="about-table-location">Toronto, Canada</span>
+      <div class="about-collections-grid">
+        <div class="about-collections-title">2026</div>
+
+          <div class="about-collections-items">
+            <div>Art Week Toronto</div>
+            <div>Group Exhibition</div>
+            <div>Toronto, Canada</div>
+          </div>
+
+        <div class="about-collections-title"></div>
+
+          <div class="about-collections-items">
+            <div>Carbonic Cafe</div>
+            <div>Works on Display</div>
+            <div>Toronto, Canada</div>
+          </div>
+
+        <div class="about-collections-title"></div>
+
+          <div class="about-collections-items">
+            <div>RCHIVE: Art Gallery</div>
+            <div>Group Exhibition</div>
+            <div>Toronto, Canada</div>
+          </div>
+
+        <div class="about-collections-title"></div>
+
+          <div class="about-collections-items">
+            <div>PB - Revival</div>
+            <div>Group Exhibition</div>
+            <div>Toronto, Canada</div>
+          </div>
       </div>
-      <div class="about-table-row">
-        <span class="about-table-year">2026</span>
-        <span class="about-table-name">Group Exhibition</span>
-        <span class="about-table-venue">RCHIVE: Art Gallery</span>
-        <span class="about-table-location">Toronto, Canada</span>
+      <div class="about-collections-grid">
+        <div class="about-collections-title">2025</div>
+
+          <div class="about-collections-items">
+            <div>The Chess Gallery</div>
+            <div>Works on Display</div>
+            <div>Toronto, Canada</div>
+          </div>
       </div>
-        <div class="about-table-row">
-          <span class="about-table-year">2026</span>
-          <span class="about-table-name">Group Exhibition</span>
-          <span class="about-table-venue">PB - Revival</span>
-          <span class="about-table-location">Toronto, Canada</span>
-        </div>
-        <div class="about-table-row">
-          <span class="about-table-year">2025-2024</span>
-          <span class="about-table-name">Works on Display</span>
-          <span class="about-table-venue">The Chess Gallery</span>
-          <span class="about-table-location">Toronto, Canada</span>
-        </div>
+      <div class="about-collections-grid">
+        <div class="about-collections-title">2024</div>
+
+          <div class="about-collections-items">
+            <div>The Chess Gallery</div>
+            <div>Works on Display</div>
+            <div>Toronto, Canada</div>
+          </div>
+      </div>
     </div>
   </div>
 
@@ -73,17 +103,22 @@
   <div class="about-table-section">
     <div class="about-table-label">Press & Publications</div>
     <div class="about-table-rows">
-      <div class="about-table-row">
-        <span class="about-table-year">2026</span>
-        <span class="about-table-name">Studio Visit Interview</span>
-        <span class="about-table-venue">Art Week Toronto</span>
-        <span class="about-table-location">Online, Canada</span>
-      </div>
-      <div class="about-table-row">
-        <span class="about-table-year">2026</span>
-        <span class="about-table-name">Featured Artworks</span>
-        <span class="about-table-venue">ArtLaunch</span>
-        <span class="about-table-location">Online, Canada</span>
+      <div class="about-collections-grid">
+        <div class="about-collections-title">2026</div>
+
+          <div class="about-collections-items">
+            <div>Art Week Toronto</div>
+            <div>Studio Visit Interview</div>
+            <div>Online, Canada</div>
+          </div>
+
+        <div class="about-collections-title"></div>
+
+          <div class="about-collections-items">
+            <div>ArtLaunch</div>
+            <div>Featured Artworks</div>
+            <div>Online, Canada</div>
+          </div>
       </div>
     </div>
   </div>
@@ -225,6 +260,7 @@
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   font-size: 0.80rem;
+  margin-bottom: 0.75rem;
 }
 
   .about-table-year {
@@ -309,16 +345,18 @@
 
   .about-collections-grid {
     grid-template-columns: 1fr !important;
-    gap: 1rem !important;
+    gap: 0.5rem !important;
   }
 
   .about-collections-items {
     grid-template-columns: 1fr 1fr !important;
     gap: 0.25rem 0.75rem;
+    margin-left: 1rem;
   }
 
   .about-collections-title {
-    margin-bottom: 0.5rem;
+    margin-top: 0.75rem;
+    margin-bottom: 0rem;
   }
 }
 
