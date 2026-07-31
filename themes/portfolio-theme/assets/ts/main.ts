@@ -269,12 +269,14 @@ moonIcon?.classList.remove("moonIconSpin");
 
 const savedTheme = localStorage.getItem("theme");
 
-if (savedTheme === "dark") {
-  document.documentElement.classList.add("dark");
-  sunIcon?.classList.remove("hidden"); // show sun only
-} else {
+if (savedTheme === "light") {
+  // Explicitly chose light
   document.documentElement.classList.remove("dark");
-  moonIcon?.classList.remove("hidden"); // show moon only
+  moonIcon?.classList.remove("hidden");
+} else {
+  // Default to dark (includes first visit)
+  document.documentElement.classList.add("dark");
+  sunIcon?.classList.remove("hidden");
 }
 
 toggle?.addEventListener("click", () => {
