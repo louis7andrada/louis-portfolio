@@ -1839,12 +1839,12 @@ body {
 ----------------------------------------- */
 
 html.dark body {
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
   color: #e8e8e8 !important;
 }
 
 html.dark header {
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
   border-color: #2d2d2d !important;
 }
 
@@ -1882,7 +1882,7 @@ html.dark .bg-gray-200 {
 }
 
 html.dark #mobileMenu {
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
   color: #e8e8e8 !important;
 }
 
@@ -1891,7 +1891,7 @@ html.dark #artworkModal {
 }
 
 html.dark #artworkModal .modal-content {
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
   color: #e8e8e8 !important;
 }
 
@@ -2000,7 +2000,7 @@ html.dark select {
 }
 
 html.dark option {
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
   color: #e8e8e8 !important;
 }
 
@@ -2018,7 +2018,7 @@ html.dark .archive-filters label {
 ----------------------------------------- */
 
 .dark #artworkSelectorModal > div {
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
   color: #ffffff !important;
 }
 
@@ -2028,7 +2028,7 @@ html.dark .archive-filters label {
 
 .dark #artworkSelectorModal .artworkChoice {
   border-color: #555555 !important;
-  background-color: #1a1a1a !important;
+  background-color: #0f0f0f !important;
 }
 
 .dark #artworkSelectorModal .artworkChoice p {
@@ -2227,7 +2227,7 @@ html.dark .filter-trigger:hover {
 }
 
 html.dark .filter-menu {
-  background: #1a1a1a !important;
+  background: #0f0f0f !important;
   border-color: #3a3a3a;
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
