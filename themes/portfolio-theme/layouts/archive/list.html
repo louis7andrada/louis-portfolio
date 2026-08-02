@@ -74,7 +74,6 @@
   {{/* ── END SPACER ── */}}
   <div class="arch-end">
     <span class="arch-end-1">The End :)</span>
-    <span class="arch-end-2">Please stop scrolling!!</span>
   </div>
 
 </section>
@@ -154,7 +153,7 @@
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
   padding: 10px 16px 12px;
 }
-html.dark .arch-filters-row { background: rgba(26,26,26,0.65); }
+html.dark .arch-filters-row { background: rgba(15, 15, 15, 0.65); }
 
 .arch-f {
   position: relative;
@@ -223,15 +222,16 @@ html.dark .arch-filters-row { background: rgba(26,26,26,0.65); }
   left: 0;
   min-width: 135px;
   padding: 6px 0;
-  background: rgba(255,255,255,0.97);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.09);
-  z-index: 10;
+
+  background: rgba(255,255,255,0.78);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+
+  z-index: 40;
 }
+
 html.dark .arch-f-drop {
-  background: rgba(26,26,26,0.97);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  background: rgba(15,15,15,0.78);
 }
 .arch-f-drop.open { display: flex; }
 
@@ -352,13 +352,11 @@ html.dark .arch-f-drop {
   position: absolute;
   inset: 0;
   background: rgba(255,255,255,0.48);
-  backdrop-filter: blur(16px) saturate(1.15);
-  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  backdrop-filter: blur(16px) saturate(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(1.1);
 }
 html.dark .arch-popup-bg {
   background: rgba(0,0,0,0.52);
-  backdrop-filter: blur(20px) brightness(0.65);
-  -webkit-backdrop-filter: blur(20px) brightness(0.65);
 }
 
 .arch-popup-pane {
@@ -471,7 +469,7 @@ html.dark .arch-popup-bg {
     -webkit-backdrop-filter: blur(16px) saturate(1.1);
   }
   html.dark .arch-sidebar {
-    background: rgba(14,14,14,0.80);
+    background: rgba(15, 15, 15, 0.80);
   }
 
   /* Deselect sits inside the box above the filter buttons */
