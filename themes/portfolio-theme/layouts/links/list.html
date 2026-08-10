@@ -27,11 +27,11 @@
         <a href="https://www.louisandrada.com/about" target="_blank" rel="noopener noreferrer" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
         <a href="https://www.reddit.com/user/louis_20102/" target="_blank" rel="noopener noreferrer" class="tw-link">R<span class="ink i0">e</span><span class="ink i1">dd</span><span class="ink i3">i</span><span class="ink i4">t</span></a>
         <a><br></a>
-        <a><span class="ink i3">On-G</span><span class="ink i2">oing</span> <span class="ink i1"> Col</span><span class="ink i2">lection</span><span class="ink i2">:</span></a>
+        <a class="tw-link tw-header"><span class="ink i3">On-G</span><span class="ink i2">oing</span> <span class="ink i1"> Col</span><span class="ink i2">lection</span><span class="ink i2">:</span></a>
         <a href="https://louisandrada.com/artworks/collection-sins/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">The Hundred Sins</a>
         <a href="https://louisandrada.com/artworks/collection-the_tree_the_snake_the_fruit/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">The Tree, The Snake, The Fruit</a>
         <a><br></a>
-        <a><span class="ink i3">N</span><span class="ink i2">ext</span> <span class="ink i1">Exhibi</span><span class="ink i2">tion</span><span class="ink i2">:</span></a>
+        <a class="tw-link tw-header"><span class="ink i3">N</span><span class="ink i2">ext</span> <span class="ink i1">Exhibi</span><span class="ink i2">tion</span><span class="ink i2">:</span></a>
         <a href="https://artweektoronto.ca/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">Art Week Toronto</a>
       </nav>
 
@@ -139,18 +139,30 @@
   .dark .tw-link { color: #ececec; }
   .dark .tw-link:hover { color: #fff; }
 
+  /* Section headers ("On-going Collections:", "Next Exhibition:") match the
+     link font size but never show the hover underline, since they aren't
+     links themselves. */
+  .tw-header::after {
+    display: none !important;
+  }
+
   .tw-send { font-size: 1.1rem; }
 
+  /* Sub-items under a header line (collection/exhibition names). Sized down
+     from the main nav links so the hierarchy reads clearly, and kept on a
+     single line so titles like "The Tree, The Snake, The Fruit" don't wrap. */
   .exhibition-link {
-  white-space: normal;
-  max-width: 60%;
-  display: inline-block;
-}
+    font-size: 1.05rem;
+    white-space: nowrap;
+    max-width: 100%;
+    display: inline-block;
+  }
 
 @media (max-width: 640px) {
   .exhibition-link {
-    max-width: 60vw;
-    line-height: 1.25;
+    /* Scales with viewport width so the longest title still fits on one
+       line on narrow screens instead of wrapping. */
+    font-size: clamp(0.62rem, 4vw, 0.85rem);
   }
 }
 
