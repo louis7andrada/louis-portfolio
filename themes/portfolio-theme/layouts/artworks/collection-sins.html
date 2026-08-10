@@ -4,7 +4,8 @@
 
 {{ $raw := where .Site.RegularPages "Section" "artworks" }}
 {{ $raw = where $raw "Params.collection" "The Hundred Sins" }}
-{{ $raw = where $raw "File.BaseFileName" "!=" "collection-tree" }}
+{{ $raw = where $raw "File.BaseFileName" "!=" "collection-sins" }}
+{{ $raw = where $raw "Params.image" "!=" nil }}
 
 {{/* Sort artwork sequence from highest collection_order to lowest */}}
 {{ $sorted := sort $raw "Params.collection_order" "desc" }}
