@@ -4,6 +4,7 @@
 
 {{ $raw := where .Site.RegularPages "Section" "artworks" }}
 {{ $raw = where $raw "Params.collection" "The Hundred Sins" }}
+{{ $raw = where $raw "File.BaseFileName" "!=" "collection-tree" }}
 
 {{/* Sort artwork sequence from highest collection_order to lowest */}}
 {{ $sorted := sort $raw "Params.collection_order" "desc" }}
@@ -11,111 +12,99 @@
 <section class="sins-section" id="sinsSection">
 
   <!-- =============================== -->
-
   <!-- TITLE -->
-
   <!-- =============================== -->
 
   <h1 class="sins-title">The Hundred Sins</h1>
 
   <!-- =============================== -->
-
   <!-- YEAR FILTER -->
-
   <!-- =============================== -->
 
   <div class="sins-sidebar" id="sinsSidebar">
 
-```
-<button class="sins-deselect" id="sinsDeselect">Deselect all</button>
+    <button class="sins-deselect" id="sinsDeselect">Deselect all</button>
 
-<div class="sins-filters-row">
+    <div class="sins-filters-row">
 
-  <div class="sins-f">
+      <div class="sins-f">
 
-    <button class="sins-f-btn" id="sinsYearBtn">
-      Years <span class="sins-f-icon" id="sinsYearIcon"></span>
-    </button>
-
-    <span class="sins-f-selected" id="sinsYearSelected"></span>
-
-    <div class="sins-f-drop" id="sinsYearDrop">
-
-      <button
-        class="sins-f-opt on"
-        data-filter="year"
-        data-val="all">
-        All Years
-      </button>
-
-      {{ $yrs := slice }}
-
-      {{ range $raw }}
-        {{ if .Params.year }}
-          {{ $yrs = $yrs | append .Params.year }}
-        {{ end }}
-      {{ end }}
-
-      {{ range sort (uniq $yrs) "value" "desc" }}
-
-        <button
-          class="sins-f-opt"
-          data-filter="year"
-          data-val="{{ . }}">
-          {{ . }}
+        <button class="sins-f-btn" id="sinsYearBtn">
+          Years <span class="sins-f-icon" id="sinsYearIcon"></span>
         </button>
 
-      {{ end }}
+        <span class="sins-f-selected" id="sinsYearSelected"></span>
+
+        <div class="sins-f-drop" id="sinsYearDrop">
+
+          <button
+            class="sins-f-opt on"
+            data-filter="year"
+            data-val="all">
+            All Years
+          </button>
+
+          {{ $yrs := slice }}
+
+          {{ range $raw }}
+            {{ if .Params.year }}
+              {{ $yrs = $yrs | append .Params.year }}
+            {{ end }}
+          {{ end }}
+
+          {{ range sort (uniq $yrs) "value" "desc" }}
+
+            <button
+              class="sins-f-opt"
+              data-filter="year"
+              data-val="{{ . }}">
+              {{ . }}
+            </button>
+
+          {{ end }}
+
+        </div>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
-```
-
-  </div>
-
   <!-- =============================== -->
-
   <!-- GRID -->
-
   <!-- =============================== -->
 
   <div class="sins-grid" id="sinsGrid">
 
-```
-{{ range $i, $page := $sorted }}
+    {{ range $i, $page := $sorted }}
 
-  <div
-    class="sins-item"
-    data-idx="{{ $i }}"
-    data-year="{{ $page.Params.year }}"
-    data-title="{{ $page.Title }}"
-    data-comment="{{ $page.Params.comment }}"
-    data-img="{{ $page.Params.image }}"
-    data-url="{{ $page.RelPermalink }}"
-    data-order="{{ $page.Params.collection_order }}"
-  >
+      <div
+        class="sins-item"
+        data-idx="{{ $i }}"
+        data-year="{{ $page.Params.year }}"
+        data-title="{{ $page.Title }}"
+        data-comment="{{ $page.Params.comment }}"
+        data-img="{{ $page.Params.image }}"
+        data-url="{{ $page.RelPermalink }}"
+        data-order="{{ $page.Params.collection_order }}"
+      >
 
-    <img
-      class="sins-img"
-      src="{{ $page.Params.image }}"
-      alt="{{ $page.Title }}"
-      loading="lazy"
-    >
+        <img
+          class="sins-img"
+          src="{{ $page.Params.image }}"
+          alt="{{ $page.Title }}"
+          loading="lazy"
+        >
 
-  </div>
+      </div>
 
-{{ end }}
-```
+    {{ end }}
 
   </div>
 
   <!-- =============================== -->
-
   <!-- END -->
-
   <!-- =============================== -->
 
   <div class="sins-end">
@@ -125,9 +114,7 @@
 </section>
 
 <!-- =============================== -->
-
 <!-- POPUP -->
-
 <!-- =============================== -->
 
 <div class="sins-popup" id="sinsPopup">
@@ -136,66 +123,64 @@
 
   <div class="sins-popup-pane">
 
-```
-<button
-  class="sins-popup-x"
-  id="sinsPopupX">
-  &times;
-</button>
+    <button
+      class="sins-popup-x"
+      id="sinsPopupX">
+      &times;
+    </button>
 
-<div class="sins-popup-img-col">
+    <div class="sins-popup-img-col">
 
-  <a id="sinsPopupLink" href="#">
+      <a id="sinsPopupLink" href="#">
 
-    <img
-      class="sins-popup-img"
-      id="sinsPopupImg"
-      src=""
-      alt=""
-    >
+        <img
+          class="sins-popup-img"
+          id="sinsPopupImg"
+          src=""
+          alt=""
+        >
 
-  </a>
+      </a>
 
-</div>
+    </div>
 
-<div class="sins-popup-text-col">
+    <div class="sins-popup-text-col">
 
-  <span
-    class="sins-popup-year"
-    id="sinsPopupYear">
-  </span>
+      <span
+        class="sins-popup-year"
+        id="sinsPopupYear">
+      </span>
 
-  <h2
-    class="sins-popup-title"
-    id="sinsPopupTitle">
-  </h2>
+      <h2
+        class="sins-popup-title"
+        id="sinsPopupTitle">
+      </h2>
 
-  <p
-    class="sins-popup-comment"
-    id="sinsPopupComment">
-  </p>
+      <p
+        class="sins-popup-comment"
+        id="sinsPopupComment">
+      </p>
 
-</div>
+    </div>
 
-<span
-  class="sins-popup-vert"
-  id="sinsPopupVert">
-</span>
-```
+    <span
+      class="sins-popup-vert"
+      id="sinsPopupVert">
+    </span>
 
   </div>
 
   <!-- Popup arrows -->
 
-<a
- class="sins-arrow sins-arrow-prev"
- id="sinsPrevBtn"
- aria-label="Previous"> </a>
+  <a
+   class="sins-arrow sins-arrow-prev"
+   id="sinsPrevBtn"
+   aria-label="Previous"> </a>
 
-<a
- class="sins-arrow sins-arrow-next"
- id="sinsNextBtn"
- aria-label="Next"> </a>
+  <a
+   class="sins-arrow sins-arrow-next"
+   id="sinsNextBtn"
+   aria-label="Next"> </a>
 
 </div>
 
@@ -212,13 +197,9 @@
    ───────────────────────────────────── */
 
 .sins-section {
-
   overflow-x: hidden;
-
   padding: 48px 0 0 230px;
-
   box-sizing: border-box;
-
 }
 
 
@@ -227,25 +208,15 @@
    ───────────────────────────────────── */
 
 .sins-title {
-
   width: 100%;
-
   margin: 0;
-
   padding: 0 40px 55px 0;
-
   box-sizing: border-box;
-
   text-align: center;
-
   font-size: 2rem;
-
   font-weight: 600;
-
   line-height: 1.2;
-
   letter-spacing: 0.01em;
-
 }
 
 
@@ -254,65 +225,38 @@
    ───────────────────────────────────── */
 
 .sins-sidebar {
-
   position: fixed;
-
   left: 8%;
-
   top: 50%;
-
   transform: translateY(-50%);
-
   z-index: 40;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: flex-start;
-
   gap: 8px;
-
 }
 
 
 .sins-deselect {
-
   display: none;
-
   background: none;
-
   border: none;
-
   cursor: pointer;
-
   font-family: inherit;
-
   font-size: 0.66rem;
-
   color: inherit;
-
   padding: 4px 0 4px 4px;
-
   opacity: 0.45;
-
   letter-spacing: 0.05em;
-
   text-decoration: underline;
-
   text-underline-offset: 3px;
-
   transition: opacity 0.15s;
-
   white-space: nowrap;
-
 }
 
 
 .sins-deselect:hover {
-
   opacity: 1;
-
 }
 
 
@@ -321,41 +265,26 @@
    ───────────────────────────────────── */
 
 .sins-filters-row {
-
   display: flex;
-
   flex-direction: row;
-
   align-items: flex-start;
-
   gap: 32px;
-
   background: rgba(255,255,255,0.78);
-
   backdrop-filter: blur(16px) saturate(1.1);
-
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
-
   padding: 10px 16px 12px;
-
 }
 
 
 html.dark .sins-filters-row {
-
   background: rgba(15,15,15,0.65);
-
 }
 
 
 .sins-f {
-
   position: relative;
-
   display: flex;
-
   flex-direction: column;
-
 }
 
 
@@ -364,134 +293,83 @@ html.dark .sins-filters-row {
    ───────────────────────────────────── */
 
 .sins-f-btn {
-
   background: none;
-
   border: none;
-
   cursor: pointer;
-
   font-family: inherit;
-
   font-size: 0.74rem;
-
   letter-spacing: 0.07em;
-
   color: inherit;
-
   padding: 0;
-
   display: flex;
-
   align-items: center;
-
   gap: 5px;
-
   opacity: 0.65;
-
   transition: opacity 0.15s;
-
   white-space: nowrap;
-
 }
 
 
 .sins-f-btn:hover,
 .sins-f-btn.open {
-
   opacity: 1;
-
 }
 
 
 /* + / − icon */
 
 .sins-f-icon {
-
   position: relative;
-
   width: 11px;
-
   height: 11px;
-
   display: inline-block;
-
   flex-shrink: 0;
-
 }
 
 
 .sins-f-icon::before,
 .sins-f-icon::after {
-
   content: "";
-
   position: absolute;
-
   left: 50%;
-
   top: 50%;
-
   background: currentColor;
-
   transform: translate(-50%, -50%);
-
   transition: height 0.25s, opacity 0.25s;
-
 }
 
 
 .sins-f-icon::before {
-
   width: 9px;
-
   height: 1px;
-
 }
 
 
 .sins-f-icon::after {
-
   width: 1px;
-
   height: 9px;
-
 }
 
 
 .sins-f-btn.open .sins-f-icon::after {
-
   height: 0;
-
   opacity: 0;
-
 }
 
 
 /* Selected year */
 
 .sins-f-selected {
-
   display: block;
-
   font-size: 0.64rem;
-
   letter-spacing: 0.05em;
-
   opacity: 0.8;
-
   text-decoration: underline;
-
   text-underline-offset: 3px;
-
   margin-top: 3px;
-
   min-height: 0.9em;
-
   pointer-events: none;
-
   white-space: nowrap;
-
 }
 
 
@@ -500,94 +378,57 @@ html.dark .sins-filters-row {
    ───────────────────────────────────── */
 
 .sins-f-drop {
-
   display: none;
-
   flex-direction: column;
-
   position: absolute;
-
   top: calc(100% + 4px);
-
   left: 0;
-
   min-width: 135px;
-
   padding: 6px 0;
-
   background: rgba(255,255,255,0.78);
-
   backdrop-filter: blur(16px) saturate(1.1);
-
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
-
   z-index: 40;
-
 }
 
 
 html.dark .sins-f-drop {
-
   background: rgba(15,15,15,0.78);
-
 }
 
 
 .sins-f-drop.open {
-
   display: flex;
-
 }
 
 
 .sins-f-opt {
-
   background: none;
-
   border: none;
-
   cursor: pointer;
-
   font-family: inherit;
-
   font-size: 0.7rem;
-
   color: inherit;
-
   padding: 5px 14px;
-
   text-align: left;
-
   width: 100%;
-
   opacity: 0.28;
-
   letter-spacing: 0.04em;
-
   transition: opacity 0.15s;
-
   white-space: nowrap;
-
   box-sizing: border-box;
-
 }
 
 
 .sins-f-opt:hover {
-
   opacity: 0.65;
-
 }
 
 
 .sins-f-opt.on {
-
   opacity: 1;
-
   text-decoration: underline;
-
   text-underline-offset: 3px;
-
 }
 
 
@@ -596,15 +437,10 @@ html.dark .sins-f-drop {
    ───────────────────────────────────── */
 
 .sins-grid {
-
   position: relative;
-
   width: 100%;
-
   min-height: 600px;
-
   overflow: visible;
-
 }
 
 
@@ -613,45 +449,30 @@ html.dark .sins-f-drop {
    ───────────────────────────────────── */
 
 .sins-item {
-
   position: absolute;
-
   cursor: pointer;
-
   overflow: visible;
-
   transition:
     transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
-
 }
 
 
 .sins-item:hover {
-
   transform: scale(1.055);
-
   z-index: 20 !important;
-
 }
 
 
 .sins-img {
-
   display: block;
-
   width: 100%;
-
   height: auto;
-
   pointer-events: none;
-
 }
 
 
 .sins-item.sins-off {
-
   display: none !important;
-
 }
 
 
@@ -660,87 +481,52 @@ html.dark .sins-f-drop {
    ───────────────────────────────────── */
 
 .sins-lbl {
-
   position: absolute;
-
   font-size: 0.86rem;
-
   letter-spacing: 0.055em;
-
   line-height: 1.5;
-
   opacity: 0.55;
-
   pointer-events: none;
-
   color: inherit;
-
   font-family: inherit;
-
 }
 
 
 .sins-lbl-r {
-
   left: calc(100% + 12px);
-
   top: 0;
-
   writing-mode: vertical-lr;
-
   white-space: nowrap;
-
   overflow: hidden;
-
 }
 
 
 .sins-lbl-l {
-
   right: calc(100% + 12px);
-
   top: 0;
-
   writing-mode: vertical-rl;
-
   white-space: nowrap;
-
   overflow: hidden;
-
 }
 
 
 .sins-lbl-b {
-
   top: calc(100% + 9px);
-
   left: 0;
-
   writing-mode: horizontal-tb;
-
   white-space: normal;
-
   word-break: break-word;
-
   overflow: hidden;
-
 }
 
 
 .sins-lbl-a {
-
   bottom: calc(100% + 9px);
-
   left: 0;
-
   writing-mode: horizontal-tb;
-
   white-space: normal;
-
   word-break: break-word;
-
   overflow: hidden;
-
 }
 
 
@@ -749,240 +535,147 @@ html.dark .sins-f-drop {
    ───────────────────────────────────── */
 
 .sins-popup {
-
   position: fixed;
-
   inset: 0;
-
   z-index: 500;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   opacity: 0;
-
   pointer-events: none;
-
   transition: opacity 0.38s ease;
-
 }
 
 
 .sins-popup.open {
-
   opacity: 1;
-
   pointer-events: all;
-
 }
 
 
 .sins-popup-bg {
-
   position: absolute;
-
   inset: 0;
-
   background: rgba(255,255,255,0.48);
-
   backdrop-filter: blur(16px) saturate(1.1);
-
   -webkit-backdrop-filter: blur(16px) saturate(1.1);
-
 }
 
 
 html.dark .sins-popup-bg {
-
   background: rgba(0,0,0,0.52);
-
 }
 
 
 .sins-popup-pane {
-
   position: relative;
-
   z-index: 1;
-
   display: flex;
-
   align-items: flex-start;
-
   gap: 44px;
-
   max-width: min(1100px,94vw);
-
   max-height: 90vh;
-
   padding: 48px 64px 40px 44px;
-
   transform: scale(0.95);
-
   transition:
     transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
-
 }
 
 
 .sins-popup.open .sins-popup-pane {
-
   transform: scale(1);
-
 }
 
 
 /* Close */
 
 .sins-popup-x {
-
   position: absolute;
-
   top: 12px;
-
   right: 20px;
-
   background: none;
-
   border: none;
-
   cursor: pointer;
-
   font-size: 2.2rem;
-
   color: inherit;
-
   padding: 0;
-
   line-height: 1;
-
   font-weight: 200;
-
   opacity: 0.5;
-
   transition: opacity 0.15s;
-
 }
 
 
 .sins-popup-x:hover {
-
   opacity: 1;
-
 }
 
 
 /* Image */
 
 .sins-popup-img-col {
-
   flex-shrink: 0;
-
 }
 
 
 .sins-popup-img {
-
   display: block;
-
   max-height: 78vh;
-
   max-width: 52vw;
-
   width: auto;
-
   height: auto;
-
   object-fit: contain;
-
 }
 
 
 /* Text */
 
 .sins-popup-text-col {
-
   flex: 1;
-
   min-width: 160px;
-
   max-width: 300px;
-
   display: flex;
-
   flex-direction: column;
-
   gap: 14px;
-
   padding-top: 4px;
-
 }
 
 
 .sins-popup-year {
-
   font-size: 0.68rem;
-
   letter-spacing: 0.12em;
-
   opacity: 0.4;
-
   display: block;
-
 }
 
 
 .sins-popup-title {
-
   font-size: 1.05rem;
-
   font-weight: 600;
-
   line-height: 1.35;
-
   letter-spacing: 0.02em;
-
   margin: 0;
-
 }
 
 
 .sins-popup-comment {
-
   font-size: 0.78rem;
-
   line-height: 1.7;
-
   opacity: 0.7;
-
   margin: 0;
-
 }
 
 
 .sins-popup-vert {
-
   position: absolute;
-
   right: 18px;
-
   top: 50%;
-
   transform: translateY(-50%);
-
   writing-mode: vertical-lr;
-
   font-size: 0.6rem;
-
   letter-spacing: 0.14em;
-
   text-transform: uppercase;
-
   opacity: 0.22;
-
 }
 
 
@@ -991,62 +684,38 @@ html.dark .sins-popup-bg {
    ───────────────────────────────────── */
 
 .sins-arrow {
-
   position: fixed;
-
   top: 50%;
-
   transform: translateY(-50%);
-
   display: flex;
-
   align-items: center;
-
   color: inherit;
-
   opacity: 0.6;
-
   background: none !important;
-
   border: none !important;
-
   text-decoration: none !important;
-
   box-shadow: none !important;
-
   padding: 16px 10px !important;
-
   z-index: 560;
-
   transition: opacity 0.22s;
-
   line-height: 0;
-
   cursor: pointer;
-
   display: none;
-
 }
 
 
 .sins-arrow:hover {
-
   opacity: 0.2;
-
 }
 
 
 .sins-arrow-prev {
-
   left: 16px;
-
 }
 
 
 .sins-arrow-next {
-
   right: 16px;
-
 }
 
 
@@ -1055,32 +724,20 @@ html.dark .sins-popup-bg {
    ───────────────────────────────────── */
 
 .sins-end {
-
   position: relative;
-
   width: 90%;
-
   box-sizing: border-box;
-
   margin-top: 9vh;
-
   padding-bottom: 80px;
-
 }
 
 
 .sins-end-1 {
-
   display: block;
-
   width: 100%;
-
   text-align: center;
-
   font-size: inherit;
-
   letter-spacing: inherit;
-
 }
 
 
@@ -1092,202 +749,117 @@ html.dark .sins-popup-bg {
 /* Medium */
 
 @media (max-width: 1100px) {
-
   .sins-section {
-
     padding-left: 190px;
-
   }
-
   .sins-sidebar {
-
     left: 16px;
-
   }
-
 }
 
 
 /* Small */
 
 @media (max-width: 800px) {
-
   .sins-section {
-
     padding-left: 0;
-
     padding-right: 0;
-
     padding-top: 72px;
-
   }
-
 
   .sins-title {
-
-    padding:
-      0 20px 40px;
-
+    padding: 0 20px 40px;
     font-size: 1.7rem;
-
   }
-
 
   .sins-sidebar {
-
     position: fixed;
-
     top: 60px;
-
     left: 20px;
-
     right: auto;
-
     width: auto;
-
     transform: none;
-
     flex-direction: column;
-
     align-items: flex-start;
-
     gap: 4px;
-
     z-index: 40;
-
     padding: 8px 16px 10px;
-
     background: rgba(255,255,255,0.78);
-
     backdrop-filter: blur(16px) saturate(1.1);
-
     -webkit-backdrop-filter: blur(16px) saturate(1.1);
-
   }
-
 
   html.dark .sins-sidebar {
-
     background: rgba(15,15,15,0.80);
-
   }
-
 
   .sins-deselect {
-
     padding: 0 0 2px 0;
-
     margin: 0;
-
   }
-
 
   .sins-filters-row {
-
     background: none !important;
-
     backdrop-filter: none !important;
-
     -webkit-backdrop-filter: none !important;
-
     padding: 0;
-
     gap: 24px;
-
     width: auto;
-
   }
-
 
   .sins-grid {
-
     padding: 0 16px;
-
     box-sizing: border-box;
-
   }
-
 }
 
 
 /* Very small */
 
 @media (max-width: 600px) {
-
   .sins-popup-pane {
-
     flex-direction: column;
-
     gap: 20px;
-
     padding: 44px 20px 80px;
-
     overflow-y: auto;
-
     max-height: 92vh;
-
   }
-
 
   .sins-popup-img {
-
     max-width: 88vw;
-
     max-height: 52vh;
-
   }
-
 
   .sins-popup-text-col {
-
     max-width: none;
-
   }
-
 
   .sins-popup-vert {
-
     display: none;
-
   }
-
 
   .sins-arrow {
-
     top: auto !important;
-
     bottom: 28px;
-
     transform: none !important;
-
   }
-
 }
 
 
 @media (max-width: 480px) {
-
   .sins-title {
-
     font-size: 1.5rem;
-
   }
-
 }
 
 
 /* End spacing on mobile */
 
 @media (max-width: 800px) {
-
   .sins-end {
-
     margin-top: -4vh;
-
     width: 100%;
-
   }
-
 }
 
 
@@ -1297,261 +869,123 @@ html.dark .sins-popup-bg {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-
   /* ═══════════════════════════════════════════
      DETERMINISTIC RANDOM NUMBER GENERATOR
 
      This does NOT randomize artwork order.
-
      collection_order determines the artwork
      sequence. The seeded value is only used to
      create the scattered visual positioning.
      ═══════════════════════════════════════════ */
 
   function mkRng(seed) {
-
     let s = seed >>> 0;
-
     return () => {
-
       s = Math.imul(s ^ (s >>> 15), s | 1);
-
       s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
-
       return ((s ^ (s >>> 14)) >>> 0) / 0x100000000;
-
     };
-
   }
 
+  const grid = document.getElementById('sinsGrid');
+  const items = Array.from(grid.querySelectorAll('.sins-item'));
 
-  const grid =
-    document.getElementById('sinsGrid');
+  const popup = document.getElementById('sinsPopup');
+  const pBg = document.getElementById('sinsPopupBg');
+  const pImg = document.getElementById('sinsPopupImg');
+  const pLink = document.getElementById('sinsPopupLink');
+  const pTitle = document.getElementById('sinsPopupTitle');
+  const pYear = document.getElementById('sinsPopupYear');
+  const pCom = document.getElementById('sinsPopupComment');
+  const pVert = document.getElementById('sinsPopupVert');
+  const pX = document.getElementById('sinsPopupX');
 
-  const items =
-    Array.from(
-      grid.querySelectorAll('.sins-item')
-    );
+  const prevBtn = document.getElementById('sinsPrevBtn');
+  const nextBtn = document.getElementById('sinsNextBtn');
 
+  const desBt = document.getElementById('sinsDeselect');
 
-  const popup =
-    document.getElementById('sinsPopup');
-
-  const pBg =
-    document.getElementById('sinsPopupBg');
-
-  const pImg =
-    document.getElementById('sinsPopupImg');
-
-  const pLink =
-    document.getElementById('sinsPopupLink');
-
-  const pTitle =
-    document.getElementById('sinsPopupTitle');
-
-  const pYear =
-    document.getElementById('sinsPopupYear');
-
-  const pCom =
-    document.getElementById('sinsPopupComment');
-
-  const pVert =
-    document.getElementById('sinsPopupVert');
-
-  const pX =
-    document.getElementById('sinsPopupX');
-
-
-  const prevBtn =
-    document.getElementById('sinsPrevBtn');
-
-  const nextBtn =
-    document.getElementById('sinsNextBtn');
-
-
-  const desBt =
-    document.getElementById('sinsDeselect');
-
-
-  const yearSelEl =
-    document.getElementById('sinsYearSelected');
-
+  const yearSelEl = document.getElementById('sinsYearSelected');
 
   const activeF = {
-
     year: 'all'
-
   };
-
 
   /* ═══════════════════════════════════════════
      LABELS
      ═══════════════════════════════════════════ */
 
   const MAX_H = 42;
-
   const MAX_V = 36;
 
-
   function addLabels(item, imgW, imgH) {
+    item.querySelectorAll('.sins-lbl').forEach(l => l.remove());
 
-    item
-      .querySelectorAll('.sins-lbl')
-      .forEach(l => l.remove());
+    const idx = parseInt(item.dataset.idx, 10) || 0;
+    const r = mkRng(idx * 7919 + 31);
 
-
-    const idx =
-      parseInt(item.dataset.idx, 10) || 0;
-
-
-    const r =
-      mkRng(idx * 7919 + 31);
-
-
-    const year =
-      (item.dataset.year || '').trim();
-
-
-    const title =
-      (item.dataset.title || '').trim();
-
-
-    const comment =
-      (item.dataset.comment || '').trim();
-
+    const year = (item.dataset.year || '').trim();
+    const title = (item.dataset.title || '').trim();
+    const comment = (item.dataset.comment || '').trim();
 
     /*
      * The year can appear vertically on either
      * side of the image.
      */
-
     const yearRight = r() < 0.5;
-
 
     /*
      * Titles and comments retain the same
      * editorial behaviour as the Archive.
      */
-
-    const showTitle =
-      title && r() < 0.82;
-
-
-    const showComment =
-      comment && r() < 0.18;
-
+    const showTitle = title && r() < 0.82;
+    const showComment = comment && r() < 0.18;
 
     const lbDefs = [];
 
-
     if (year) {
-
       lbDefs.push({
-
-        text:
-          year.length > MAX_V
-            ? year.slice(0, MAX_V - 1) + '…'
-            : year,
-
-        pos:
-          yearRight ? 'r' : 'l',
-
-        maxH:
-          Math.round(imgH * 0.70),
-
-        maxW:
-          null
-
+        text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
+        pos: yearRight ? 'r' : 'l',
+        maxH: Math.round(imgH * 0.70),
+        maxW: null
       });
-
     }
-
 
     if (showTitle) {
-
-      const t =
-        title.length > MAX_H
-          ? title.slice(0, MAX_H - 1) + '…'
-          : title;
-
+      const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
 
       lbDefs.push({
-
         text: t,
-
         pos: 'b',
-
-        maxH:
-          Math.round(
-            1.5 * 0.86 * 16 * 2.2
-          ),
-
-        maxW:
-          Math.round(imgW * 0.88)
-
+        maxH: Math.round(1.5 * 0.86 * 16 * 2.2),
+        maxW: Math.round(imgW * 0.88)
       });
-
     }
-
 
     if (showComment) {
-
-      const c =
-        comment.length > MAX_H
-          ? comment.slice(0, MAX_H - 1) + '…'
-          : comment;
-
+      const c = comment.length > MAX_H ? comment.slice(0, MAX_H - 1) + '…' : comment;
 
       lbDefs.push({
-
         text: c,
-
         pos: 'a',
-
-        maxH:
-          Math.round(
-            1.5 * 0.86 * 16 * 1.2
-          ),
-
-        maxW:
-          Math.round(imgW * 0.88)
-
+        maxH: Math.round(1.5 * 0.86 * 16 * 1.2),
+        maxW: Math.round(imgW * 0.88)
       });
-
     }
 
+    lbDefs.forEach(({ text, pos, maxH, maxW }) => {
+      const el = document.createElement('div');
 
-    lbDefs.forEach(
-      ({ text, pos, maxH, maxW }) => {
+      el.className = `sins-lbl sins-lbl-${pos}`;
+      el.textContent = text;
 
-        const el =
-          document.createElement('div');
+      if (maxH) el.style.maxHeight = maxH + 'px';
+      if (maxW) el.style.maxWidth = maxW + 'px';
 
-
-        el.className =
-          `sins-lbl sins-lbl-${pos}`;
-
-
-        el.textContent = text;
-
-
-        if (maxH)
-          el.style.maxHeight =
-            maxH + 'px';
-
-
-        if (maxW)
-          el.style.maxWidth =
-            maxW + 'px';
-
-
-        item.appendChild(el);
-
-      }
-    );
-
+      item.appendChild(el);
+    });
   }
-
 
   /* ═══════════════════════════════════════════
      SCATTER LAYOUT
@@ -1569,261 +1003,108 @@ document.addEventListener('DOMContentLoaded', () => {
      ═══════════════════════════════════════════ */
 
   function layout() {
-
     const W = grid.offsetWidth;
 
-
     if (!W) {
-
       requestAnimationFrame(layout);
-
       return;
-
     }
 
-
-    const mobile =
-      window.innerWidth <= 800;
-
+    const mobile = window.innerWidth <= 800;
 
     /*
      * Number of visual columns.
      */
-
     const NCOLS =
-      W > 1100
-        ? 11
-        : W > 900
-          ? 9
-          : W > 680
-            ? 6
-            : W > 480
-              ? 3
-              : 2;
+      W > 1100 ? 11
+      : W > 900 ? 9
+      : W > 680 ? 6
+      : W > 480 ? 3
+      : 2;
 
+    const H_GAP = mobile ? 24 : 50;
+    const PAD_L = mobile ? 0 : 30;
+    const PAD_R = mobile ? 0 : 50;
+    const V_MIN = mobile ? 50 : 70;
+    const V_EXTRA = mobile ? 40 : 50;
 
-    const H_GAP =
-      mobile ? 24 : 50;
-
-
-    const PAD_L =
-      mobile ? 0 : 30;
-
-
-    const PAD_R =
-      mobile ? 0 : 50;
-
-
-    const V_MIN =
-      mobile ? 50 : 70;
-
-
-    const V_EXTRA =
-      mobile ? 40 : 50;
-
-
-    const vis =
-      items.filter(
-        it =>
-          !it.classList.contains('sins-off')
-      );
-
+    const vis = items.filter(it => !it.classList.contains('sins-off'));
 
     if (!vis.length) {
-
       grid.style.height = '300px';
-
       return;
-
     }
 
-
-    const usableW =
-      W - PAD_L - PAD_R;
-
-
-    const colW =
-      usableW / NCOLS;
-
-
-    const bots =
-      new Array(NCOLS).fill(40);
-
+    const usableW = W - PAD_L - PAD_R;
+    const colW = usableW / NCOLS;
+    const bots = new Array(NCOLS).fill(40);
 
     vis.forEach((item, vi) => {
-
 
       /*
        * The index is based on the Hugo-sorted
        * collection_order sequence.
        */
-
-      const idx =
-        parseInt(item.dataset.idx, 10) || vi;
-
+      const idx = parseInt(item.dataset.idx, 10) || vi;
 
       /*
        * Seed only affects positioning.
        * It does NOT affect artwork order.
        */
-
-      const r =
-        mkRng(idx * 3331 + 113);
-
+      const r = mkRng(idx * 3331 + 113);
 
       /*
        * Image width:
        * 2–4 columns normally.
        * Every seventh image is larger.
        */
-
-      const isLarge =
-        idx % 7 === 0;
-
-
-      const wBase =
-        isLarge ? 3 : 2;
-
-
-      const wExtra =
-        Math.floor(
-          r() * (isLarge ? 2 : 3)
-        );
-
-
-      const wCols =
-        Math.min(
-          NCOLS,
-          wBase + wExtra
-        );
-
+      const isLarge = idx % 7 === 0;
+      const wBase = isLarge ? 3 : 2;
+      const wExtra = Math.floor(r() * (isLarge ? 2 : 3));
+      const wCols = Math.min(NCOLS, wBase + wExtra);
 
       /*
        * Mobile cap.
        */
+      const wColsCapped = mobile
+        ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8)))
+        : wCols;
 
-      const wColsCapped =
-        mobile
-          ? Math.min(
-              wCols,
-              Math.max(
-                2,
-                Math.round(NCOLS * 0.8)
-              )
-            )
-          : wCols;
+      const maxStart = Math.max(0, NCOLS - wColsCapped);
+      const startCol = Math.floor(r() * (maxStart + 1));
 
+      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
 
-      const maxStart =
-        Math.max(
-          0,
-          NCOLS - wColsCapped
-        );
+      const vGap = V_MIN + Math.floor(r() * V_EXTRA);
+      const topY = spanMax + vGap;
 
+      const slotW = wColsCapped * colW;
+      const imgW = Math.max(60, slotW - H_GAP);
 
-      const startCol =
-        Math.floor(
-          r() * (maxStart + 1)
-        );
+      const leftX = PAD_L + startCol * colW + H_GAP / 2;
 
+      item.style.left = leftX + 'px';
+      item.style.top = topY + 'px';
+      item.style.width = imgW + 'px';
 
-      const spanMax =
-        Math.max(
-          ...bots.slice(
-            startCol,
-            startCol + wColsCapped
-          )
-        );
-
-
-      const vGap =
-        V_MIN +
-        Math.floor(
-          r() * V_EXTRA
-        );
-
-
-      const topY =
-        spanMax + vGap;
-
-
-      const slotW =
-        wColsCapped * colW;
-
-
-      const imgW =
-        Math.max(
-          60,
-          slotW - H_GAP
-        );
-
-
-      const leftX =
-        PAD_L +
-        startCol * colW +
-        H_GAP / 2;
-
-
-      item.style.left =
-        leftX + 'px';
-
-
-      item.style.top =
-        topY + 'px';
-
-
-      item.style.width =
-        imgW + 'px';
-
-
-      const img =
-        item.querySelector('img');
-
+      const img = item.querySelector('img');
 
       const ar =
-        (
-          img.naturalWidth > 0 &&
-          img.naturalHeight > 0
-        )
-
-          ? img.naturalHeight /
-            img.naturalWidth
-
+        (img.naturalWidth > 0 && img.naturalHeight > 0)
+          ? img.naturalHeight / img.naturalWidth
           : 1.25;
 
+      const imgH = imgW * ar;
 
-      const imgH =
-        imgW * ar;
+      addLabels(item, imgW, imgH);
 
-
-      addLabels(
-        item,
-        imgW,
-        imgH
-      );
-
-
-      for (
-        let c = startCol;
-        c < startCol + wColsCapped;
-        c++
-      ) {
-
-        bots[c] =
-          topY + imgH;
-
+      for (let c = startCol; c < startCol + wColsCapped; c++) {
+        bots[c] = topY + imgH;
       }
-
     });
 
-
-    grid.style.height =
-      (
-        Math.max(...bots) + 220
-      ) + 'px';
-
+    grid.style.height = (Math.max(...bots) + 220) + 'px';
   }
-
 
   /* ═══════════════════════════════════════════
      IMAGE LOADING
@@ -1831,281 +1112,107 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let loaded = 0;
 
+  Array.from(grid.querySelectorAll('img')).forEach(img => {
 
-  Array
-    .from(
-      grid.querySelectorAll('img')
-    )
-    .forEach(img => {
+    const done = () => {
+      loaded++;
 
-
-      const done = () => {
-
-        loaded++;
-
-
-        if (
-          loaded <= 8 ||
-          loaded % 4 === 0
-        ) {
-
-          layout();
-
-        }
-
-      };
-
-
-      if (img.complete)
-
-        done();
-
-      else {
-
-        img.onload = done;
-
-        img.onerror = done;
-
+      if (loaded <= 8 || loaded % 4 === 0) {
+        layout();
       }
+    };
 
-    });
-
+    if (img.complete)
+      done();
+    else {
+      img.onload = done;
+      img.onerror = done;
+    }
+  });
 
   layout();
 
-
   let rt;
 
-
-  window.addEventListener(
-    'resize',
-    () => {
-
-      clearTimeout(rt);
-
-      rt =
-        setTimeout(
-          layout,
-          180
-        );
-
-    }
-  );
-
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(layout, 180);
+  });
 
   /* ═══════════════════════════════════════════
      YEAR FILTER
      ═══════════════════════════════════════════ */
 
   function updateSelectedLabels() {
-
     if (yearSelEl) {
-
-      yearSelEl.textContent =
-        activeF.year === 'all'
-          ? ''
-          : activeF.year;
-
+      yearSelEl.textContent = activeF.year === 'all' ? '' : activeF.year;
     }
-
   }
 
-
   function applyFilters() {
-
     items.forEach(it => {
-
       const yo =
         activeF.year === 'all' ||
-        String(it.dataset.year) ===
-        String(activeF.year);
+        String(it.dataset.year) === String(activeF.year);
 
-
-      it.classList.toggle(
-        'sins-off',
-        !yo
-      );
-
+      it.classList.toggle('sins-off', !yo);
     });
 
+    const anyOn = activeF.year !== 'all';
 
-    const anyOn =
-      activeF.year !== 'all';
-
-
-    desBt.style.display =
-      anyOn ? 'block' : 'none';
-
+    desBt.style.display = anyOn ? 'block' : 'none';
 
     updateSelectedLabels();
 
-
-    setTimeout(
-      layout,
-      40
-    );
-
+    setTimeout(layout, 40);
   }
 
+  const yearBtn = document.getElementById('sinsYearBtn');
+  const yearDrop = document.getElementById('sinsYearDrop');
 
-  const yearBtn =
-    document.getElementById(
-      'sinsYearBtn'
-    );
+  yearBtn.addEventListener('click', e => {
+    e.stopPropagation();
 
+    const isOpen = yearDrop.classList.contains('open');
 
-  const yearDrop =
-    document.getElementById(
-      'sinsYearDrop'
-    );
+    yearDrop.classList.toggle('open', !isOpen);
+    yearBtn.classList.toggle('open', !isOpen);
+  });
 
-
-  yearBtn.addEventListener(
-    'click',
-    e => {
-
+  yearDrop.querySelectorAll('.sins-f-opt').forEach(opt => {
+    opt.addEventListener('click', e => {
       e.stopPropagation();
 
+      yearDrop.querySelectorAll('.sins-f-opt').forEach(o => o.classList.remove('on'));
 
-      const isOpen =
-        yearDrop.classList.contains(
-          'open'
-        );
+      opt.classList.add('on');
 
-
-      yearDrop.classList.toggle(
-        'open',
-        !isOpen
-      );
-
-
-      yearBtn.classList.toggle(
-        'open',
-        !isOpen
-      );
-
-    }
-  );
-
-
-  yearDrop
-    .querySelectorAll(
-      '.sins-f-opt'
-    )
-    .forEach(opt => {
-
-      opt.addEventListener(
-        'click',
-        e => {
-
-          e.stopPropagation();
-
-
-          yearDrop
-            .querySelectorAll(
-              '.sins-f-opt'
-            )
-            .forEach(
-              o =>
-                o.classList.remove(
-                  'on'
-                )
-            );
-
-
-          opt.classList.add('on');
-
-
-          activeF.year =
-            opt.dataset.val;
-
-
-          applyFilters();
-
-          /*
-           * Dropdown deliberately remains open,
-           * matching the Archive behaviour.
-           */
-
-        }
-      );
-
-    });
-
-
-  document.addEventListener(
-    'click',
-    e => {
-
-      if (
-        !e.target.closest(
-          '.sins-sidebar'
-        )
-      ) {
-
-        document
-          .querySelectorAll(
-            '.sins-f-drop'
-          )
-          .forEach(
-            d =>
-              d.classList.remove(
-                'open'
-              )
-          );
-
-
-        document
-          .querySelectorAll(
-            '.sins-f-btn'
-          )
-          .forEach(
-            b =>
-              b.classList.remove(
-                'open'
-              )
-          );
-
-      }
-
-    }
-  );
-
-
-  desBt.addEventListener(
-    'click',
-    () => {
-
-      activeF.year = 'all';
-
-
-      document
-        .querySelectorAll(
-          '.sins-f-opt'
-        )
-        .forEach(
-          o =>
-            o.classList.remove(
-              'on'
-            )
-        );
-
-
-      document
-        .querySelectorAll(
-          '.sins-f-opt[data-val="all"]'
-        )
-        .forEach(
-          o =>
-            o.classList.add('on')
-        );
-
+      activeF.year = opt.dataset.val;
 
       applyFilters();
 
-    }
-  );
+      /*
+       * Dropdown deliberately remains open,
+       * matching the Archive behaviour.
+       */
+    });
+  });
 
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.sins-sidebar')) {
+      document.querySelectorAll('.sins-f-drop').forEach(d => d.classList.remove('open'));
+      document.querySelectorAll('.sins-f-btn').forEach(b => b.classList.remove('open'));
+    }
+  });
+
+  desBt.addEventListener('click', () => {
+    activeF.year = 'all';
+
+    document.querySelectorAll('.sins-f-opt').forEach(o => o.classList.remove('on'));
+    document.querySelectorAll('.sins-f-opt[data-val="all"]').forEach(o => o.classList.add('on'));
+
+    applyFilters();
+  });
 
   /* ═══════════════════════════════════════════
      POPUP
@@ -2117,320 +1224,122 @@ document.addEventListener('DOMContentLoaded', () => {
     '<polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>' +
     '</svg>';
 
-
   const rightArrowSVG =
     '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg">' +
     '<line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/>' +
     '<polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>' +
     '</svg>';
 
-
-  prevBtn.innerHTML =
-    leftArrowSVG;
-
-
-  nextBtn.innerHTML =
-    rightArrowSVG;
-
+  prevBtn.innerHTML = leftArrowSVG;
+  nextBtn.innerHTML = rightArrowSVG;
 
   let visibleItems = [];
-
   let currentIdx = -1;
-
   let currentItemRef = null;
 
-
   function getFilteredItems() {
-
-    return items.filter(
-      it =>
-        !it.classList.contains(
-          'sins-off'
-        )
-    );
-
+    return items.filter(it => !it.classList.contains('sins-off'));
   }
-
 
   function updateNavArrows() {
-
-    prevBtn.style.display =
-      currentIdx > 0
-        ? 'flex'
-        : 'none';
-
-
-    nextBtn.style.display =
-      currentIdx <
-        visibleItems.length - 1
-        ? 'flex'
-        : 'none';
-
+    prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
+    nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
   }
 
-
   function populatePopup(item) {
+    pImg.src = item.dataset.img || '';
+    pImg.alt = item.dataset.title || '';
 
-    pImg.src =
-      item.dataset.img || '';
+    pLink.href = item.dataset.url || '#';
 
+    pTitle.textContent = item.dataset.title || '';
+    pYear.textContent = item.dataset.year || '';
+    pCom.textContent = item.dataset.comment || '';
 
-    pImg.alt =
-      item.dataset.title || '';
-
-
-    pLink.href =
-      item.dataset.url || '#';
-
-
-    pTitle.textContent =
-      item.dataset.title || '';
-
-
-    pYear.textContent =
-      item.dataset.year || '';
-
-
-    pCom.textContent =
-      item.dataset.comment || '';
-
-
-    pCom.style.display =
-      item.dataset.comment
-        ? 'block'
-        : 'none';
-
+    pCom.style.display = item.dataset.comment ? 'block' : 'none';
 
     /*
      * The collection order is intentionally
      * not displayed. It only controls sequence.
      */
-
-    pVert.textContent =
-      'The Hundred Sins';
-
+    pVert.textContent = 'The Hundred Sins';
 
     updateNavArrows();
-
   }
 
-
   function openPopup(item) {
-
-    visibleItems =
-      getFilteredItems();
-
-
-    currentIdx =
-      visibleItems.indexOf(item);
-
-
-    currentItemRef =
-      item;
-
+    visibleItems = getFilteredItems();
+    currentIdx = visibleItems.indexOf(item);
+    currentItemRef = item;
 
     populatePopup(item);
 
+    popup.classList.add('open');
 
-    popup.classList.add(
-      'open'
-    );
-
-
-    document.body.style.overflow =
-      'hidden';
-
+    document.body.style.overflow = 'hidden';
   }
 
-
   function closePopup() {
+    popup.classList.remove('open');
 
-    popup.classList.remove(
-      'open'
-    );
-
-
-    document.body.style.overflow =
-      '';
-
+    document.body.style.overflow = '';
 
     currentItemRef = null;
 
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
 
-    prevBtn.style.display =
-      'none';
-
-
-    nextBtn.style.display =
-      'none';
-
-
-    setTimeout(
-      () => {
-
-        if (
-          !popup.classList.contains(
-            'open'
-          )
-        ) {
-
-          pImg.src = '';
-
-        }
-
-      },
-      420
-    );
-
+    setTimeout(() => {
+      if (!popup.classList.contains('open')) {
+        pImg.src = '';
+      }
+    }, 420);
   }
-
 
   function navTo(dir) {
+    const fresh = getFilteredItems();
+    const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
 
-    const fresh =
-      getFilteredItems();
+    visibleItems = fresh;
 
+    if (freshIdx !== -1) currentIdx = freshIdx;
 
-    const freshIdx =
-      currentItemRef
-        ? fresh.indexOf(
-            currentItemRef
-          )
-        : -1;
+    const newIdx = currentIdx + dir;
 
+    if (newIdx < 0 || newIdx >= visibleItems.length) return;
 
-    visibleItems =
-      fresh;
+    currentIdx = newIdx;
+    currentItemRef = visibleItems[currentIdx];
 
-
-    if (freshIdx !== -1)
-
-      currentIdx =
-        freshIdx;
-
-
-    const newIdx =
-      currentIdx + dir;
-
-
-    if (
-      newIdx < 0 ||
-      newIdx >=
-        visibleItems.length
-    )
-
-      return;
-
-
-    currentIdx =
-      newIdx;
-
-
-    currentItemRef =
-      visibleItems[
-        currentIdx
-      ];
-
-
-    populatePopup(
-      currentItemRef
-    );
-
+    populatePopup(currentItemRef);
   }
 
-
   /* Open popup */
-
-  items.forEach(
-    it =>
-
-      it.addEventListener(
-        'click',
-        () =>
-          openPopup(it)
-      )
-
-  );
-
+  items.forEach(it => it.addEventListener('click', () => openPopup(it)));
 
   /* Close */
-
-  pX.addEventListener(
-    'click',
-    closePopup
-  );
-
-
-  pBg.addEventListener(
-    'click',
-    closePopup
-  );
-
+  pX.addEventListener('click', closePopup);
+  pBg.addEventListener('click', closePopup);
 
   /* Navigation */
+  prevBtn.addEventListener('click', e => {
+    e.preventDefault();
+    navTo(-1);
+  });
 
-  prevBtn.addEventListener(
-    'click',
-    e => {
-
-      e.preventDefault();
-
-      navTo(-1);
-
-    }
-  );
-
-
-  nextBtn.addEventListener(
-    'click',
-    e => {
-
-      e.preventDefault();
-
-      navTo(1);
-
-    }
-  );
-
+  nextBtn.addEventListener('click', e => {
+    e.preventDefault();
+    navTo(1);
+  });
 
   /* Keyboard */
+  document.addEventListener('keydown', e => {
+    if (!popup.classList.contains('open')) return;
 
-  document.addEventListener(
-    'keydown',
-    e => {
-
-      if (
-        !popup.classList.contains(
-          'open'
-        )
-      )
-
-        return;
-
-
-      if (
-        e.key === 'Escape'
-      )
-
-        closePopup();
-
-
-      if (
-        e.key === 'ArrowLeft'
-      )
-
-        navTo(-1);
-
-
-      if (
-        e.key === 'ArrowRight'
-      )
-
-        navTo(1);
-
-    }
-  );
-
+    if (e.key === 'Escape') closePopup();
+    if (e.key === 'ArrowLeft') navTo(-1);
+    if (e.key === 'ArrowRight') navTo(1);
+  });
 
 });
 
