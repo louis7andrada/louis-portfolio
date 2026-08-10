@@ -8,7 +8,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>{{ if .Title }}{{ .Title }} — Louis Andrada{{ else }}Louis Andrada{{ end }}</title>
+  {{ if .IsHome }}
+  <title>Portfolio — Louis Andrada</title>
+  {{ else }}
+  <title>{{ .Title }} — Louis Andrada</title>
+  {{ end }}
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MSBCR3QFML"></script>
@@ -21,20 +25,28 @@
   </script>
 
   <!-- SEO -->
-  <meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}Brazilian painter based in Toronto. Portfolio of artworks, commissions, and archives.{{ end }}">
-  <meta name="keywords" content="Louis Andrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings">
+  <meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}Portfolio of Louis Andrada — Brazilian-born, Toronto-based painter known for his dark existentialist artworks.{{ end }}">
+  <meta name="keywords" content="Louis Andrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings, Brazilian painter, Dark art, Dark Artworks, Figuratism, Existentialism">
 
   <!-- OpenGraph -->
+  {{ if .IsHome }}
+  <meta property="og:title" content="Portfolio — Louis Andrada" />
+  {{ else }}
   <meta property="og:title" content="{{ .Title }} — Louis Andrada" />
-  <meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}Brazilian painter based in Toronto. Portfolio of artworks, commissions, and archives.{{ end }}" />
+  {{ end }}
+  <meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}Portfolio of Louis Andrada — Brazilian-born, Toronto-based painter known for his dark existentialist artworks.{{ end }}" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="{{ .Permalink }}" />
   <meta property="og:image" content="/images/og-default.jpg" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
+  {{ if .IsHome }}
+  <meta name="twitter:title" content="Portfolio — Louis Andrada" />
+  {{ else }}
   <meta name="twitter:title" content="{{ .Title }} — Louis Andrada" />
-  <meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}Brazilian painter based in Toronto. Portfolio of artworks, commissions, and archives.{{ end }}" />
+  {{ end }}
+  <meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}Portfolio of Louis Andrada — Brazilian-born, Toronto-based painter known for his dark existentialist artworks.{{ end }}" />
   <meta name="twitter:image" content="/images/og-default.jpg" />
 
   <!-- font URL -->
