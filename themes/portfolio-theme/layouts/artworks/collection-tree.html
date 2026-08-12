@@ -35,7 +35,9 @@
     <!-- ========================= -->
     <div class="col-span-3">
 
-      <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Tree</h2>
+      <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 text-center lg:mb-6 whitespace-nowrap">
+        The Tree
+      </h2>
 
       <div class="grid grid-cols-3" style="gap: 3px;">
         {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "tree") "Params.collection_order" "asc" }}
@@ -58,7 +60,9 @@
     <!-- ========================= -->
     <div class="col-span-4">
 
-      <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Snake</h2>
+      <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 text-center lg:mb-6 whitespace-nowrap">
+        The Snake
+      </h2>
 
       <div class="grid grid-cols-4" style="gap: 3px;">
         {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "snake") "Params.collection_order" "asc" }}
@@ -81,7 +85,9 @@
     <!-- ========================= -->
     <div class="col-span-3">
 
-      <h2 class="text-2xl font-semibold mb-4 text-center lg:mb-6">The Fruit</h2>
+      <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 text-center lg:mb-6 whitespace-nowrap">
+        The Fruit
+      </h2>
 
       <div class="grid grid-cols-3" style="gap: 3px;">
         {{ range sort (where (where .Site.RegularPages "Params.collection" $.Params.collection) "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
@@ -108,7 +114,9 @@
 
     <!-- TREE FULL IMAGE -->
     <div class="flex flex-col items-center">
-      <h3 class="text-2xl font-semibold mb-6 text-center">The Tree</h3>
+      <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 text-center lg:mb-6 whitespace-nowrap">
+        The Tree
+      </h3>
 
       {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}
       {{ with index $treeFull 0 }}
@@ -130,7 +138,9 @@
 
     <!-- SNAKE FULL IMAGE -->
     <div class="flex flex-col items-center">
-      <h3 class="text-2xl font-semibold mb-6 text-center">The Snake</h3>
+      <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 text-center lg:mb-6 whitespace-nowrap">
+        The Snake
+      </h3>
 
       {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}
       {{ with index $snakeFull 0 }}
@@ -152,7 +162,9 @@
 
     <!-- FRUIT FULL IMAGE -->
     <div class="flex flex-col items-center">
-      <h3 class="text-2xl font-semibold mb-6 text-center">The Fruit</h3>
+      <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-4 text-center lg:mb-6 whitespace-nowrap">
+        The Fruit
+      </h3>
 
       {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}
       {{ with index $fruitFull 0 }}
