@@ -21,19 +21,19 @@
     <div class="links-col flex flex-col">
 
       <nav class="flex flex-col items-end text-right">
+        <div class="tw-header links-header">Links</div>
         <a href="https://www.louisandrada.com" target="_blank" rel="noopener noreferrer" class="tw-link">Po<span class="ink i0">rt</span><span class="ink i1">fo</span><span class="ink i3">l</span><span class="ink i4">i</span><span class="ink i4">o</span></a>
         <a href="https://louisandrada.com/#artworks-section" target="_blank" rel="noopener noreferrer" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
         <a href="https://www.louisandrada.com/inquiry" target="_blank" rel="noopener noreferrer" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
         <a href="https://www.louisandrada.com/about" target="_blank" rel="noopener noreferrer" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
         <a href="https://www.reddit.com/user/louis_20102/" target="_blank" rel="noopener noreferrer" class="tw-link">R<span class="ink i0">e</span><span class="ink i1">dd</span><span class="ink i3">i</span><span class="ink i4">t</span></a>
         <a><br></a>
-        <a class="tw-link tw-header"><span class="ink i3">Col</span><span class="ink i2">lect</span><span class="ink i1">ions in </span><span class="ink i2">Progr</span><span class="ink i2">ess</span></a>
-        <a href="https://louisandrada.com/artworks/collection-sins/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">The Hundred Sins</a>
-        <a href="https://louisandrada.com/artworks/collection-the_tree_the_snake_the_fruit/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">The Tree, The Snake, The Fruit</a>
-        <a><br></a>
-        <a class="tw-link tw-header"><span class="ink i3">Cur</span><span class="ink i2">rent</span> <span class="ink i1">Exhibi</span><span class="ink i2">tio</span><span class="ink i2">ns</span></a>
-        <a href="https://artweektoronto.ca/" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">Art Week Toronto</a>
-        <a href="https://maps.app.goo.gl/zhQhJNUrLyGq258z6" target="_blank" rel="noopener noreferrer" class="tw-link exhibition-link">Carbonic Coffee</a>
+        <div class="tw-header">In Progress</div>
+        <div class="tw-headermini">Collections</div>
+        <a href="https://louisandrada.com/artworks/collection-sins/" target="_blank" rel="noopener noreferrer" class="tw-link">The Hu<span class="ink i0">ndr</span><span class="ink i1">ed</span><span class="ink i2"> Si</span><span class="ink i3">n</span><span class="ink i4">s</span></a>
+        <a href="https://louisandrada.com/artworks/collection-the_tree_the_snake_the_fruit/" target="_blank" rel="noopener noreferrer" class="tw-link">T. <span class="ink i1">S. </span><span class="ink i3">F.</span></a>
+        <div class="tw-headermini2">Exhibitions</div>
+        <a href="https://maps.app.goo.gl/zhQhJNUrLyGq258z6" target="_blank" rel="noopener noreferrer" class="tw-link">Carbon</span><span class="ink i0">ic C</span><span class="ink i1">o</span><span class="ink i2">f</span><span class="ink i3">f<span class="ink i4">ee</span></span></a>
       </nav>
 
       <div id="contactSection" class="hidden mt-6">
@@ -116,7 +116,7 @@
     margin: 0;
     cursor: pointer;
     white-space: nowrap;
-    font-size: 1.35rem;
+    font-size: 1.2rem;
     line-height: 1.32;
     letter-spacing: 0.01em;
     color: #161616;
@@ -140,20 +140,103 @@
   .tw-link:hover::after { display: block; }
   .dark .tw-link { color: #ececec; }
   .dark .tw-link:hover { color: #fff; }
+  
+  @media (max-width: 640px) {
+    .tw-link {
+      font-size: 1.1rem;
+    }
+  }
 
   /* Section headers ("On-going Collections:", "Next Exhibition:") match the
      link font size but never show the hover underline, since they aren't
      links themselves. */
-  .tw-header::after {
-    display: none !important;
-  }
   .tw-header {
-    margin-top: 0.4rem;
-  }
+  font-size: 0.95rem;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  color: #161616;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: default;
+  margin-top: 0.4rem;
+}
+
+.dark .tw-header {
+  color: #ececec;
+}
+
+.links-header {
+  margin-top: 0;
+  margin-bottom: 0.15rem;
+}
 
 @media (max-width: 640px) {
   .tw-header {
-    margin-top: 0.9rem;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+  }
+
+  .links-header {
+    margin-top: 0;
+  }
+}
+
+.tw-headermini {
+  font-size: 0.7rem;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  color: #161616;
+  cursor: default;
+  margin-top: 0.2rem;
+}
+
+.dark .tw-headermini {
+  color: #ececec;
+}
+
+.links-headermini {
+  margin-top: 0.9rem;
+  margin-bottom: 0.15rem;
+}
+
+@media (max-width: 640px) {
+  .tw-headermini {
+    margin-top: 0.4rem;
+  }
+
+  .links-headermini {
+    margin-top: 0;
+  }
+}
+
+.tw-headermini2 {
+  font-size: 0.7rem;
+  line-height: 1.32;
+  letter-spacing: 0.01em;
+  font-weight: 400;
+  color: #161616;
+  cursor: default;
+  margin-top: 0.8rem;
+}
+
+.dark .tw-headermini2 {
+  color: #ececec;
+}
+
+.links-headermini2 {
+  margin-top: 0.9rem;
+  margin-bottom: 0.15rem;
+}
+
+@media (max-width: 640px) {
+  .tw-headermini2 {
+    margin-top: 0.8rem;
+  }
+
+  .links-headermini2 {
+    margin-top: 0;
   }
 }
 
@@ -163,7 +246,6 @@
      from the main nav links so the hierarchy reads clearly, and kept on a
      single line so titles like "The Tree, The Snake, The Fruit" don't wrap. */
   .exhibition-link {
-    font-size: 1.05rem;
     white-space: nowrap;
     max-width: 100%;
     display: inline-block;
