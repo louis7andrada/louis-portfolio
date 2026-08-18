@@ -201,28 +201,27 @@
     {{ if .Params.inprogress }}{{ continue }}{{ end }}
     {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
     {{ if eq .File.BaseFileName "collection-the_tree_the_snake_the_fruit" }}{{ continue }}{{ end }}
+    {{ if not .Params.image }}{{ continue }}{{ end }}
     {{ $clean = $clean | append . }}
   {{ end }}
   {{ $sorted := sort $clean "Params.worknum" "desc" }}
 
-  <div id="artworkGallery" class="artwork-masonry-grid">
-    {{ range $sorted }}
-    <a href="{{ .RelPermalink }}"
-       class="artwork-item artwork-cell"
-       data-year="{{ .Params.year }}"
-       data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}"
-       data-title="{{ .Title }}"
-       data-medium="{{ .Params.medium }}"
-       data-size="{{ .Params.size }}"
-       data-availability="{{ .Params.availability }}"
-       data-price="{{ .Params.price }}"
-       data-image="{{ .Params.image }}"
-       data-id="{{ .Params.id }}"
-       data-comment="{{ .Params.comment }}">
-      <span class="artwork-cell-title">{{ .Title }}</span>
-      {{ if .Params.image }}<img src="{{ .Params.image }}" alt="{{ .Title }}" class="artwork-cell-img" />
-      {{ else }}<div class="artwork-cell-placeholder">No image yet</div>{{ end }}
-      <span class="artwork-cell-year">{{ .Params.year }}</span>
+  <div id="artworkGallery" class="aw-grid">
+    {{ range $i, $page := $sorted }}
+    <a href="{{ $page.RelPermalink }}"
+       class="artwork-item aw-item"
+       data-idx="{{ $i }}"
+       data-year="{{ $page.Params.year }}"
+       data-collection="{{ if reflect.IsSlice $page.Params.collection }}{{ delimit $page.Params.collection "," }}{{ else }}{{ $page.Params.collection }}{{ end }}"
+       data-title="{{ $page.Title }}"
+       data-medium="{{ $page.Params.medium }}"
+       data-size="{{ $page.Params.size }}"
+       data-availability="{{ $page.Params.availability }}"
+       data-price="{{ $page.Params.price }}"
+       data-image="{{ $page.Params.image }}"
+       data-id="{{ $page.Params.id }}"
+       data-comment="{{ $page.Params.comment }}">
+      <img src="{{ $page.Params.image }}" alt="{{ $page.Title }}" class="aw-img" loading="lazy" />
     </a>
     {{ end }}
   </div>
@@ -341,24 +340,60 @@
 
 
 <style>
-/* ── ARTWORK GRID ── */
-.artwork-masonry-grid { position: relative; width: 100%; padding: 0 clamp(4rem, 7vw, 9rem); box-sizing: border-box; margin-top: 2rem; }
-.artwork-cell { position: absolute; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
-.artwork-cell-title { font-size: 0.78rem; letter-spacing: 0.02em; line-height: 1.35; opacity: 0.55; margin-bottom: 0.5rem; transition: opacity 0.3s ease; }
-.artwork-cell-img { display: block; width: 100%; height: auto; transition: opacity 0.4s ease; }
-.artwork-cell-year { font-size: 0.72rem; letter-spacing: 0.06em; opacity: 0.38; margin-top: 0.4rem; align-self: flex-end; transition: opacity 0.3s ease; }
-.artwork-cell:hover .artwork-cell-img { opacity: 0.68; }
-.artwork-cell:hover .artwork-cell-title, .artwork-cell:hover .artwork-cell-year { opacity: 0.9; }
-.artwork-cell-placeholder { background: #f2f2f2; width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; color: #aaa; }
-html.dark .artwork-cell-placeholder { background: #0f0f0f; color: #555; }
+/* ── AW SCATTER GRID (Hundred Sins layout style) ── */
+.aw-grid {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  overflow: visible;
+  padding: 0 clamp(4rem, 7vw, 9rem);
+  box-sizing: border-box;
+  margin-top: -20vh;
+}
+.aw-item {
+  position: absolute;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  overflow: visible;
+  transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.aw-item:hover { transform: scale(1.02); z-index: 20 !important; }
+.aw-img { display: block; width: 100%; height: auto; pointer-events: none; }
+.aw-lbl {
+  position: absolute;
+  font-size: 0.86rem;
+  letter-spacing: 0.055em;
+  line-height: 1.5;
+  opacity: 0.55;
+  pointer-events: none;
+  color: inherit;
+  font-family: inherit;
+}
+.aw-lbl-r { left: calc(100% + 12px); top: 0; writing-mode: vertical-lr; white-space: nowrap; overflow: hidden; }
+.aw-lbl-l { right: calc(100% + 12px); top: 0; writing-mode: vertical-rl; white-space: nowrap; overflow: hidden; }
+.aw-lbl-b { top: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
+.aw-lbl-a { bottom: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
+
 @media (max-width: 700px) {
-  .artwork-masonry-grid { padding: 0 1.5rem; }
-  .artwork-cell { position: static !important; width: 100% !important; margin-bottom: 2.5rem; }
-  .artwork-masonry-grid { display: flex; flex-direction: column; height: auto !important; }
+  .aw-grid { padding: 0 1.5rem; 
+  margin-top: -10vh;}
+  
+  .aw-lbl {
+  position: absolute;
+  font-size: 0.8rem;
+  letter-spacing: 0.055em;
+  line-height: 0.8;
+  opacity: 0.55;
+  pointer-events: none;
+  color: inherit;
+  font-family: inherit;
+}
 }
 
 /* ── SPACERS ── */
-.end-spacer-1 { height: 20vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 10vh; }
+.end-spacer-1 { height: 20vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 1vh; }
 @media (max-width: 768px) { .end-spacer-1 { height: 15vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 8vh; } }
 @media (max-width: 480px) { .end-spacer-1 { height: 10vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 5vh; } }
 .end-message2 { display: block; width: 100%; text-align: right !important; box-sizing: border-box; padding-right: 1.5rem; }
@@ -596,59 +631,150 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-/* ── JUSTIFIED GALLERY LAYOUT ── */
+/* ── SCATTER GALLERY LAYOUT (Hundred Sins layout style) ── */
 (function () {
-  const gallery = document.getElementById('artworkGallery');
-  if (!gallery) return;
-  const GAP_H = 50; const GAP_V = 110; const TEXT = 50;
-  const HEIGHTS = [340, 400, 280, 360, 310, 420, 290];
-  const SCALES  = [0.82, 0.92, 0.76, 0.88, 0.84, 0.95, 0.79];
-  const ANCHORS = ['left', 'right', 'center', 'left', 'right', 'left', 'center'];
-  const STAGGERS = { 1: [[0]], 2: [[0,90],[90,0],[0,60],[60,0],[40,0],[0,40]], 3: [[0,80,30],[60,0,90],[30,90,0],[80,20,60],[0,50,80],[70,30,0]] };
-  function visible() { return Array.from(gallery.querySelectorAll('.artwork-item')).filter(el => el.style.display !== 'none'); }
-  function layout() {
-    if (window.innerWidth <= 700) return;
-    const items = visible(); if (!items.length) { gallery.style.height = '0'; return; }
-    const pl = parseFloat(getComputedStyle(gallery).paddingLeft) || 0;
-    const pr = parseFloat(getComputedStyle(gallery).paddingRight) || 0;
-    const W  = gallery.offsetWidth - pl - pr; if (W <= 0) return;
-    const HEIGHT_MULTS = [0.93,0.97,1.05,0.91,1.08,0.95,1.03,0.89,1.06,0.92];
-    const data = items.map((el, itemIdx) => { const img = el.querySelector('img'); const ar = (img && img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight : 0; return { el, ar, mult: HEIGHT_MULTS[itemIdx % HEIGHT_MULTS.length] }; });
-    const loadedCount = data.filter(d => d.ar > 0).length;
-    if (loadedCount < data.length * 0.5 && data.length > 2) { setTimeout(layout, 250); return; }
-    data.forEach(d => { if (d.ar === 0) d.ar = 0.75; });
-    const rows = []; let i = 0, ri = 0;
-    while (i < data.length) {
-      const targetH = HEIGHTS[ri % HEIGHTS.length]; const isLandscape = data[i] && data[i].ar > 1.05; const soloRow = (ri % 8 === 5) && isLandscape; const maxItems = soloRow ? 2 : 3;
-      const row = []; let rowRawW = 0;
-      while (i < data.length && row.length < maxItems) { const d = data[i]; const itemW = targetH * d.mult * d.ar; const gapsW = row.length * GAP_H; if (row.length > 0 && rowRawW + gapsW + itemW > W * 1.1) break; row.push(d); rowRawW += itemW; i++; }
-      rows.push({ items: row, targetH, solo: soloRow }); ri++;
-    }
-    let y = 0; let globalIdx = 0;
-    rows.forEach(({ items: rowItems, targetH, solo }, rIdx) => {
-      const isLast = rIdx === rows.length - 1; const count = rowItems.length;
-      const rawTotal = rowItems.reduce((s, d) => s + targetH * d.mult * d.ar, 0); const gaps = GAP_H * (count - 1);
-      const scale = solo ? (W * 0.78) / rawTotal : (isLast && rawTotal + gaps < W * 0.5) ? 1 : (W - gaps) / rawTotal;
-      const patterns = STAGGERS[count] || [[0]]; const stagger = patterns[rIdx % patterns.length];
-      let x = pl; let maxBottom = 0;
-      rowItems.forEach(({ el, ar, mult }, idx) => {
-        let slotW = targetH * mult * ar * scale; if (solo && ar > 1.15) slotW *= 1.18;
-        const sc = SCALES[globalIdx % SCALES.length]; const anchor = ANCHORS[globalIdx % ANCHORS.length];
-        const imgW = slotW * sc; const slack = slotW - imgW;
-        const shiftX = anchor === 'left' ? 0 : anchor === 'right' ? slack : slack / 2;
-        el.style.left = (x + shiftX) + 'px'; el.style.top = (y + stagger[idx]) + 'px'; el.style.width = imgW + 'px';
-        const imgH = imgW / ar; const bottom = stagger[idx] + imgH + TEXT; maxBottom = Math.max(maxBottom, bottom);
-        x += slotW + GAP_H; globalIdx++;
-      });
-      y += maxBottom + GAP_V;
-    });
-    gallery.style.height = y + 'px';
+  const grid = document.getElementById('artworkGallery');
+  if (!grid) return;
+
+  function mkRng(seed) {
+    let s = seed >>> 0;
+    return () => {
+      s = Math.imul(s ^ (s >>> 15), s | 1);
+      s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
+      return ((s ^ (s >>> 14)) >>> 0) / 0x100000000;
+    };
   }
+
+  const items = Array.from(grid.querySelectorAll('.aw-item'));
+  const MAX_H = 42;
+  const MAX_V = 36;
+
+  function addLabels(item, imgW, imgH) {
+  item.querySelectorAll('.aw-lbl').forEach(l => l.remove());
+
+  const year = (item.dataset.year || '').trim();
+  const title = (item.dataset.title || '').trim();
+
+  const idx = parseInt(item.dataset.idx, 10) || 0;
+  const r = mkRng(idx * 7919 + 31);
+
+  const yearRight = r() < 0.5;
+
+  const lbDefs = [];
+
+  if (year) {
+    lbDefs.push({
+      text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
+      pos: yearRight ? 'r' : 'l',
+      maxH: Math.round(imgH * 0.70),
+      maxW: null
+    });
+  }
+
+  if (title) {
+    const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
+    lbDefs.push({
+      text: t,
+      pos: 'b',
+      maxH: Math.round(1.5 * 0.86 * 16 * 2.2),
+      maxW: Math.round(imgW * 0.88)
+    });
+  }
+
+  lbDefs.forEach(({ text, pos, maxH, maxW }) => {
+    const el = document.createElement('div');
+    el.className = `aw-lbl aw-lbl-${pos}`;
+    el.textContent = text;
+    if (maxH) el.style.maxHeight = maxH + 'px';
+    if (maxW) el.style.maxWidth = maxW + 'px';
+    item.appendChild(el);
+  });
+}
+
+  function visible() {
+    return items.filter(it => it.style.display !== 'none');
+  }
+
+  function layout() {
+    const W = grid.offsetWidth;
+    if (!W) { requestAnimationFrame(layout); return; }
+
+    const mobile = window.innerWidth <= 700;
+    const NCOLS = W > 1100 ? 11 : W > 900 ? 9 : W > 680 ? 6 : W > 480 ? 3 : 2;
+    const H_GAP = mobile ? 24 : 50;
+    const V_MIN = mobile ? 50 : 70;
+    const V_EXTRA = mobile ? 40 : 50;
+
+    const vis = visible();
+    if (!vis.length) { grid.style.height = '300px'; return; }
+
+    const colW = W / NCOLS;
+    const bots = new Array(NCOLS).fill(40);
+
+    vis.forEach((item, vi) => {
+      const idx = parseInt(item.dataset.idx, 10) || vi;
+      const r = mkRng(idx * 3331 + 113);
+
+      const isLarge = idx % 7 === 0;
+      const wBase = isLarge ? 3 : 2;
+      const wExtra = Math.floor(r() * (isLarge ? 2 : 3));
+      const wCols = Math.min(NCOLS, wBase + wExtra);
+
+      const wColsCapped = mobile
+        ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8)))
+        : wCols;
+
+      const maxStart = Math.max(0, NCOLS - wColsCapped);
+      const startCol = Math.floor(r() * (maxStart + 1));
+
+      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
+      const vGap = V_MIN + Math.floor(r() * V_EXTRA);
+      const topY = spanMax + vGap;
+
+      const slotW = wColsCapped * colW;
+      const imgW = Math.max(60, slotW - H_GAP);
+      const leftX = startCol * colW + H_GAP / 2;
+
+      item.style.left = leftX + 'px';
+      item.style.top = topY + 'px';
+      item.style.width = imgW + 'px';
+
+      const img = item.querySelector('img');
+      const ar = (img && img.naturalWidth > 0 && img.naturalHeight > 0)
+        ? img.naturalHeight / img.naturalWidth
+        : 1.25;
+      const imgH = imgW * ar;
+
+      addLabels(item, imgW, imgH);
+
+      for (let c = startCol; c < startCol + wColsCapped; c++) {
+        bots[c] = topY + imgH;
+      }
+    });
+
+    grid.style.height = (Math.max(...bots) + 220) + 'px';
+  }
+
   window._artworkLayout = layout;
+
+  let loaded = 0;
+  Array.from(grid.querySelectorAll('img')).forEach(img => {
+    const done = () => {
+      loaded++;
+      if (loaded <= 8 || loaded % 4 === 0) layout();
+    };
+    if (img.complete) done();
+    else { img.onload = done; img.onerror = done; }
+  });
+
   window.addEventListener('load', layout);
   document.addEventListener('DOMContentLoaded', () => setTimeout(layout, 100));
-  document.addEventListener('DOMContentLoaded', () => { gallery.querySelectorAll('img').forEach(img => { if (!img.complete) { img.addEventListener('load', layout, { once: true }); img.addEventListener('error', layout, { once: true }); } }); });
-  let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 150); });
+
+  let rt;
+  window.addEventListener('resize', () => {
+    clearTimeout(rt);
+    rt = setTimeout(layout, 180);
+  });
 })();
 
 /* ══════════════════════════════════════════════════════
