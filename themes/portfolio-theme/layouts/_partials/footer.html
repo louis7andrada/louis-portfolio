@@ -356,10 +356,11 @@
       const overlay = buildCharOverlayFromField(fieldEl);
       if (!overlay) return noop; // nothing typed — nothing to animate
 
-      // The real input is only dimmed — never hidden — so it's always
-      // still in place and interactive, even if cleanup somehow doesn't run.
+      // The real input is only made invisible via opacity — never
+      // visibility/display — so it's always still in place and
+      // interactive, even if cleanup somehow doesn't run.
       const prevOpacity = fieldEl.style.opacity;
-      fieldEl.style.opacity = '0.12';
+      fieldEl.style.opacity = '0';
 
       const animations = [];
       Array.from(overlay.children).forEach((span) => {

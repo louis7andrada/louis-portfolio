@@ -1300,11 +1300,8 @@ document.addEventListener("DOMContentLoaded", function() {
       var targetX = targetRect.left + targetRect.width / 2;
       var targetY = targetRect.top + targetRect.height / 2;
 
-      // ── Text the user actually produced: checked option labels, and
-      //    the purchase panel's artwork preview tag ──
-      // The real element is only lightly DIMMED — never hidden — so the
-      // real form stays fully in place and interactive the entire time,
-      // even if something goes wrong before restore() runs.
+      // ── Only checked option labels — text the user actually chose.
+      //    Unchecked options are left completely alone. ──
       collectUserProvidedTextEls(panelEl).forEach(function (el) {
         if (getComputedStyle(el).display === "none") return;
         var text = el.textContent;
@@ -1313,7 +1310,7 @@ document.addEventListener("DOMContentLoaded", function() {
         var overlay = buildCharOverlay(el, text);
         if (!overlay) return;
         var prevOpacity = el.style.opacity;
-        el.style.opacity = "0.12";
+        el.style.opacity = "0";
 
         Array.from(overlay.children).forEach(function (span) {
           if (!span.textContent.trim()) return; // skip bare spaces
@@ -1327,13 +1324,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       });
 
-      // ── Real typed values in fields ──
+      // ── Only fields the user actually typed something into. Empty
+      //    fields (and their placeholders) are left completely alone. ──
       collectUserProvidedFieldEls(panelEl).forEach(function (field) {
         var val = field.value;
         var fieldOverlay = buildCharOverlay(field, val, { display: "flex", alignItems: "center" });
         if (!fieldOverlay) return;
         var prevOpacity = field.style.opacity;
-        field.style.opacity = "0.12";
+        field.style.opacity = "0";
 
         Array.from(fieldOverlay.children).forEach(function (span) {
           if (!span.textContent.trim()) return;
@@ -1366,7 +1364,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.body.appendChild(clone);
 
         var prevOpacity = img.style.opacity;
-        img.style.opacity = "0.12";
+        img.style.opacity = "0";
 
         animateCharToward(clone, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
 
