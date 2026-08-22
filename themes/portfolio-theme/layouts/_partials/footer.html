@@ -342,6 +342,13 @@
     }
 
     try {
+      // Dismiss any mobile keyboard and let the resulting layout reflow
+      // settle BEFORE measuring anything, so positions aren't stale.
+      if (document.activeElement && typeof document.activeElement.blur === 'function') {
+        document.activeElement.blur();
+      }
+      void document.body.offsetWidth;
+
       const targetRect = triggerBtn.getBoundingClientRect();
       const targetX = targetRect.left + targetRect.width / 2;
       const targetY = targetRect.top + targetRect.height / 2;
@@ -349,7 +356,10 @@
       const overlay = buildCharOverlayFromField(fieldEl);
       if (!overlay) return noop; // nothing typed — nothing to animate
 
-      fieldEl.style.visibility = 'hidden'; // real input untouched, just invisible for a moment
+      // The real input is only dimmed — never hidden — so it's always
+      // still in place and interactive, even if cleanup somehow doesn't run.
+      const prevOpacity = fieldEl.style.opacity;
+      fieldEl.style.opacity = '0.12';
 
       const animations = [];
       Array.from(overlay.children).forEach((span) => {
@@ -360,7 +370,7 @@
 
       function cleanup() {
         overlay.remove();
-        fieldEl.style.visibility = '';
+        fieldEl.style.opacity = prevOpacity;
       }
 
       return {
@@ -395,12 +405,23 @@
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sending…';
 
+      // Absolute last-resort safety net — guarantees the button never
+      // stays stuck disabled no matter what unexpected path is hit.
+      let watchdogCleared = false;
+      const watchdog = setTimeout(() => {
+        if (watchdogCleared) return;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+      }, 15000);
+      const clearWatchdog = () => { watchdogCleared = true; clearTimeout(watchdog); };
+
       // Starts immediately — right here, before the validation-format
       // check or the network request — so there's no perceived delay.
       const convergence = runFieldConvergence(emailEl, submitBtn);
 
       async function failAndRestore(message) {
         await convergence.reverseAndRestore();
+        clearWatchdog();
         submitBtn.disabled = false;
         submitBtn.textContent = 'Subscribe';
         noteEl.textContent = message;
@@ -428,6 +449,7 @@
         if (fetchResult.ok && result === "OK") {
           try { localStorage.setItem('la-ml-status', JSON.stringify({ status: 'subscribed', ts: Date.now() })); } catch {}
           convergence.restore();
+          clearWatchdog();
           emailEl.style.display = 'none';
           submitBtn.style.display = 'none';
           noteEl.textContent = "You're on the list. Check spam if needed.";
