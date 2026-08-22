@@ -1287,12 +1287,24 @@ document.addEventListener("DOMContentLoaded", function() {
     var restoreFnsSoFar = [];
     var animations = [];
     try {
+      // On mobile, tapping submit usually dismisses the on-screen keyboard,
+      // which reflows the layout a moment later. Force that to happen
+      // first (blur whatever's focused) so every rect we measure below
+      // reflects the SETTLED layout, not a stale pre-reflow position.
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
+      void panelEl.offsetWidth; // force a synchronous reflow right now
+
       var targetRect = triggerBtn.getBoundingClientRect();
       var targetX = targetRect.left + targetRect.width / 2;
       var targetY = targetRect.top + targetRect.height / 2;
 
       // ── Text the user actually produced: checked option labels, and
-      //    the purchase panel's artwork preview tag/images ──
+      //    the purchase panel's artwork preview tag ──
+      // The real element is only lightly DIMMED — never hidden — so the
+      // real form stays fully in place and interactive the entire time,
+      // even if something goes wrong before restore() runs.
       collectUserProvidedTextEls(panelEl).forEach(function (el) {
         if (getComputedStyle(el).display === "none") return;
         var text = el.textContent;
@@ -1300,7 +1312,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
         var overlay = buildCharOverlay(el, text);
         if (!overlay) return;
-        el.style.visibility = "hidden"; // original stays in the DOM untouched — just invisible
+        var prevOpacity = el.style.opacity;
+        el.style.opacity = "0.12";
 
         Array.from(overlay.children).forEach(function (span) {
           if (!span.textContent.trim()) return; // skip bare spaces
@@ -1310,7 +1323,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         restoreFnsSoFar.push(function () {
           overlay.remove();
-          el.style.visibility = "";
+          el.style.opacity = prevOpacity;
         });
       });
 
@@ -1319,7 +1332,8 @@ document.addEventListener("DOMContentLoaded", function() {
         var val = field.value;
         var fieldOverlay = buildCharOverlay(field, val, { display: "flex", alignItems: "center" });
         if (!fieldOverlay) return;
-        field.style.visibility = "hidden";
+        var prevOpacity = field.style.opacity;
+        field.style.opacity = "0.12";
 
         Array.from(fieldOverlay.children).forEach(function (span) {
           if (!span.textContent.trim()) return;
@@ -1329,15 +1343,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
         restoreFnsSoFar.push(function () {
           fieldOverlay.remove();
-          field.style.visibility = "";
+          field.style.opacity = prevOpacity;
         });
       });
 
-      // ── Selected artwork thumbnails move as whole units ──
+      // ── Selected artwork thumbnails: animate a CLONE, never the real
+      //    <img> itself, so the actual thumbnail can never end up stuck
+      //    scaled-to-zero if cleanup doesn't run for some reason ──
       collectUserProvidedImgEls(panelEl).forEach(function (img) {
         var r = img.getBoundingClientRect();
         if (r.width === 0 || r.height === 0) return;
-        animateCharToward(img, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+
+        var clone = img.cloneNode(true);
+        clone.style.position = "fixed";
+        clone.style.left = r.left + "px";
+        clone.style.top = r.top + "px";
+        clone.style.width = r.width + "px";
+        clone.style.height = r.height + "px";
+        clone.style.margin = "0";
+        clone.style.pointerEvents = "none";
+        clone.style.zIndex = "9999";
+        document.body.appendChild(clone);
+
+        var prevOpacity = img.style.opacity;
+        img.style.opacity = "0.12";
+
+        animateCharToward(clone, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+
+        restoreFnsSoFar.push(function () {
+          clone.remove();
+          img.style.opacity = prevOpacity;
+        });
       });
 
       return {
@@ -1491,11 +1527,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     setBusy();
 
+    // Absolute last-resort safety net: whatever else happens, this
+    // guarantees the buttons are never permanently stuck disabled.
+    // Cleared the moment any real completion path runs.
+    var watchdogCleared = false;
+    var watchdog = setTimeout(function () {
+      if (watchdogCleared) return;
+      setIdle();
+    }, 15000);
+    function clearWatchdog() { watchdogCleared = true; clearTimeout(watchdog); }
+
     // Purchase-only synchronous check — nothing to animate yet if this fails.
     if (fid === "purchaseForm") {
       var parsed = null;
       try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
       if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
+        clearWatchdog();
         setIdle();
         showFormError(panelEl, "Please select at least one artwork before submitting.");
         return;
@@ -1511,6 +1558,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function failAndRestore(message) {
       await convergence.reverseAndRestore();
+      clearWatchdog();
       setIdle();
       showFormError(panelEl, message);
     }
@@ -1568,6 +1616,7 @@ document.addEventListener("DOMContentLoaded", function() {
             if (notListedInput) notListedInput.value = "";
           }
           clearSubmitSuccess(triggerButtons, originalLabels);
+          clearWatchdog();
           setIdle();
         }, 1800);
       } else {
