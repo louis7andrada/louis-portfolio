@@ -229,10 +229,162 @@
     footerBtn.addEventListener('click', openPopup);
   }
 
+  /* ══════════════════════════════════════════════════════
+     SUBMIT CONVERGENCE — same behavior as the inquiry forms,
+     self-contained here since this footer script doesn't share
+     scope with that page's script. Only ever touches the email
+     field's actual typed value — never the placeholder.
+     Every position is measured live via getBoundingClientRect()
+     at the moment of use, so it's correct at whatever screen
+     size / layout is currently active — no cached coordinates.
+     ══════════════════════════════════════════════════════ */
+  function buildCharOverlayFromField(fieldEl) {
+    const val = fieldEl.value;
+    if (!val || !val.trim()) return null;
+    const rect = fieldEl.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return null;
+    const cs = getComputedStyle(fieldEl);
+
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.left = rect.left + 'px';
+    overlay.style.top = rect.top + 'px';
+    overlay.style.width = rect.width + 'px';
+    overlay.style.height = rect.height + 'px';
+    overlay.style.font = cs.font;
+    overlay.style.color = cs.color;
+    overlay.style.lineHeight = cs.lineHeight;
+    overlay.style.letterSpacing = cs.letterSpacing;
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.whiteSpace = 'pre';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.zIndex = '9999';
+    document.body.appendChild(overlay);
+
+    Array.from(val).forEach((ch) => {
+      const span = document.createElement('span');
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      span.style.display = 'inline-block';
+      overlay.appendChild(span);
+    });
+
+    return overlay;
+  }
+
+  function animateSpanToward(el, originX, originY, targetX, targetY, bucket) {
+    const dx = targetX - originX;
+    const dy = targetY - originY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    // Curved "gravity" path, same as the inquiry forms — bigger swing
+    // for pieces starting farther away, randomized direction.
+    const curviness = (Math.random() * 2 - 1) * Math.min(dist * 0.35, 160);
+    const nx = dist ? -dy / dist : 0;
+    const ny = dist ? dx / dist : 0;
+    const midX = dx * 0.5 + nx * curviness;
+    const midY = dy * 0.5 + ny * curviness;
+
+    const duration = 1100 + Math.random() * 900; // ~1.1–2.0s
+    const delay = Math.min(dist / 2400, 0.4) * 1000 + Math.random() * 150;
+
+    const anim = el.animate([
+      { transform: 'translate(0px,0px) scale(1)', opacity: 1, filter: 'blur(0px)', offset: 0 },
+      { transform: `translate(${midX}px,${midY}px) scale(0.7)`, opacity: 0.6, filter: 'blur(2px)', offset: 0.55 },
+      { transform: `translate(${dx}px,${dy}px) scale(0.05)`, opacity: 0, filter: 'blur(9px)', offset: 1 }
+    ], {
+      duration,
+      delay,
+      easing: 'cubic-bezier(0.55, 0.06, 0.68, 0.19)',
+      fill: 'forwards'
+    });
+
+    bucket.push(anim);
+  }
+
+  function runSimpleFieldFade(fieldEl) {
+    const FADE_MS = 900;
+    if (!fieldEl || !fieldEl.value || !fieldEl.value.trim()) {
+      return { finished: Promise.resolve(), restore() {}, reverseAndRestore: () => Promise.resolve() };
+    }
+    fieldEl.style.transition = `opacity ${FADE_MS}ms ease, filter ${FADE_MS}ms ease`;
+    void fieldEl.offsetWidth; // force reflow so the transition actually triggers
+    requestAnimationFrame(() => {
+      fieldEl.style.opacity = '0';
+      fieldEl.style.filter = 'blur(6px)';
+    });
+    return {
+      finished: new Promise((resolve) => setTimeout(resolve, FADE_MS + 50)),
+      restore() {
+        fieldEl.style.transition = 'none';
+        fieldEl.style.opacity = '';
+        fieldEl.style.filter = '';
+        void fieldEl.offsetWidth;
+        fieldEl.style.transition = '';
+      },
+      reverseAndRestore() {
+        return new Promise((resolve) => {
+          fieldEl.style.opacity = '';
+          fieldEl.style.filter = '';
+          setTimeout(() => { fieldEl.style.transition = ''; resolve(); }, FADE_MS + 50);
+        });
+      }
+    };
+  }
+
+  function runFieldConvergence(fieldEl, triggerBtn) {
+    const noop = { finished: Promise.resolve(), restore() {}, reverseAndRestore: () => Promise.resolve() };
+    if (!fieldEl || !triggerBtn) return noop;
+
+    // No Web Animations API → straight to the simple fade.
+    if (typeof triggerBtn.animate !== 'function') {
+      return runSimpleFieldFade(fieldEl);
+    }
+
+    try {
+      const targetRect = triggerBtn.getBoundingClientRect();
+      const targetX = targetRect.left + targetRect.width / 2;
+      const targetY = targetRect.top + targetRect.height / 2;
+
+      const overlay = buildCharOverlayFromField(fieldEl);
+      if (!overlay) return noop; // nothing typed — nothing to animate
+
+      fieldEl.style.visibility = 'hidden'; // real input untouched, just invisible for a moment
+
+      const animations = [];
+      Array.from(overlay.children).forEach((span) => {
+        if (!span.textContent.trim()) return;
+        const r = span.getBoundingClientRect();
+        animateSpanToward(span, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+      });
+
+      function cleanup() {
+        overlay.remove();
+        fieldEl.style.visibility = '';
+      }
+
+      return {
+        finished: Promise.all(animations.map((a) => a.finished.catch(() => {}))),
+        restore: cleanup,
+        reverseAndRestore() {
+          animations.forEach((a) => { try { a.reverse(); } catch (e) {} });
+          return Promise.all(animations.map((a) => a.finished.catch(() => {}))).then(cleanup);
+        }
+      };
+    } catch (err) {
+      // Anything unexpected → clean fallback rather than a broken state.
+      return runSimpleFieldFade(fieldEl);
+    }
+  }
+
   if (submitBtn) {
     submitBtn.addEventListener('click', async () => {
+      noteEl.textContent = '';
+      noteEl.className = 'ml-note';
+
       const email = emailEl.value.trim();
 
+      // Nothing typed — nothing to animate, just surface the error directly.
       if (!email) {
         noteEl.textContent = 'Please enter your email address.';
         noteEl.className = 'ml-note error';
@@ -240,29 +392,42 @@
         return;
       }
 
-      if (!emailEl.validity.valid) {
-        noteEl.textContent = 'Please enter a valid email address.';
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+
+      // Starts immediately — right here, before the validation-format
+      // check or the network request — so there's no perceived delay.
+      const convergence = runFieldConvergence(emailEl, submitBtn);
+
+      async function failAndRestore(message) {
+        await convergence.reverseAndRestore();
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+        noteEl.textContent = message;
         noteEl.className = 'ml-note error';
-        emailEl.focus();
+      }
+
+      if (!emailEl.validity.valid) {
+        await failAndRestore('Please enter a valid email address.');
         return;
       }
 
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending…';
-      noteEl.textContent = '';
-      noteEl.className = 'ml-note';
-
       try {
-        const res = await fetch(window.APP_CONFIG.googleScriptUrl, {
+        const fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify({ email })
-        });
+        }).then((r) => r.text().then((t) => ({ ok: r.ok, text: t })));
 
-        const result = String(await res.text()).trim();
+        // Same rule as the inquiry forms: only confirm success once BOTH
+        // the network response and the full animation have finished.
+        const combined = await Promise.all([fetchPromise, convergence.finished]);
+        const fetchResult = combined[0];
+        const result = String(fetchResult.text).trim();
 
-        if (res.ok && result === "OK") {
+        if (fetchResult.ok && result === "OK") {
           try { localStorage.setItem('la-ml-status', JSON.stringify({ status: 'subscribed', ts: Date.now() })); } catch {}
+          convergence.restore();
           emailEl.style.display = 'none';
           submitBtn.style.display = 'none';
           noteEl.textContent = "You're on the list. Check spam if needed.";
@@ -272,27 +437,17 @@
         }
 
         if (result === "DUPLICATE") {
-          noteEl.textContent = "This email is already registered.";
-          noteEl.className = 'ml-note error';
+          await failAndRestore("This email is already registered.");
         } else if (result === "NO_EMAIL") {
-          noteEl.textContent = "Email missing.";
-          noteEl.className = 'ml-note error';
+          await failAndRestore("Email missing.");
         } else if (result === "SCHEMA_ERROR") {
-          noteEl.textContent = "Server configuration error.";
-          noteEl.className = 'ml-note error';
+          await failAndRestore("Server configuration error.");
         } else {
-          noteEl.textContent = "Unexpected server response.";
-          noteEl.className = 'ml-note error';
+          await failAndRestore("Unexpected server response.");
         }
 
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Subscribe';
-
       } catch (err) {
-        noteEl.textContent = "Network error.";
-        noteEl.className = 'ml-note error';
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Subscribe';
+        await failAndRestore("Network error.");
       }
     });
 

@@ -2,9 +2,12 @@
 <!--   Webdesign by Jinah Park & Louis Andrada   -->
 <!--     AndradaMono Font by Louis Andrada       -->
 <!--       Codes by Louis Andrada                -->
-       
+
 <div id="contactSuccessMessage" class="hidden mb-6 text-green-600 font-medium text-center">
   Thank you — your message has been sent successfully. Louis will get back to you soon.
+</div>
+<div id="contactErrorMessage" class="hidden mb-6 text-red-600 font-medium text-center">
+  Something went wrong sending your message. Please check your information and try again.
 </div>
 <form 
   id="contactForm"
@@ -16,28 +19,28 @@
     type="text" 
     name="name" 
     placeholder="Full name*" 
-    class="border bg-gray-100 border-gray-300 rounded p-3"
+    class="inq-field border bg-gray-100 border-gray-300 rounded p-3"
     required
   />
   <input 
     type="email" 
     name="email" 
     placeholder="Email*" 
-    class="border bg-gray-100 border-gray-300 rounded p-3"
+    class="inq-field border bg-gray-100 border-gray-300 rounded p-3"
     required
   />
   <input 
     type="tel" 
     name="phone" 
     placeholder="Phone number*" 
-    class="border bg-gray-100 border-gray-300 rounded p-3"
+    class="inq-field border bg-gray-100 border-gray-300 rounded p-3"
     required
   />
   <textarea 
     name="message" 
     placeholder="Your message...*"
     rows="5"
-    class="border bg-gray-100 border-gray-300 rounded p-3"
+    class="inq-field border bg-gray-100 border-gray-300 rounded p-3"
     required
   ></textarea>
   <button 
@@ -50,19 +53,49 @@
 <script>
 const form = document.getElementById("contactForm");
 const successMessage = document.getElementById("contactSuccessMessage");
+const errorMessage = document.getElementById("contactErrorMessage");
 const submitBtn = form.querySelector('button[type="submit"]');
 const mobileBtn = document.querySelector('.inq-mobile-submit[data-target="contactForm"]');
 const triggerButtons = [submitBtn, mobileBtn].filter(Boolean);
+const originalLabels = triggerButtons.map(function(b){ return b.textContent; });
+
+function setBusy() {
+  triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+}
+function setIdle() {
+  triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
+}
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
-  if (typeof grecaptcha === "undefined") {
-    alert("reCAPTCHA not loaded.");
-    return;
+
+  successMessage.classList.add("hidden");
+  errorMessage.classList.add("hidden");
+  setBusy();
+
+  // Reuses the exact same per-character "convergence" animation as the
+  // Purchase/Commission forms (see inquiry_final's shared script). If for
+  // any reason that shared API isn't available (e.g. the main inquiry
+  // script hasn't loaded), everything below still works — it just runs
+  // without the animation, exactly as before.
+  var convergenceApi = window.__inqSubmitConvergence;
+  var panelEl = form.closest(".inq-panel");
+  var convergenceTarget = (mobileBtn && mobileBtn.offsetParent !== null) ? mobileBtn : (submitBtn && submitBtn.offsetParent !== null ? submitBtn : mobileBtn || submitBtn);
+  var convergence = (convergenceApi && panelEl && convergenceTarget)
+    ? convergenceApi.run(panelEl, convergenceTarget)
+    : { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
+
+  async function failAndRestore(message) {
+    await convergence.reverseAndRestore();
+    setIdle();
+    errorMessage.textContent = message;
+    errorMessage.classList.remove("hidden");
   }
 
-  const originalLabels = triggerButtons.map(function(b){ return b.textContent; });
-  triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+  if (typeof grecaptcha === "undefined") {
+    await failAndRestore("reCAPTCHA not loaded. Please refresh and try again.");
+    return;
+  }
 
   try {
     const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
@@ -73,7 +106,7 @@ form.addEventListener("submit", async function(event) {
     });
     const verifyData = await verifyRes.json();
     if (!verifyData.success || verifyData.score < 0.5) {
-      alert("Your submission was flagged by our security check. Please try completing the form again later.");
+      await failAndRestore("Your submission was flagged by our security check. Please try again.");
       return;
     }
     form.querySelector(".recaptcha-token-field").value = token;
@@ -85,20 +118,37 @@ form.addEventListener("submit", async function(event) {
       phone: form.querySelector('[name="phone"]').value.trim(),
       message: form.querySelector('[name="message"]').value.trim()
     };
-    const response = await fetch(window.APP_CONFIG.googleScriptUrl, {
+
+    const fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
       method: "POST",
       headers: { "Content-Type": "text/plain" },
       body: JSON.stringify(payload)
+    }).then(function (r) {
+      return r.text().then(function (t) { return { ok: r.ok, text: t }; });
     });
-    const result = String(await response.text()).trim();
-    if (response.ok && result === "OK") {
-      form.reset();
-      successMessage.classList.remove("hidden");
+
+    // Same rule as the other forms: only confirm success once BOTH the
+    // network response and the full animation have finished.
+    const combined = await Promise.all([fetchPromise, convergence.finished]);
+    const fetchResult = combined[0];
+    const result = String(fetchResult.text).trim();
+
+    if (fetchResult.ok && result === "OK") {
+      if (convergenceApi) convergenceApi.showSuccess(triggerButtons);
+      else triggerButtons.forEach(function(b){ b.textContent = "Sent"; });
+
+      setTimeout(function () {
+        convergence.restore();
+        form.reset();
+        successMessage.classList.remove("hidden");
+        if (convergenceApi) convergenceApi.clearSuccess(triggerButtons, originalLabels);
+        setIdle();
+      }, 1800);
     } else {
-      alert("There was an error. Please try again later.");
+      await failAndRestore("There was an error. Please try again later.");
     }
-  } finally {
-    triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
+  } catch (err) {
+    await failAndRestore("There was an error. Please try again later.");
   }
 });
 </script>
