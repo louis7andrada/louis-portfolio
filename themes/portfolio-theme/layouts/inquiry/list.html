@@ -43,6 +43,7 @@
           <h2 class="inq-ptitle">Buy Existing Artwork</h2>
           <p class="inq-pdesc">Select one or more available artworks. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.</p>
           <div id="purchaseSuccessMessage" class="inq-success hidden">Thank you — your purchase request has been sent. Louis will contact you soon.</div>
+          <div id="purchaseErrorMessage" class="inq-error hidden">Something went wrong sending your request. Please check your information and try again.</div>
           <form id="purchaseForm">
             <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
             <textarea name="selectedArtworks" id="selectedArtworkIDs" class="hidden" readonly required></textarea>
@@ -90,6 +91,7 @@
           <h2 class="inq-ptitle">Commission New Artwork</h2>
           <p class="inq-pdesc">Commissions are open. To commission a new artwork by Louis Andrada, please submit the form below. Once submitted, Louis will reach out with more information.<br><span class="inq-note">* The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas, or control over the creative process will not be accepted.</span></p>
           <div id="commissionSuccessMessage" class="inq-success hidden">Thank you — your commission request has been sent. Louis will contact you soon.</div>
+          <div id="commissionErrorMessage" class="inq-error hidden">Something went wrong sending your request. Please check your information and try again.</div>
           <form id="commissionForm">
             <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
             <div class="inq-two-col inq-top-block">
@@ -169,7 +171,7 @@
 </div>
 
 <!-- ARTWORK SELECTOR -->
-<div id="artworkSelectorModal" class="inq-sel-overlay hidden">
+<div id="artworkSelectorModal" class="inq-sel-overlay">
   <div class="inq-sel-inner">
   <div class="inq-sel-head">
     <h2 class="inq-sel-title">Select Artwork(s)</h2>
@@ -407,6 +409,8 @@ html.dark .inq-mobile-submit.inq-submit-success {
 .inq-pdesc  { font-size: 0.9rem !important; line-height: 1.5; opacity: 0.75; margin-bottom: 0.5rem; flex-shrink: 0; width: 80%; }
 .inq-note   { font-size: 0.8rem; opacity: 0.55; display: block; margin-top: 0.3rem; margin-bottom: 1rem;}
 .inq-success{ font-size: 0.78rem; color: #16a34a; margin-bottom: 0.75rem; flex-shrink: 0; }
+.inq-error  { font-size: 0.78rem; color: #dc2626; margin-bottom: 0.75rem; flex-shrink: 0; }
+html.dark .inq-error { color: #f87171; }
 
 .inq-top-block { flex-shrink: 0; margin-bottom: 1.4rem; }
 .inq-grow { flex: 1; min-height: 0; }
@@ -493,7 +497,7 @@ html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
   position: fixed;
   inset: 0;
   z-index: 50;
-  display: flex !important;
+  display: flex;
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
@@ -505,22 +509,25 @@ html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
   padding: 4rem 2rem;
   box-sizing: border-box;
 
-  opacity: 1;
-  transform: scale(1);
-  filter: blur(0px);
-  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
-}
-.inq-sel-inner {
-  width: min(1100px, 100%);
-  margin: 0 auto;
-}
-/* Animated closed state — replaces the old display:none snap so
-   opening/closing morphs the same way as the rest of the site. */
-.inq-sel-overlay.hidden {
+  /* Closed is the default — deliberately NOT using a class named
+     "hidden" here, since that name collides with a sitewide utility
+     class (display:none) that was silently overriding this and
+     preventing any transition from ever playing. */
   opacity: 0;
   transform: scale(0.96);
   filter: blur(10px);
   pointer-events: none;
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
+.inq-sel-overlay.open {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  pointer-events: auto;
+}
+.inq-sel-inner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
 }
 html.dark .inq-sel-overlay {
   background: transparent;
@@ -979,10 +986,10 @@ document.addEventListener("DOMContentLoaded", function() {
   }
   syncSel(); rebuildPreview();
 
-  function closeAndConfirm() { rebuildPreview(); if (modal) modal.classList.add("hidden"); }
+  function closeAndConfirm() { rebuildPreview(); if (modal) modal.classList.remove("open"); }
 
   openBtn && openBtn.addEventListener("click", function() {
-    modal.classList.remove("hidden");
+    modal.classList.add("open");
     updateConfirmVis();
     requestAnimationFrame(function() { requestAnimationFrame(layoutSelectorGrid); });
   });
@@ -1027,7 +1034,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
   function layoutSelectorGrid() {
     var grid = document.getElementById("inqSelGrid");
-    if (!grid || modal.classList.contains("hidden")) return;
+    if (!grid || !modal.classList.contains("open")) return;
     if (window.innerWidth <= 700) {
       artItems.forEach(function(el) { el.style.left = ""; el.style.top = ""; el.style.width = ""; });
       grid.style.height = ""; return;
@@ -1092,14 +1099,14 @@ document.addEventListener("DOMContentLoaded", function() {
   artItems.forEach(function(item) {
     var img = item.querySelector("img");
     if (img && !img.complete) {
-      img.addEventListener("load",  function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, { once: true });
-      img.addEventListener("error", function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, { once: true });
+      img.addEventListener("load",  function() { if (modal.classList.contains("open")) layoutSelectorGrid(); }, { once: true });
+      img.addEventListener("error", function() { if (modal.classList.contains("open")) layoutSelectorGrid(); }, { once: true });
     }
   });
   var selRt;
   window.addEventListener("resize", function() {
     clearTimeout(selRt);
-    selRt = setTimeout(function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, 150);
+    selRt = setTimeout(function() { if (modal.classList.contains("open")) layoutSelectorGrid(); }, 150);
   });
 
   /* ══════════════════════════════════════════════════════
@@ -1190,12 +1197,37 @@ document.addEventListener("DOMContentLoaded", function() {
      just the same fade/scale/blur morph used everywhere else on the
      site, applied to the panel's visible content as a group, until
      the form reads as blank. */
+  /* ── Shared: collect only what the user actually provided ──
+     Typed values in real fields, the text of any CHECKED radio/checkbox
+     option, and the purchase panel's artwork preview (selected thumbnail
+     images + the free-text "not listed" tag) — nothing static like
+     headings, descriptions, or unchecked option labels. */
+  function collectUserProvidedTextEls(panelEl) {
+    var els = [];
+    panelEl.querySelectorAll(".inq-opt").forEach(function (label) {
+      var input = label.querySelector("input");
+      if (input && input.checked) els.push(label);
+    });
+    panelEl.querySelectorAll(".inq-preview > div").forEach(function (tag) {
+      els.push(tag); // the custom "not listed" text tag, if present
+    });
+    return els;
+  }
+  function collectUserProvidedFieldEls(panelEl) {
+    return Array.from(panelEl.querySelectorAll("input.inq-field, textarea.inq-field"))
+      .filter(function (f) { return f.value && f.value.trim() && getComputedStyle(f).display !== "none"; });
+  }
+  function collectUserProvidedImgEls(panelEl) {
+    return Array.from(panelEl.querySelectorAll(".inq-preview img"))
+      .filter(function (img) { return getComputedStyle(img).display !== "none"; });
+  }
+
   function runSimpleFadeFallback(panelEl) {
-    if (!panelEl) return { finished: Promise.resolve(), restore: function () {} };
+    if (!panelEl) return { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
     var FADE_MS = 900;
-    var els = panelEl.querySelectorAll(
-      "h2, p, label, .inq-col-head, .inq-col-sub, .inq-sub-lbl, .inq-note, input.inq-field, textarea.inq-field, img, .inq-preview"
-    );
+    var els = collectUserProvidedTextEls(panelEl)
+      .concat(collectUserProvidedFieldEls(panelEl))
+      .concat(collectUserProvidedImgEls(panelEl));
     var touched = [];
     els.forEach(function (el) {
       if (getComputedStyle(el).display === "none") return;
@@ -1212,6 +1244,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     return {
       finished: new Promise(function (resolve) { setTimeout(resolve, FADE_MS + 50); }),
+      // Used on success — data is about to be cleared anyway, so an
+      // instant, non-animated reset back to normal is fine.
       restore: function () {
         touched.forEach(function (el) {
           el.style.transition = "none";
@@ -1221,12 +1255,28 @@ document.addEventListener("DOMContentLoaded", function() {
           void el.offsetWidth;
           el.style.transition = "";
         });
+      },
+      // Used on error — fades everything visibly back in (same
+      // transition, just reversed), preserving the user's data.
+      reverseAndRestore: function () {
+        return new Promise(function (resolve) {
+          touched.forEach(function (el) {
+            el.style.opacity = "";
+            el.style.transform = "";
+            el.style.filter = "";
+          });
+          setTimeout(function () {
+            touched.forEach(function (el) { el.style.transition = ""; });
+            resolve();
+          }, FADE_MS + 50);
+        });
       }
     };
   }
 
   function runSubmitConvergence(panelEl, triggerBtn) {
-    if (!panelEl || !triggerBtn) return { finished: Promise.resolve(), restore: function () {} };
+    var noop = { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
+    if (!panelEl || !triggerBtn) return noop;
 
     // Feature check: no Web Animations API support → go straight to the
     // simple fade rather than attempting per-character motion at all.
@@ -1235,18 +1285,15 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     var restoreFnsSoFar = [];
+    var animations = [];
     try {
       var targetRect = triggerBtn.getBoundingClientRect();
       var targetX = targetRect.left + targetRect.width / 2;
       var targetY = targetRect.top + targetRect.height / 2;
 
-      var animations = [];
-
-      // ── Static text: headings, descriptions, labels, sub-labels, notes ──
-      var textEls = panelEl.querySelectorAll(
-        "h2, p, label, .inq-col-head, .inq-col-sub, .inq-sub-lbl, .inq-note"
-      );
-      textEls.forEach(function (el) {
+      // ── Text the user actually produced: checked option labels, and
+      //    the purchase panel's artwork preview tag/images ──
+      collectUserProvidedTextEls(panelEl).forEach(function (el) {
         if (getComputedStyle(el).display === "none") return;
         var text = el.textContent;
         if (!text || !text.trim()) return;
@@ -1268,12 +1315,8 @@ document.addEventListener("DOMContentLoaded", function() {
       });
 
       // ── Real typed values in fields ──
-      var fieldEls = panelEl.querySelectorAll("input.inq-field, textarea.inq-field");
-      fieldEls.forEach(function (field) {
-        if (getComputedStyle(field).display === "none") return;
+      collectUserProvidedFieldEls(panelEl).forEach(function (field) {
         var val = field.value;
-        if (!val || !val.trim()) return;
-
         var fieldOverlay = buildCharOverlay(field, val, { display: "flex", alignItems: "center" });
         if (!fieldOverlay) return;
         field.style.visibility = "hidden";
@@ -1290,10 +1333,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });
       });
 
-      // ── Images move as whole units (e.g. selected-artwork thumbnails) ──
-      var imgEls = panelEl.querySelectorAll("img");
-      imgEls.forEach(function (img) {
-        if (getComputedStyle(img).display === "none") return;
+      // ── Selected artwork thumbnails move as whole units ──
+      collectUserProvidedImgEls(panelEl).forEach(function (img) {
         var r = img.getBoundingClientRect();
         if (r.width === 0 || r.height === 0) return;
         animateCharToward(img, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
@@ -1301,7 +1342,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
       return {
         finished: Promise.all(animations.map(function (a) { return a.finished.catch(function () {}); })),
-        restore: function () { restoreFnsSoFar.forEach(function (fn) { fn(); }); }
+        // Used on success — form is about to be reset/cleared anyway.
+        restore: function () { restoreFnsSoFar.forEach(function (fn) { fn(); }); },
+        // Used on error — plays every character's flight in reverse
+        // (native WAAPI .reverse(), same path, same timing, backwards)
+        // back to its original spot, THEN un-hides the real elements —
+        // so nothing is lost and the user can fix and retry.
+        reverseAndRestore: function () {
+          animations.forEach(function (a) { try { a.reverse(); } catch (e) {} });
+          return Promise.all(animations.map(function (a) { return a.finished.catch(function () {}); }))
+            .then(function () { restoreFnsSoFar.forEach(function (fn) { fn(); }); });
+        }
       };
     } catch (err) {
       // Something about the complex animation failed (unexpected layout,
@@ -1316,7 +1367,20 @@ document.addEventListener("DOMContentLoaded", function() {
   function showSubmitSuccess(triggerButtons) {
     triggerButtons.forEach(function (b) {
       b.classList.add("inq-submit-success");
+      b.textContent = "Sent";
     });
+  }
+
+  function showFormError(panelEl, message) {
+    var errEl = panelEl ? panelEl.querySelector(".inq-error") : null;
+    if (errEl) {
+      errEl.textContent = message;
+      errEl.classList.remove("hidden");
+    } else {
+      // No inline error element available in this panel — fall back to
+      // an alert so the failure is never silently swallowed.
+      alert(message);
+    }
   }
 
   function clearSubmitSuccess(triggerButtons, originalLabels) {
@@ -1325,6 +1389,18 @@ document.addEventListener("DOMContentLoaded", function() {
       b.textContent = originalLabels[i];
     });
   }
+
+  // Exposed so contact-form.html (a separate partial with its own
+  // independent submission script) can reuse the exact same convergence
+  // behavior without duplicating it — this executes on DOMContentLoaded,
+  // well before any form can actually be submitted, so the timing is safe
+  // regardless of which partial's <script> tag happens to run first.
+  window.__inqSubmitConvergence = {
+    run: runSubmitConvergence,
+    showSuccess: showSubmitSuccess,
+    clearSuccess: clearSubmitSuccess,
+    showError: showFormError
+  };
 
   /* ── PAYLOAD BUILDERS ── */
   function buildPurchasePayload(form) {
@@ -1393,24 +1469,53 @@ document.addEventListener("DOMContentLoaded", function() {
     var form = e.target, fid = form.id;
     if (fid !== "purchaseForm" && fid !== "commissionForm") return;
     var sid = fid === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
+    var eid = fid === "purchaseForm" ? "purchaseErrorMessage"   : "commissionErrorMessage";
     var sEl = document.getElementById(sid);
+    var eEl = document.getElementById(eid);
     var panelEl = form.closest(".inq-panel");
 
     var mobileBtn = document.querySelector('.inq-mobile-submit[data-target="' + fid + '"]');
     var triggerButtons = [sideSubmit, mobileBtn].filter(Boolean);
     var originalLabels = triggerButtons.map(function(b){ return b.textContent; });
-    triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; });
+
+    // Hide any leftover message from a previous attempt before this one starts.
+    sEl && sEl.classList.add("hidden");
+    eEl && eEl.classList.add("hidden");
+
+    function setBusy() {
+      triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+    }
+    function setIdle() {
+      triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
+    }
+
+    setBusy();
+
+    // Purchase-only synchronous check — nothing to animate yet if this fails.
+    if (fid === "purchaseForm") {
+      var parsed = null;
+      try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
+      if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
+        setIdle();
+        showFormError(panelEl, "Please select at least one artwork before submitting.");
+        return;
+      }
+    }
+
+    // Convergence starts right here — immediately on click, before
+    // recaptcha or the network request — so there's no perceived delay.
+    var convergenceTarget = (mobileBtn && mobileBtn.offsetParent !== null) ? mobileBtn : (sideSubmit && sideSubmit.offsetParent !== null ? sideSubmit : mobileBtn || sideSubmit);
+    var convergence = panelEl && convergenceTarget
+      ? runSubmitConvergence(panelEl, convergenceTarget)
+      : { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
+
+    async function failAndRestore(message) {
+      await convergence.reverseAndRestore();
+      setIdle();
+      showFormError(panelEl, message);
+    }
 
     try {
-      if (fid === "purchaseForm") {
-        var parsed = null;
-        try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
-        if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
-          alert("Please select at least one artwork before submitting.");
-          triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
-          return;
-        }
-      }
       var token = null;
       try {
         if (typeof grecaptcha !== "undefined") {
@@ -1418,24 +1523,17 @@ document.addEventListener("DOMContentLoaded", function() {
           var vr = await fetch("/.netlify/functions/verifyRecaptcha", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token }) });
           var vd = await vr.json();
           if (!vd.success || vd.score < 0.5) {
-            triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+            await failAndRestore("Verification failed. Please try again.");
             return;
           }
         }
       } catch(x) {
-        triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+        await failAndRestore("Network error during verification. Please try again.");
         return;
       }
       if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
 
       var payload = fid === "purchaseForm" ? buildPurchasePayload(form) : buildCommissionPayload(form);
-
-      // Visible submit target for the currently active layout (desktop
-      // sidebar button vs. mobile in-form button).
-      var convergenceTarget = (mobileBtn && mobileBtn.offsetParent !== null) ? mobileBtn : (sideSubmit && sideSubmit.offsetParent !== null ? sideSubmit : mobileBtn || sideSubmit);
-      var convergence = panelEl && convergenceTarget
-        ? runSubmitConvergence(panelEl, convergenceTarget)
-        : { finished: Promise.resolve(), restore: function () {} };
 
       var fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
         method: "POST",
@@ -1447,7 +1545,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // Wait for BOTH the network response and the full character
       // convergence to finish — whichever takes longer — so the button
-      // never turns green mid-animation.
+      // never turns green mid-animation, and the animation never ends
+      // before the submission is actually confirmed.
       var combined = await Promise.all([fetchPromise, convergence.finished]);
       var fetchResult = combined[0];
       var result = String(fetchResult.text).trim();
@@ -1469,15 +1568,13 @@ document.addEventListener("DOMContentLoaded", function() {
             if (notListedInput) notListedInput.value = "";
           }
           clearSubmitSuccess(triggerButtons, originalLabels);
-          triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+          setIdle();
         }, 1800);
       } else {
-        convergence.restore();
-        triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
-        alert("Something went wrong. Please try again.");
+        await failAndRestore("Something went wrong sending your request. Please check your information and try again.");
       }
     } catch (err) {
-      triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+      await failAndRestore("Something went wrong. Please check your information and try again.");
     }
   });
 
