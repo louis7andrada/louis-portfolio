@@ -55,23 +55,37 @@ const form = document.getElementById("contactForm");
 const successMessage = document.getElementById("contactSuccessMessage");
 const errorMessage = document.getElementById("contactErrorMessage");
 const submitBtn = form.querySelector('button[type="submit"]');
-const mobileBtn = document.querySelector('.inq-mobile-submit[data-target="contactForm"]');
-const triggerButtons = [submitBtn, mobileBtn].filter(Boolean);
-const originalLabels = triggerButtons.map(function(b){ return b.textContent; });
-
-function setBusy() {
-  triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
-}
-function setIdle() {
-  triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
-}
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
 
+  // Looked up fresh on every submit, not cached at script-load time —
+  // this partial's <script> runs before the page's own mobile-submit
+  // button (defined after the partial's include point) exists in the
+  // DOM, so caching it at the top would silently capture null forever.
+  const mobileBtn = document.querySelector('.inq-mobile-submit[data-target="contactForm"]');
+  const triggerButtons = [submitBtn, mobileBtn].filter(Boolean);
+  const originalLabels = triggerButtons.map(function(b){ return b.textContent; });
+
+  function setBusy() {
+    triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+  }
+  function setIdle() {
+    triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
+  }
+
   successMessage.classList.add("hidden");
   errorMessage.classList.add("hidden");
   setBusy();
+
+  // Absolute last-resort safety net — guarantees the buttons never stay
+  // stuck disabled no matter what unexpected path is hit.
+  let watchdogCleared = false;
+  const watchdog = setTimeout(() => {
+    if (watchdogCleared) return;
+    setIdle();
+  }, 15000);
+  const clearWatchdog = () => { watchdogCleared = true; clearTimeout(watchdog); };
 
   // Reuses the exact same per-character "convergence" animation as the
   // Purchase/Commission forms (see inquiry_final's shared script). If for
@@ -87,6 +101,7 @@ form.addEventListener("submit", async function(event) {
 
   async function failAndRestore(message) {
     await convergence.reverseAndRestore();
+    clearWatchdog();
     setIdle();
     errorMessage.textContent = message;
     errorMessage.classList.remove("hidden");
@@ -142,6 +157,7 @@ form.addEventListener("submit", async function(event) {
         form.reset();
         successMessage.classList.remove("hidden");
         if (convergenceApi) convergenceApi.clearSuccess(triggerButtons, originalLabels);
+        clearWatchdog();
         setIdle();
       }, 1800);
     } else {
