@@ -212,9 +212,11 @@
 
 <style>
 
-/* Scoped: only hides .hidden within inq elements — does NOT affect site nav */
+/* Scoped: only hides .hidden within inq elements — does NOT affect site nav.
+   NOTE: #artworkSelectorModal.hidden is intentionally excluded here — that
+   overlay now animates open/close (see .inq-sel-overlay.hidden below)
+   instead of snapping via display:none. */
 .inq-wrap .hidden,
-#artworkSelectorModal.hidden,
 #artworkSelectorModal .hidden {
   display: none !important;
 }
@@ -237,7 +239,6 @@
 
 /* ── DOOR ── */
 .inq-door { flex: 1; display: flex; align-items: center; justify-content: center; }
-.inq-door.hidden { display: none !important; }
 .inq-door-row { display: flex; align-items: center; gap: 7rem; }
 .inq-door-opt {
   -webkit-appearance: none; appearance: none; background: transparent; border: none;
@@ -300,9 +301,19 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
 .dark .inq-side-item.inactive { color: #555 !important; }
 .dark .inq-side-item.inactive:hover { color: #aaa !important; }
 
-/* ── ACTIVE ── */
-.inq-active { display: none; }
+/* ── ACTIVE ──
+   Base state is the pre-reveal look (invisible/blurred/scaled down).
+   JS adds 'is-on' to switch display on, then 'revealed' a frame later
+   to trigger the actual fade/scale/blur-in transition. */
+.inq-active {
+  display: none;
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(8px);
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
 .inq-active.is-on { display: flex; flex-direction: column; flex: 1; }
+.inq-active.is-on.revealed { opacity: 1; transform: scale(1); filter: blur(0px); }
 @media (min-width: 901px) { .inq-active.is-on { overflow: hidden; } }
 
 /* MOBILE TABS */
@@ -339,8 +350,19 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
 .inq-side-item.inactive{ color: #b0b0b0; }
 .inq-side-item.inactive:hover { color: #555; }
 
-.inq-side-submit { -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.82rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; display: none; margin-top: 2.5rem; transition: color 0.15s; }
+.inq-side-submit { -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.82rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; display: none; margin-top: 2.5rem; transition: color 0.15s, background-color 0.4s ease, opacity 0.4s ease; }
 .inq-side-submit:hover { color: #999; }
+
+/* ── SUBMIT SUCCESS STATE (green confirmation) ── */
+.inq-side-submit.inq-submit-success,
+.inq-mobile-submit.inq-submit-success {
+  color: #16a34a !important;
+  text-decoration: none;
+}
+html.dark .inq-side-submit.inq-submit-success,
+html.dark .inq-mobile-submit.inq-submit-success {
+  color: #4ade80 !important;
+}
 
 /* ── PANELS ── */
 .inq-panels {
@@ -350,8 +372,18 @@ html.dark .inq-wrap button { color: #e0e0e0 !important; }
   padding: 1.75rem 5rem 1rem 3.5rem;
 }
 @media (min-width: 901px) { .inq-panels { min-height: 0; overflow: hidden; } }
-.inq-panel { display: none; }
+/* Base = pre-reveal look. .active switches display on; .revealed (added a
+   frame later by JS) triggers the actual fade/scale/blur-in transition,
+   giving every panel-to-panel switch the same morph feel. */
+.inq-panel {
+  display: none;
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
 .inq-panel.active { display: flex; flex-direction: column; }
+.inq-panel.active.revealed { opacity: 1; transform: scale(1); filter: blur(0px); }
 @media (min-width: 901px) {
   .inq-panel.active { height: 100%; overflow: hidden; }
   @media (min-width: 901px) {
@@ -461,7 +493,7 @@ html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
   position: fixed;
   inset: 0;
   z-index: 50;
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
@@ -472,12 +504,24 @@ html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
 
   padding: 4rem 2rem;
   box-sizing: border-box;
+
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
 }
 .inq-sel-inner {
   width: min(1100px, 100%);
   margin: 0 auto;
 }
-.inq-sel-overlay.hidden { display: none !important; }
+/* Animated closed state — replaces the old display:none snap so
+   opening/closing morphs the same way as the rest of the site. */
+.inq-sel-overlay.hidden {
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(10px);
+  pointer-events: none;
+}
 html.dark .inq-sel-overlay {
   background: transparent;
   backdrop-filter: blur(18px);
@@ -664,6 +708,7 @@ html.dark #artworkSelectorModal input::placeholder {
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 3px;
+  transition: color 0.4s ease, opacity 0.4s ease;
 }
 
 @media (max-width: 900px) {
@@ -672,12 +717,27 @@ html.dark #artworkSelectorModal input::placeholder {
   }
 }
 
+/* ── DOOR (fixed full-screen overlay) ──
+   Base = fully visible. .hidden fades/blurs/shrinks it out — JS removes
+   it from the layout entirely (display:none) once that transition ends,
+   the same "dissolve" pattern used by the site's intro door. */
 .inq-door {
   position: fixed;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 30;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
+.inq-door.hidden {
+  opacity: 0;
+  transform: scale(0.94);
+  filter: blur(10px);
+  pointer-events: none;
 }
 @media (max-width: 900px) {
   .inq-panels {
@@ -685,6 +745,13 @@ html.dark #artworkSelectorModal input::placeholder {
     padding-right: 3rem !important;
   }
 } 
+
+/* ══════════════════════════════════════════
+   SUBMIT CONVERGENCE ANIMATION
+   Handled entirely via the Web Animations API in JS (per-character,
+   curved, independently-timed) — see runSubmitConvergence() below.
+   No shared CSS transition class is needed for it.
+   ══════════════════════════════════════════ */
 </style>
 
 <script>
@@ -708,21 +775,74 @@ document.addEventListener("DOMContentLoaded", function() {
   var mobTabs    = document.querySelectorAll(".inq-mob-tab");
   var currentSection = null;
 
+  var DOOR_FADE_MS  = 700;  // must match .inq-door's transition duration
+  var PANEL_FADE_MS = 450;  // must match .inq-panel's transition duration (fade-out half)
+
+  /* ── PANEL CROSSFADE ── fades the current panel out, then fades the
+     next one in — sequential (not overlapping) so layout never has two
+     panels visible/flexed at once. */
+  function switchPanel(section) {
+    var current = document.querySelector(".inq-panel.active");
+    var next = document.getElementById("panel-" + section);
+    if (!next || current === next) return;
+
+    function revealNext() {
+      next.classList.add("active");
+      void next.offsetWidth; // force reflow so the transition-in actually triggers
+      requestAnimationFrame(function () {
+        next.classList.add("revealed");
+      });
+    }
+
+    if (current) {
+      current.classList.remove("revealed");
+      setTimeout(function () {
+        current.classList.remove("active");
+        revealNext();
+      }, PANEL_FADE_MS);
+    } else {
+      revealNext();
+    }
+  }
+
   function showSection(section) {
     if (!SECTIONS[section]) return;
+    var firstReveal = !activeView.classList.contains("is-on");
     currentSection = section;
     sessionStorage.setItem("inquiry_section", section);
-    door.classList.add("hidden");
-    activeView.classList.add("is-on");
-    document.querySelectorAll(".inq-panel").forEach(function(p) { p.classList.remove("active"); });
-    var target = document.getElementById("panel-" + section);
-    if (target) target.classList.add("active");
+
     renderSideNav(section);
     if (sideSubmit) {
       sideSubmit.textContent = SECTIONS[section].submit || "";
       sideSubmit.style.display = SECTIONS[section].submit ? "inline-block" : "none";
     }
     mobTabs.forEach(function(t) { t.classList.toggle("active", t.dataset.section === section); });
+
+    if (firstReveal) {
+      // Door fades/blurs/shrinks out; the active view materializes in
+      // underneath it at the same time — a single crossfade rather than
+      // an instant swap. The target panel appears directly (nothing was
+      // showing before it, so no need for the fade-out half of switchPanel).
+      door.classList.add("hidden");
+      setTimeout(function () { door.style.display = "none"; }, DOOR_FADE_MS);
+
+      activeView.classList.add("is-on");
+      void activeView.offsetWidth;
+      requestAnimationFrame(function () {
+        activeView.classList.add("revealed");
+      });
+
+      var target = document.getElementById("panel-" + section);
+      if (target) {
+        target.classList.add("active");
+        void target.offsetWidth;
+        requestAnimationFrame(function () {
+          target.classList.add("revealed");
+        });
+      }
+    } else {
+      switchPanel(section);
+    }
   }
 
   function renderSideNav(active) {
@@ -982,6 +1102,230 @@ document.addEventListener("DOMContentLoaded", function() {
     selRt = setTimeout(function() { if (!modal.classList.contains("hidden")) layoutSelectorGrid(); }, 150);
   });
 
+  /* ══════════════════════════════════════════════════════
+     SUBMIT CONVERGENCE ANIMATION
+     Every character of the panel's visible text, every typed value in
+     every field, and every image gets its own independent flight
+     toward the submit button — varied speed, varied curve, varied
+     delay, like debris pulled into a black hole — then the button
+     turns green to confirm.
+
+     Non-destructive by design: no real form element's markup is ever
+     rewritten. Text sources get temporarily `visibility:hidden` while
+     a floating character-by-character clone (positioned exactly over
+     the original) does the animating; the original element — and any
+     listeners bound to it — are untouched. Images animate in place
+     directly, since they carry no such risk.
+     ══════════════════════════════════════════════════════ */
+  function animateCharToward(el, originX, originY, targetX, targetY, bucket) {
+    var dx = targetX - originX;
+    var dy = targetY - originY;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+
+    // A perpendicular offset partway along the path gives each piece its
+    // own curve — bigger swings for pieces that start farther away, so
+    // distant content takes a longer, more gravitational route while
+    // nearby content goes almost straight in. Sign is randomized so not
+    // everything bends the same direction.
+    var curviness = (Math.random() * 2 - 1) * Math.min(dist * 0.35, 160);
+    var nx = dist ? -dy / dist : 0;
+    var ny = dist ? dx / dist : 0;
+    var midX = dx * 0.5 + nx * curviness;
+    var midY = dy * 0.5 + ny * curviness;
+
+    // Randomized per-element speed and start delay — averages out to
+    // roughly a ~2s total effect, but no two pieces move identically.
+    var duration = 1100 + Math.random() * 900;
+    var delay = Math.min(dist / 2400, 0.4) * 1000 + Math.random() * 150;
+
+    var anim = el.animate([
+      { transform: "translate(0px, 0px) scale(1)", opacity: 1,    filter: "blur(0px)", offset: 0 },
+      { transform: "translate(" + midX + "px," + midY + "px) scale(0.7)", opacity: 0.6, filter: "blur(2px)", offset: 0.55 },
+      { transform: "translate(" + dx + "px," + dy + "px) scale(0.05)", opacity: 0, filter: "blur(9px)", offset: 1 }
+    ], {
+      duration: duration,
+      delay: delay,
+      easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)", // slow to start, accelerating hard at the end — gravity, not a constant glide
+      fill: "forwards"
+    });
+
+    bucket.push(anim);
+  }
+
+  function buildCharOverlay(sourceEl, text, extraStyle) {
+    var rect = sourceEl.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return null;
+    var cs = getComputedStyle(sourceEl);
+
+    var overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.left = rect.left + "px";
+    overlay.style.top = rect.top + "px";
+    overlay.style.width = rect.width + "px";
+    overlay.style.height = rect.height + "px";
+    overlay.style.font = cs.font;
+    overlay.style.color = cs.color;
+    overlay.style.lineHeight = cs.lineHeight;
+    overlay.style.letterSpacing = cs.letterSpacing;
+    overlay.style.whiteSpace = "pre-wrap";
+    overlay.style.pointerEvents = "none";
+    overlay.style.zIndex = "9999";
+    if (extraStyle) { Object.assign(overlay.style, extraStyle); }
+    document.body.appendChild(overlay);
+
+    Array.from(text).forEach(function (ch) {
+      var span = document.createElement("span");
+      span.textContent = ch === " " ? "\u00A0" : ch;
+      span.style.display = "inline-block";
+      overlay.appendChild(span);
+    });
+
+    return overlay;
+  }
+
+  /* ── FALLBACK: simple fade ──
+     Used automatically if the browser doesn't support the Web
+     Animations API, or if anything in the per-character convergence
+     throws for any reason. No positions, no per-character motion —
+     just the same fade/scale/blur morph used everywhere else on the
+     site, applied to the panel's visible content as a group, until
+     the form reads as blank. */
+  function runSimpleFadeFallback(panelEl) {
+    if (!panelEl) return { finished: Promise.resolve(), restore: function () {} };
+    var FADE_MS = 900;
+    var els = panelEl.querySelectorAll(
+      "h2, p, label, .inq-col-head, .inq-col-sub, .inq-sub-lbl, .inq-note, input.inq-field, textarea.inq-field, img, .inq-preview"
+    );
+    var touched = [];
+    els.forEach(function (el) {
+      if (getComputedStyle(el).display === "none") return;
+      el.style.transition = "opacity " + FADE_MS + "ms ease, transform " + FADE_MS + "ms ease, filter " + FADE_MS + "ms ease";
+      touched.push(el);
+    });
+    void panelEl.offsetWidth; // force reflow so the transition actually triggers
+    requestAnimationFrame(function () {
+      touched.forEach(function (el) {
+        el.style.opacity = "0";
+        el.style.transform = "scale(0.92)";
+        el.style.filter = "blur(8px)";
+      });
+    });
+    return {
+      finished: new Promise(function (resolve) { setTimeout(resolve, FADE_MS + 50); }),
+      restore: function () {
+        touched.forEach(function (el) {
+          el.style.transition = "none";
+          el.style.opacity = "";
+          el.style.transform = "";
+          el.style.filter = "";
+          void el.offsetWidth;
+          el.style.transition = "";
+        });
+      }
+    };
+  }
+
+  function runSubmitConvergence(panelEl, triggerBtn) {
+    if (!panelEl || !triggerBtn) return { finished: Promise.resolve(), restore: function () {} };
+
+    // Feature check: no Web Animations API support → go straight to the
+    // simple fade rather than attempting per-character motion at all.
+    if (typeof triggerBtn.animate !== "function") {
+      return runSimpleFadeFallback(panelEl);
+    }
+
+    var restoreFnsSoFar = [];
+    try {
+      var targetRect = triggerBtn.getBoundingClientRect();
+      var targetX = targetRect.left + targetRect.width / 2;
+      var targetY = targetRect.top + targetRect.height / 2;
+
+      var animations = [];
+
+      // ── Static text: headings, descriptions, labels, sub-labels, notes ──
+      var textEls = panelEl.querySelectorAll(
+        "h2, p, label, .inq-col-head, .inq-col-sub, .inq-sub-lbl, .inq-note"
+      );
+      textEls.forEach(function (el) {
+        if (getComputedStyle(el).display === "none") return;
+        var text = el.textContent;
+        if (!text || !text.trim()) return;
+
+        var overlay = buildCharOverlay(el, text);
+        if (!overlay) return;
+        el.style.visibility = "hidden"; // original stays in the DOM untouched — just invisible
+
+        Array.from(overlay.children).forEach(function (span) {
+          if (!span.textContent.trim()) return; // skip bare spaces
+          var r = span.getBoundingClientRect();
+          animateCharToward(span, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+        });
+
+        restoreFnsSoFar.push(function () {
+          overlay.remove();
+          el.style.visibility = "";
+        });
+      });
+
+      // ── Real typed values in fields ──
+      var fieldEls = panelEl.querySelectorAll("input.inq-field, textarea.inq-field");
+      fieldEls.forEach(function (field) {
+        if (getComputedStyle(field).display === "none") return;
+        var val = field.value;
+        if (!val || !val.trim()) return;
+
+        var fieldOverlay = buildCharOverlay(field, val, { display: "flex", alignItems: "center" });
+        if (!fieldOverlay) return;
+        field.style.visibility = "hidden";
+
+        Array.from(fieldOverlay.children).forEach(function (span) {
+          if (!span.textContent.trim()) return;
+          var r = span.getBoundingClientRect();
+          animateCharToward(span, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+        });
+
+        restoreFnsSoFar.push(function () {
+          fieldOverlay.remove();
+          field.style.visibility = "";
+        });
+      });
+
+      // ── Images move as whole units (e.g. selected-artwork thumbnails) ──
+      var imgEls = panelEl.querySelectorAll("img");
+      imgEls.forEach(function (img) {
+        if (getComputedStyle(img).display === "none") return;
+        var r = img.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) return;
+        animateCharToward(img, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+      });
+
+      return {
+        finished: Promise.all(animations.map(function (a) { return a.finished.catch(function () {}); })),
+        restore: function () { restoreFnsSoFar.forEach(function (fn) { fn(); }); }
+      };
+    } catch (err) {
+      // Something about the complex animation failed (unexpected layout,
+      // an unsupported keyframe value, etc.) — undo any overlays already
+      // created, then fall back to the simple fade instead of leaving
+      // the form in a broken half-animated state.
+      restoreFnsSoFar.forEach(function (fn) { try { fn(); } catch (e2) {} });
+      return runSimpleFadeFallback(panelEl);
+    }
+  }
+
+  function showSubmitSuccess(triggerButtons) {
+    triggerButtons.forEach(function (b) {
+      b.classList.add("inq-submit-success");
+    });
+  }
+
+  function clearSubmitSuccess(triggerButtons, originalLabels) {
+    triggerButtons.forEach(function (b, i) {
+      b.classList.remove("inq-submit-success");
+      b.textContent = originalLabels[i];
+    });
+  }
+
   /* ── PAYLOAD BUILDERS ── */
   function buildPurchasePayload(form) {
     var ids = Array.from(selected);
@@ -1050,18 +1394,21 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fid !== "purchaseForm" && fid !== "commissionForm") return;
     var sid = fid === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
     var sEl = document.getElementById(sid);
+    var panelEl = form.closest(".inq-panel");
 
     var mobileBtn = document.querySelector('.inq-mobile-submit[data-target="' + fid + '"]');
     var triggerButtons = [sideSubmit, mobileBtn].filter(Boolean);
     var originalLabels = triggerButtons.map(function(b){ return b.textContent; });
-    triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+    triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; });
 
     try {
       if (fid === "purchaseForm") {
         var parsed = null;
         try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
         if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
-          alert("Please select at least one artwork before submitting."); return;
+          alert("Please select at least one artwork before submitting.");
+          triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+          return;
         }
       }
       var token = null;
@@ -1070,37 +1417,67 @@ document.addEventListener("DOMContentLoaded", function() {
           token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
           var vr = await fetch("/.netlify/functions/verifyRecaptcha", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token }) });
           var vd = await vr.json();
-          if (!vd.success || vd.score < 0.5) return;
+          if (!vd.success || vd.score < 0.5) {
+            triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+            return;
+          }
         }
-      } catch(x) { return; }
+      } catch(x) {
+        triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+        return;
+      }
       if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
 
       var payload = fid === "purchaseForm" ? buildPurchasePayload(form) : buildCommissionPayload(form);
 
-      var res = await fetch(window.APP_CONFIG.googleScriptUrl, {
+      // Visible submit target for the currently active layout (desktop
+      // sidebar button vs. mobile in-form button).
+      var convergenceTarget = (mobileBtn && mobileBtn.offsetParent !== null) ? mobileBtn : (sideSubmit && sideSubmit.offsetParent !== null ? sideSubmit : mobileBtn || sideSubmit);
+      var convergence = panelEl && convergenceTarget
+        ? runSubmitConvergence(panelEl, convergenceTarget)
+        : { finished: Promise.resolve(), restore: function () {} };
+
+      var fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
         method: "POST",
         headers: { "Content-Type": "text/plain" },
         body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.text().then(function (t) { return { ok: r.ok, text: t }; });
       });
-      var result = String(await res.text()).trim();
 
-      if (res.ok && result === "OK") {
-        form.reset(); initOptions();
-        handleFormatReveal();
-        handleCommissionOtherReveal();
-        sEl && sEl.classList.remove("hidden");
-        if (fid === "purchaseForm") {
-          if (preview) preview.innerHTML = "";
-          if (selectedTA) selectedTA.value = "";
-          localStorage.removeItem("selectedArtworks"); localStorage.removeItem("notListedCustom");
-          selected.clear(); syncSel();
-          if (notListedInput) notListedInput.value = "";
-        }
+      // Wait for BOTH the network response and the full character
+      // convergence to finish — whichever takes longer — so the button
+      // never turns green mid-animation.
+      var combined = await Promise.all([fetchPromise, convergence.finished]);
+      var fetchResult = combined[0];
+      var result = String(fetchResult.text).trim();
+
+      if (fetchResult.ok && result === "OK") {
+        showSubmitSuccess(triggerButtons);
+
+        setTimeout(function () {
+          convergence.restore();
+          form.reset(); initOptions();
+          handleFormatReveal();
+          handleCommissionOtherReveal();
+          sEl && sEl.classList.remove("hidden");
+          if (fid === "purchaseForm") {
+            if (preview) preview.innerHTML = "";
+            if (selectedTA) selectedTA.value = "";
+            localStorage.removeItem("selectedArtworks"); localStorage.removeItem("notListedCustom");
+            selected.clear(); syncSel();
+            if (notListedInput) notListedInput.value = "";
+          }
+          clearSubmitSuccess(triggerButtons, originalLabels);
+          triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
+        }, 1800);
       } else {
+        convergence.restore();
+        triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
         alert("Something went wrong. Please try again.");
       }
-    } finally {
-      triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
+    } catch (err) {
+      triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; });
     }
   });
 
