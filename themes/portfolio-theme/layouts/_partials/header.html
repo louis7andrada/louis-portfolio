@@ -4,11 +4,46 @@
   <!--   Webdesign by Jinah Park & Louis Andrada   -->
   <!--     AndradaMono Font by Louis Andrada       -->
   <!--       Codes by Louis Andrada                -->
-  
+
   <!-- Left: Logo — always visible -->
   <a href="/" id="headerLogo" class="flex items-center">
-    <img src="/logo.png" alt="Louis Andrada Logo" class="h-10 w-28 dark:invert">
+    <div id="logoMorphWrap" class="logo-morph-wrap">
+      <img src="/logoold.png" alt="Louis Andrada Logo" id="logoOld" class="logo-old">
+      <img src="/lalogo.png" alt="Louis Andrada Logo" id="logoNew" class="logo-new">
+    </div>
   </a>
+
+  <!-- Runs synchronously as the parser reaches it — not deferred to
+       DOMContentLoaded — so a continuing-session logo state is restored
+       before the browser ever paints the (default-hidden) wrap. Only
+       the main script below handles the true first-run entrance. -->
+  <script>
+  (function () {
+    try {
+      var wrap = document.getElementById("logoMorphWrap");
+      if (!wrap) return;
+      function sGet(k) {
+        try {
+          var v = sessionStorage.getItem(k);
+          if (v !== null) return v;
+        } catch (e) {}
+        try {
+          var m = document.cookie.match(new RegExp("(?:^|; )" + k + "=([^;]*)"));
+          return m ? decodeURIComponent(m[1]) : null;
+        } catch (e) {}
+        return null;
+      }
+      var persisted = sGet("headerLogoState");
+      if (persisted) {
+        wrap.classList.add("logo-no-anim", "logo-ready");
+        if (persisted === "new") wrap.classList.add("morphed");
+      }
+      // No persisted state yet (first run this session) — leave the
+      // wrap hidden; the main script reveals it with the entrance
+      // animation once the intro door has closed.
+    } catch (e) {}
+  })();
+  </script>
 
   <!-- Right: Controls -->
   <div class="flex items-center gap-6">
@@ -64,6 +99,21 @@
   <a href="/links" class="block">Links</a>
 </nav>
 
+<!-- ══════════════════════════════════════════════════════
+     INTRO DOOR — lives here, not on individual pages, so it
+     runs on whichever page happens to be the first one loaded
+     in the session (home or otherwise). See the script block
+     below for the once-only / no-cookies fallback behavior.
+     ══════════════════════════════════════════════════════ -->
+<div id="intro-door">
+  <div id="introLogoWrap" class="intro-logo-wrap">
+    <img src="/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new" alt="Louis Andrada"
+         onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
+    <img src="/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" alt="Louis Andrada" />
+    <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
+  </div>
+</div>
+
 <style>
   /* ── HEADER ── */
   #siteHeader {
@@ -81,6 +131,197 @@
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border-bottom-color: rgba(15, 15, 15, 0.65) !important;
+  }
+
+  /* ── LOGO MORPH ── */
+  /* Wrap sized to the wider (old) logo so layout doesn't jump.
+     Both images stack in the same box; only opacity/scale/filter animate. */
+  .logo-morph-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 2.5rem;   /* matches old h-10 */
+    width: 7rem;      /* matches old w-28 */
+    opacity: 0;       /* hidden by default — JS reveals it, so first paint never flashes it visible */
+    transform: scale(0.82);
+    filter: blur(7px);
+    transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
+  }
+
+  /* Applied by JS once it's safe to show the logo — either instantly
+     (continuing-session restore) or with the transition above playing
+     out (first-run entrance). */
+  .logo-morph-wrap.logo-ready {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+
+  /* Used briefly by JS to snap-restore a persisted state on page
+     load without animating the restore itself. */
+  .logo-morph-wrap.logo-no-anim,
+  .logo-morph-wrap.logo-no-anim .logo-old,
+  .logo-morph-wrap.logo-no-anim .logo-new {
+    transition: none !important;
+  }
+
+  @media (max-width: 767px) {
+    .logo-morph-wrap {
+      height: 2rem;   /* matches old h-8 on mobile if you scale it down */
+      width: 5.5rem;
+    }
+  }
+
+  .logo-old,
+  .logo-new {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform-origin: left center;
+    transition: opacity 1.1s ease, transform 1.1s ease, filter 1.1s ease;
+    will-change: opacity, transform;
+  }
+
+  .logo-old {
+    height: 2.5rem;
+    width: 7rem;
+    transform: translateY(-50%) scale(1);
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  .logo-new {
+    height: 2rem;
+    width: 2rem;
+    transform: translateY(-50%) scale(0.6);
+    opacity: 0;
+    filter: blur(4px);
+  }
+
+  @media (max-width: 767px) {
+    .logo-old { height: 2rem; width: 5.5rem; }
+    .logo-new { height: 2rem; width: 2rem; }
+  }
+
+  /* 'morphed' means "currently showing lalogo (new)". JS toggles this
+     class on and off across pages, so the same class works for the
+     transition in either direction — old→new or new→old. */
+  .logo-morph-wrap.morphed .logo-old {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.7);
+    filter: blur(4px);
+  }
+
+  .logo-morph-wrap.morphed .logo-new {
+    opacity: 1;
+    transform: translateY(-50%) scale(1);
+    filter: blur(0px);
+  }
+
+  /* ── DARK MODE (header logo) ── */
+  /* invert has to live inside the same `filter` declaration as the blur,
+     since a second `filter` rule would just overwrite the first instead
+     of combining with it. */
+  html.dark .logo-old       { filter: invert(1) blur(0px); }
+  html.dark .logo-new       { filter: invert(1) blur(4px); }
+  html.dark .logo-morph-wrap.morphed .logo-old { filter: invert(1) blur(4px); }
+  html.dark .logo-morph-wrap.morphed .logo-new { filter: invert(1) blur(0px); }
+
+  /* ══════════════════════════════════════════
+     INTRO DOOR — lalogo morphs into logoold,
+     then the door dissolves.
+     ══════════════════════════════════════════ */
+  #intro-door {
+    position: fixed; inset: 0; background: #ffffff; z-index: 999;
+    transition: opacity 1.3s ease;
+    display: flex; align-items: center; justify-content: center;
+  }
+  html.dark #intro-door { background: #0f0f0f; }
+  #intro-door.dissolving { opacity: 0; pointer-events: none; }
+
+  .intro-logo-wrap {
+    position: relative;
+    width: clamp(220px, 30vw, 340px);
+    height: clamp(70px, 8vw, 96px);
+    cursor: pointer;
+  }
+  .intro-logo-wrap:hover .intro-logo-img { opacity: 0.85; }
+
+  .intro-logo-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    object-fit: contain;
+    transform-origin: center center;
+    transition: opacity 1s ease, transform 1s ease, filter 1s ease;
+    will-change: opacity, transform, filter;
+  }
+
+  .intro-logo-new {
+    height: 62%; /* lalogo — centered within the wider wrap */
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+  .intro-logo-old {
+    height: 70%; /* logoold — spans the full wrap at its real proportions */
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.94);
+    filter: blur(3px);
+  }
+
+  /* Stage 1 → 2: lalogo morphs into logoold */
+  #intro-door.morphed .intro-logo-new {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: blur(3px);
+  }
+  #intro-door.morphed .intro-logo-old {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0px);
+  }
+
+  /* Stage 2 → 3: logoold itself morphs away (bigger blur/scale, slower)
+     as the door dissolves underneath it, instead of a flat fade */
+  #intro-door.dissolving .intro-logo-old {
+    transition: opacity 1.3s ease, transform 1.3s ease, filter 1.3s ease;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.18);
+    filter: blur(7px);
+  }
+
+  /* dark mode invert lives inside the same filter declaration as the blur,
+     so the two combine instead of one overwriting the other */
+  html.dark .intro-logo-new { filter: invert(1) blur(0px); }
+  html.dark .intro-logo-old { filter: invert(1) blur(3px); }
+  html.dark #intro-door.morphed .intro-logo-new { filter: invert(1) blur(3px); }
+  html.dark #intro-door.morphed .intro-logo-old { filter: invert(1) blur(0px); }
+  html.dark #intro-door.dissolving .intro-logo-old { filter: invert(1) blur(7px); }
+
+  /* Responsive door sizing — the clamp() minimums above are fine on
+     desktop/tablet but too large once vw drops below them on phones */
+  @media (max-width: 699px) {
+    .intro-logo-wrap {
+      width: clamp(180px, 58vw, 260px);
+      height: clamp(58px, 18.5vw, 82px);
+    }
+  }
+  @media (max-width: 420px) {
+    .intro-logo-wrap {
+      width: clamp(150px, 66vw, 210px);
+      height: clamp(48px, 21vw, 68px);
+    }
+  }
+
+  .intro-logo-fallback {
+    display: none;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
   }
 
   /* ── MOBILE ONLY: hide toggle on desktop via CSS (not Tailwind, which may not scan this partial) ── */
@@ -215,6 +456,153 @@ document.addEventListener("DOMContentLoaded", () => {
   const siteHeader     = document.getElementById("siteHeader");
   const homeSection    = document.getElementById("home-section");
   const homeDesktopNav = document.getElementById("homeDesktopNav");
+  const logoMorphWrap  = document.getElementById("logoMorphWrap");
+  const door           = document.getElementById("intro-door");
+
+  /* ══════════════════════════════════════════════════════
+     STORAGE HELPER — sessionStorage first, with a session
+     cookie as a fallback for private-browsing modes or any
+     browser that blocks/clears web storage. If BOTH fail,
+     everything below still degrades safely: the door will
+     simply show on every page rather than throwing an error.
+     ══════════════════════════════════════════════════════ */
+  function storageGet(key) {
+    try {
+      const v = sessionStorage.getItem(key);
+      if (v !== null) return v;
+    } catch (e) { /* sessionStorage blocked — fall through to cookie */ }
+    try {
+      const match = document.cookie.match(new RegExp('(?:^|; )' + key + '=([^;]*)'));
+      return match ? decodeURIComponent(match[1]) : null;
+    } catch (e) { /* cookies blocked too — nothing we can do */ }
+    return null;
+  }
+
+  function storageSet(key, value) {
+    try { sessionStorage.setItem(key, value); } catch (e) {}
+    try {
+      // Mirrored to a session cookie (no expiry = cleared when the
+      // browser closes) so the "only once" behavior still holds even
+      // if sessionStorage specifically is the thing that's blocked.
+      document.cookie = key + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax";
+    } catch (e) {}
+  }
+
+  /* ══════════════════════════════════════════════════════
+     HEADER LOGO MORPH — continuity across pages, one-time
+     entrance, and it waits for the intro door (below) to
+     actually finish before it does anything.
+     ══════════════════════════════════════════════════════ */
+  let logoSequenceStarted = false;
+
+  function startHeaderLogoSequence() {
+    if (logoSequenceStarted) return; // guards against the door's error fallback double-firing this
+    logoSequenceStarted = true;
+    if (!logoMorphWrap) return;
+
+    const STATE_KEY = "headerLogoState"; // 'old' | 'new'
+    const persisted  = storageGet(STATE_KEY);
+    const isFirstRun = !persisted; // no page in this session has run the cycle yet
+
+    const MATERIALIZE_DURATION       = 900;  // must match .logo-morph-wrap's transition duration
+    const HOLD_BEFORE_TOGGLE_FIRST   = 3200; // first-run: time the logo sits still after materializing, before flipping
+
+    function toggle() {
+      logoMorphWrap.classList.toggle("morphed");
+      storageSet(STATE_KEY, logoMorphWrap.classList.contains("morphed") ? "new" : "old");
+    }
+
+    if (isFirstRun) {
+      // Nothing was restored by the inline pre-script, so the wrap is
+      // still in its default hidden state — reveal it now, with the
+      // transition playing out as the actual entrance animation.
+      requestAnimationFrame(() => {
+        logoMorphWrap.classList.add("logo-ready");
+      });
+      setTimeout(toggle, MATERIALIZE_DURATION + HOLD_BEFORE_TOGGLE_FIRST);
+    } else {
+      // Already instantly restored by the inline pre-script — re-enable
+      // transitions, then flip on the very next frame so it reads as
+      // starting right when the page opens, not a beat after.
+      requestAnimationFrame(() => {
+        logoMorphWrap.classList.remove("logo-no-anim");
+        requestAnimationFrame(toggle);
+      });
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════
+     INTRO DOOR — runs at most once per session. The header
+     logo sequence above is only started once this resolves,
+     whichever of these paths gets there first:
+       • no door element on this page
+       • door already seen this session (storage says so)
+       • the door plays out fully or gets clicked through
+       • anything throws unexpectedly (fail safe: hide + mark seen)
+     ══════════════════════════════════════════════════════ */
+  try {
+    if (!door) {
+      startHeaderLogoSequence();
+    } else if (storageGet("intro-seen")) {
+      door.style.display = "none";
+      startHeaderLogoSequence();
+    } else {
+      const MORPH_DELAY        = 1500; // lalogo shows on its own before it starts morphing
+      const MORPH_TRANSITION   = 1000; // must match .intro-logo-img's base transition duration
+      const HOLD_AFTER_MORPH   = 750;  // logoold sits fully visible before it morphs away
+      const HOLD_AFTER_MORPH_FAST = 350; // shorter hold when the user clicks to skip ahead
+      const DISSOLVE_TRANSITION = 1300; // must match #intro-door's opacity transition & the dissolving-stage logo transition
+
+      let morphed   = false;
+      let dissolved = false;
+      let timers    = [];
+
+      function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+
+      function morph() {
+        if (morphed) return;
+        morphed = true;
+        door.classList.add("morphed");
+      }
+
+      function dissolve() {
+        if (dissolved) return;
+        dissolved = true;
+        door.classList.add("dissolving");
+        // Start the header logo's reveal as soon as the door begins
+        // fading, so it appears a bit earlier — overlapping with the
+        // door's fade rather than waiting for it to fully disappear.
+        startHeaderLogoSequence();
+        timers.push(setTimeout(() => {
+          door.style.display = "none";
+          storageSet("intro-seen", "1");
+        }, DISSOLVE_TRANSITION));
+      }
+
+      // Auto-play: lalogo → morph into logoold → dissolve
+      timers.push(setTimeout(() => {
+        morph();
+        timers.push(setTimeout(dissolve, MORPH_TRANSITION + HOLD_AFTER_MORPH));
+      }, MORPH_DELAY));
+
+      // Clicking fast-forwards through whichever step hasn't happened yet
+      door.addEventListener("click", () => {
+        clearTimers();
+        if (!morphed) {
+          morph();
+          timers.push(setTimeout(dissolve, MORPH_TRANSITION + HOLD_AFTER_MORPH_FAST));
+        } else if (!dissolved) {
+          dissolve();
+        }
+      });
+    }
+  } catch (e) {
+    // Something unexpected broke the door logic — never leave the
+    // visitor stuck behind it, and never leave the header logo waiting.
+    try { if (door) door.style.display = "none"; } catch (e2) {}
+    try { storageSet("intro-seen", "1"); } catch (e2) {}
+    startHeaderLogoSequence();
+  }
 
   /* ── SCROLL HELPER ── */
   function scrollToSection(el) {

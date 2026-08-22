@@ -3,8 +3,11 @@
   <!--    Webdesign by Jinah Park & Louis Andrada   -->
   <!--      AndradaMono Font by Louis Andrada       -->
   <!--        Codes by Louis Andrada                -->
+
+  <img src="/lalogo.png" alt="Louis Andrada Logo" class="footer-logo dark:invert" />
+
   <span class="text-[13px]">
-    ᛃᚨ Louis Andrada © {{ now.Format "2006" }} — All Rights Reserved
+    Louis Andrada © {{ now.Format "2006" }} — All Rights Reserved
   </span>
 
   <button type="button" id="footerJoinNewsletterBtn" class="footer-join-newsletter text-[10px]">
@@ -16,6 +19,18 @@
   </span>
 
 <style>
+  .footer-logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    /* sits directly above the centered "Join the List" button */
+    transform: translate(-50%, calc(-100% - 10px));
+    height: 23px;
+    width: auto;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
   @media (max-width: 640px) {
     footer { flex-direction: column; gap: 0.75rem; }
     .text-right { text-align: center; }
@@ -47,6 +62,18 @@
       transform: none;
       order: 2;
     }
+
+    /* On mobile the footer stacks in normal flow instead of being
+       absolutely centered, so the logo instead becomes the first
+       stacked item — on top of the copyright line. */
+    .footer-logo {
+      position: static;
+      transform: none;
+      order: -1;
+      height: 21px;
+      margin: 0 auto 0.15rem;
+      display: block;
+    }
   }
 </style>
 
@@ -76,14 +103,22 @@
      ══════════════════════════════════════════ */
   .ml-popup {
     position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
-    transform: translateY(100%); opacity: 0; pointer-events: none;
-    transition: transform 0.45s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.35s ease;
+    opacity: 0;
+    transform: translateY(28px) scale(0.97);
+    filter: blur(8px);
+    pointer-events: none;
+    transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
     background: rgba(255,255,255,0.75);
     backdrop-filter: blur(14px) saturate(1.1);
     -webkit-backdrop-filter: blur(14px) saturate(1.1);
     border-top: 1px solid rgba(0,0,0,0.08);
   }
-  .ml-popup.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+  .ml-popup.open {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+    pointer-events: all;
+  }
   html.dark .ml-popup {
     background: rgba(15,15,15,0.82);
     backdrop-filter: blur(18px) brightness(0.75);

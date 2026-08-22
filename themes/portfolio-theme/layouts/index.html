@@ -12,10 +12,6 @@
 <!--       Codes by Louis Andrada                -->
 <div class="homepage-wrapper">
 
-  <div id="intro-door">
-    <img src="/logo.png" id="intro-logo" alt="Louis Andrada"
-     onerror="this.outerHTML='<span id=\'intro-logo\' style=\'position:absolute;top:50%;left:50%;transform:translate(calc(-50% + 6px),calc(-50% - 3px));font-size:1rem;letter-spacing:0.1em;\'>Louis Andrada</span>'" />
-  </div>
 
   {{ with $artwork }}
   <div class="homepage-layout">
@@ -53,26 +49,6 @@
 </div>
 
 <style>
-  #intro-door {
-    position: fixed; inset: 0; background: #ffffff; z-index: 999; transition: opacity 2.5s ease;
-  }
-  #intro-logo {
-    width: clamp(180px, 22vw, 220px); height: clamp(64px, 8vw, 79px);
-    object-fit: fill; opacity: 1; transition: opacity 0.5s ease, transform 0.4s ease;
-    cursor: pointer; position: absolute; top: 50%; left: 50%;
-    transform: translate(calc(-50% - 6px), calc(-50% - 3px));
-  }
-  html.dark #intro-logo { filter: invert(1); }
-  #intro-logo:hover { opacity: 0.35; }
-  #intro-door.logo-dim #intro-logo { opacity: 0.35; }
-  #intro-door.logo-clicked #intro-logo { transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93); opacity: 0.2; }
-  #intro-door.dissolving { opacity: 0; pointer-events: none; }
-  html.dark #intro-door { position: fixed; inset: 0; background: #0f0f0f; z-index: 999; transition: opacity 2.5s ease; }
-  html.dark #intro-logo { filter: invert(1); }
-  html.dark #intro-logo:hover { opacity: 0.35; }
-  html.dark #intro-door.logo-dim #intro-logo { opacity: 0.35; }
-  html.dark #intro-door.logo-clicked #intro-logo { transform: translate(calc(-50% - 6px), calc(-50% - 3px)) scale(0.93); opacity: 0.2; }
-  html.dark #intro-door.dissolving { opacity: 0; pointer-events: none; }
   .homepage-wrapper { min-height: calc(100vh - 80px); }
   .homepage-layout { display: flex; align-items: stretch; padding: 3rem 1rem 2rem 8rem; gap: 10rem; min-height: calc(100vh - 80px); }
   .hp-left { flex: 0 0 auto; width: clamp(420px, 62vw, 900px); display: flex; flex-direction: column; }
@@ -87,7 +63,7 @@
   .hp-nav-link:hover { text-decoration: underline; font-weight: 700; }
   .hp-nav--artworks { margin-left: 0%; } .hp-nav--acquisition { margin-left: 40%; }
   .hp-nav--archive { margin-left: 20%; } .hp-nav--about { margin-left: 25%; } .hp-nav--links { margin-left: 60%; }
-  
+
   @media (max-width: 1200px) {
     .hp-image { width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto; transform: translateX(0px); transition: opacity 0.3s ease; }
     .homepage-layout { flex-direction: column; padding: 2rem 2.5rem; gap: 3rem; align-items: center; }
@@ -109,23 +85,6 @@
   }
 </style>
 
-<script>
-(function() {
-  const door = document.getElementById('intro-door');
-  function sessionGet(key) { try { return sessionStorage.getItem(key); } catch(e) { return null; } }
-  function sessionSet(key, val) { try { sessionStorage.setItem(key, val); } catch(e) {} }
-  if (sessionGet('intro-seen')) { door.style.display = 'none'; return; }
-  let dismissed = false;
-  function dismiss(fromClick) {
-    if (dismissed) return; dismissed = true;
-    if (fromClick) { door.classList.add('logo-clicked'); setTimeout(() => door.classList.add('dissolving'), 400); }
-    else { door.classList.add('logo-dim'); setTimeout(() => door.classList.add('dissolving'), 600); }
-    setTimeout(() => { door.style.display = 'none'; sessionSet('intro-seen', '1'); }, 3200);
-  }
-  door.addEventListener('click', () => dismiss(true));
-  setTimeout(() => dismiss(false), 5000);
-})();
-</script>
 </section>
 
 <section id="artworks-section" class="w-full px-4 py-12">
@@ -439,20 +398,21 @@ html.dark .artwork-filter-overlay { background: rgba(12,12,12,0.78); backdrop-fi
    ══════════════════════════════════════════ */
 .arw-modal {
   position: fixed; inset: 0; z-index: 200;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.38s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
 }
 .arw-modal.open { opacity: 1; pointer-events: all; }
 .arw-modal-bg {
   position: absolute; inset: 0; cursor: pointer;
-  background: rgba(255,255,255,0.48);
-  backdrop-filter: blur(16px) saturate(1.15);
-  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  background: rgba(240,240,240,0.55);
+  backdrop-filter: blur(26px) saturate(1.1);
+  -webkit-backdrop-filter: blur(26px) saturate(1.1);
 }
 html.dark .arw-modal-bg {
-  background: rgba(0,0,0,0.52);
-  backdrop-filter: blur(20px) brightness(0.65);
-  -webkit-backdrop-filter: blur(20px) brightness(0.65);
+  background: rgba(8,8,8,0.6);
+  backdrop-filter: blur(26px) brightness(0.55);
+  -webkit-backdrop-filter: blur(26px) brightness(0.55);
 }
 .arw-close {
   position: fixed; top: 20px; right: 24px; z-index: 280;
@@ -464,10 +424,11 @@ html.dark .arw-modal-bg {
 .arw-close:hover { opacity: 1; }
 .arw-modal-pane {
   position: absolute; inset: 0; z-index: 1;
-  transform: scale(0.95);
-  transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
+  transform: scale(0.94);
+  filter: blur(8px);
+  transition: transform 0.9s ease, filter 0.9s ease;
 }
-.arw-modal.open .arw-modal-pane { transform: scale(1); }
+.arw-modal.open .arw-modal-pane { transform: scale(1); filter: blur(0px); }
 .arw-sp-row { position: relative; width: 100%; height: 100%; }
 .arw-modal-pane .sp-img-wrap {
   position: absolute; top: 50%; left: 34%;
