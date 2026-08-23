@@ -98,7 +98,7 @@
     <div id="activeFilterTags" class="artwork-active-tags"></div>
   </div>
 
-  <div id="filterOverlay" class="artwork-filter-overlay hidden">
+  <div id="filterOverlay" class="artwork-filter-overlay">
     <div class="artwork-filter-inner">
       <div class="artwork-filter-left-col">
         <div class="artwork-filter-toggle filter-spacer" aria-hidden="true">
@@ -375,11 +375,29 @@ html.dark .artwork-filter-bar { background: rgba(15, 15, 15, 0.65); }
 .artwork-active-tag-group { display: flex; flex-direction: column; gap: 0.1rem; white-space: nowrap; }
 .artwork-active-tag-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; text-decoration: underline; text-underline-offset: 2px; }
 .artwork-active-tag-value { font-size: 0.78rem; letter-spacing: 0.03em; opacity: 0.75; }
-.artwork-filter-overlay { position: fixed; inset: 0; z-index: 100; background: rgba(255,255,255,0.72); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); display: flex; align-items: flex-start; justify-content: flex-start; padding: 7rem 4rem 3rem 5rem; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.artwork-filter-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(255,255,255,0.72); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  display: flex; align-items: flex-start; justify-content: flex-start;
+  padding: 7rem 4rem 3rem 5rem; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  /* Closed is the default — deliberately not a class named "hidden",
+     since that collides with a sitewide display:none utility that
+     silently overrides this and blocks any transition from playing. */
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(10px);
+  pointer-events: none;
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
 @media (max-width: 700px) { .artwork-filter-overlay { padding: 6rem 1.5rem 4rem 1.5rem; } .artwork-filter-inner { padding-bottom: 3rem; } }
 body.filter-lock { overflow: hidden; }
 html.dark .artwork-filter-overlay { background: rgba(12,12,12,0.78); backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; }
-.artwork-filter-overlay.hidden { display: none; }
+.artwork-filter-overlay.open {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  pointer-events: auto;
+}
 .artwork-filter-inner { display: flex; align-items: flex-start; gap: 3rem; width: 100%; }
 .artwork-filter-columns { display: flex; gap: 4rem; flex-wrap: wrap; }
 .artwork-filter-group { display: flex; flex-direction: column; gap: 0.5rem; min-width: 110px; }
@@ -507,8 +525,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const active    = { year: "all", availability: "all", collection: "all" };
   const filterLabels = { year: "Years", availability: "Availability", collection: "Collection" };
 
-  function openOverlay()  { toggle.classList.add("open"); filterBar.classList.add("filter-open"); overlay.classList.remove("hidden"); document.body.classList.add("filter-lock"); }
-  function closeOverlay() { overlay.classList.add("hidden"); toggle.classList.remove("open"); filterBar.classList.remove("filter-open"); document.body.classList.remove("filter-lock"); }
+  function openOverlay()  { toggle.classList.add("open"); filterBar.classList.add("filter-open"); overlay.classList.add("open"); document.body.classList.add("filter-lock"); }
+  function closeOverlay() { overlay.classList.remove("open"); toggle.classList.remove("open"); filterBar.classList.remove("filter-open"); document.body.classList.remove("filter-lock"); }
   document.getElementById('filterResetBtn')?.addEventListener('click', () => {
     active.year = 'all'; active.availability = 'all'; active.collection = 'all';
     document.querySelectorAll('.artwork-filter-option').forEach(b => b.classList.remove('active'));
@@ -519,7 +537,7 @@ document.addEventListener("DOMContentLoaded", () => {
     applyFilters(); renderTags();
   });
 
-  toggle.addEventListener("click", () => overlay.classList.contains("hidden") ? openOverlay() : closeOverlay());
+  toggle.addEventListener("click", () => !overlay.classList.contains("open") ? openOverlay() : closeOverlay());
   overlay.addEventListener("click", (e) => { if (e.target === overlay) closeOverlay(); });
 
   document.querySelectorAll(".artwork-filter-option").forEach(btn => {
