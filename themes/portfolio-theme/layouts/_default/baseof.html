@@ -34,6 +34,25 @@
     })();
   </script>
 
+  <!-- ══════════════════════════════════════════════════════
+       SMOOTH THEME TRANSITION — makes the manual dark/light
+       toggle fade colors across the whole page instead of
+       snapping instantly. Applied broadly (not just body) since
+       Tailwind's dark: utilities are scattered across many
+       elements throughout the site.
+
+       This does NOT reintroduce the load-time flash: CSS
+       transitions only play when an already-rendered element's
+       property value changes — the very first paint has nothing
+       to transition FROM, so it still applies instantly and
+       correctly on load, exactly as the script above intends.
+       ══════════════════════════════════════════════════════ -->
+  <style>
+    *, *::before, *::after {
+      transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, fill 0.45s ease, stroke 0.45s ease;
+    }
+  </style>
+
   {{ if .IsHome }}
   <title>Portfolio — Louis Andrada</title>
   {{ else }}
