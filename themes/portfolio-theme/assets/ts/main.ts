@@ -267,16 +267,16 @@ sunIcon?.classList.remove("moonIconSpin");
 moonIcon?.classList.add("hidden");
 moonIcon?.classList.remove("moonIconSpin");
 
-const savedTheme = localStorage.getItem("theme");
-
-if (savedTheme === "light") {
-  // Explicitly chose light
-  document.documentElement.classList.remove("dark");
-  moonIcon?.classList.remove("hidden");
-} else {
-  // Default to dark (includes first visit)
-  document.documentElement.classList.add("dark");
+// The 'dark' class itself is already applied (or not) by the tiny
+// synchronous script at the very top of <head> — that's what prevents
+// the light-mode flash on load. This just syncs the icons to whatever
+// state that script already settled on, rather than re-deciding the
+// theme here (which would be redundant, and a second source of truth
+// if it ever diverged from the head script).
+if (document.documentElement.classList.contains("dark")) {
   sunIcon?.classList.remove("hidden");
+} else {
+  moonIcon?.classList.remove("hidden");
 }
 
 toggle?.addEventListener("click", () => {
