@@ -8,6 +8,32 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- ══════════════════════════════════════════════════════
+       EARLY DARK-MODE APPLY — must be inline and synchronous
+       (no defer/async), and must run before the stylesheet
+       below, so the 'dark' class is already on <html> before
+       the browser paints anything. This mirrors main.ts's own
+       theme logic exactly (same 'theme' key, same default-to-
+       dark behavior) so there's never a mismatch between this
+       early check and the toggle script that runs later.
+       ══════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {
+        // Storage unavailable for some reason — match main.ts's own
+        // default-to-dark fallback rather than leaving it undecided.
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
+
   {{ if .IsHome }}
   <title>Portfolio — Louis Andrada</title>
   {{ else }}
