@@ -515,20 +515,52 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       document.documentElement.classList.add("reveal-pending");
       const EXCLUDE = '#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #lightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown';
-      const candidates = document.body.querySelectorAll("img, h1, h2, h3, h4, p, li, blockquote, figcaption, a");
-      revealItems = Array.from(candidates).filter((el) => {
-        if (el.closest(EXCLUDE)) return false;
-        // a link wrapping an image (artwork grid items, the hero link, etc.)
-        // isn't tagged itself — the <img> inside it is already covered, and
-        // tagging both would stack two fog fades on the same visual spot.
-        if (el.tagName === "A" && el.querySelector("img")) return false;
+      const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "NOSCRIPT", "SVG", "PATH", "INPUT", "TEXTAREA", "SELECT"]);
+
+      // Tag-name lists (h1, p, a, ...) are a losing game across a site with
+      // this many hand-built templates — every page uses different tags for
+      // its text (plain <div>s on About, <button>s on Inquiry's door, <span>s
+      // on Links). Instead: tag any element that directly owns a visible text
+      // node, regardless of tag name, plus every <img>.
+      function hasDirectText(el) {
+        for (const node of el.childNodes) {
+          if (node.nodeType === 3 && node.textContent.trim().length > 0) return true;
+        }
+        return false;
+      }
+
+      const candidates = [];
+      document.body.querySelectorAll("*").forEach((el) => {
+        if (SKIP_TAGS.has(el.tagName)) return;
+        if (el.closest(EXCLUDE)) return;
+        if (el.tagName === "IMG") { candidates.push(el); return; }
+        if (hasDirectText(el)) candidates.push(el);
+      });
+
+      // Drop any candidate whose ancestor is also a candidate (e.g. a <span>
+      // inside an already-tagged <p>) so nested text doesn't compound its
+      // fade with its parent's — opacity/filter cascade to children anyway.
+      const candidateSet = new Set(candidates);
+      revealItems = candidates.filter((el) => {
+        let p = el.parentElement;
+        while (p) {
+          if (candidateSet.has(p)) return false;
+          p = p.parentElement;
+        }
         return true;
       });
+
       let textIndex = 0;
       revealItems.forEach((el) => {
-        el.classList.add("reveal-item");
+        // Checked before adding either reveal class, so this reads the
+        // element's own authored filter (e.g. the footer logo's dark:invert,
+        // or dark:brightness-50 on in-progress artwork thumbnails) rather
+        // than the blur this same function is about to add.
+        let ownFilter = "none";
+        try { ownFilter = getComputedStyle(el).filter; } catch (e) {}
+        el.classList.add(ownFilter && ownFilter !== "none" ? "reveal-item-opacity-only" : "reveal-item");
         if (el.tagName !== "IMG") {
-          el.style.transitionDelay = Math.min(textIndex * 20, 350) + "ms";
+          el.style.transitionDelay = Math.min(textIndex * 12, 200) + "ms";
           textIndex++;
         }
       });
