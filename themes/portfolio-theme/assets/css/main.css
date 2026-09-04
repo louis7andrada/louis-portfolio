@@ -641,3 +641,29 @@
   top: 0;
   z-index: var(--z-header);
 }
+
+/* ══════════════════════════════════════════════════════
+   FIRST-VISIT CONTENT REVEAL — a pure blur+opacity "fog"
+   materialize (no movement/scale) for every image and text
+   element on the page. JS only ever adds html.reveal-pending
+   on a session's very first page load (see header.html), so
+   returning navigation within the same session never hides
+   these elements in the first place — they render normally,
+   exactly like before this feature existed.
+   ══════════════════════════════════════════════════════ */
+/* transition lives on this same higher-specificity selector (rather than
+   a bare .reveal-item rule) so it can't lose a same-specificity, later-in-
+   the-DOM tie against a page's own per-element transition — e.g. the home
+   hero's ".hp-image { transition: opacity 0.3s ease }" — which would
+   otherwise silently strip out the filter half of this animation for
+   that element. */
+html.reveal-pending .reveal-item {
+  transition: opacity 0.5s ease, filter 0.5s ease;
+  opacity: 0;
+  filter: blur(8px);
+}
+
+html.reveal-pending .reveal-item.revealed {
+  opacity: 1;
+  filter: blur(0px);
+}

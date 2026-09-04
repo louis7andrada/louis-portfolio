@@ -498,6 +498,64 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* ══════════════════════════════════════════════════════
+     FIRST-VISIT CONTENT REVEAL — every image and text element
+     on the page (nav links, headings, paragraphs, artwork grid,
+     footer, everything) materializes in via a blur+opacity fog,
+     but only on a session's very first page load. Checked up
+     front here, before the door logic below has a chance to
+     mark the flag seen. The header logo is excluded since it
+     already has its own dedicated entrance animation, and
+     popups/modals/menus are excluded since they stay hidden
+     until opened regardless of this class.
+     ══════════════════════════════════════════════════════ */
+  const firstVisitThisSession = !storageGet("intro-seen");
+  let revealItems = [];
+
+  function prepareFirstVisitReveal() {
+    try {
+      document.documentElement.classList.add("reveal-pending");
+      const EXCLUDE = '#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #lightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown';
+      const candidates = document.body.querySelectorAll("img, h1, h2, h3, h4, p, li, blockquote, figcaption, a");
+      revealItems = Array.from(candidates).filter((el) => {
+        if (el.closest(EXCLUDE)) return false;
+        // a link wrapping an image (artwork grid items, the hero link, etc.)
+        // isn't tagged itself — the <img> inside it is already covered, and
+        // tagging both would stack two fog fades on the same visual spot.
+        if (el.tagName === "A" && el.querySelector("img")) return false;
+        return true;
+      });
+      let textIndex = 0;
+      revealItems.forEach((el) => {
+        el.classList.add("reveal-item");
+        if (el.tagName !== "IMG") {
+          el.style.transitionDelay = Math.min(textIndex * 20, 350) + "ms";
+          textIndex++;
+        }
+      });
+    } catch (e) {}
+  }
+
+  function playFirstVisitReveal() {
+    try {
+      revealItems.forEach((el) => {
+        if (el.tagName === "IMG") {
+          const show = () => el.classList.add("revealed");
+          if (el.complete && el.naturalWidth > 0) {
+            requestAnimationFrame(show);
+          } else {
+            el.addEventListener("load", show, { once: true });
+            el.addEventListener("error", show, { once: true });
+          }
+        } else {
+          requestAnimationFrame(() => el.classList.add("revealed"));
+        }
+      });
+    } catch (e) {}
+  }
+
+  if (firstVisitThisSession) prepareFirstVisitReveal();
+
+  /* ══════════════════════════════════════════════════════
      HEADER LOGO MORPH — continuity across pages, one-time
      entrance, and it waits for the intro door (below) to
      actually finish before it does anything.
@@ -552,6 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
   try {
     if (!door) {
       startHeaderLogoSequence();
+      if (firstVisitThisSession) playFirstVisitReveal();
     } else if (storageGet("intro-seen")) {
       door.style.display = "none";
       startHeaderLogoSequence();
@@ -585,6 +644,11 @@ document.addEventListener("DOMContentLoaded", () => {
         timers.push(setTimeout(() => {
           door.style.display = "none";
           storageSet("intro-seen", "1");
+          // Unlike the header logo above, the page content reveal waits
+          // until the door has fully disappeared before starting — firing
+          // it earlier (mid-fade) let the whole 0.8s pop-in finish while
+          // still masked behind the door, so it was never actually visible.
+          playFirstVisitReveal();
         }, DISSOLVE_TRANSITION));
       }
 
@@ -611,6 +675,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try { if (door) door.style.display = "none"; } catch (e2) {}
     try { storageSet("intro-seen", "1"); } catch (e2) {}
     startHeaderLogoSequence();
+    if (firstVisitThisSession) playFirstVisitReveal();
   }
 
   /* ── SCROLL HELPER ── */
