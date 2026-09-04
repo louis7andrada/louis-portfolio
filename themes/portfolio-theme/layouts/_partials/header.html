@@ -552,13 +552,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       let textIndex = 0;
       revealItems.forEach((el) => {
-        // Checked before adding either reveal class, so this reads the
-        // element's own authored filter (e.g. the footer logo's dark:invert,
-        // or dark:brightness-50 on in-progress artwork thumbnails) rather
-        // than the blur this same function is about to add.
-        let ownFilter = "none";
-        try { ownFilter = getComputedStyle(el).filter; } catch (e) {}
-        el.classList.add(ownFilter && ownFilter !== "none" ? "reveal-item-opacity-only" : "reveal-item");
+        // Checked before adding any reveal class, so this reads the
+        // element's own authored transform/filter (the hero image's
+        // translateX layout offset, the footer logo's dark:invert,
+        // dark:brightness-50 on in-progress artwork thumbnails) rather
+        // than whatever this same function is about to add.
+        let ownTransform = "none", ownFilter = "none";
+        try {
+          const cs = getComputedStyle(el);
+          ownTransform = cs.transform;
+          ownFilter = cs.filter;
+        } catch (e) {}
+        const hasTransform = ownTransform && ownTransform !== "none";
+        const hasFilter = ownFilter && ownFilter !== "none";
+        const cls = hasTransform && hasFilter ? "reveal-item-opacity-only"
+          : hasFilter ? "reveal-item-no-filter"
+          : hasTransform ? "reveal-item-no-transform"
+          : "reveal-item";
+        el.classList.add(cls);
         if (el.tagName !== "IMG") {
           el.style.transitionDelay = Math.min(textIndex * 12, 200) + "ms";
           textIndex++;
