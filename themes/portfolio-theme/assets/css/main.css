@@ -658,7 +658,7 @@
    otherwise silently strip out the filter half of this animation for
    that element. */
 html.reveal-pending .reveal-item {
-  transition: opacity 0.5s ease, filter 0.5s ease;
+  transition: opacity 0.3s ease, filter 0.3s ease;
   opacity: 0;
   filter: blur(8px);
 }
@@ -666,4 +666,19 @@ html.reveal-pending .reveal-item {
 html.reveal-pending .reveal-item.revealed {
   opacity: 1;
   filter: blur(0px);
+}
+
+/* For elements that already carry their own filter (dark-mode invert on the
+   footer logo, brightness dimming on in-progress artwork thumbnails, etc.) —
+   `filter` doesn't merge across CSS rules, so blurring them here would wipe
+   out that other effect entirely. These fade in via opacity alone, leaving
+   filter untouched. JS decides which class an element gets by checking its
+   computed filter before tagging it. */
+html.reveal-pending .reveal-item-opacity-only {
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+html.reveal-pending .reveal-item-opacity-only.revealed {
+  opacity: 1;
 }
