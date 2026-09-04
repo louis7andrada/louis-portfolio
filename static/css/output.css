@@ -2495,39 +2495,77 @@ html:not(.dark) #darkModeToggle:hover svg#moonIcon {
 }
 
 /* ══════════════════════════════════════════════════════
-   FIRST-VISIT CONTENT REVEAL — a pure blur+opacity "fog"
-   materialize (no movement/scale) for every image and text
-   element on the page. JS only ever adds html.reveal-pending
-   on a session's very first page load (see header.html), so
-   returning navigation within the same session never hides
+   FIRST-VISIT CONTENT REVEAL — every image and text element
+   materializes in on a session's very first page load, using
+   the same opacity + scale + blur "materialize" language as
+   the site's existing popups (artwork modal, filter overlay,
+   mailing popup) — scale(0.94)->scale(1) with no positional
+   shift, so it reads as "coming into focus" rather than
+   sliding/growing into place. JS only ever adds
+   html.reveal-pending on that first load (see header.html),
+   so returning navigation within the same session never hides
    these elements in the first place — they render normally,
    exactly like before this feature existed.
+
+   Four variants exist because `transform` and `filter` don't
+   merge across CSS rules — whichever rule wins owns the WHOLE
+   property value. An element that already has its own resting
+   transform (e.g. the home hero's "translateX(40px)" layout
+   offset) or filter (dark-mode invert/brightness on some
+   images) would have that permanently wiped out once revealed
+   if this just blanket-applied scale+blur to everything. JS
+   checks each element's own computed style before tagging it
+   and picks whichever variant below leaves its existing
+   transform/filter alone.
    ══════════════════════════════════════════════════════ */
 
 /* transition lives on this same higher-specificity selector (rather than
    a bare .reveal-item rule) so it can't lose a same-specificity, later-in-
    the-DOM tie against a page's own per-element transition — e.g. the home
    hero's ".hp-image { transition: opacity 0.3s ease }" — which would
-   otherwise silently strip out the filter half of this animation for
-   that element. */
+   otherwise silently strip out part of this animation for that element. */
 
 html.reveal-pending .reveal-item {
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
   opacity: 0;
+  transform: scale(0.94);
   filter: blur(8px);
 }
 
 html.reveal-pending .reveal-item.revealed {
   opacity: 1;
+  transform: scale(1);
   filter: blur(0px);
 }
 
-/* For elements that already carry their own filter (dark-mode invert on the
-   footer logo, brightness dimming on in-progress artwork thumbnails, etc.) —
-   `filter` doesn't merge across CSS rules, so blurring them here would wipe
-   out that other effect entirely. These fade in via opacity alone, leaving
-   filter untouched. JS decides which class an element gets by checking its
-   computed filter before tagging it. */
+/* Own filter, no own transform to protect — full scale, no blur. */
+
+html.reveal-pending .reveal-item-no-filter {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+html.reveal-pending .reveal-item-no-filter.revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Own transform to protect (e.g. the hero image's translateX layout
+   offset), no own filter — full blur, no scale. */
+
+html.reveal-pending .reveal-item-no-transform {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+  opacity: 0;
+  filter: blur(8px);
+}
+
+html.reveal-pending .reveal-item-no-transform.revealed {
+  opacity: 1;
+  filter: blur(0px);
+}
+
+/* Both an own transform and an own filter to protect — opacity alone. */
 
 html.reveal-pending .reveal-item-opacity-only {
   transition: opacity 0.3s ease;
