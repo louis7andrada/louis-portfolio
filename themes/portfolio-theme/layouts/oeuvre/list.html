@@ -1,0 +1,1097 @@
+{{ define "main" }}
+<!--  All Rights Reserved - Louis Andrada - 2026 -->
+<!--   Webdesign by Jinah Park & Louis Andrada   -->
+<!--     AndradaMono Font by Louis Andrada       -->
+<!--       Codes by Louis Andrada                -->
+{{- /* newest book (highest No.) first */ -}}
+{{- $books := sort (where site.RegularPages "Section" "oeuvre") "Params.order" "desc" -}}
+{{- $years := slice }}{{ range $books }}{{ $years = $years | append .Params.year }}{{ end }}{{ $years = sort (uniq $years) "value" "desc" -}}
+{{- partial "books/publish-text.html" $books -}}
+{{ partial "books/shared-style.html" . }}{{ partial "books/viewer-script.html" . }}{{ partial "jsonld/collection.html" (dict "page" . "pages" $books) }}<section id=books-section class="w-full px-4 py-12 relative">
+<div class=book-page-header>
+<h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Oeuvre</h1>
+<div class=artwork-filter-bar id=bookFilterBar>
+<div class=book-search-wrap>
+<svg class="book-search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+<input type=text id=booksSearchInput class=book-search-input placeholder=...></div>
+<button id=bookFilterToggle class=artwork-filter-toggle>
+<span class=filter-label>Filters</span>
+<span class=filter-icon><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span></button><div id=activeBookFilterTags class=artwork-active-tags>
+</div>
+</div>
+</div>
+<div id=bookFilterOverlay class=artwork-filter-overlay>
+<div class=artwork-filter-inner>
+<div class=artwork-filter-left-col>
+<div class="artwork-filter-toggle filter-spacer" aria-hidden=true>
+<span class=filter-label>Filters</span>
+<span class=filter-icon><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span></div>
+<button id=bookFilterResetBtn class=artwork-filter-reset-btn>DESELECT ALL</button></div>
+<div class=artwork-filter-columns>
+<div class=artwork-filter-group>
+<div class=artwork-filter-group-label>Years</div>
+<div class=artwork-filter-options>
+<button class="artwork-filter-option active" data-filter=year data-value=all>All</button>
+{{- range $years }}<button class="artwork-filter-option" data-filter="year" data-value="{{ . }}">{{ . }}</button>{{ end }}</div>
+</div>
+</div>
+</div>
+</div>
+<div id=bookGallery class=aw-grid>{{- range $i, $b := $books }}
+<a href="{{ .RelPermalink }}" class="artwork-item aw-item" data-idx="{{ $i }}" data-year="{{ .Params.year }}" data-title="{{ .Title }}" data-id="{{ .Params.id }}" data-order="{{ .Params.order }}" data-size="{{ .Params.size }}" data-medium="{{ .Params.medium }}" data-description="{{ .Params.description }}" data-availability="{{ .Params.availability }}" data-price="{{ .Params.price }}" data-page-mode="{{ .Params.pageMode }}" data-default-page-view="{{ .Params.defaultPageView }}" data-page-count="{{ .Params.pageCount }}" data-frames-per-flip="{{ .Params.framesPerFlip }}" data-frames-per-open-close="{{ .Params.framesPerOpenClose }}" data-fps="{{ .Params.fps }}" data-image-base="{{ printf "%s/%s" site.Params.books_image_base .Params.id }}">
+  {{- $cover := printf "%s/%s/cover.jpg" site.Params.books_image_base .Params.id }}
+  <img src="{{ $cover }}" alt="{{ .Title }}" class="aw-img" loading="lazy"{{ with partial "img-meta.html" $cover }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }}>
+</a>
+{{- end }}</div>
+<div id=bookModal class=book-modal>
+<div class=book-modal-bg id=bookModalBg>
+</div>
+<button class=book-modal-close id=bookModalClose aria-label=Close>&#x2715;</button><div class=book-modal-pane>
+<div class=sp-img-wrap>
+<div class=book-viewport>
+<div class=book-visual>
+</div>
+</div>
+</div>
+<div class=sp-info>
+<div class=sp-info-top>
+<h1 class=sp-title id=bookModalTitle>
+</h1>
+<p id=bookModalOrder>
+</p>
+<p id=bookModalYear>
+</p>
+<p id=bookModalSize>
+</p>
+<p id=bookModalMedium>
+</p>
+<p class=sp-comment id=bookModalDescription>
+</p>
+</div>
+<div class=sp-info-bottom>
+<p class=book-page-indicator>Closed</p>
+<button class=book-page-toggle id=bookModalToggle>Single page</button><p id=bookModalAvailability>
+</p>
+<p id=bookModalPrice>
+</p>
+<a href=# class=sp-purchase id=bookModalPurchase>Purchase Book</a></div>
+</div>
+</div>
+</div>
+<div id=bookFullscreen class=book-fullscreen-overlay>
+<button class=book-fullscreen-close id=bookFullscreenClose aria-label=Close>&#x2715;</button><div class=book-fullscreen-stage>
+<div class=book-viewport data-allow-rotate=true>
+<div class=book-visual>
+</div>
+</div>
+</div>
+<div class=book-fullscreen-controls>
+<p class=book-page-indicator>
+</p>
+<button class=book-page-toggle id=bookFullscreenToggle>Single page</button><form class=book-jump autocomplete=off>
+<label><span class=book-jump-label>Go to page</span>
+<input class=book-jump-input type=number inputmode=numeric min=1 step=1 aria-label="Go to page"></label>
+<button type=submit>Go</button></form>
+</div>
+</div><style>
+  .book-fullscreen-overlay {
+    position:fixed;
+    inset:0;
+    z-index:450;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    overflow:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    background:rgba(255,255,255,.18);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  html.dark .book-fullscreen-overlay {
+    background:var(--glass-veil);
+  }
+  .book-fullscreen-overlay::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    backdrop-filter:blur(18px)saturate(.7);
+    -webkit-backdrop-filter:blur(18px)saturate(.7);
+  }
+  .book-fullscreen-overlay.active {
+    opacity:1;
+    pointer-events:auto;
+  }
+  .book-fullscreen-stage {
+    position:relative;
+    width:calc(min(94vw,1400px) * var(--bz,1));
+    height:calc(min(86vh,1400px) * var(--bz,1));
+    margin:auto;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .book-fullscreen-close {
+    position:fixed;
+    top:1rem;
+    right:50%;
+    font-size:1.3rem;
+    font-family:andradamono,courier new,Courier,monospace;
+    font-weight:700;
+    text-transform:uppercase;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    color:inherit;
+    opacity:.8;
+    letter-spacing:.05em;
+    transition:opacity .2s ease;
+    z-index:460;
+  }
+  .book-fullscreen-close:hover {
+    opacity:1;
+  }
+  .book-fullscreen-controls {
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:460;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    text-align:center;
+  }
+  .book-fullscreen-controls .book-page-indicator,.book-fullscreen-controls .book-page-toggle {
+    margin:0;
+  }
+  body.book-fullscreen-lock,html:has(body.book-fullscreen-lock) {
+    overflow:hidden;
+  }
+  .book-jump {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin:4px 0 0;
+    font-size:.8rem;
+    letter-spacing:.04em;
+  }
+  .book-jump label {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  @media(max-width:800px) {
+    .book-fullscreen-controls {
+      left:12px;
+      right:auto;
+      transform:none;
+      align-items:flex-start;
+      bottom:calc(14px + env(safe-area-inset-bottom,0px));
+    }
+    .book-jump-label {
+      display:none;
+    }
+  }
+  .book-jump-input {
+    width:4.2em;
+    padding:2px 6px;
+    text-align:center;
+    color:inherit;
+    font:inherit;
+    background:rgba(128,128,128,.18);
+    border:1px solid rgba(128,128,128,.35);
+    border-radius:6px;
+    -moz-appearance:textfield;
+  }
+  .book-jump-input::-webkit-outer-spin-button,.book-jump-input::-webkit-inner-spin-button {
+    -webkit-appearance:none;
+    margin:0;
+  }
+  .book-jump button {
+    background:0 0;
+    border:1px solid rgba(128,128,128,.35);
+    border-radius:6px;
+    color:inherit;
+    font:inherit;
+    padding:2px 10px;
+    cursor:pointer;
+  }
+  .book-jump button:hover {
+    background:rgba(128,128,128,.25);
+  }
+</style><script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const e = document.getElementById("bookFullscreen"),
+      n = document.getElementById("bookFullscreenClose");
+    if (!e) return;
+    const o = document.getElementById("bookFullscreenToggle"),
+      s = e.querySelector(".book-fullscreen-stage"),
+      t = window.createZoomBar
+        ? window.createZoomBar(e, (e) => {
+            (s.style.setProperty("--bz", e), window.dispatchEvent(new Event("resize")));
+          })
+        : null;
+    ((window.openBookFullscreen = function (n) {
+      const s = e.querySelector(".book-viewport");
+      ((s.className = "book-viewport"),
+        s.setAttribute("data-allow-rotate", "true"),
+        s.setAttribute("data-page-mode", n.pageMode || "spread"),
+        s.setAttribute("data-default-page-view", n.defaultPageView || "two"),
+        s.setAttribute("data-page-count", n.pageCount || 0),
+        s.setAttribute("data-frames-per-flip", n.framesPerFlip || 6),
+        s.setAttribute("data-frames-per-open-close", n.framesPerOpenClose || 8),
+        s.setAttribute("data-fps", n.fps || 12),
+        s.setAttribute("data-image-base", n.imageBase || ""),
+        t && t.reset(),
+        e.scrollTo(0, 0),
+        e.classList.add("active"),
+        document.body.classList.add("book-fullscreen-lock"),
+        window.mountBookViewer && window.mountBookViewer(e));
+    }),
+      (window.closeBookFullscreen = function () {
+        (e.classList.remove("active"), document.body.classList.remove("book-fullscreen-lock"), t && t.reset());
+      }),
+      n?.addEventListener("click", window.closeBookFullscreen));
+  });
+</script><section class="max-w-7xl mx-auto px-6">
+<div class=end-spacer-1>
+</div>
+<div class="end-message text-center">The End :)</div>
+<div class=end-spacer-2>
+</div>
+<div class=end-spacer-3>
+</div>
+</section>
+</section><style>
+  #books-section {
+    padding-left:230px;
+    box-sizing:border-box;
+  }
+  @media(max-width:1100px) {
+    #books-section {
+      padding-left:190px;
+    }
+  }
+  @media(max-width:800px) {
+    #books-section {
+      padding-left:0;
+      padding-top:72px;
+    }
+  }
+  .book-page-header {
+    position:fixed;
+    left:8%;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:40;
+    width:fit-content;
+    max-width:min(40vw,420px);
+  }
+  @media(max-width:1100px) {
+    .book-page-header {
+      left:16px;
+    }
+  }
+  @media(max-width:800px) {
+    .book-page-header {
+      position:fixed;
+      top:60px;
+      left:20px;
+      transform:none;
+      max-width:calc(100vw - 40px);
+    }
+  }
+  .book-page-header .artwork-filter-bar {
+    position:static;
+    top:auto;
+  }
+  .artwork-filter-bar {
+    position:sticky;
+    top:100px;
+    z-index:110;
+    display:inline-flex;
+    align-items:flex-start;
+    gap:1.2rem;
+    width:fit-content;
+    max-width:min(90vw,900px);
+    margin-bottom:1rem;
+    padding:.6rem .9rem;
+    background:rgba(255,255,255,.65);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+    transition:background .2s ease;
+  }
+  html.dark .artwork-filter-bar {
+    background:var(--glass-bar);
+  }
+  .artwork-filter-bar.filter-open {
+    background:0 0!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .artwork-filter-bar.filter-open .artwork-active-tags {
+    display:none;
+  }
+  .artwork-filter-toggle {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:.82rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:inherit;
+    opacity:.55;
+    padding:0;
+    transition:opacity .2s;
+    font-family:inherit;
+    white-space:nowrap;
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+  }
+  .artwork-filter-toggle:hover,.artwork-filter-toggle.open {
+    opacity:1;
+  }
+  .artwork-filter-toggle .filter-label {
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .artwork-filter-toggle.filter-spacer {
+    opacity:0;
+    pointer-events:none;
+    cursor:default;
+  }
+  .filter-icon {
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:11px;
+    height:11px;
+    flex-shrink:0;
+  }
+  .fbar {
+    position:absolute;
+    background:currentColor;
+    border-radius:1px;
+    top:50%;
+    left:50%;
+  }
+  .fbar-h {
+    width:11px;
+    height:1.5px;
+    transform:translate(-50%,-50%);
+  }
+  .fbar-v {
+    width:1.5px;
+    height:11px;
+    transform:translate(-50%,-50%);
+    transform-origin:center center;
+    transition:transform .35s ease,opacity .25s ease;
+  }
+  .artwork-filter-toggle.open .fbar-v {
+    transform:translate(-50%,-50%)scaleY(0);
+    opacity:0;
+  }
+  .artwork-active-tags {
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    max-width:700px;
+  }
+  .artwork-active-tag-group {
+    display:flex;
+    flex-direction:column;
+    gap:.1rem;
+    white-space:nowrap;
+  }
+  .artwork-active-tag-label {
+    font-size:.65rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.35;
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .artwork-active-tag-value {
+    font-size:.78rem;
+    letter-spacing:.03em;
+    opacity:.75;
+  }
+  .artwork-filter-overlay {
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding:7rem 4rem 3rem 5rem;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    opacity:0;
+    transform:scale(.96);
+    filter:blur(10px);
+    pointer-events:none;
+    transition:opacity .7s ease,transform .7s ease,filter .7s ease;
+  }
+  @media(max-width:700px) {
+    .artwork-filter-overlay {
+      padding:6rem 1.5rem 4rem;
+    }
+    .artwork-filter-inner {
+      padding-bottom:3rem;
+    }
+  }
+  body.filter-lock {
+    overflow:hidden;
+  }
+  html.dark .artwork-filter-overlay {
+    background:var(--glass-overlay);
+    backdrop-filter:blur(20px)!important;
+    -webkit-backdrop-filter:blur(20px)!important;
+  }
+  .artwork-filter-overlay.open {
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
+    pointer-events:auto;
+  }
+  .artwork-filter-inner {
+    display:flex;
+    align-items:flex-start;
+    gap:3rem;
+    width:100%;
+  }
+  .artwork-filter-columns {
+    display:flex;
+    gap:4rem;
+    flex-wrap:wrap;
+  }
+  .artwork-filter-group {
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    min-width:110px;
+  }
+  .artwork-filter-group-label {
+    font-size:.72rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.35;
+    margin-bottom:.3rem;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .artwork-filter-options {
+    display:flex;
+    flex-direction:column;
+    gap:.25rem;
+  }
+  .artwork-filter-option {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:inherit;
+    opacity:.3;
+    text-align:left;
+    padding:.1rem 0;
+    transition:opacity .15s;
+    font-family:inherit;
+  }
+  .artwork-filter-option:hover {
+    opacity:.7;
+  }
+  .artwork-filter-option.active {
+    opacity:1;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .artwork-filter-reset-btn {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:inherit;
+    opacity:.45;
+    text-align:left;
+    padding:.1rem 0;
+    font-family:inherit;
+    transition:opacity .15s;
+    margin-left:0;
+    margin-top:1.5rem;
+  }
+  .artwork-filter-reset-btn:hover {
+    opacity:1;
+  }
+  .artwork-filter-left-col {
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+    flex-shrink:0;
+  }
+  .book-search-wrap {
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+  }
+  .book-search-icon {
+    position:absolute;
+    left:0;
+    opacity:.35;
+    pointer-events:none;
+  }
+  .book-search-input {
+    background:0 0;
+    border:none;
+    border-bottom:1px solid;
+    opacity:.55;
+    padding:.1rem .1rem .1rem 1.5rem;
+    font-size:.82rem;
+    font-family:inherit;
+    color:inherit;
+    outline:none;
+    width:90px;
+  }
+  .book-search-input:focus {
+    opacity:1;
+  }
+  .book-search-input::placeholder {
+    opacity:.6;
+    letter-spacing:.15em;
+  }
+  .aw-grid {
+    position:relative;
+    width:100%;
+    min-height:600px;
+    overflow:visible;
+    padding:0 clamp(4rem,7vw,9rem);
+    box-sizing:border-box;
+  }
+  .aw-item {
+    position:absolute;
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    cursor:pointer;
+    overflow:visible;
+    transition:transform .32s cubic-bezier(.25,.46,.45,.94);
+  }
+  .aw-item:hover {
+    transform:scale(1.02);
+    z-index:20!important;
+  }
+  .aw-img {
+    display:block;
+    width:100%;
+    height:auto;
+    pointer-events:none;
+  }
+  .aw-lbl {
+    position:absolute;
+    font-size:.86rem;
+    letter-spacing:.055em;
+    line-height:1.5;
+    opacity:.55;
+    pointer-events:none;
+    color:inherit;
+    font-family:inherit;
+  }
+  .aw-lbl-r {
+    left:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-lr;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .aw-lbl-l {
+    right:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-rl;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .aw-lbl-b {
+    top:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  .aw-lbl-a {
+    bottom:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  @media(max-width:700px) {
+    .aw-grid {
+      padding:0 1.5rem;
+    }
+    .aw-lbl {
+      font-size:.8rem;
+      letter-spacing:.055em;
+      line-height:.8;
+      opacity:.55;
+    }
+  }
+  .books-empty {
+    text-align:center;
+    opacity:.5;
+    padding:4rem 0;
+  }
+  .sp-title {
+    font-size:clamp(1rem,3.8vw,1.2rem);
+    font-weight:600;
+    line-height:1.15;
+    margin:0 0 8px;
+    letter-spacing:-.01em;
+  }
+  .sp-info-top {
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .sp-info-top p {
+    margin:0;
+    font-size:clamp(.78rem,2.2vw,.93rem);
+    line-height:1.45;
+    opacity:.62;
+  }
+  .sp-comment {
+    font-size:.83rem!important;
+    margin-top:6px!important;
+  }
+  .sp-info-bottom {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:2px;
+  }
+  .sp-info-bottom p {
+    margin:0;
+    font-size:.93rem;
+    line-height:1.75;
+    opacity:.62;
+    text-align:right;
+  }
+  .sp-purchase {
+    display:inline-block;
+    margin-top:6px;
+    font-size:.93rem;
+    font-weight:700;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    color:inherit!important;
+    background:0 0!important;
+    border:none!important;
+    padding:0!important;
+    opacity:.85;
+    transition:opacity .22s;
+  }
+  .sp-purchase:hover {
+    opacity:.3;
+  }
+  .book-modal {
+    position:fixed;
+    inset:0;
+    z-index:300;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  .book-modal.open {
+    opacity:1;
+    pointer-events:auto;
+  }
+  .book-modal-bg {
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+  }
+  html.dark .book-modal-bg {
+    background:var(--glass-modal);
+  }
+  .book-modal-close {
+    position:fixed;
+    top:1rem;
+    right:50%;
+    z-index:10;
+    font-size:1.3rem;
+    font-family:andradamono,courier new,Courier,monospace;
+    font-weight:700;
+    text-transform:uppercase;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    color:inherit;
+    opacity:.8;
+    letter-spacing:.05em;
+    transition:opacity .2s ease;
+  }
+  .book-modal-close:hover {
+    opacity:1;
+  }
+  .book-modal-pane {
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:4rem;
+    padding:60px 40px;
+    box-sizing:border-box;
+    transform:scale(.96);
+    transition:transform .4s ease;
+  }
+  .book-modal.open .book-modal-pane {
+    transform:scale(1);
+  }
+  .book-modal-pane .sp-img-wrap {
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:clamp(280px,40vw,640px);
+    max-width:44vw;
+    height:min(70vh,700px);
+    flex-shrink:0;
+  }
+  .book-modal-pane .sp-info {
+    position:relative;
+    width:clamp(220px,22vw,300px);
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+  @media(max-width:900px) {
+    .book-modal-pane {
+      flex-direction:column;
+      padding:70px 20px 30px;
+      overflow-y:auto;
+      gap:1.2rem;
+    }
+    .book-modal-pane .sp-img-wrap {
+      width:100%;
+      max-width:100%;
+      height:auto;
+      min-height:40vh;
+      max-height:45vh;
+    }
+    .book-modal-pane .sp-info {
+      width:100%;
+      max-width:480px;
+    }
+    .book-modal-pane .sp-info-top {
+      text-align:left;
+    }
+    .book-modal-pane .sp-info-bottom {
+      align-items:flex-start;
+      text-align:left;
+    }
+    .book-modal-pane .sp-info-bottom p {
+      text-align:left;
+    }
+  }
+  .end-spacer-1 {
+    height:20vh;
+  }
+  .end-spacer-2 {
+    height:20vh;
+  }
+  .end-spacer-3 {
+    height:1vh;
+  }
+  @media(max-width:768px) {
+    .end-spacer-1 {
+      height:15vh;
+    }
+    .end-spacer-2 {
+      height:30vh;
+    }
+    .end-spacer-3 {
+      height:8vh;
+    }
+  }
+  @media(max-width:480px) {
+    .end-spacer-1 {
+      height:10vh;
+    }
+    .end-spacer-2 {
+      height:20vh;
+    }
+    .end-spacer-3 {
+      height:5vh;
+    }
+  }
+</style><script>
+  (document.addEventListener("DOMContentLoaded", () => {
+    const o = document.getElementById("booksSearchInput"),
+      i = document.getElementById("bookFilterToggle"),
+      f = document.getElementById("bookFilterBar"),
+      s = document.getElementById("bookFilterOverlay"),
+      j = document.getElementById("bookFilterResetBtn"),
+      h = document.getElementById("activeBookFilterTags"),
+      g = Array.from(document.querySelectorAll(".aw-item"));
+    let n = { year: "all" },
+      c = "";
+    function l() {
+      (g.forEach((e) => {
+        const t = n.year === "all" || (e.dataset.year || "") === String(n.year),
+          s = !c || (e.dataset.title || "").toLowerCase().includes(c);
+        e.style.display = t && s ? "" : "none";
+      }),
+        window._artworkLayout?.());
+    }
+    function d() {
+      if (((h.innerHTML = ""), n.year !== "all")) {
+        const e = document.createElement("div");
+        e.className = "artwork-active-tag-group";
+        const t = document.createElement("span");
+        ((t.className = "artwork-active-tag-label"), (t.textContent = "Year"));
+        const s = document.createElement("span");
+        ((s.className = "artwork-active-tag-value"),
+          (s.textContent = n.year),
+          e.appendChild(t),
+          e.appendChild(s),
+          h.appendChild(e));
+      }
+    }
+    o &&
+      o.addEventListener("input", () => {
+        ((c = o.value.trim().toLowerCase()), l());
+      });
+    function p() {
+      (s.classList.add("open"),
+        i.classList.add("open"),
+        f.classList.add("filter-open"),
+        document.body.classList.add("filter-lock"));
+    }
+    function u() {
+      (s.classList.remove("open"),
+        i.classList.remove("open"),
+        f.classList.remove("filter-open"),
+        document.body.classList.remove("filter-lock"));
+    }
+    (s?.addEventListener("click", (e) => {
+      e.target === s && u();
+    }),
+      i?.addEventListener("click", () => {
+        s.classList.contains("open") ? u() : p();
+      }),
+      document.querySelectorAll("#bookFilterOverlay .artwork-filter-option").forEach((e) => {
+        e.addEventListener("click", () => {
+          (document
+            .querySelectorAll('#bookFilterOverlay [data-filter="year"]')
+            .forEach((e) => e.classList.remove("active")),
+            e.classList.add("active"),
+            (n.year = e.dataset.value),
+            l(),
+            d());
+        });
+      }),
+      j?.addEventListener("click", () => {
+        ((n.year = "all"),
+          document
+            .querySelectorAll('#bookFilterOverlay [data-filter="year"]')
+            .forEach((e) => e.classList.remove("active")),
+          document
+            .querySelector('#bookFilterOverlay [data-filter="year"][data-value="all"]')
+            .classList.add("active"),
+          l(),
+          d());
+      }));
+    const e = document.getElementById("bookModal"),
+      v = document.getElementById("bookModalBg"),
+      b = document.getElementById("bookModalClose"),
+      r = e ? e.querySelector(".book-modal-pane") : null,
+      m = document.getElementById("bookModalToggle");
+    function t(e, t, n) {
+      const s = document.getElementById(e);
+      if (!s) return;
+      t
+        ? ((s.textContent = (n || "") + t), (s.style.display = ""))
+        : ((s.textContent = ""), (s.style.display = "none"));
+    }
+    function y(n) {
+      if (!e || !r) return;
+      const s = n.dataset,
+        o = r.querySelector(".book-viewport");
+      ((o.className = "book-viewport"),
+        o.setAttribute("data-page-mode", s.pageMode || "spread"),
+        o.setAttribute("data-default-page-view", s.defaultPageView || "two"),
+        o.setAttribute("data-page-count", s.pageCount || "0"),
+        o.setAttribute("data-frames-per-flip", s.framesPerFlip || "6"),
+        o.setAttribute("data-frames-per-open-close", s.framesPerOpenClose || "8"),
+        o.setAttribute("data-fps", s.fps || "12"),
+        o.setAttribute("data-image-base", s.imageBase || ""),
+        o.setAttribute("data-opens-fullscreen", "true"),
+        (document.getElementById("bookModalTitle").textContent = s.title || ""),
+        t("bookModalOrder", s.order, "No. "),
+        t("bookModalYear", s.year),
+        t("bookModalSize", s.size),
+        t("bookModalMedium", s.medium),
+        t("bookModalDescription", s.description),
+        t("bookModalAvailability", s.availability),
+        m && (m.style.display = s.pageMode === "single" ? "none" : ""));
+      const a = s.availability === "Available" && s.price;
+      t("bookModalPrice", a ? s.price : "", "$ ");
+      const i = document.getElementById("bookModalPurchase");
+      (s.availability === "Available"
+        ? ((i.href = "/inquiry/?add=" + (s.id || "")), (i.style.display = ""))
+        : (i.style.display = "none"),
+        e.classList.add("open"),
+        document.body.classList.add("filter-lock"),
+        window.mountBookViewer && window.mountBookViewer(r));
+    }
+    function a() {
+      if (!e) return;
+      (e.classList.remove("open"), document.body.classList.remove("filter-lock"));
+    }
+    (document.querySelectorAll(".aw-item").forEach((e) => {
+      e.addEventListener("click", (t) => {
+        (t.preventDefault(), y(e));
+      });
+    }),
+      v?.addEventListener("click", a),
+      b?.addEventListener("click", a),
+      document.addEventListener("keydown", (t) => {
+        t.key === "Escape" && e && e.classList.contains("open") && a();
+      }));
+  }),
+    (function () {
+      const e = document.getElementById("bookGallery");
+      if (!e) return;
+      function s(e) {
+        let t = e >>> 0;
+        return () => (
+          (t = Math.imul(t ^ (t >>> 15), t | 1)),
+          (t ^= t + Math.imul(t ^ (t >>> 7), t | 61)),
+          ((t ^ (t >>> 14)) >>> 0) / 4294967296
+        );
+      }
+      const c = Array.from(e.querySelectorAll(".aw-item")),
+        o = 42,
+        i = 36;
+      function l(e, t, n) {
+        e.querySelectorAll(".aw-lbl").forEach((e) => e.remove());
+        const a = (e.dataset.year || "").trim(),
+          r = (e.dataset.title || "").trim(),
+          l = parseInt(e.dataset.idx, 10) || 0,
+          d = s(l * 7919 + 31),
+          u = d() < 0.5,
+          c = [];
+        if (
+          (a &&
+            c.push({
+              text: a.length > i ? a.slice(0, i - 1) + "…" : a,
+              pos: u ? "r" : "l",
+              maxH: Math.round(n * 0.7),
+              maxW: null,
+            }),
+          r)
+        ) {
+          const e = r.length > o ? r.slice(0, o - 1) + "…" : r;
+          c.push({ text: e, pos: "b", maxH: Math.round(1.5 * 0.86 * 16 * 2.2), maxW: Math.round(t * 0.88) });
+        }
+        c.forEach(({ text: t, pos: n, maxH: s, maxW: o }) => {
+          const i = document.createElement("div");
+          ((i.className = `aw-lbl aw-lbl-${n}`),
+            (i.textContent = t),
+            s && (i.style.maxHeight = s + "px"),
+            o && (i.style.maxWidth = o + "px"),
+            e.appendChild(i));
+        });
+      }
+      function d() {
+        return c.filter((e) => e.style.display !== "none");
+      }
+      function t() {
+        const n = e.offsetWidth;
+        if (!n) {
+          requestAnimationFrame(t);
+          return;
+        }
+        const i = window.innerWidth <= 700,
+          o = n > 1100 ? 11 : n > 900 ? 9 : n > 680 ? 6 : n > 480 ? 3 : 2,
+          r = i ? 24 : 50,
+          h = i ? 50 : 70,
+          m = i ? 40 : 50,
+          c = d();
+        if (!c.length) {
+          e.style.height = "300px";
+          return;
+        }
+        const u = n / o,
+          a = new Array(o).fill(40);
+        (c.forEach((e, t) => {
+          const y = parseInt(e.dataset.idx, 10) || t,
+            f = s(y * 3331 + 113),
+            v = y % 7 === 0,
+            x = v ? 3 : 2,
+            A = Math.floor(f() * (v ? 2 : 3)),
+            g = Math.min(o, x + A),
+            d = i ? Math.min(g, Math.max(2, Math.round(o * 0.8))) : g,
+            M = Math.max(0, o - d),
+            c = Math.floor(f() * (M + 1)),
+            O = Math.max(...a.slice(c, c + d)),
+            k = h + Math.floor(f() * m),
+            w = O + k,
+            E = d * u,
+            p = Math.max(60, E - r),
+            C = c * u + r / 2;
+          ((e.style.left = C + "px"), (e.style.top = w + "px"), (e.style.width = p + "px"));
+          const n = e.querySelector("img"),
+            _ = n ? n.getAttribute("width") | 0 : 0,
+            j = n ? n.getAttribute("height") | 0 : 0,
+            S =
+              _ > 0 && j > 0
+                ? j / _
+                : n && n.naturalWidth > 0 && n.naturalHeight > 0
+                  ? n.naturalHeight / n.naturalWidth
+                  : 1.25,
+            b = p * S;
+          l(e, p, b);
+          for (let e = c; e < c + d; e++) a[e] = w + b;
+        }),
+          (e.style.height = Math.max(...a) + 220 + "px"),
+          window.dispatchEvent(new Event("sitelayout")));
+      }
+      window._artworkLayout = t;
+      let n = 0;
+      (Array.from(e.querySelectorAll("img")).forEach((e) => {
+        const s = () => {
+          (n++, (n <= 8 || n % 4 === 0) && t());
+        };
+        e.complete ? s() : ((e.onload = s), (e.onerror = s));
+      }),
+        window.addEventListener("load", t),
+        document.addEventListener("DOMContentLoaded", () => setTimeout(t, 100)));
+      let a,
+        r = window.innerWidth;
+      window.addEventListener("resize", () => {
+        if (window.innerWidth === r) return;
+        ((r = window.innerWidth), clearTimeout(a), (a = setTimeout(t, 180)));
+      });
+    })());
+</script>
+{{ end }}

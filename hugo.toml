@@ -2,7 +2,7 @@ baseURL = "https://handrada.com/"
 languageCode = "en-us"
 title = "Louis Andrada"
 theme = "portfolio-theme"
-enableRobotsTXT = true
+enableRobotsTXT = false
 
 [sitemap]
   changefreq = "monthly"
@@ -20,5 +20,6 @@ enableRobotsTXT = true
   home = ["HTML", "RSS"]
 
 [params]
+  books_image_base = "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books"
   recaptcha_site_key = "6LcOzL8sAAAAAAf811mO6GNulTWREGNzkzxTScVk"
   webhook_url = "https://script.google.com/macros/s/AKfycbxxnqf8ImE2r9tkV60_7cIQJC4TvdzyDrDc0MovRvk9m4cN_lEntF1LS1EFV5VHmd19/exec"

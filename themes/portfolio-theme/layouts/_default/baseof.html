@@ -5,169 +5,156 @@
   <!--   Webdesign by Jinah Park & Louis Andrada   -->
   <!--     AndradaMono Font by Louis Andrada       -->
   <!--       Codes by Louis Andrada                -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" href="/fonts/AndradaMono.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- ══════════════════════════════════════════════════════
-       EARLY DARK-MODE APPLY — must be inline and synchronous
-       (no defer/async), and must run before the stylesheet
-       below, so the 'dark' class is already on <html> before
-       the browser paints anything. This mirrors main.ts's own
-       theme logic exactly (same 'theme' key, same default-to-
-       dark behavior) so there's never a mismatch between this
-       early check and the toggle script that runs later.
-       ══════════════════════════════════════════════════════ -->
+  <!-- Early dark-mode apply: runs before first paint (default dark). -->
   <script>
     (function () {
       try {
-        var t = localStorage.getItem("theme");
-        if (t === "light") {
-          document.documentElement.classList.remove("dark");
-        } else {
-          document.documentElement.classList.add("dark");
-        }
-      } catch (e) {
-        // Storage unavailable for some reason — match main.ts's own
-        // default-to-dark fallback rather than leaving it undecided.
+        var e = localStorage.getItem("theme");
+        e === "light"
+          ? document.documentElement.classList.remove("dark")
+          : document.documentElement.classList.add("dark");
+      } catch {
         document.documentElement.classList.add("dark");
       }
     })();
   </script>
 
-  <!-- ══════════════════════════════════════════════════════
-       SMOOTH THEME TRANSITION — makes the manual dark/light
-       toggle fade colors across the whole page instead of
-       snapping instantly. Applied broadly (not just body) since
-       Tailwind's dark: utilities are scattered across many
-       elements throughout the site.
-
-       This does NOT reintroduce the load-time flash: CSS
-       transitions only play when an already-rendered element's
-       property value changes — the very first paint has nothing
-       to transition FROM, so it still applies instantly and
-       correctly on load, exactly as the script above intends.
-       ══════════════════════════════════════════════════════ -->
+  <!-- Reveal boot: hides main + footer until the reveal system is ready (2.5s failsafe). -->
   <style>
-    *, *::before, *::after {
-      transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, fill 0.45s ease, stroke 0.45s ease;
+    html.reveal-boot body>main,html.reveal-boot #footerWrap {
+      opacity:0;
+    }
+  </style>
+  <script>
+    (function () {
+      var e = document.documentElement;
+      if (!("IntersectionObserver" in window)) return;
+      try {
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches && e.classList.add("reveal-reduced");
+      } catch {}
+      (e.classList.add("reveal-boot"),
+        setTimeout(function () {
+          window.__revealReady || e.classList.remove("reveal-boot");
+        }, 2500));
+    })();
+  </script>
+
+  <!-- Smooth theme transition -->
+  <style>
+    *,*::before,*::after {
+      transition:background-color .45s ease,color .45s ease,border-color .45s ease,fill .45s ease,stroke .45s ease;
     }
   </style>
 
-  {{ if .IsHome }}
-  <title>Portfolio — Louis Andrada</title>
-  {{ else }}
-  <title>{{ .Title }} — Louis Andrada</title>
-  {{ end }}
+  {{- $seo := partial "seo.html" . }}
+  <title>{{ $seo.title }}</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MSBCR3QFML"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  
-    gtag('config', 'G-MSBCR3QFML');
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    (gtag("js", new Date()), gtag("config", "G-MSBCR3QFML"));
   </script>
 
   <!-- SEO -->
-  <meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}Portfolio of Louis Andrada — Brazilian-born, Toronto-based painter known for his dark existentialist artworks.{{ end }}">
-  <meta name="keywords" content="Louis Andrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings, Brazilian painter, Dark art, Dark Artworks, Figuratism, Existentialism">
+  <meta name="description" content="{{ $seo.desc }}">
+  <meta name="keywords" content="Louis Andrada, Han’drada, Handrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings, Brazilian painter, Dark art, Dark Artworks, Figuratism, Existentialism, artist books">
+  <meta name="author" content="Louis Andrada (Han’drada)">
+  <link rel="canonical" href="{{ .Permalink }}">
+  {{- range .AlternativeOutputFormats }}{{ if eq .Name "rss" }}
+  <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Title }} — Louis Andrada">
+  {{- end }}{{ end }}
 
   <!-- OpenGraph -->
-  {{ if .IsHome }}
-  <meta property="og:title" content="Portfolio — Louis Andrada" />
-  {{ else }}
-  <meta property="og:title" content="{{ .Title }} — Louis Andrada" />
-  {{ end }}
-  <meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}Portfolio of Louis Andrada — Brazilian-born, Toronto-based painter known for his dark existentialist artworks.{{ end }}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="{{ .Permalink }}" />
-  <meta property="og:image" content="/images/og-default.jpg" />
+  <meta property="og:title" content="{{ $seo.title }}">
+  <meta property="og:description" content="{{ $seo.desc }}">
+  <meta property="og:type" content="{{ $seo.type }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:site_name" content="Louis Andrada (Han’drada)">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="{{ $seo.img }}">
+  <meta property="og:image:secure_url" content="{{ $seo.img }}">
+  <meta property="og:image:alt" content="{{ $seo.imgAlt }}">
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  {{ if .IsHome }}
-  <meta name="twitter:title" content="Portfolio — Louis Andrada" />
-  {{ else }}
-  <meta name="twitter:title" content="{{ .Title }} — Louis Andrada" />
-  {{ end }}
-  <meta name="twitter:description" content="{{ with .Params.description }}{{ . }}{{ else }}Portfolio of Louis Andrada — Brazilian-born, Toronto-based painter known for his dark existentialist artworks.{{ end }}" />
-  <meta name="twitter:image" content="/images/og-default.jpg" />
-
-  <!-- font URL -->
-  <!-- <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"> -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ $seo.title }}">
+  <meta name="twitter:description" content="{{ $seo.desc }}">
+  <meta name="twitter:image" content="{{ $seo.img }}">
+  <meta name="twitter:image:alt" content="{{ $seo.imgAlt }}">
 
   <!-- Styles -->
   <link rel="stylesheet" href="/css/output.css">
 
   <!-- Scripts -->
   {{ $scripts := resources.Get "ts/main.ts" | js.Build }}
-  <script defer src="{{ $scripts.Permalink }}"></script>
+  <script defer src="{{ $scripts.RelPermalink }}"></script>
 
-  <!-- Google Script -->
+  <!-- Form config + window.checkHuman() (reCAPTCHA v3 check shared by all forms) -->
   <script>
-    window.APP_CONFIG = {
-      googleScriptUrl: "{{ .Site.Params.webhook_url }}"
-    };
+    ((window.APP_CONFIG = {
+      googleScriptUrl:
+        "{{ .Site.Params.webhook_url }}",
+    }),
+      (window.checkHuman = function () {
+        var e = (async function () {
+            if (typeof grecaptcha == "undefined" || typeof RECAPTCHA_SITE_KEY == "undefined")
+              return { human: !0, token: null };
+            await new Promise(function (e) {
+              grecaptcha.ready(e);
+            });
+            var t = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" }),
+              n = await fetch("/.netlify/functions/verifyRecaptcha", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: t }),
+              }),
+              e = await n.json(),
+              s = e && e.success === !0 && typeof e.score == "number" && e.score < 0.5;
+            return { human: !s, token: t };
+          })(),
+          t = new Promise(function (e) {
+            setTimeout(function () {
+              e({ human: !0, token: null });
+            }, 8e3);
+          });
+        return Promise.race([e, t]).catch(function () {
+          return { human: !0, token: null };
+        });
+      }));
   </script>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" href="/favicon.ico">
 
-  <!-- reCAPTCHA v3 -->
-  <script src="https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}"></script>
+  {{- /* reCAPTCHA v3 only on pages with forms (front matter: recaptcha: true) */}}
+  {{ if .Params.recaptcha }}
+  <script defer src="https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}"></script>
   <script>
     const RECAPTCHA_SITE_KEY = "{{ .Site.Params.recaptcha_site_key }}";
     window.APP_CONFIG = { googleScriptUrl: "{{ .Site.Params.webhook_url }}" };
   </script>
-
+  {{ end }}
 </head>
 
-<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#111] dark:text-white {{ if .IsHome }}page-home{{ end }}">
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white{{ with partial "body-class.html" . }} {{ . }}{{ end }}">
+  <div id="headerMirrorEcho" aria-hidden="true" inert></div>
 
   {{ if ne .Params.hideHeader true }}
   {{ partial "header.html" . }}
   {{ end }}
-  
+
   <main class="flex-1 flex flex-col">
     {{ block "main" . }}{{ end }}
   </main>
 
   {{ partial "footer.html" . }}
-
-  <!-- Logging function call (runs on every page load) -->
-  <script>
-    fetch("/.netlify/functions/log-ip")
-      .catch(err => console.error("Log-IP function failed:", err));
-  </script>
-
-  <!-- Hidden reCAPTCHA token input for forms -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const forms = document.querySelectorAll("form");
-      forms.forEach(form => {
-        if (!form.querySelector(".recaptcha-token-field")) {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = "g-recaptcha-response";
-          input.classList.add("recaptcha-token-field");
-          form.appendChild(input);
-        }
-      });
-    });
-  </script>
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  if (window.location.hash === "#artworks-section") {
-    const target = document.getElementById("artworks-section");
-    if (target) {
-      // Small delay ensures page is rendered before scrolling
-      setTimeout(() => target.scrollIntoView({ behavior: "smooth" }), 150);
-    }
-  }
-});
-</script>
-
 </body>
 </html>

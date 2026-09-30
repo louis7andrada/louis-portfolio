@@ -1,0 +1,69 @@
+{{/* styles shared by the Oeuvre list and book pages */}}
+<style>
+  .book-viewport {
+    position:relative;
+    overflow:hidden;
+    cursor:pointer;
+    transition:width .25s ease,height .25s ease,transform .3s ease;
+  }
+  .book-visual {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    width:100%;
+    background-repeat:no-repeat;
+    background-size:100% 100%;
+    transition:transform .25s ease;
+  }
+  .book-viewport.single-page:not(.showing-cover) .book-visual {
+    width:200%;
+  }
+  .book-viewport.single-page:not(.showing-cover) .book-visual.show-right {
+    transform:translateX(-50%);
+  }
+  .book-visual2 {
+    display:none;
+  }
+  .book-viewport.pair-view .book-visual {
+    width:50%;
+  }
+  .book-viewport.pair-view .book-visual2 {
+    display:block;
+    left:50%;
+    width:50%;
+  }
+  .book-viewport.is-rotated {
+    transform:rotate(90deg);
+  }
+  @keyframes book-sprite-play {
+    from {
+      background-position-x:0%;
+    }
+    to {
+      background-position-x:100%;
+    }
+  }
+  .book-page-indicator {
+    opacity:.5!important;
+    font-size:.82rem!important;
+  }
+  .book-page-toggle {
+    display:inline-block;
+    background:0 0;
+    border:none;
+    padding:0;
+    font-family:inherit;
+    font-size:.82rem;
+    color:inherit;
+    opacity:.62;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    cursor:pointer;
+    transition:opacity .22s;
+    margin-bottom:4px;
+  }
+  .book-page-toggle:hover {
+    opacity:.3;
+  }
+</style>

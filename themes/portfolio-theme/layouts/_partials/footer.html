@@ -1,484 +1,1237 @@
-<footer class="w-full border:none px-8 py-4 flex items-center justify-between text-gray-500 dark:text-gray-600" style="position: relative;">
-  <!--  All Rights Reserved - Louis Andrada - 2026  -->
-  <!--    Webdesign by Jinah Park & Louis Andrada   -->
-  <!--      AndradaMono Font by Louis Andrada       -->
-  <!--        Codes by Louis Andrada                -->
-
-  <img src="/lalogo.png" alt="Louis Andrada Logo" class="footer-logo dark:invert" />
-
-  <span class="text-[13px]">
-    Louis Andrada © {{ now.Format "2006" }} — All Rights Reserved
-  </span>
-
-  <button type="button" id="footerJoinNewsletterBtn" class="footer-join-newsletter text-[10px]">
-    Join the List
-  </button>
-
-  <span class="text-right leading-tight text-[8px]">
-    This site is protected by reCAPTCHA and<br>the Google Privacy Policy and Terms of Service apply.
-  </span>
-
+<!--  All Rights Reserved - Louis Andrada - 2026 -->
+<!--   Webdesign by Jinah Park & Louis Andrada   -->
+<!--     AndradaMono Font by Louis Andrada       -->
+<!--       Codes by Louis Andrada                -->
+<div class=relative id=footerWrap>
+<div id=footerMirrorEcho aria-hidden=true inert>
+</div>
+<div id=footerBleed aria-hidden=true inert>
+<div class="edge-layer edge-far">
+</div>
+<div class="edge-layer edge-mid">
+</div>
+<div class="edge-layer edge-core">
+</div>
+</div>
+<footer class="w-full border:none px-8 py-4 flex items-center justify-between text-gray-500 dark:text-gray-600" style=position:relative>
+<img src=/lalogo.png alt="Louis Andrada Logo" class="footer-logo dark:invert">
+<span class="text-[13px] footer-copy">Louis Andrada © {{ now.Format "2006" }} — All Rights Reserved
+<span class=footer-legal><a href=/license/>License</a> · <a href=/privacy/>Privacy</a></span>
+</span><button type=button id=footerJoinNewsletterBtn class="footer-join-newsletter text-[10px]">
+Join the List
+</button>
+<span class="text-right leading-tight text-[8px]">This site is protected by reCAPTCHA and<br>the Google Privacy Policy and Terms of Service apply.</span>
 <style>
   .footer-logo {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    /* sits directly above the centered "Join the List" button */
-    transform: translate(-50%, calc(-100% - 10px));
-    height: 23px;
-    width: auto;
-    opacity: 0.8;
-    pointer-events: none;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,calc(-100% - 10px));
+    height:23px;
+    width:auto;
+    opacity:.8;
+    pointer-events:none;
   }
-
-  @media (max-width: 640px) {
-    footer { flex-direction: column; gap: 0.75rem; }
-    .text-right { text-align: center; }
-  }
-
-  .footer-join-newsletter {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: inherit;
-    opacity: 0.7;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    padding: 0;
-    margin: 0;
-    line-height: 1.2;
-    transition: opacity 0.15s ease;
-    white-space: nowrap;
-  }
-  .footer-join-newsletter:hover { opacity: 1; }
-
-  @media (max-width: 640px) {
-    .footer-join-newsletter {
-      position: static;
-      transform: none;
-      order: 2;
+  @media(max-width:640px) {
+    footer {
+      flex-direction:column;
+      gap:.75rem;
     }
-
-    /* On mobile the footer stacks in normal flow instead of being
-       absolutely centered, so the logo instead becomes the first
-       stacked item — on top of the copyright line. */
+    .text-right {
+      text-align:center;
+    }
+  }
+  .footer-join-newsletter {
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    color:inherit;
+    opacity:.7;
+    text-decoration:underline;
+    text-underline-offset:2px;
+    padding:0;
+    margin:0;
+    line-height:1.2;
+    transition:opacity .15s ease;
+    white-space:nowrap;
+  }
+  .footer-join-newsletter:hover {
+    opacity:1;
+  }
+  .footer-copy {
+    position:relative;
+  }
+  .footer-legal {
+    position:absolute;
+    left:0;
+    top:100%;
+    font-size:10px;
+    margin-top:1px;
+    line-height:1.2;
+    white-space:nowrap;
+  }
+  .footer-legal a {
+    color:inherit;
+    opacity:.7;
+    text-decoration:underline;
+    text-underline-offset:2px;
+    transition:opacity .15s ease;
+  }
+  .footer-legal a:hover {
+    opacity:1;
+  }
+  @media(max-width:640px) {
+    .footer-copy {
+      text-align:center;
+    }
+    .footer-legal {
+      position:static;
+      display:block;
+      margin-top:3px;
+    }
+  }
+  @media(max-width:640px) {
+    .footer-join-newsletter {
+      position:static;
+      transform:none;
+      order:2;
+    }
     .footer-logo {
-      position: static;
-      transform: none;
-      order: -1;
-      height: 21px;
-      margin: 0 auto 0.15rem;
-      display: block;
+      position:static;
+      transform:none;
+      order:-1;
+      height:21px;
+      margin:0 auto .15rem;
+      display:block;
     }
   }
 </style>
-
 </footer>
-
-<!-- ═══════════════════════════════════════════════════
-     MAILING LIST SLIDE-UP — single source of truth.
-     The popup, styles, and submit handler live here only.
-     Pages add their own trigger logic via window.openMailingPopup.
-     ═══════════════════════════════════════════════════ -->
-<div id="mlPopup" class="ml-popup" role="complementary" aria-label="Join the mailing list">
-  <button class="ml-close" id="mlClose" aria-label="Close">&#x2715;</button>
-  <div class="ml-inner">
-    <p class="ml-heading">Join the List</p>
-    <p class="ml-body">Be the first to know when new pieces are released. Subscribers will also receive personal invitations to upcoming art shows and private events.</p>
-    <div class="ml-form-wrap">
-      <input type="email" id="mlEmail" class="ml-input" placeholder="Email address" autocomplete="email" required />
-      <button type="button" id="mlSubmit" class="ml-submit">Subscribe</button>
-    </div>
-    <p class="ml-note" id="mlNote">Unsubscribe anytime. Read our <a href="/privacy/" class="ml-privacy-link" target="_blank" rel="noopener">privacy policy</a> to learn about your rights and the use of your personal information.</p>
-  </div>
+<div id=mlPopup class=ml-popup role=complementary aria-label="Join the mailing list">
+<button class=ml-close id=mlClose aria-label=Close>&#x2715;</button><div class=ml-inner>
+<p class=ml-heading>Join the List</p>
+<p class=ml-body>Be the first to know when new pieces are released. Subscribers will also receive personal invitations to upcoming art shows and private events.</p>
+<div class=ml-form-wrap>
+<input type=email id=mlEmail class=ml-input placeholder="Email address" autocomplete=email required>
+<button type=button id=mlSubmit class=ml-submit>Subscribe</button></div>
+<p class=ml-note id=mlNote>Unsubscribe anytime. Read our <a href=/privacy/ class=ml-privacy-link target=_blank rel=noopener>privacy policy</a> to learn about your rights and the use of your personal information.</p>
 </div>
-
+</div>
 <style>
-  /* ══════════════════════════════════════════
-     MAILING LIST SLIDE-UP BAR
-     ══════════════════════════════════════════ */
   .ml-popup {
-    position: fixed; bottom: 0; left: 0; right: 0; z-index: 800;
-    opacity: 0;
-    transform: translateY(28px) scale(0.97);
-    filter: blur(8px);
-    pointer-events: none;
-    transition: opacity 0.9s ease, transform 0.9s ease, filter 0.9s ease;
-    background: rgba(255,255,255,0.75);
-    backdrop-filter: blur(14px) saturate(1.1);
-    -webkit-backdrop-filter: blur(14px) saturate(1.1);
-    border-top: 1px solid rgba(0,0,0,0.08);
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:800;
+    opacity:0;
+    transform:translateY(28px)scale(.97);
+    filter:blur(8px);
+    pointer-events:none;
+    transition:opacity .9s ease,transform .9s ease,filter .9s ease;
+    background:rgba(255,255,255,.75);
+    backdrop-filter:blur(14px)saturate(1.1);
+    -webkit-backdrop-filter:blur(14px)saturate(1.1);
+    border-top:1px solid rgba(0,0,0,8%);
   }
   .ml-popup.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0px);
-    pointer-events: all;
+    opacity:1;
+    transform:translateY(0)scale(1);
+    filter:blur(0);
+    pointer-events:all;
   }
   html.dark .ml-popup {
-    background: rgba(15,15,15,0.82);
-    backdrop-filter: blur(18px) brightness(0.75);
-    -webkit-backdrop-filter: blur(18px) brightness(0.75);
-    border-top-color: rgba(255,255,255,0.08);
+    background:var(--glass-overlay);
+    backdrop-filter:blur(18px)brightness(.75);
+    -webkit-backdrop-filter:blur(18px)brightness(.75);
+    border-top-color:rgba(255,255,255,8%);
   }
   .ml-close {
-    position: absolute; top: 1rem; right: 1.5rem;
-    background: none; border: none; cursor: pointer;
-    font-size: 1.15rem; color: inherit; padding: 0.2rem; opacity: 0.4; transition: opacity 0.15s;
+    position:absolute;
+    top:1rem;
+    right:1.5rem;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:1.15rem;
+    color:inherit;
+    padding:.2rem;
+    opacity:.4;
+    transition:opacity .15s;
   }
-  .ml-close:hover { opacity: 1; }
+  .ml-close:hover {
+    opacity:1;
+  }
   .ml-inner {
-    display: flex; flex-direction: column; align-items: center;
-    width: min(520px, 90vw); margin: 0 auto;
-    padding: 1.8rem 0 1.5rem;
-    box-sizing: border-box;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    width:min(520px,90vw);
+    margin:0 auto;
+    padding:1.8rem 0 1.5rem;
+    box-sizing:border-box;
   }
-  .ml-heading { font-size: 0.78rem !important; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; margin: 0 0 0.4rem; opacity: 0.9; width: 100%; }
-  .ml-body { font-size: 0.75rem !important; line-height: 1.6; letter-spacing: 0.01em; opacity: 0.62; margin: 0 0 1rem; width: 100%; }
-  .ml-form-wrap { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; margin-bottom: 0.5rem; }
+  .ml-heading {
+    font-size:.78rem!important;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0 0 .4rem;
+    opacity:.9;
+    width:100%;
+  }
+  .ml-body {
+    font-size:.75rem!important;
+    line-height:1.6;
+    letter-spacing:.01em;
+    opacity:.62;
+    margin:0 0 1rem;
+    width:100%;
+  }
+  .ml-form-wrap {
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    width:100%;
+    margin-bottom:.5rem;
+  }
   .ml-input {
-    width: 100%; padding: 0.75rem 1rem; box-sizing: border-box;
-    font-family: inherit; font-size: 0.75rem; letter-spacing: 0.04em;
-    background: transparent; border: 1px solid rgba(0,0,0,0.22);
-    color: inherit; outline: none; transition: border-color 0.15s; border-radius: 0;
+    width:100%;
+    padding:.75rem 1rem;
+    box-sizing:border-box;
+    font-family:inherit;
+    font-size:.75rem;
+    letter-spacing:.04em;
+    background:0 0;
+    border:1px solid rgba(0,0,0,.22);
+    color:inherit;
+    outline:none;
+    transition:border-color .15s;
+    border-radius:0;
   }
-  .ml-input::placeholder { color: inherit; opacity: 0.62; font-size: 0.75rem; }
-  .ml-input:focus { border-color: rgba(0,0,0,0.6); }
-  html.dark .ml-input { border-color: rgba(255,255,255,0.22); }
-  html.dark .ml-input:focus { border-color: rgba(255,255,255,0.6); }
+  .ml-input::placeholder {
+    color:inherit;
+    opacity:.62;
+    font-size:.75rem;
+  }
+  .ml-input:focus {
+    border-color:rgba(0,0,0,.6);
+  }
+  html.dark .ml-input {
+    border-color:rgba(255,255,255,.22);
+  }
+  html.dark .ml-input:focus {
+    border-color:rgba(255,255,255,.6);
+  }
   .ml-submit {
-    width: 100%; padding: 0.75rem 1rem; font-family: inherit; font-size: 0.76rem;
-    letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
-    background: #111; color: #fff; border: none; border-radius: 0 !important; cursor: pointer;
-    transition: opacity 0.18s;
+    width:100%;
+    padding:.75rem 1rem;
+    font-family:inherit;
+    font-size:.76rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    font-weight:700;
+    background:#111;
+    color:#fff;
+    border:none;
+    border-radius:0!important;
+    cursor:pointer;
+    transition:opacity .18s;
   }
-  .ml-submit:hover { opacity: 0.75; }
-  .ml-submit:disabled { opacity: 0.4; cursor: default; }
-  html.dark .ml-submit { background: #efefef; color: #111; }
-  .ml-note { margin: 0; font-size: 0.6rem !important; letter-spacing: 0.02em; opacity: 0.42; line-height: 1.65; width: 100%; }
-  .ml-note.success { opacity: 0.85; font-size: 0.68rem !important; }
-  .ml-note.error { opacity: 0.85; color: #c0392b; font-size: 0.68rem !important; }
-  html.dark .ml-note.error { color: #e74c3c; }
-  .ml-privacy-link { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-  .ml-privacy-link:hover { opacity: 0.5; }
-  @media (max-width: 900px) {
-    .ml-body { font-size: 0.73rem !important; }
-    .ml-input { font-size: 0.73rem; }
-    .ml-input::placeholder { font-size: 0.73rem; }
-    .ml-note { font-size: 0.58rem !important; }
+  .ml-submit:hover {
+    opacity:.75;
   }
-  @media (max-width: 600px) {
-    .ml-inner { width: 88vw; padding: 1.5rem 0 1.3rem; }
-    .ml-close { top: 0.8rem; right: 1rem; }
-    .ml-heading { font-size: 0.72rem !important; }
-    .ml-body { font-size: 0.7rem !important; }
-    .ml-input { font-size: 0.7rem; }
-    .ml-input::placeholder { font-size: 0.7rem; }
-    .ml-submit { font-size: 0.7rem; }
-    .ml-note { font-size: 0.56rem !important; }
+  .ml-submit:disabled {
+    opacity:.4;
+    cursor:default;
+  }
+  html.dark .ml-submit {
+    background:#efefef;
+    color:#111;
+  }
+  .ml-note {
+    margin:0;
+    font-size:.6rem!important;
+    letter-spacing:.02em;
+    opacity:.42;
+    line-height:1.65;
+    width:100%;
+  }
+  .ml-note.success {
+    opacity:.85;
+    font-size:.68rem!important;
+  }
+  .ml-note.error {
+    opacity:.85;
+    color:#c0392b;
+    font-size:.68rem!important;
+  }
+  html.dark .ml-note.error {
+    color:#e74c3c;
+  }
+  .ml-privacy-link {
+    color:inherit;
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .ml-privacy-link:hover {
+    opacity:.5;
+  }
+  @media(max-width:900px) {
+    .ml-body {
+      font-size:.73rem!important;
+    }
+    .ml-input {
+      font-size:.73rem;
+    }
+    .ml-input::placeholder {
+      font-size:.73rem;
+    }
+    .ml-note {
+      font-size:.58rem!important;
+    }
+  }
+  @media(max-width:600px) {
+    .ml-inner {
+      width:88vw;
+      padding:1.5rem 0 1.3rem;
+    }
+    .ml-close {
+      top:.8rem;
+      right:1rem;
+    }
+    .ml-heading {
+      font-size:.72rem!important;
+    }
+    .ml-body {
+      font-size:.7rem!important;
+    }
+    .ml-input {
+      font-size:.7rem;
+    }
+    .ml-input::placeholder {
+      font-size:.7rem;
+    }
+    .ml-submit {
+      font-size:.7rem;
+    }
+    .ml-note {
+      font-size:.56rem!important;
+    }
   }
 </style>
-
 <script>
-(function () {
-  const popup     = document.getElementById('mlPopup');
-  const closeBtn  = document.getElementById('mlClose');
-  const emailEl   = document.getElementById('mlEmail');
-  const submitBtn = document.getElementById('mlSubmit');
-  const noteEl    = document.getElementById('mlNote');
-  const footerBtn = document.getElementById('footerJoinNewsletterBtn');
-
-  if (!popup) return;
-
-  function openPopup() {
-    const overlay = document.getElementById('filterOverlay');
-    if (document.getElementById('arwModal')?.classList.contains('open')) return;
-    if (overlay && overlay.classList.contains('open')) return;
-    if (popup.classList.contains('open')) return;
-    popup.classList.add('open');
-  }
-
-  function closePopup() {
-    popup.classList.remove('open');
-    try {
-      const raw = localStorage.getItem('la-ml-status');
-      const s   = raw ? JSON.parse(raw) : {};
-      if (s.status !== 'subscribed') {
-        localStorage.setItem('la-ml-status', JSON.stringify({ status: 'dismissed', ts: Date.now() }));
-      }
-    } catch {}
-  }
-
-  window.openMailingPopup = openPopup;
-
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closePopup);
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && popup.classList.contains('open')) {
-      closePopup();
+  (function () {
+    const s = document.getElementById("mlPopup"),
+      i = document.getElementById("mlClose"),
+      n = document.getElementById("mlEmail"),
+      e = document.getElementById("mlSubmit"),
+      t = document.getElementById("mlNote"),
+      a = document.getElementById("footerJoinNewsletterBtn");
+    if (!s) return;
+    function r() {
+      const e = document.getElementById("filterOverlay");
+      if (document.getElementById("arwModal")?.classList.contains("open")) return;
+      if (e && e.classList.contains("open")) return;
+      if (s.classList.contains("open")) return;
+      s.classList.add("open");
     }
-  });
-
-  if (footerBtn) {
-    footerBtn.addEventListener('click', openPopup);
-  }
-
-  /* ══════════════════════════════════════════════════════
-     SUBMIT CONVERGENCE — same behavior as the inquiry forms,
-     self-contained here since this footer script doesn't share
-     scope with that page's script. Only ever touches the email
-     field's actual typed value — never the placeholder.
-     Every position is measured live via getBoundingClientRect()
-     at the moment of use, so it's correct at whatever screen
-     size / layout is currently active — no cached coordinates.
-     ══════════════════════════════════════════════════════ */
-  function buildCharOverlayFromField(fieldEl) {
-    const val = fieldEl.value;
-    if (!val || !val.trim()) return null;
-    const rect = fieldEl.getBoundingClientRect();
-    if (rect.width === 0 || rect.height === 0) return null;
-    const cs = getComputedStyle(fieldEl);
-
-    const overlay = document.createElement('div');
-    overlay.style.position = 'fixed';
-    overlay.style.left = rect.left + 'px';
-    overlay.style.top = rect.top + 'px';
-    overlay.style.width = rect.width + 'px';
-    overlay.style.height = rect.height + 'px';
-    overlay.style.font = cs.font;
-    overlay.style.color = cs.color;
-    overlay.style.lineHeight = cs.lineHeight;
-    overlay.style.letterSpacing = cs.letterSpacing;
-    overlay.style.display = 'flex';
-    overlay.style.alignItems = 'center';
-    overlay.style.whiteSpace = 'pre';
-    overlay.style.pointerEvents = 'none';
-    overlay.style.zIndex = '9999';
-    document.body.appendChild(overlay);
-
-    Array.from(val).forEach((ch) => {
-      const span = document.createElement('span');
-      span.textContent = ch === ' ' ? '\u00A0' : ch;
-      span.style.display = 'inline-block';
-      overlay.appendChild(span);
-    });
-
-    return overlay;
-  }
-
-  function animateSpanToward(el, originX, originY, targetX, targetY, bucket) {
-    const dx = targetX - originX;
-    const dy = targetY - originY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    // Curved "gravity" path, same as the inquiry forms — bigger swing
-    // for pieces starting farther away, randomized direction.
-    const curviness = (Math.random() * 2 - 1) * Math.min(dist * 0.35, 160);
-    const nx = dist ? -dy / dist : 0;
-    const ny = dist ? dx / dist : 0;
-    const midX = dx * 0.5 + nx * curviness;
-    const midY = dy * 0.5 + ny * curviness;
-
-    const duration = 1100 + Math.random() * 900; // ~1.1–2.0s
-    const delay = Math.min(dist / 2400, 0.4) * 1000 + Math.random() * 150;
-
-    const anim = el.animate([
-      { transform: 'translate(0px,0px) scale(1)', opacity: 1, filter: 'blur(0px)', offset: 0 },
-      { transform: `translate(${midX}px,${midY}px) scale(0.7)`, opacity: 0.6, filter: 'blur(2px)', offset: 0.55 },
-      { transform: `translate(${dx}px,${dy}px) scale(0.05)`, opacity: 0, filter: 'blur(9px)', offset: 1 }
-    ], {
-      duration,
-      delay,
-      easing: 'cubic-bezier(0.55, 0.06, 0.68, 0.19)',
-      fill: 'forwards'
-    });
-
-    bucket.push(anim);
-  }
-
-  function runSimpleFieldFade(fieldEl) {
-    const FADE_MS = 900;
-    if (!fieldEl || !fieldEl.value || !fieldEl.value.trim()) {
-      return { finished: Promise.resolve(), restore() {}, reverseAndRestore: () => Promise.resolve() };
-    }
-    fieldEl.style.transition = `opacity ${FADE_MS}ms ease, filter ${FADE_MS}ms ease`;
-    void fieldEl.offsetWidth; // force reflow so the transition actually triggers
-    requestAnimationFrame(() => {
-      fieldEl.style.opacity = '0';
-      fieldEl.style.filter = 'blur(6px)';
-    });
-    return {
-      finished: new Promise((resolve) => setTimeout(resolve, FADE_MS + 50)),
-      restore() {
-        fieldEl.style.transition = 'none';
-        fieldEl.style.opacity = '';
-        fieldEl.style.filter = '';
-        void fieldEl.offsetWidth;
-        fieldEl.style.transition = '';
-      },
-      reverseAndRestore() {
-        return new Promise((resolve) => {
-          fieldEl.style.opacity = '';
-          fieldEl.style.filter = '';
-          setTimeout(() => { fieldEl.style.transition = ''; resolve(); }, FADE_MS + 50);
-        });
-      }
-    };
-  }
-
-  function runFieldConvergence(fieldEl, triggerBtn) {
-    const noop = { finished: Promise.resolve(), restore() {}, reverseAndRestore: () => Promise.resolve() };
-    if (!fieldEl || !triggerBtn) return noop;
-
-    // No Web Animations API → straight to the simple fade.
-    if (typeof triggerBtn.animate !== 'function') {
-      return runSimpleFieldFade(fieldEl);
-    }
-
-    try {
-      // Dismiss any mobile keyboard and let the resulting layout reflow
-      // settle BEFORE measuring anything, so positions aren't stale.
-      if (document.activeElement && typeof document.activeElement.blur === 'function') {
-        document.activeElement.blur();
-      }
-      void document.body.offsetWidth;
-
-      const targetRect = triggerBtn.getBoundingClientRect();
-      const targetX = targetRect.left + targetRect.width / 2;
-      const targetY = targetRect.top + targetRect.height / 2;
-
-      const overlay = buildCharOverlayFromField(fieldEl);
-      if (!overlay) return noop; // nothing typed — nothing to animate
-
-      // The real input is only made invisible via opacity — never
-      // visibility/display — so it's always still in place and
-      // interactive, even if cleanup somehow doesn't run.
-      const prevOpacity = fieldEl.style.opacity;
-      fieldEl.style.opacity = '0';
-
-      const animations = [];
-      Array.from(overlay.children).forEach((span) => {
-        if (!span.textContent.trim()) return;
-        const r = span.getBoundingClientRect();
-        animateSpanToward(span, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
-      });
-
-      function cleanup() {
-        overlay.remove();
-        fieldEl.style.opacity = prevOpacity;
-      }
-
-      return {
-        finished: Promise.all(animations.map((a) => a.finished.catch(() => {}))),
-        restore: cleanup,
-        reverseAndRestore() {
-          animations.forEach((a) => { try { a.reverse(); } catch (e) {} });
-          return Promise.all(animations.map((a) => a.finished.catch(() => {}))).then(cleanup);
-        }
-      };
-    } catch (err) {
-      // Anything unexpected → clean fallback rather than a broken state.
-      return runSimpleFieldFade(fieldEl);
-    }
-  }
-
-  if (submitBtn) {
-    submitBtn.addEventListener('click', async () => {
-      noteEl.textContent = '';
-      noteEl.className = 'ml-note';
-
-      const email = emailEl.value.trim();
-
-      // Nothing typed — nothing to animate, just surface the error directly.
-      if (!email) {
-        noteEl.textContent = 'Please enter your email address.';
-        noteEl.className = 'ml-note error';
-        emailEl.focus();
-        return;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending…';
-
-      // Absolute last-resort safety net — guarantees the button never
-      // stays stuck disabled no matter what unexpected path is hit.
-      let watchdogCleared = false;
-      const watchdog = setTimeout(() => {
-        if (watchdogCleared) return;
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Subscribe';
-      }, 15000);
-      const clearWatchdog = () => { watchdogCleared = true; clearTimeout(watchdog); };
-
-      // Starts immediately — right here, before the validation-format
-      // check or the network request — so there's no perceived delay.
-      const convergence = runFieldConvergence(emailEl, submitBtn);
-
-      async function failAndRestore(message) {
-        await convergence.reverseAndRestore();
-        clearWatchdog();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Subscribe';
-        noteEl.textContent = message;
-        noteEl.className = 'ml-note error';
-      }
-
-      if (!emailEl.validity.valid) {
-        await failAndRestore('Please enter a valid email address.');
-        return;
-      }
-
+    function o() {
+      s.classList.remove("open");
       try {
-        const fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({ email })
-        }).then((r) => r.text().then((t) => ({ ok: r.ok, text: t })));
-
-        // Same rule as the inquiry forms: only confirm success once BOTH
-        // the network response and the full animation have finished.
-        const combined = await Promise.all([fetchPromise, convergence.finished]);
-        const fetchResult = combined[0];
-        const result = String(fetchResult.text).trim();
-
-        if (fetchResult.ok && result === "OK") {
-          try { localStorage.setItem('la-ml-status', JSON.stringify({ status: 'subscribed', ts: Date.now() })); } catch {}
-          convergence.restore();
-          clearWatchdog();
-          emailEl.style.display = 'none';
-          submitBtn.style.display = 'none';
-          noteEl.textContent = "You're on the list. Check spam if needed.";
-          noteEl.className = 'ml-note success';
-          setTimeout(closePopup, 5000);
+        const e = localStorage.getItem("la-ml-status"),
+          t = e ? JSON.parse(e) : {};
+        t.status !== "subscribed" &&
+          localStorage.setItem("la-ml-status", JSON.stringify({ status: "dismissed", ts: Date.now() }));
+      } catch {}
+    }
+    ((window.openMailingPopup = r),
+      i && i.addEventListener("click", o),
+      document.addEventListener("keydown", (e) => {
+        e.key === "Escape" && s.classList.contains("open") && o();
+      }),
+      a && a.addEventListener("click", r));
+    function l(e) {
+      const o = e.value;
+      if (!o || !o.trim()) return null;
+      const n = e.getBoundingClientRect();
+      if (n.width === 0 || n.height === 0) return null;
+      const s = getComputedStyle(e),
+        t = document.createElement("div");
+      return (
+        (t.style.position = "fixed"),
+        (t.style.left = n.left + "px"),
+        (t.style.top = n.top + "px"),
+        (t.style.width = n.width + "px"),
+        (t.style.height = n.height + "px"),
+        (t.style.font = s.font),
+        (t.style.color = s.color),
+        (t.style.lineHeight = s.lineHeight),
+        (t.style.letterSpacing = s.letterSpacing),
+        (t.style.display = "flex"),
+        (t.style.alignItems = "center"),
+        (t.style.whiteSpace = "pre"),
+        (t.style.pointerEvents = "none"),
+        (t.style.zIndex = "9999"),
+        document.body.appendChild(t),
+        Array.from(o).forEach((e) => {
+          const n = document.createElement("span");
+          ((n.textContent = e === " " ? " " : e), (n.style.display = "inline-block"), t.appendChild(n));
+        }),
+        t
+      );
+    }
+    function d(e, t, n, s, o, i) {
+      const r = s - t,
+        c = o - n,
+        a = (r * r + c * c) ** 0.5,
+        l = (Math.random() * 2 - 1) * Math.min(a * 0.35, 160),
+        d = a ? -c / a : 0,
+        u = a ? r / a : 0,
+        h = r * 0.5 + d * l,
+        m = c * 0.5 + u * l,
+        f = 1100 + Math.random() * 900,
+        p = Math.min(a / 2400, 0.4) * 1e3 + Math.random() * 150,
+        g = e.animate(
+          [
+            { transform: "translate(0px,0px) scale(1)", opacity: 1, filter: "blur(0px)", offset: 0 },
+            {
+              transform: `translate(${h}px,${m}px) scale(0.7)`,
+              opacity: 0.6,
+              filter: "blur(2px)",
+              offset: 0.55,
+            },
+            { transform: `translate(${r}px,${c}px) scale(0.05)`, opacity: 0, filter: "blur(9px)", offset: 1 },
+          ],
+          { duration: f, delay: p, easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)", fill: "forwards" },
+        );
+      i.push(g);
+    }
+    function c(e) {
+      const t = 900;
+      return !e || !e.value || !e.value.trim()
+        ? { finished: Promise.resolve(), restore() {}, reverseAndRestore: () => Promise.resolve() }
+        : ((e.style.transition = `opacity ${t}ms ease, filter ${t}ms ease`),
+          void e.offsetWidth,
+          requestAnimationFrame(() => {
+            ((e.style.opacity = "0"), (e.style.filter = "blur(6px)"));
+          }),
+          {
+            finished: new Promise((e) => setTimeout(e, t + 50)),
+            restore() {
+              ((e.style.transition = "none"),
+                (e.style.opacity = ""),
+                (e.style.filter = ""),
+                void e.offsetWidth,
+                (e.style.transition = ""));
+            },
+            reverseAndRestore() {
+              return new Promise((n) => {
+                ((e.style.opacity = ""),
+                  (e.style.filter = ""),
+                  setTimeout(() => {
+                    ((e.style.transition = ""), n());
+                  }, t + 50));
+              });
+            },
+          });
+    }
+    function u(e, t) {
+      const n = { finished: Promise.resolve(), restore() {}, reverseAndRestore: () => Promise.resolve() };
+      if (!e || !t) return n;
+      if (typeof t.animate != "function") return c(e);
+      try {
+        (document.activeElement &&
+          typeof document.activeElement.blur == "function" &&
+          document.activeElement.blur(),
+          void document.body.offsetWidth);
+        const o = t.getBoundingClientRect(),
+          r = o.left + o.width / 2,
+          c = o.top + o.height / 2,
+          a = l(e);
+        if (!a) return n;
+        const u = e.style.opacity;
+        e.style.opacity = "0";
+        const i = [];
+        Array.from(a.children).forEach((e) => {
+          if (!e.textContent.trim()) return;
+          const t = e.getBoundingClientRect();
+          d(e, t.left + t.width / 2, t.top + t.height / 2, r, c, i);
+        });
+        function s() {
+          (a.remove(), (e.style.opacity = u));
+        }
+        return {
+          finished: Promise.all(i.map((e) => e.finished.catch(() => {}))),
+          restore: s,
+          reverseAndRestore() {
+            return (
+              i.forEach((e) => {
+                try {
+                  e.reverse();
+                } catch {}
+              }),
+              Promise.all(i.map((e) => e.finished.catch(() => {}))).then(s)
+            );
+          },
+        };
+      } catch {
+        return c(e);
+      }
+    }
+    e &&
+      (e.addEventListener("click", async () => {
+        ((t.textContent = ""), (t.className = "ml-note"));
+        const a = n.value.trim();
+        if (!a) {
+          ((t.textContent = "Please enter your email address."), (t.className = "ml-note error"), n.focus());
           return;
         }
-
-        if (result === "DUPLICATE") {
-          await failAndRestore("This email is already registered.");
-        } else if (result === "NO_EMAIL") {
-          await failAndRestore("Email missing.");
-        } else if (result === "SCHEMA_ERROR") {
-          await failAndRestore("Server configuration error.");
-        } else {
-          await failAndRestore("Unexpected server response.");
+        ((e.disabled = !0), (e.textContent = "Sending…"));
+        let r = !1;
+        const l = setTimeout(() => {
+            if (r) return;
+            ((e.disabled = !1), (e.textContent = "Subscribe"));
+          }, 15e3),
+          c = () => {
+            ((r = !0), clearTimeout(l));
+          },
+          i = u(n, e);
+        async function s(n) {
+          (await i.reverseAndRestore(),
+            c(),
+            (e.disabled = !1),
+            (e.textContent = "Subscribe"),
+            (t.textContent = n),
+            (t.className = "ml-note error"));
         }
-
-      } catch (err) {
-        await failAndRestore("Network error.");
-      }
-    });
-
-    emailEl.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        submitBtn.click();
-      }
-    });
-  }
-})();
+        if (!n.validity.valid) {
+          await s("Please enter a valid email address.");
+          return;
+        }
+        try {
+          const d = fetch(window.APP_CONFIG.googleScriptUrl, {
+              method: "POST",
+              headers: { "Content-Type": "text/plain" },
+              body: JSON.stringify({ email: a }),
+            }).then((e) => e.text().then((t) => ({ ok: e.ok, text: t }))),
+            u = await Promise.all([d, i.finished]),
+            l = u[0],
+            r = String(l.text).trim();
+          if (l.ok && r === "OK") {
+            try {
+              localStorage.setItem("la-ml-status", JSON.stringify({ status: "subscribed", ts: Date.now() }));
+            } catch {}
+            (i.restore(),
+              c(),
+              (n.style.display = "none"),
+              (e.style.display = "none"),
+              (t.textContent = "You're on the list. Check spam if needed."),
+              (t.className = "ml-note success"),
+              setTimeout(o, 5e3));
+            return;
+          }
+          r === "DUPLICATE"
+            ? await s("This email is already registered.")
+            : r === "NO_EMAIL"
+              ? await s("Email missing.")
+              : r === "SCHEMA_ERROR"
+                ? await s("Server configuration error.")
+                : await s("Unexpected server response.");
+        } catch {
+          await s("Network error.");
+        }
+      }),
+      n.addEventListener("keydown", (t) => {
+        t.key === "Enter" && e.click();
+      }));
+  })();
 </script>
+</div>
+<script>
+  (function () {
+    if (((t = document.documentElement), !t.classList.contains("reveal-boot"))) return;
+    a = window.__revealStats = { tagged: 0, revealed: 0, loadingShown: 0 };
+    function j(e) {
+      try {
+        var t,
+          n = sessionStorage.getItem(e);
+        if (n !== null) return n;
+      } catch {}
+      try {
+        return (
+          (t = document.cookie.match(new RegExp("(?:^|; )" + e + "=([^;]*)"))),
+          t ? decodeURIComponent(t[1]) : null
+        );
+      } catch {}
+      return null;
+    }
+    ((e = !!document.getElementById("intro-door") && !j("intro-seen")),
+      (s = e),
+      e && t.classList.add("reveal-first"),
+      (d =
+        "#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #arwModal, #lightbox, #arwLightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown, #bookModal, .book-modal, #bookFullscreen, .artwork-filter-overlay, #siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho"),
+      e || (d += ", #siteHeader"),
+      (f = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, SVG: 1, PATH: 1, INPUT: 1, TEXTAREA: 1, SELECT: 1, OPTION: 1 }));
+    function y(e) {
+      for (var t = e.firstChild; t; t = t.nextSibling) if (t.nodeType === 3 && t.textContent.trim()) return !0;
+      return !1;
+    }
+    ((i = []),
+      document.body.querySelectorAll("*").forEach(function (e) {
+        if (f[e.tagName] || e.closest(d)) return;
+        (e.tagName === "IMG" || y(e)) && i.push(e);
+      }),
+      (u = new Set(i)),
+      (n = i.filter(function (e) {
+        for (var t = e.parentElement; t; t = t.parentElement) if (u.has(t) && t.tagName !== "IMG") return !1;
+        return !0;
+      })),
+      n.forEach(function (e) {
+        t = { t: "none", f: "none" };
+        try {
+          ((n = getComputedStyle(e)),
+            (t.t = n.transform),
+            (t.f = n.filter),
+            n.opacity && n.opacity !== "1" && e.style.setProperty("--fog-o", n.opacity));
+        } catch {}
+        var t,
+          n,
+          s = t.t && t.t !== "none",
+          o = t.f && t.f !== "none";
+        (e.classList.add(
+          s && o
+            ? "reveal-item-opacity-only"
+            : o
+              ? "reveal-item-no-filter"
+              : s
+                ? "reveal-item-no-transform"
+                : "reveal-item",
+        ),
+          (e.__isImg = e.tagName === "IMG"),
+          (e.__inview = !1),
+          (e.__done = !1),
+          (e.__loaded = !e.__isImg || (e.complete && e.naturalWidth > 0)),
+          a.tagged++);
+      }),
+      t.classList.add("reveal-notrans", "reveal-pending"),
+      void document.body.offsetHeight,
+      t.classList.remove("reveal-notrans"),
+      t.classList.remove("reveal-boot"),
+      (window.__revealReady = !0));
+    var e,
+      t,
+      n,
+      s,
+      i,
+      a,
+      c,
+      l,
+      d,
+      u,
+      f,
+      p,
+      r = 0,
+      h = null;
+    function v(e) {
+      (e.classList.remove(
+        "reveal-item",
+        "reveal-item-no-filter",
+        "reveal-item-no-transform",
+        "reveal-item-opacity-only",
+        "reveal-loading",
+        "revealed",
+      ),
+        (e.style.transitionDelay = ""),
+        e.style.removeProperty("--fog-o"));
+    }
+    function b(t) {
+      if (t.__done) return;
+      t.__done = !0;
+      var n = 0;
+      (t.__isImg ||
+        ((n = Math.min(r * 16, 190)),
+        r++,
+        clearTimeout(h),
+        (h = setTimeout(function () {
+          r = 0;
+        }, 120))),
+        n && (t.style.transitionDelay = n + "ms"),
+        requestAnimationFrame(function () {
+          (t.classList.remove("reveal-loading"),
+            t.classList.add("revealed"),
+            a.revealed++,
+            setTimeout(
+              function () {
+                v(t);
+              },
+              (e ? 900 : 560) + n + 120,
+            ));
+        }));
+    }
+    function o(e) {
+      if (e.__done || s || !e.__inview) return;
+      if (e.__isImg && !e.__loaded) {
+        e.classList.contains("reveal-loading") || (e.classList.add("reveal-loading"), a.loadingShown++);
+        return;
+      }
+      b(e);
+    }
+    n.forEach(function (e) {
+      if (e.__isImg && !e.__loaded) {
+        var t = function () {
+          ((e.__loaded = !0), o(e));
+        };
+        (e.addEventListener("load", t, { once: !0 }), e.addEventListener("error", t, { once: !0 }));
+      }
+    });
+    function m(e) {
+      e.forEach(function (e) {
+        e.isIntersecting &&
+          ((e.target.__inview = !0), l.unobserve(e.target), c.unobserve(e.target), o(e.target));
+      });
+    }
+    ((l = new IntersectionObserver(m, { rootMargin: "0px 0px -3% 0px", threshold: 0 })),
+      (c = new IntersectionObserver(m, { threshold: 0 })),
+      (p = document.documentElement.scrollHeight - window.innerHeight * 0.03),
+      n.forEach(function (e) {
+        ((e.__atEnd = e.getBoundingClientRect().bottom + window.scrollY > p), (e.__atEnd ? c : l).observe(e));
+      }));
+    function g() {
+      if (!s) return;
+      ((s = !1), n.forEach(o));
+    }
+    (e && (document.addEventListener("door-done", g, { once: !0 }), setTimeout(g, 14e3)),
+      setTimeout(
+        function () {
+          ((s = !1),
+            n.forEach(function (e) {
+              if (e.__done) return;
+              var t = e.getBoundingClientRect().top;
+              t < window.innerHeight * (e.__atEnd ? 1 : 0.97) && ((e.__inview = !0), (e.__loaded = !0), o(e));
+            }));
+        },
+        e ? 16e3 : 5e3,
+      ));
+  })();
+</script>
+<script>
+  fetch("/.netlify/functions/log-ip").catch((e) => console.error("Log-IP function failed:", e));
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const e = document.querySelectorAll("form");
+    e.forEach((e) => {
+      if (!e.querySelector(".recaptcha-token-field")) {
+        const t = document.createElement("input");
+        ((t.type = "hidden"),
+          (t.name = "g-recaptcha-response"),
+          t.classList.add("recaptcha-token-field"),
+          e.appendChild(t));
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    if (window.location.hash === "#artworks-section") {
+      const e = document.getElementById("artworks-section");
+      e && setTimeout(() => e.scrollIntoView({ behavior: "smooth" }), 150);
+    }
+  });
+</script>
+<script>
+  (function () {
+    _ = [
+      "reveal-item",
+      "reveal-item-no-filter",
+      "reveal-item-no-transform",
+      "reveal-item-opacity-only",
+      "reveal-loading",
+      "revealed",
+    ];
+    function a(e, t) {
+      return (
+        t ||
+          (e.removeAttribute("id"),
+          e.querySelectorAll("[id]").forEach(function (e) {
+            e.removeAttribute("id");
+          })),
+        e.querySelectorAll("script").forEach(function (e) {
+          e.remove();
+        }),
+        e.querySelectorAll(".book-text-body").forEach(function (e) {
+          e.remove();
+        }),
+        e.querySelectorAll("a, button, input, textarea, select").forEach(function (e) {
+          e.setAttribute("tabindex", "-1");
+        }),
+        e.querySelectorAll("img").forEach(function (e) {
+          e.decoding = "async";
+        }),
+        e.classList.remove.apply(e.classList, _),
+        e
+          .querySelectorAll(
+            ".reveal-item, .reveal-item-no-filter, .reveal-item-no-transform, .reveal-item-opacity-only, .reveal-loading",
+          )
+          .forEach(function (e) {
+            e.classList.remove.apply(e.classList, _);
+          }),
+        e
+      );
+    }
+    function r(e) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          e.classList.add("mirror-ready");
+        });
+      });
+    }
+    function M(e) {
+      return (
+        e.querySelectorAll("*").forEach(function (e) {
+          if (e.querySelector("img, video, canvas, iframe, svg")) return;
+          for (var t = e.firstChild; t; t = t.nextSibling)
+            if (t.nodeType === 3 && t.textContent.trim()) {
+              e.classList.add("bleed-text");
+              return;
+            }
+        }),
+        e
+      );
+    }
+    function D(e, t) {
+      if (!e || !t) return;
+      for (
+        var o, i, a = e.querySelectorAll("img"), s = t.querySelectorAll("img"), n = 0;
+        n < Math.min(a.length, s.length);
+        n++
+      )
+        ((o = a[n].offsetWidth),
+          (i = a[n].offsetHeight),
+          o > 0 &&
+            ((s[n].style.width = o + "px"),
+            (s[n].style.maxWidth = "none"),
+            (s[n].style.minWidth = o + "px"),
+            (s[n].style.flex = "none"),
+            i > 0 &&
+              ((s[n].style.height = i + "px"),
+              (s[n].style.minHeight = i + "px"),
+              (s[n].style.maxHeight = "none"))));
+    }
+    function L(e) {
+      return (
+        e.querySelectorAll("[data-bleed-skip]").forEach(function (e) {
+          if (e.getAttribute("data-bleed-skip") === "fixed") {
+            e.remove();
+            return;
+          }
+          var t = e.getAttribute("data-bleed-h");
+          if (/^inline/.test(e.getAttribute("data-bleed-d") || "")) {
+            e.style.setProperty("visibility", "hidden", "important");
+            return;
+          }
+          ((e.textContent = ""),
+            e.style.setProperty("box-sizing", "border-box", "important"),
+            e.style.setProperty("padding", "0", "important"),
+            e.style.setProperty("border", "0", "important"),
+            t && e.style.setProperty("height", t + "px", "important"),
+            e.style.setProperty("visibility", "hidden", "important"));
+        }),
+        e
+      );
+    }
+    function l(e, t) {
+      var n = document.createElement("div");
+      ((n.className = "fx-inner"), n.appendChild(t), e.appendChild(n));
+    }
+    function s() {
+      return !!(window.matchMedia && window.matchMedia("(max-width: 800px)").matches);
+    }
+    ((p = 1.9), (O = 0.25), (j = 3));
+    function n(e, t) {
+      try {
+        if (t === (0)[0]) return localStorage.getItem(e);
+        t === null ? localStorage.removeItem(e) : localStorage.setItem(e, t);
+      } catch {}
+      return null;
+    }
+    (function () {
+      try {
+        var o,
+          t = /[?&]fx=(auto|[0-3])\b/.exec(location.search);
+        if (
+          (t && n("fx-force", t[1] === "auto" ? null : t[1]),
+          t && t[1] === "auto" && n("fx-demote", null),
+          !s())
+        )
+          return;
+        (sessionStorage.getItem("fx-run") === "1" &&
+          n("fx-demote", String(Math.min(j, (parseInt(n("fx-demote"), 10) || 0) + 1))),
+          sessionStorage.setItem("fx-run", "1"),
+          (o = function (e) {
+            try {
+              sessionStorage.setItem("fx-run", e ? "1" : "0");
+            } catch {}
+          }),
+          document.addEventListener("visibilitychange", function () {
+            o(document.visibilityState === "visible");
+          }),
+          window.addEventListener("pagehide", function () {
+            o(!1);
+          }));
+      } catch {}
+    })();
+    function N() {
+      if (!s()) return j;
+      if (((e = n("fx-force")), e != null && /^[0-3]$/.test(e))) return parseInt(e, 10);
+      var e,
+        o,
+        a,
+        c,
+        r = window.devicePixelRatio || 1,
+        l = window.innerHeight,
+        d = window.innerWidth,
+        u = (d * r * (p * l * r) * 8) / 1e6,
+        i = 140,
+        t = navigator.deviceMemory;
+      return (
+        t && t <= 2 ? (i = 50) : t && t <= 4 && (i = 100),
+        (o = Math.floor(i / Math.max(1, u))),
+        (a = o >= 5 ? 3 : o >= 3 ? 2 : o >= 2 ? 1 : 0),
+        navigator.connection && navigator.connection.saveData && (a = 0),
+        (c = parseInt(n("fx-demote"), 10) || 0),
+        Math.max(0, a - c)
+      );
+    }
+    function T() {
+      var e = N();
+      return ((window.__fxLevel = e), document.documentElement.classList.toggle("fx-lite", s() && e < 3), e);
+    }
+    T();
+    var t = -1,
+      i = -1,
+      g = -1;
+    function c(e) {
+      if (((a = document.getElementById("siteMirror")), !a)) return;
+      var o,
+        a,
+        c,
+        d,
+        m,
+        f,
+        u = s(),
+        n = a.offsetHeight,
+        r = window.innerHeight,
+        l = window.scrollY || 0,
+        h = (u ? p : 4) * r;
+      if (n <= h + r) ((c = 0), (o = n));
+      else {
+        if (
+          ((o = Math.round(h)),
+          (d = (u ? O : 0.5) * r),
+          (m = t > 0 && l < t + d),
+          (f = t + i < n && l + r > t + i - d),
+          t >= 0 && i === o && g === n && !e && !m && !f)
+        )
+          return;
+        c = Math.max(0, Math.min(n - o, Math.round(l + r / 2 - o / 2)));
+      }
+      if (c === t && o === i && n === g) return;
+      ((t = c),
+        (i = o),
+        (g = n),
+        a.style.setProperty("--wy", c + "px"),
+        a.style.setProperty("--wh", o + "px"),
+        a.style.setProperty("--ph", n + "px"));
+    }
+    (function () {
+      var t = window.visualViewport;
+      if (!t) return;
+      function n() {
+        var e = t.scale > 1.02;
+        (document.documentElement.classList.toggle("fx-zoomed", e), (window.__fxZoomed = e));
+      }
+      (t.addEventListener("resize", n), window.addEventListener("resize", n), n());
+    })();
+    var u,
+      p,
+      j,
+      _,
+      w,
+      O,
+      b = !1,
+      S = 0,
+      A = window.scrollY || 0,
+      k = performance.now(),
+      C = !1,
+      E = null;
+    function x(e) {
+      var t = document.getElementById("siteMirror");
+      ((C = e), t && t.classList.toggle("fx-paused", e));
+    }
+    (window.addEventListener(
+      "scroll",
+      function () {
+        if (((S = Date.now()), b)) return;
+        ((b = !0),
+          requestAnimationFrame(function () {
+            b = !1;
+            var e = performance.now(),
+              t = window.scrollY || 0,
+              n = (Math.abs(t - A) / Math.max(1, e - k)) * 1e3;
+            if (((A = t), (k = e), s() && (n > 1400 || C))) {
+              (x(!0),
+                clearTimeout(E),
+                (E = setTimeout(function () {
+                  (c(!1), x(!1));
+                }, 160)));
+              return;
+            }
+            c(!1);
+          }));
+      },
+      { passive: !0 },
+    ),
+      (u = window.innerWidth),
+      window.addEventListener("resize", function () {
+        if (window.innerWidth === u) return;
+        ((u = window.innerWidth), c(!0));
+      }),
+      (window.__mirrorBuilds = 0));
+    function z(e) {
+      e.querySelectorAll("img[data-lqip]").forEach(function (e) {
+        (e.removeAttribute("loading"), e.removeAttribute("srcset"), (e.src = e.getAttribute("data-lqip")));
+      });
+    }
+    function d(t) {
+      ((t = t === !0),
+        window.__mirrorBuilds++,
+        (t
+          ? ["siteMirrorClone"]
+          : [
+              "siteMirrorClone",
+              "siteMirrorBleedCore",
+              "siteMirrorBleed",
+              "siteMirrorBleedDark",
+              "headerMirrorEcho",
+              "footerMirrorEcho",
+            ]
+        ).forEach(function (e) {
+          var t = document.getElementById(e);
+          t && (t.textContent = "");
+        }),
+        t ||
+          document.querySelectorAll("#headerBleed .edge-layer, #footerBleed .edge-layer").forEach(function (e) {
+            e.textContent = "";
+          }));
+      var s,
+        o,
+        u,
+        m,
+        p,
+        g,
+        v,
+        b,
+        j,
+        y,
+        w,
+        i = document.querySelector("body > header"),
+        d = document.querySelector("body > main"),
+        n = document.querySelector("#footerWrap > footer"),
+        _ = [];
+      if (
+        (document.querySelectorAll(".fog-pinned").forEach(function (e) {
+          e.classList.remove("fog-pinned");
+        }),
+        [i, d, n].forEach(function (e) {
+          if (!e) return;
+          var t = [e].concat(Array.prototype.slice.call(e.querySelectorAll("*")));
+          t.forEach(function (t) {
+            if (
+              ((n = getComputedStyle(t).position),
+              (n === "fixed" || n === "sticky") &&
+                (t.setAttribute("data-bleed-skip", n === "fixed" ? "fixed" : "sticky"),
+                t.setAttribute("data-bleed-h", Math.round(t.getBoundingClientRect().height)),
+                t.setAttribute("data-bleed-d", getComputedStyle(t).display),
+                _.push(t),
+                t !== e && e === d))
+            ) {
+              var n,
+                s = t.getBoundingClientRect(),
+                o = getComputedStyle(t);
+              s.width > 0 &&
+                s.height > 0 &&
+                parseFloat(o.opacity) > 0.05 &&
+                o.visibility !== "hidden" &&
+                t.classList.add("fog-pinned");
+            }
+          });
+        }),
+        n &&
+          (n.setAttribute("data-bleed-skip", "footer"),
+          n.setAttribute("data-bleed-h", Math.round(n.getBoundingClientRect().height)),
+          n.setAttribute("data-bleed-d", getComputedStyle(n).display),
+          _.push(n)),
+        (y = document.getElementById("siteMirror")),
+        (j = document.getElementById("siteMirrorClone")),
+        j &&
+          ((s = document.createElement("div")),
+          (s.style.cssText = "display:flex;flex-direction:column;min-height:100%;"),
+          (document.body.classList.contains("page-about") ||
+            document.body.classList.contains("page-inquiry")) &&
+            (s.style.background = getComputedStyle(document.body).backgroundColor),
+          i && s.appendChild(i.cloneNode(!0)),
+          d && s.appendChild(d.cloneNode(!0)),
+          n && s.appendChild(n.cloneNode(!0)),
+          a(s, !0),
+          D(d, s.querySelector("main")),
+          z(s),
+          (m = document.getElementById("siteMirrorBleed")),
+          (w = navigator.connection && navigator.connection.saveData),
+          (u = T()),
+          !t &&
+            m &&
+            !w &&
+            u >= 1 &&
+            ((o = s.cloneNode(!0)),
+            (o.style.background = ""),
+            M(o),
+            L(o),
+            (p = document.getElementById("siteMirrorBleedDark")),
+            (g = document.getElementById("siteMirrorBleedCore")),
+            g && l(g, o.cloneNode(!0)),
+            u >= 2 && l(m, o.cloneNode(!0)),
+            u >= 3 && p && l(p, o.cloneNode(!0)),
+            [m, p, g].forEach(function (e) {
+              e &&
+                requestAnimationFrame(function () {
+                  requestAnimationFrame(function () {
+                    e.classList.add("layer-in");
+                  });
+                });
+            })),
+          l(j, s),
+          c(!0),
+          y && r(y)),
+        _.forEach(function (e) {
+          (e.removeAttribute("data-bleed-skip"),
+            e.removeAttribute("data-bleed-h"),
+            e.removeAttribute("data-bleed-d"));
+        }),
+        t)
+      )
+        return;
+      (!(navigator.connection && navigator.connection.saveData) &&
+        window.__fxLevel >= 1 &&
+        [
+          ["headerBleed", i],
+          ["footerBleed", n],
+        ].forEach(function (e) {
+          var t = document.getElementById(e[0]);
+          if (!t || !e[1]) return;
+          (t.querySelectorAll(".edge-layer").forEach(function (t) {
+            var s,
+              n = e[1].cloneNode(!0);
+            (n.removeAttribute("data-bleed-skip"),
+              n.removeAttribute("data-bleed-h"),
+              n.removeAttribute("data-bleed-d"),
+              (s = e[0] === "headerBleed"),
+              a(n, s),
+              n.classList.add("edge-copy"),
+              M(n),
+              [
+                ["background", "transparent"],
+                ["backdrop-filter", "none"],
+                ["-webkit-backdrop-filter", "none"],
+                ["border-color", "transparent"],
+                ["box-shadow", "none"],
+              ].forEach(function (e) {
+                n.style.setProperty(e[0], e[1], "important");
+              }),
+              t.appendChild(n));
+          }),
+            r(t));
+        }),
+        (v = document.getElementById("headerMirrorEcho")),
+        v && i && window.__fxLevel >= 1 && (v.appendChild(a(i.cloneNode(!0))), r(v)),
+        (b = document.getElementById("footerMirrorEcho")),
+        b && n && window.__fxLevel >= 1 && (b.appendChild(a(n.cloneNode(!0))), r(b)),
+        (e = !0),
+        (h = document.body.scrollHeight),
+        (f = Date.now()));
+    }
+    function y(e) {
+      "requestIdleCallback" in window ? requestIdleCallback(e, { timeout: 1500 }) : setTimeout(e, 200);
+    }
+    function v() {
+      (clearTimeout(w),
+        (w = setTimeout(function () {
+          e || y(d);
+        }, 250)));
+    }
+    (document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", v) : v(),
+      window.addEventListener("sitelayout", function () {
+        e || v();
+      }),
+      window.addEventListener("load", function () {
+        e || y(d);
+      }));
+    var F,
+      e = !1,
+      f = 0,
+      m = window.innerWidth,
+      h = 0;
+    function o(e) {
+      (clearTimeout(F),
+        (F = setTimeout(function () {
+          var e = window.innerWidth !== m;
+          if (s() && !e) return;
+          if (Date.now() - S < 800) return o(500);
+          if (!e && Date.now() - f < 2500) return o(1200);
+          ((m = window.innerWidth), (f = Date.now()), (h = document.body.scrollHeight), y(d));
+        }, e)));
+    }
+    (window.addEventListener("sitelayout", function () {
+      e && o(900);
+    }),
+      document.addEventListener(
+        "load",
+        function (t) {
+          var n = t.target;
+          if (!e || !n || n.tagName !== "IMG") return;
+          if (n.closest("#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho"))
+            return;
+          if (n.hasAttribute("data-lqip") && n.getAttribute("width")) return;
+          o(1200);
+        },
+        !0,
+      ));
+    function R() {
+      if (!("ResizeObserver" in window)) return;
+      new ResizeObserver(function () {
+        if (!e) return;
+        var t = window.innerWidth !== m;
+        if (!t && Math.abs(document.body.scrollHeight - h) < 60) return;
+        o(900);
+      }).observe(document.body);
+    }
+    R();
+  })();
+</script>
+<div id=siteMirror aria-hidden=true inert>
+<div id=siteMirrorClone>
+</div>
+<div id=siteMirrorFrost>
+</div>
+<div id=siteMirrorBleedCore>
+</div>
+<div id=siteMirrorBleed>
+</div>
+<div id=siteMirrorBleedDark>
+</div>
+</div>

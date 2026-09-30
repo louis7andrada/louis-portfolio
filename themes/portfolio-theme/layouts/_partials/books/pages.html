@@ -1,0 +1,15 @@
+{{- /*
+  Splits a book's "text" field into pages. It is written exactly like the
+  plain-text edition: a "[page N]" line, then one line per paragraph, with a
+  blank line between pages. Returns a slice of (dict "n" N "paras" [...]).
+*/ -}}
+{{- $pages := slice -}}
+{{- $chunks := split (.Params.text | default "") "[page " -}}
+{{- range after 1 $chunks -}}
+  {{- $lines := split (strings.TrimRight "\r\n" .) "\n" -}}
+  {{- $n := strings.TrimSuffix "]" (strings.TrimSpace (index $lines 0)) -}}
+  {{- $paras := slice -}}
+  {{- range after 1 $lines }}{{ with strings.TrimSpace . }}{{ $paras = $paras | append . }}{{ end }}{{ end -}}
+  {{- $pages = $pages | append (dict "n" $n "paras" $paras) -}}
+{{- end -}}
+{{- return $pages -}}

@@ -1,0 +1,10 @@
+{{- /*
+  Publishes the plain-text edition of every book at /oeuvre/<id>.txt.
+  Called once from the Oeuvre list page with the list of books.
+*/ -}}
+{{- range . -}}
+  {{- $head := printf "%s\n%s\nby Louis Andrada (Han’drada), %v\n%s\n\n" .Title .Params.description .Params.year .Permalink -}}
+  {{- $txt := printf "%s%s" $head (.Params.text | default "") -}}
+  {{- $r := resources.FromString (printf "oeuvre/%s.txt" .Params.id) $txt -}}
+  {{- $r.Publish -}}
+{{- end -}}

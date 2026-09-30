@@ -1,0 +1,25 @@
+{{- /*
+  Size + blur placeholder for a remote artwork/archive image.
+  Returns (dict "w" "h" "lqip") — lqip is an 8x8 PNG data URI used by the
+  site-mirror fog layer. Empty dict if the image can't be fetched.
+  Usage: {{ $m := partial "img-meta.html" .Params.image }}
+*/ -}}
+{{- $out := dict -}}
+{{- $src := . -}}
+{{- $res := "" -}}
+{{- if and $src (strings.HasSuffix $src "/inprogress.jpeg") -}}
+  {{- /* The shared "in progress" placeholder on GitHub is really a PNG with a
+         .jpeg name, which remote fetching rejects — use the local copy. */ -}}
+  {{- $res = resources.Get "images/inprogress.png" -}}
+{{- else if $src -}}
+  {{- with try (resources.GetRemote $src) }}{{ with .Value }}{{ $res = . }}{{ end }}{{ end -}}
+{{- end -}}
+{{- with $res -}}
+  {{- if eq .MediaType.MainType "image" -}}
+    {{- /* phone photos are stored sideways + an EXIF "rotate" flag: use the upright size */ -}}
+    {{- $up := . | images.Filter images.AutoOrient -}}
+    {{- $tiny := $up.Fit "8x8 png" -}}
+    {{- $out = dict "w" $up.Width "h" $up.Height "lqip" (printf "data:image/png;base64,%s" ($tiny.Content | base64Encode)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

@@ -1,0 +1,35 @@
+{{- /* schema.org Book for one Oeuvre page. Reconstructed from the live site. */ -}}
+{{- $cover := printf "%s/%s/cover.jpg" site.Params.books_image_base .Params.id -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Book",
+  "@id": "{{ .Permalink }}#book",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "license": "{{ "license/" | absURL }}",
+  "alternativeHeadline": "{{ .Params.description }}",
+  "description": "{{ .Title }} — {{ .Params.description }}. An illustrated book by Louis Andrada (Han’drada).",
+  "author": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "copyrightHolder": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "publisher": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ $cover }}",
+    "creditText": "Louis Andrada (Han’drada)",
+    "copyrightNotice": "© Louis Andrada",
+    "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+    "license": "{{ "license/" | absURL }}",
+    "acquireLicensePage": "{{ "inquiry/" | absURL }}"
+  },
+  "datePublished": "{{ .Params.year }}",
+  "numberOfPages": {{ .Params.pageCount }},
+  "bookFormat": "https://schema.org/EBook",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "isFamilyFriendly": true,
+  "genre": ["Philosophical fiction", "Existentialism", "Artist book"],
+  "encoding": { "@type": "MediaObject", "encodingFormat": "text/plain", "contentUrl": "{{ printf "oeuvre/%s.txt" .Params.id | absURL }}" },
+  "isPartOf": { "@id": "{{ "/" | absURL }}#website" }
+}
+</script>

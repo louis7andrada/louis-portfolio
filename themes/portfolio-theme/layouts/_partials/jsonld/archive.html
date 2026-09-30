@@ -1,0 +1,28 @@
+{{- /* schema.org CreativeWork for one archive photo page. Reconstructed from the live site. */ -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": "{{ .Permalink }}#work",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "license": "{{ "license/" | absURL }}",
+  {{- with .Params.comment }}
+  "description": "{{ . }}",
+  {{- end }}
+  "dateCreated": "{{ .Params.year }}",
+  "genre": "{{ .Params.category }}",
+  "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "copyrightHolder": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ .Params.image }}",
+    "creditText": "Louis Andrada (Han’drada)",
+    "copyrightNotice": "© Louis Andrada",
+    "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+    "license": "{{ "license/" | absURL }}",
+    "acquireLicensePage": "{{ "inquiry/" | absURL }}"
+  },
+  "isPartOf": { "@id": "{{ "/" | absURL }}#website" }
+}
+</script>

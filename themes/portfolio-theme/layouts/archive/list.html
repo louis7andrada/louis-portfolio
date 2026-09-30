@@ -4,11 +4,14 @@
 {{ $raw := where .Site.RegularPages "Section" "archive" }}
 {{ $clean := slice }}
 {{ range $raw }}
-  {{ $hash := md5 (printf "%s-%s" .File.Path .Title) }}
+  {{/* Windows-style path on every OS, so the shuffle is the same on Netlify as on Louis's PC */}}
+    {{ $hash := md5 (printf "%s-%s" (replace .File.Path "/" "\\") .Title) }}
   {{ $clean = $clean | append (dict "page" . "year" .Params.year "rand" $hash) }}
 {{ end }}
 {{ $sorted := sort $clean "rand" "asc" }}
 {{ $sorted = sort $sorted "year" "desc" }}
+
+{{ partial "jsonld/collection.html" (dict "page" . "pages" $raw) }}
 
 <section class="arch-section" id="archSection">
 
@@ -66,7 +69,7 @@
          data-title="{{ $it.page.Title }}"
          data-comment="{{ $it.page.Params.comment }}"
          data-img="{{ $it.page.Params.image }}">
-      <img class="arch-img" src="{{ $it.page.Params.image }}" alt="{{ $it.page.Title }}" loading="lazy">
+      <img class="arch-img" src="{{ $it.page.Params.image }}" alt="{{ $it.page.Title }}" loading="lazy"{{ with partial "img-meta.html" $it.page.Params.image }} width="{{ .w }}" height="{{ .h }}"{{ end }}>
     </div>
     {{ end }}
   </div>
@@ -100,792 +103,734 @@
 </div>
 
 <style>
-
-/* ═══════════════════════════════════
-   ARCHIVE — editorial scatter grid
-   ═══════════════════════════════════ */
-
-.arch-section {
-  overflow-x: hidden;
-  padding: 48px 0 0 230px; /* bottom handled by grid extra + end-spacer */
-  box-sizing: border-box;
-}
-
-/* ── FIXED SIDEBAR — left, vertically centred ── */
-.arch-sidebar {
-  position: fixed;
-  left: 8%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.arch-deselect {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.66rem;
-  color: inherit;
-  padding: 4px 0 4px 4px;
-  opacity: 0.45;
-  letter-spacing: 0.05em;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.15s;
-  white-space: nowrap;
-}
-.arch-deselect:hover { opacity: 1; }
-
-/* Side-by-side filter row */
-.arch-filters-row {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 32px;
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  padding: 10px 16px 12px;
-}
-html.dark .arch-filters-row { background: rgba(15, 15, 15, 0.65); }
-
-.arch-f {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.arch-f-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.74rem;
-  letter-spacing: 0.07em;
-  color: inherit;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  opacity: 0.65;
-  transition: opacity 0.15s;
-  white-space: nowrap;
-}
-.arch-f-btn:hover, .arch-f-btn.open { opacity: 1; }
-
-/* +/− icon */
-.arch-f-icon {
-  position: relative;
-  width: 11px;
-  height: 11px;
-  display: inline-block;
-  flex-shrink: 0;
-}
-.arch-f-icon::before, .arch-f-icon::after {
-  content: "";
-  position: absolute;
-  left: 50%; top: 50%;
-  background: currentColor;
-  transform: translate(-50%, -50%);
-  transition: height 0.25s, opacity 0.25s;
-}
-.arch-f-icon::before { width: 9px; height: 1px; }
-.arch-f-icon::after  { width: 1px; height: 9px; }
-.arch-f-btn.open .arch-f-icon::after { height: 0; opacity: 0; }
-
-/* Selected value shown below the button */
-.arch-f-selected {
-  display: block;
-  font-size: 0.64rem;
-  letter-spacing: 0.05em;
-  opacity: 0.8;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  margin-top: 3px;
-  min-height: 0.9em;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-/* Dropdown */
-.arch-f-drop {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  min-width: 135px;
-  padding: 6px 0;
-
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-
-  z-index: 40;
-}
-
-html.dark .arch-f-drop {
-  background: rgba(15,15,15,0.78);
-}
-.arch-f-drop.open { display: flex; }
-
-.arch-f-opt {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.7rem;
-  color: inherit;
-  padding: 5px 14px;
-  text-align: left;
-  width: 100%;
-  opacity: 0.28;
-  letter-spacing: 0.04em;
-  transition: opacity 0.15s;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-.arch-f-opt:hover { opacity: 0.65; }
-.arch-f-opt.on {
-  opacity: 1;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-/* ── GRID ── */
-.arch-grid {
-  position: relative;
-  width: 100%;
-  min-height: 600px;
-  overflow: visible;
-}
-
-/* ── ITEMS ── */
-.arch-item {
-  position: absolute;
-  cursor: pointer;
-  overflow: visible;
-  transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-.arch-item:hover { transform: scale(1.055); z-index: 20 !important; }
-
-.arch-img { display: block; width: 100%; height: auto; pointer-events: none; }
-
-/* ── TEXT LABELS ──
-   RULE — each text type has a fixed position role:
-     year    → right or left vertical (seeded)
-     category → OPPOSITE vertical side (can never overlap year)
-     title   → below (horizontal)
-     comment → above (horizontal, very rare)
-   Same-image labels therefore NEVER overlap.
-   Cross-image overlap is handled by V_GAP.
-── */
-.arch-lbl {
-  position: absolute;
-  font-size: 0.86rem;
-  letter-spacing: 0.055em;
-  line-height: 1.5;
-  opacity: 0.55;
-  pointer-events: none;
-  color: inherit;
-  font-family: inherit;
-}
-
-.arch-lbl-r {
-  left: calc(100% + 12px);
-  top: 0;
-  writing-mode: vertical-lr;
-  white-space: nowrap;
-  overflow: hidden; /* max-height set per-item in JS */
-}
-
-.arch-lbl-l {
-  right: calc(100% + 12px);
-  top: 0;
-  writing-mode: vertical-rl;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-.arch-lbl-b {
-  top: calc(100% + 9px);
-  left: 0;
-  writing-mode: horizontal-tb;
-  white-space: normal;
-  word-break: break-word;
-  overflow: hidden;
-  /* max-width + max-height set per-item in JS */
-}
-
-.arch-lbl-a {
-  bottom: calc(100% + 9px);
-  left: 0;
-  writing-mode: horizontal-tb;
-  white-space: normal;
-  word-break: break-word;
-  overflow: hidden;
-}
-
-.arch-item.arch-off { display: none !important; }
-
-/* ── POPUP ── */
-.arch-popup {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.38s ease;
-}
-.arch-popup.open { opacity: 1; pointer-events: all; }
-
-.arch-popup-bg {
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.48);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-}
-html.dark .arch-popup-bg {
-  background: rgba(0,0,0,0.52);
-}
-
-.arch-popup-pane {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  gap: 44px;
-  max-width: min(1100px, 94vw);
-  max-height: 90vh;
-  padding: 48px 64px 40px 44px;
-  transform: scale(0.95);
-  transition: transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-.arch-popup.open .arch-popup-pane { transform: scale(1); }
-
-.arch-popup-x {
-  position: absolute;
-  top: 12px; right: 20px;
-  background: none; border: none; cursor: pointer;
-  font-size: 2.2rem; color: inherit; padding: 0;
-  line-height: 1; font-weight: 200; opacity: 0.5;
-  transition: opacity 0.15s;
-}
-.arch-popup-x:hover { opacity: 1; }
-
-.arch-popup-img-col { flex-shrink: 0; }
-.arch-popup-img {
-  display: block;
-  max-height: 78vh; max-width: 52vw;
-  width: auto; height: auto; object-fit: contain;
-}
-
-.arch-popup-text-col {
-  flex: 1; min-width: 160px; max-width: 300px;
-  display: flex; flex-direction: column; gap: 14px; padding-top: 4px;
-}
-
-.arch-popup-year {
-  font-size: 0.68rem; letter-spacing: 0.12em; opacity: 0.4; display: block;
-}
-.arch-popup-title {
-  font-size: 1.05rem; font-weight: 600;
-  line-height: 1.35; letter-spacing: 0.02em; margin: 0;
-}
-.arch-popup-comment {
-  font-size: 0.78rem; line-height: 1.7; opacity: 0.7; margin: 0;
-}
-.arch-popup-catline {
-  font-size: 0.65rem; letter-spacing: 0.1em;
-  text-transform: uppercase; opacity: 0.35;
-}
-.arch-popup-vert {
-  position: absolute; right: 18px; top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-lr;
-  font-size: 0.6rem; letter-spacing: 0.14em;
-  text-transform: uppercase; opacity: 0.22;
-}
-
-/* ── POPUP ARROWS ── */
-.arch-arrow {
-  position: fixed; top: 50%; transform: translateY(-50%);
-  display: flex; align-items: center;
-  color: inherit; opacity: 0.6;
-  background: none !important; border: none !important;
-  text-decoration: none !important; box-shadow: none !important;
-  padding: 16px 10px !important; z-index: 560;
-  transition: opacity 0.22s; line-height: 0; cursor: pointer;
-  display: none;
-}
-.arch-arrow:hover { opacity: 0.2; }
-.arch-arrow-prev { left: 16px; }
-.arch-arrow-next { right: 16px; }
-
-/* ══════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════ */
-
-/* Medium screens — sidebar still fixed but section has less left-padding */
-@media (max-width: 1100px) {
-  .arch-section { padding-left: 190px; }
-  .arch-sidebar { left: 16px; }
-}
-
-/* Small screens — sidebar fixed at TOP (same behaviour as desktop fixed-left) */
-@media (max-width: 800px) {
   .arch-section {
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 72px; /* clears the fixed top bar */
+    overflow-x:hidden;
+    padding:48px 0 0 230px;
+    box-sizing:border-box;
   }
-
-  /* Sidebar becomes a compact rectangle — NOT full width.
-     Background moves here so deselect is inside the box. */
   .arch-sidebar {
-    position: fixed;
-    top: 60px;
-    left: 20px;        /* compact, anchored left */
-    right: auto;       /* don't stretch */
-    width: auto;
-    transform: none;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    z-index: 40;
-    padding: 8px 16px 10px;
-    background: rgba(255,255,255,0.78);
-    backdrop-filter: blur(16px) saturate(1.1);
-    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    position:fixed;
+    left:8%;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:40;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
   }
-  html.dark .arch-sidebar {
-    background: rgba(15, 15, 15, 0.80);
-  }
-
-  /* Deselect sits inside the box above the filter buttons */
   .arch-deselect {
-    padding: 0 0 2px 0;
-    margin: 0;
+    display:none;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.66rem;
+    color:inherit;
+    padding:4px 0 4px 4px;
+    opacity:.45;
+    letter-spacing:.05em;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    transition:opacity .15s;
+    white-space:nowrap;
   }
-
-  /* Remove the inner row's own background — sidebar is now the box */
+  .arch-deselect:hover {
+    opacity:1;
+  }
   .arch-filters-row {
-    background: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0;
-    gap: 24px;
-    width: auto;
+    display:flex;
+    flex-direction:row;
+    align-items:flex-start;
+    gap:32px;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(16px)saturate(1.1);
+    -webkit-backdrop-filter:blur(16px)saturate(1.1);
+    padding:10px 16px 12px;
   }
-
+  html.dark .arch-filters-row {
+    background:var(--glass-bar);
+  }
+  .arch-f {
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .arch-f-btn {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.74rem;
+    letter-spacing:.07em;
+    color:inherit;
+    padding:0;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    opacity:.65;
+    transition:opacity .15s;
+    white-space:nowrap;
+  }
+  .arch-f-btn:hover,.arch-f-btn.open {
+    opacity:1;
+  }
+  .arch-f-icon {
+    position:relative;
+    width:11px;
+    height:11px;
+    display:inline-block;
+    flex-shrink:0;
+  }
+  .arch-f-icon::before,.arch-f-icon::after {
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    background:currentColor;
+    transform:translate(-50%,-50%);
+    transition:height .25s,opacity .25s;
+  }
+  .arch-f-icon::before {
+    width:9px;
+    height:1px;
+  }
+  .arch-f-icon::after {
+    width:1px;
+    height:9px;
+  }
+  .arch-f-btn.open .arch-f-icon::after {
+    height:0;
+    opacity:0;
+  }
+  .arch-f-selected {
+    display:block;
+    font-size:.64rem;
+    letter-spacing:.05em;
+    opacity:.8;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    margin-top:3px;
+    min-height:.9em;
+    pointer-events:none;
+    white-space:nowrap;
+  }
+  .arch-f-drop {
+    display:none;
+    flex-direction:column;
+    position:absolute;
+    top:calc(100% + 4px);
+    left:0;
+    min-width:135px;
+    padding:6px 0;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(16px)saturate(1.1);
+    -webkit-backdrop-filter:blur(16px)saturate(1.1);
+    z-index:40;
+  }
+  html.dark .arch-f-drop {
+    background:var(--glass-overlay);
+  }
+  .arch-f-drop.open {
+    display:flex;
+  }
+  .arch-f-opt {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.7rem;
+    color:inherit;
+    padding:5px 14px;
+    text-align:left;
+    width:100%;
+    opacity:.28;
+    letter-spacing:.04em;
+    transition:opacity .15s;
+    white-space:nowrap;
+    box-sizing:border-box;
+  }
+  .arch-f-opt:hover {
+    opacity:.65;
+  }
+  .arch-f-opt.on {
+    opacity:1;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
   .arch-grid {
-    padding: 0 16px;
-    box-sizing: border-box;
+    position:relative;
+    width:100%;
+    min-height:600px;
+    overflow:visible;
   }
-}
-
-@media (max-width: 600px) {
+  .arch-item {
+    position:absolute;
+    cursor:pointer;
+    overflow:visible;
+    transition:transform .32s cubic-bezier(.25,.46,.45,.94);
+  }
+  .arch-item:hover {
+    transform:scale(1.055);
+    z-index:20!important;
+  }
+  .arch-img {
+    display:block;
+    width:100%;
+    height:auto;
+    pointer-events:none;
+  }
+  .arch-lbl {
+    position:absolute;
+    font-size:.86rem;
+    letter-spacing:.055em;
+    line-height:1.5;
+    opacity:.55;
+    pointer-events:none;
+    color:inherit;
+    font-family:inherit;
+  }
+  .arch-lbl-r {
+    left:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-lr;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .arch-lbl-l {
+    right:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-rl;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .arch-lbl-b {
+    top:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  .arch-lbl-a {
+    bottom:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  .arch-item.arch-off {
+    display:none!important;
+  }
+  .arch-popup {
+    position:fixed;
+    inset:0;
+    z-index:500;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .38s ease;
+  }
+  .arch-popup.open {
+    opacity:1;
+    pointer-events:all;
+  }
+  .arch-popup-bg {
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,.48);
+    backdrop-filter:blur(16px)saturate(1.1);
+    -webkit-backdrop-filter:blur(16px)saturate(1.1);
+  }
+  html.dark .arch-popup-bg {
+    background:rgba(0,0,0,.52);
+  }
   .arch-popup-pane {
-    flex-direction: column;
-    gap: 20px;
-    padding: 44px 20px 80px;
-    overflow-y: auto;
-    max-height: 92vh;
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:flex-start;
+    gap:44px;
+    max-width:min(1100px,94vw);
+    max-height:90vh;
+    padding:48px 64px 40px 44px;
+    transform:scale(.95);
+    transition:transform .38s cubic-bezier(.25,.46,.45,.94);
   }
-  .arch-popup-img { max-width: 88vw; max-height: 52vh; }
-  .arch-popup-text-col { max-width: none; }
-  .arch-popup-vert { display: none; }
-  /* Anchor arrows to bottom corners on mobile */
-  .arch-arrow { top: auto !important; bottom: 28px; transform: none !important; }
-}
-
-/* ── END SPACER ── */
-.arch-end {
-  position: relative;
-  width: 90%;            /* fills the section's content box */
-  box-sizing: border-box;    /* right breathing room */
-  margin-top: 9vh;        /* small gap after grid */
-  padding-bottom: 80px;
-}
-
-.arch-end-1 {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: inherit;
-  letter-spacing: inherit;
-}
-
-/* Right-aligned — needs explicit width:100% so it spans the full content box */
-.arch-end-2 {
-  display: block;
-  width: 100%;
-  text-align: right;
-  font-size: inherit;
-  letter-spacing: inherit;
-  margin-top: 30vh;       /* pushes it well below the first line */
-  padding-right: 10vw;
-  margin-bottom: 7vh;
-}
-
-@media (max-width: 800px) {
-  .arch-end {margin-top: -4vh; width: 100%;}
-  .arch-end-2 { margin-top: 30vh; padding-right: 10vw; margin-bottom: 4vh;}
-}
-
+  .arch-popup.open .arch-popup-pane {
+    transform:scale(1);
+  }
+  .arch-popup-x {
+    position:absolute;
+    top:12px;
+    right:20px;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:2.2rem;
+    color:inherit;
+    padding:0;
+    line-height:1;
+    font-weight:200;
+    opacity:.5;
+    transition:opacity .15s;
+  }
+  .arch-popup-x:hover {
+    opacity:1;
+  }
+  .arch-popup-img-col {
+    flex-shrink:0;
+  }
+  .arch-popup-img {
+    display:block;
+    max-height:78vh;
+    max-width:52vw;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+  }
+  .arch-popup-text-col {
+    flex:1;
+    min-width:160px;
+    max-width:300px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding-top:4px;
+  }
+  .arch-popup-year {
+    font-size:.68rem;
+    letter-spacing:.12em;
+    opacity:.4;
+    display:block;
+  }
+  .arch-popup-title {
+    font-size:1.05rem;
+    font-weight:600;
+    line-height:1.35;
+    letter-spacing:.02em;
+    margin:0;
+  }
+  .arch-popup-comment {
+    font-size:.78rem;
+    line-height:1.7;
+    opacity:.7;
+    margin:0;
+  }
+  .arch-popup-catline {
+    font-size:.65rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.35;
+  }
+  .arch-popup-vert {
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    writing-mode:vertical-lr;
+    font-size:.6rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    opacity:.22;
+  }
+  .arch-arrow {
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    align-items:center;
+    color:inherit;
+    opacity:.6;
+    background:0 0!important;
+    border:none!important;
+    text-decoration:none!important;
+    box-shadow:none!important;
+    padding:16px 10px!important;
+    z-index:560;
+    transition:opacity .22s;
+    line-height:0;
+    cursor:pointer;
+    display:none;
+  }
+  .arch-arrow:hover {
+    opacity:.2;
+  }
+  .arch-arrow-prev {
+    left:16px;
+  }
+  .arch-arrow-next {
+    right:16px;
+  }
+  @media(max-width:1100px) {
+    .arch-section {
+      padding-left:190px;
+    }
+    .arch-sidebar {
+      left:16px;
+    }
+  }
+  @media(max-width:800px) {
+    .arch-section {
+      padding-left:0;
+      padding-right:0;
+      padding-top:72px;
+    }
+    .arch-sidebar {
+      position:fixed;
+      top:60px;
+      left:20px;
+      right:auto;
+      width:auto;
+      transform:none;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:4px;
+      z-index:40;
+      padding:8px 16px 10px;
+      background:rgba(255,255,255,.78);
+      backdrop-filter:blur(16px)saturate(1.1);
+      -webkit-backdrop-filter:blur(16px)saturate(1.1);
+    }
+    html.dark .arch-sidebar {
+      background:var(--glass-overlay);
+    }
+    .arch-deselect {
+      padding:0 0 2px;
+      margin:0;
+    }
+    .arch-filters-row {
+      background:0 0!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+      padding:0;
+      gap:24px;
+      width:auto;
+    }
+    .arch-grid {
+      padding:0 16px;
+      box-sizing:border-box;
+    }
+  }
+  @media(max-width:600px) {
+    .arch-popup-pane {
+      flex-direction:column;
+      gap:20px;
+      padding:44px 20px 80px;
+      overflow-y:auto;
+      max-height:92vh;
+    }
+    .arch-popup-img {
+      max-width:88vw;
+      max-height:52vh;
+    }
+    .arch-popup-text-col {
+      max-width:none;
+    }
+    .arch-popup-vert {
+      display:none;
+    }
+    .arch-arrow {
+      top:auto!important;
+      bottom:28px;
+      transform:none!important;
+    }
+  }
+  .arch-end {
+    position:relative;
+    width:90%;
+    box-sizing:border-box;
+    margin-top:9vh;
+    padding-bottom:80px;
+  }
+  .arch-end-1 {
+    display:block;
+    width:100%;
+    text-align:center;
+    font-size:inherit;
+    letter-spacing:inherit;
+  }
+  .arch-end-2 {
+    display:block;
+    width:100%;
+    text-align:right;
+    font-size:inherit;
+    letter-spacing:inherit;
+    margin-top:30vh;
+    padding-right:10vw;
+    margin-bottom:7vh;
+  }
+  @media(max-width:800px) {
+    .arch-end {
+      margin-top:-4vh;
+      width:100%;
+    }
+    .arch-end-2 {
+      margin-top:30vh;
+      padding-right:10vw;
+      margin-bottom:4vh;
+    }
+  }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-
-  /* ── Mulberry32 PRNG ── */
-  function mkRng(seed) {
-    let s = seed >>> 0;
-    return () => {
-      s = Math.imul(s ^ (s >>> 15), s | 1);
-      s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
-      return ((s ^ (s >>> 14)) >>> 0) / 0x100000000;
-    };
-  }
-
-  const CAT_LABELS = {
-    photos: 'Louis', photography: 'Photography',
-    studios: 'Studios', galleries: 'Galleries & Exhibitions'
-  };
-  const fmtCat = c => CAT_LABELS[c] || c || '';
-
-  const grid  = document.getElementById('archGrid');
-  const items = Array.from(grid.querySelectorAll('.arch-item'));
-  const popup = document.getElementById('archPopup');
-  const pBg   = document.getElementById('archPopupBg');
-  const pImg  = document.getElementById('archPopupImg');
-  const pTitle = document.getElementById('archPopupTitle');
-  const pYear  = document.getElementById('archPopupYear');
-  const pCom   = document.getElementById('archPopupComment');
-  const pCat   = document.getElementById('archPopupCatLine');
-  const pVert  = document.getElementById('archPopupVert');
-  const pX     = document.getElementById('archPopupX');
-  const desBt  = document.getElementById('archDeselect');
-  const yearSelEl = document.getElementById('archYearSelected');
-  const catSelEl  = document.getElementById('archCatSelected');
-  const activeF = { year: 'all', category: 'all' };
-
-  /* ═══════════════════════════════════════════════════════
-     TEXT LABELS — deterministic positions per text type
-     so same-image labels CAN NEVER overlap each other:
-
-       year     → one vertical side  (r or l, seeded)
-       category → OPPOSITE vertical side
-       title    → below (b)
-       comment  → above (a) — very rare
-
-     Cross-image overlap prevented by V_GAP minimum.
-     ═══════════════════════════════════════════════════════ */
-  const MAX_H = 42;   /* max chars for horizontal labels (b/a) */
-  const MAX_V = 36;   /* max chars for vertical labels (r/l) */
-
-  function addLabels(item, imgW, imgH) {
-    item.querySelectorAll('.arch-lbl').forEach(l => l.remove());
-
-    const idx = parseInt(item.dataset.idx, 10) || 0;
-    const r   = mkRng(idx * 7919 + 31);
-
-    const year    = (item.dataset.year    || '').trim();
-    const cat     = fmtCat(item.dataset.cat || '').trim();
-    const title   = (item.dataset.title   || '').trim();
-    const comment = (item.dataset.comment || '').trim();
-
-    /* Seeded side preference — year goes right or left, category goes opposite */
-    const yearRight   = r() < 0.5;
-    const showCat     = cat     && r() < 0.92;
-    const showTitle   = title   && r() < 0.82;
-    const showComment = comment && r() < 0.18;
-
-    const lbDefs = [];
-
-    if (year) {
-      lbDefs.push({
-        text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
-        pos: yearRight ? 'r' : 'l',
-        maxH: Math.round(imgH * 0.70),
-        maxW: null
-      });
+  document.addEventListener("DOMContentLoaded", () => {
+    function C(e) {
+      let t = e >>> 0;
+      return () => (
+        (t = Math.imul(t ^ (t >>> 15), t | 1)),
+        (t ^= t + Math.imul(t ^ (t >>> 7), t | 61)),
+        ((t ^ (t >>> 14)) >>> 0) / 4294967296
+      );
     }
-
-    if (showCat) {
-      const catText = cat.length > MAX_V ? cat.slice(0, MAX_V - 1) + '…' : cat;
-      lbDefs.push({
-        text: catText,
-        pos: yearRight ? 'l' : 'r',  /* always OPPOSITE of year */
-        maxH: Math.round(imgH * 0.70),
-        maxW: null
-      });
-    }
-
-    if (showTitle) {
-      const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
-      lbDefs.push({
-        text: t,
-        pos: 'b',
-        maxH: Math.round(1.5 * 0.86 * 16 * 2.2), /* ~2 lines max */
-        maxW: Math.round(imgW * 0.88)
-      });
-    }
-
-    if (showComment) {
-      const c = comment.length > MAX_H ? comment.slice(0, MAX_H - 1) + '…' : comment;
-      lbDefs.push({
-        text: c,
-        pos: 'a',
-        maxH: Math.round(1.5 * 0.86 * 16 * 1.2), /* ~1 line max */
-        maxW: Math.round(imgW * 0.88)
-      });
-    }
-
-    lbDefs.forEach(({ text, pos, maxH, maxW }) => {
-      const el = document.createElement('div');
-      el.className   = `arch-lbl arch-lbl-${pos}`;
-      el.textContent = text;
-      if (maxH) el.style.maxHeight = maxH + 'px';
-      if (maxW) el.style.maxWidth  = maxW + 'px';
-      item.appendChild(el);
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════
-     SCATTER LAYOUT
-     — layout constants adapt to screen size
-     — images are larger on small screens (fewer cols)
-     ═══════════════════════════════════════════════════ */
-  function layout() {
-    const W = grid.offsetWidth;
-    if (!W) { requestAnimationFrame(layout); return; }
-
-    const mobile = window.innerWidth <= 800;
-
-    /* On mobile use fewer, wider columns so photos are bigger */
-    const NCOLS   = W > 1100 ? 11 : W > 900 ? 9 : W > 680 ? 6 : W > 480 ? 3 : 2;
-    const H_GAP   = mobile ? 24 : 50;   /* gap between images */
-    const PAD_L   = mobile ? 0  : 30;
-    const PAD_R   = mobile ? 0  : 50;
-    const V_MIN   = mobile ? 50 : 70;   /* minimum vertical gap — enough for label lines */
-    const V_EXTRA = mobile ? 40 : 50;   /* random extra on top of V_MIN */
-
-    const vis = items.filter(it => !it.classList.contains('arch-off'));
-    if (!vis.length) { grid.style.height = '300px'; return; }
-
-    const usableW = W - PAD_L - PAD_R;
-    const colW    = usableW / NCOLS;
-    const bots    = new Array(NCOLS).fill(40);
-
-    vis.forEach((item, vi) => {
-      const idx = parseInt(item.dataset.idx, 10) || vi;
-      const r   = mkRng(idx * 3331 + 113);
-
-      /* Width: 2–4 cols; every 7th item is large */
-      const isLarge = idx % 7 === 0;
-      const wBase   = isLarge ? 3 : 2;
-      const wExtra  = Math.floor(r() * (isLarge ? 2 : 3));
-      const wCols   = Math.min(NCOLS, wBase + wExtra);
-
-      /* On small screens cap width so nothing is wider than ~80% */
-      const wColsCapped = mobile ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8))) : wCols;
-
-      const maxStart = Math.max(0, NCOLS - wColsCapped);
-      const startCol = Math.floor(r() * (maxStart + 1));
-
-      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
-      const vGap    = V_MIN + Math.floor(r() * V_EXTRA);
-      const topY    = spanMax + vGap;
-
-      const slotW = wColsCapped * colW;
-      const imgW  = Math.max(60, slotW - H_GAP);
-      const leftX = PAD_L + startCol * colW + H_GAP / 2;
-
-      item.style.left  = leftX + 'px';
-      item.style.top   = topY  + 'px';
-      item.style.width = imgW  + 'px';
-
-      const img = item.querySelector('img');
-      const ar  = (img.naturalWidth > 0 && img.naturalHeight > 0)
-                  ? img.naturalHeight / img.naturalWidth : 1.25;
-      const imgH = imgW * ar;
-
-      addLabels(item, imgW, imgH);
-
-      for (let c = startCol; c < startCol + wColsCapped; c++) {
-        bots[c] = topY + imgH;
+    const I = {
+        photos: "Louis",
+        photography: "Photography",
+        studios: "Studios",
+        galleries: "Galleries & Exhibitions",
+      },
+      p = (e) => I[e] || e || "",
+      i = document.getElementById("archGrid"),
+      a = Array.from(i.querySelectorAll(".arch-item")),
+      r = document.getElementById("archPopup"),
+      H = document.getElementById("archPopupBg"),
+      m = document.getElementById("archPopupImg"),
+      D = document.getElementById("archPopupTitle"),
+      z = document.getElementById("archPopupYear"),
+      v = document.getElementById("archPopupComment"),
+      F = document.getElementById("archPopupCatLine"),
+      M = document.getElementById("archPopupVert"),
+      N = document.getElementById("archPopupX"),
+      _ = document.getElementById("archDeselect"),
+      j = document.getElementById("archYearSelected"),
+      b = document.getElementById("archCatSelected"),
+      e = { year: "all", category: "all" },
+      h = 42,
+      u = 36;
+    function R(e, t, n) {
+      e.querySelectorAll(".arch-lbl").forEach((e) => e.remove());
+      const d = parseInt(e.dataset.idx, 10) || 0,
+        o = C(d * 7919 + 31),
+        i = (e.dataset.year || "").trim(),
+        a = p(e.dataset.cat || "").trim(),
+        r = (e.dataset.title || "").trim(),
+        c = (e.dataset.comment || "").trim(),
+        l = o() < 0.5,
+        m = a && o() < 0.92,
+        f = r && o() < 0.82,
+        g = c && o() < 0.18,
+        s = [];
+      if (
+        (i &&
+          s.push({
+            text: i.length > u ? i.slice(0, u - 1) + "…" : i,
+            pos: l ? "r" : "l",
+            maxH: Math.round(n * 0.7),
+            maxW: null,
+          }),
+        m)
+      ) {
+        const e = a.length > u ? a.slice(0, u - 1) + "…" : a;
+        s.push({ text: e, pos: l ? "l" : "r", maxH: Math.round(n * 0.7), maxW: null });
       }
-    });
-
-    grid.style.height = (Math.max(...bots) + 220) + 'px';
-  }
-
-  let loaded = 0;
-  Array.from(grid.querySelectorAll('img')).forEach(img => {
-    const done = () => { loaded++; if (loaded <= 8 || loaded % 4 === 0) layout(); };
-    img.complete ? done() : (img.onload = done, img.onerror = done);
-  });
-  layout();
-
-  let rt;
-  window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(layout, 180); });
-
-  /* ═══════════════════════════════════════════
-     FILTERS
-     — each toggles independently
-     — dropdowns stay open after selecting
-     — selected value shown below button
-     ═══════════════════════════════════════════ */
-  function updateSelectedLabels() {
-    if (yearSelEl) yearSelEl.textContent = activeF.year     === 'all' ? '' : activeF.year;
-    if (catSelEl)  catSelEl.textContent  = activeF.category === 'all' ? '' : fmtCat(activeF.category);
-  }
-
-  function applyFilters() {
-    items.forEach(it => {
-      const yo = activeF.year     === 'all' || String(it.dataset.year) === String(activeF.year);
-      const co = activeF.category === 'all' || it.dataset.cat === activeF.category;
-      it.classList.toggle('arch-off', !(yo && co));
-    });
-    const anyOn = activeF.year !== 'all' || activeF.category !== 'all';
-    desBt.style.display = anyOn ? 'block' : 'none';
-    updateSelectedLabels();
-    setTimeout(layout, 40);
-  }
-
-  function wireFilter(btnId, dropId, key) {
-    const btn  = document.getElementById(btnId);
-    const drop = document.getElementById(dropId);
-
-    /* Toggle this dropdown independently — does NOT close the other */
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const isOpen = drop.classList.contains('open');
-      drop.classList.toggle('open', !isOpen);
-      btn.classList.toggle('open', !isOpen);
-    });
-
-    drop.querySelectorAll('.arch-f-opt').forEach(opt => {
-      opt.addEventListener('click', e => {
-        e.stopPropagation();
-        drop.querySelectorAll('.arch-f-opt').forEach(o => o.classList.remove('on'));
-        opt.classList.add('on');
-        activeF[key] = opt.dataset.val;
-        applyFilters();
-        /* Dropdown stays OPEN — user can keep browsing options */
+      if (f) {
+        const e = r.length > h ? r.slice(0, h - 1) + "…" : r;
+        s.push({ text: e, pos: "b", maxH: Math.round(1.5 * 0.86 * 16 * 2.2), maxW: Math.round(t * 0.88) });
+      }
+      if (g) {
+        const e = c.length > h ? c.slice(0, h - 1) + "…" : c;
+        s.push({ text: e, pos: "a", maxH: Math.round(1.5 * 0.86 * 16 * 1.2), maxW: Math.round(t * 0.88) });
+      }
+      s.forEach(({ text: t, pos: n, maxH: s, maxW: o }) => {
+        const i = document.createElement("div");
+        ((i.className = `arch-lbl arch-lbl-${n}`),
+          (i.textContent = t),
+          s && (i.style.maxHeight = s + "px"),
+          o && (i.style.maxWidth = o + "px"),
+          e.appendChild(i));
       });
-    });
-  }
-
-  /* Close both only when clicking completely outside the sidebar */
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.arch-sidebar')) {
-      document.querySelectorAll('.arch-f-drop').forEach(d => d.classList.remove('open'));
-      document.querySelectorAll('.arch-f-btn').forEach(b => b.classList.remove('open'));
     }
+    function o() {
+      const e = i.offsetWidth;
+      if (!e) {
+        requestAnimationFrame(o);
+        return;
+      }
+      const t = window.innerWidth <= 800,
+        n = e > 1100 ? 11 : e > 900 ? 9 : e > 680 ? 6 : e > 480 ? 3 : 2,
+        r = t ? 24 : 50,
+        c = t ? 0 : 30,
+        u = t ? 0 : 50,
+        h = t ? 50 : 70,
+        m = t ? 40 : 50,
+        l = a.filter((e) => !e.classList.contains("arch-off"));
+      if (!l.length) {
+        i.style.height = "300px";
+        return;
+      }
+      const f = e - c - u,
+        d = f / n,
+        s = new Array(n).fill(40);
+      (l.forEach((e, o) => {
+        const j = parseInt(e.dataset.idx, 10) || o,
+          u = C(j * 3331 + 113),
+          g = j % 7 === 0,
+          O = g ? 3 : 2,
+          A = Math.floor(u() * (g ? 2 : 3)),
+          p = Math.min(n, O + A),
+          l = t ? Math.min(p, Math.max(2, Math.round(n * 0.8))) : p,
+          M = Math.max(0, n - l),
+          a = Math.floor(u() * (M + 1)),
+          w = Math.max(...s.slice(a, a + l)),
+          k = h + Math.floor(u() * m),
+          _ = w + k,
+          E = l * d,
+          f = Math.max(60, E - r),
+          x = c + a * d + r / 2;
+        ((e.style.left = x + "px"), (e.style.top = _ + "px"), (e.style.width = f + "px"));
+        const i = e.querySelector("img"),
+          y = i.getAttribute("width") | 0,
+          b = i.getAttribute("height") | 0,
+          S =
+            y > 0 && b > 0
+              ? b / y
+              : i.naturalWidth > 0 && i.naturalHeight > 0
+                ? i.naturalHeight / i.naturalWidth
+                : 1.25,
+          v = f * S;
+        R(e, f, v);
+        for (let e = a; e < a + l; e++) s[e] = _ + v;
+      }),
+        (i.style.height = Math.max(...s) + 220 + "px"));
+    }
+    let g = 0;
+    (Array.from(i.querySelectorAll("img")).forEach((e) => {
+      const t = () => {
+        (g++, (g <= 8 || g % 4 === 0) && o());
+      };
+      e.complete ? t() : ((e.onload = t), (e.onerror = t));
+    }),
+      o());
+    let O,
+      x = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (window.innerWidth === x) return;
+      ((x = window.innerWidth), clearTimeout(O), (O = setTimeout(o, 180)));
+    });
+    function T() {
+      (j && (j.textContent = e.year === "all" ? "" : e.year),
+        b && (b.textContent = e.category === "all" ? "" : p(e.category)));
+    }
+    function E() {
+      a.forEach((t) => {
+        const n = e.year === "all" || String(t.dataset.year) === String(e.year),
+          s = e.category === "all" || t.dataset.cat === e.category;
+        t.classList.toggle("arch-off", !n || !s);
+      });
+      const t = e.year !== "all" || e.category !== "all";
+      ((_.style.display = t ? "block" : "none"), T(), setTimeout(o, 40));
+    }
+    function k(t, n, s) {
+      const i = document.getElementById(t),
+        o = document.getElementById(n);
+      (i.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const t = o.classList.contains("open");
+        (o.classList.toggle("open", !t), i.classList.toggle("open", !t));
+      }),
+        o.querySelectorAll(".arch-f-opt").forEach((t) => {
+          t.addEventListener("click", (n) => {
+            (n.stopPropagation(),
+              o.querySelectorAll(".arch-f-opt").forEach((e) => e.classList.remove("on")),
+              t.classList.add("on"),
+              (e[s] = t.dataset.val),
+              E());
+          });
+        }));
+    }
+    (document.addEventListener("click", (e) => {
+      e.target.closest(".arch-sidebar") ||
+        (document.querySelectorAll(".arch-f-drop").forEach((e) => e.classList.remove("open")),
+        document.querySelectorAll(".arch-f-btn").forEach((e) => e.classList.remove("open")));
+    }),
+      _.addEventListener("click", () => {
+        ((e.year = "all"),
+          (e.category = "all"),
+          document.querySelectorAll(".arch-f-opt").forEach((e) => e.classList.remove("on")),
+          document.querySelectorAll('.arch-f-opt[data-val="all"]').forEach((e) => e.classList.add("on")),
+          E());
+      }),
+      k("archYearBtn", "archYearDrop", "year"),
+      k("archCatBtn", "archCatDrop", "category"));
+    const A =
+        '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+      S =
+        '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+      l = document.getElementById("archPrevBtn"),
+      c = document.getElementById("archNextBtn");
+    ((l.innerHTML = A), (c.innerHTML = S));
+    let s = [],
+      t = -1,
+      n = null;
+    function w() {
+      return a.filter((e) => !e.classList.contains("arch-off"));
+    }
+    function L() {
+      ((l.style.display = t > 0 ? "flex" : "none"), (c.style.display = t < s.length - 1 ? "flex" : "none"));
+    }
+    function y(e) {
+      ((m.src = e.dataset.img || ""),
+        (m.alt = e.dataset.title),
+        (D.textContent = e.dataset.title || ""),
+        (z.textContent = e.dataset.year || ""),
+        (v.textContent = e.dataset.comment || ""),
+        (v.style.display = e.dataset.comment ? "block" : "none"));
+      const t = p(e.dataset.cat || "");
+      ((F.textContent = [t, e.dataset.year].filter(Boolean).join(" · ")), (M.textContent = t), L());
+    }
+    function P(e) {
+      ((s = w()),
+        (t = s.indexOf(e)),
+        (n = e),
+        y(e),
+        r.classList.add("open"),
+        (document.body.style.overflow = "hidden"));
+    }
+    function f() {
+      (r.classList.remove("open"),
+        (document.body.style.overflow = ""),
+        (n = null),
+        (l.style.display = "none"),
+        (c.style.display = "none"),
+        setTimeout(() => {
+          r.classList.contains("open") || (m.src = "");
+        }, 420));
+    }
+    function d(e) {
+      const i = w(),
+        a = n ? i.indexOf(n) : -1;
+      ((s = i), a !== -1 && (t = a));
+      const o = t + e;
+      if (o < 0 || o >= s.length) return;
+      ((t = o), (n = s[t]), y(n));
+    }
+    (a.forEach((e) => e.addEventListener("click", () => P(e))),
+      N.addEventListener("click", f),
+      H.addEventListener("click", f),
+      l.addEventListener("click", (e) => {
+        (e.preventDefault(), d(-1));
+      }),
+      c.addEventListener("click", (e) => {
+        (e.preventDefault(), d(1));
+      }),
+      document.addEventListener("keydown", (e) => {
+        if (!r.classList.contains("open")) return;
+        (e.key === "Escape" && f(), e.key === "ArrowLeft" && d(-1), e.key === "ArrowRight" && d(1));
+      }));
   });
-
-  desBt.addEventListener('click', () => {
-    activeF.year = 'all'; activeF.category = 'all';
-    document.querySelectorAll('.arch-f-opt').forEach(o => o.classList.remove('on'));
-    document.querySelectorAll('.arch-f-opt[data-val="all"]').forEach(o => o.classList.add('on'));
-    applyFilters();
-  });
-
-  wireFilter('archYearBtn', 'archYearDrop', 'year');
-  wireFilter('archCatBtn',  'archCatDrop',  'category');
-
-  /* ═══════════════════════════════════════════
-     POPUP
-     ═══════════════════════════════════════════ */
-  const leftArrowSVG  = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
-  const rightArrowSVG = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
-
-  const prevBtn = document.getElementById('archPrevBtn');
-  const nextBtn = document.getElementById('archNextBtn');
-  prevBtn.innerHTML = leftArrowSVG;
-  nextBtn.innerHTML = rightArrowSVG;
-
-  let visibleItems   = [];
-  let currentIdx     = -1;
-  let currentItemRef = null;
-
-  function getFilteredItems() {
-    return items.filter(it => !it.classList.contains('arch-off'));
-  }
-
-  function updateNavArrows() {
-    prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
-    nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
-  }
-
-  function populatePopup(item) {
-    pImg.src           = item.dataset.img || '';
-    pImg.alt           = item.dataset.title;
-    pTitle.textContent = item.dataset.title || '';
-    pYear.textContent  = item.dataset.year  || '';
-    pCom.textContent   = item.dataset.comment || '';
-    pCom.style.display = item.dataset.comment ? 'block' : 'none';
-    const cat = fmtCat(item.dataset.cat || '');
-    pCat.textContent  = [cat, item.dataset.year].filter(Boolean).join(' · ');
-    pVert.textContent = cat;
-    updateNavArrows();
-  }
-
-  function openPopup(item) {
-    visibleItems   = getFilteredItems();
-    currentIdx     = visibleItems.indexOf(item);
-    currentItemRef = item;
-    populatePopup(item);
-    popup.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closePopup() {
-    popup.classList.remove('open');
-    document.body.style.overflow = '';
-    currentItemRef = null;
-    prevBtn.style.display = 'none';
-    nextBtn.style.display = 'none';
-    setTimeout(() => { if (!popup.classList.contains('open')) pImg.src = ''; }, 420);
-  }
-
-  function navTo(dir) {
-    const fresh = getFilteredItems();
-    const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
-    visibleItems = fresh;
-    if (freshIdx !== -1) currentIdx = freshIdx;
-    const newIdx = currentIdx + dir;
-    if (newIdx < 0 || newIdx >= visibleItems.length) return;
-    currentIdx = newIdx;
-    currentItemRef = visibleItems[currentIdx];
-    populatePopup(currentItemRef);
-  }
-
-  items.forEach(it => it.addEventListener('click', () => openPopup(it)));
-  pX.addEventListener('click', closePopup);
-  pBg.addEventListener('click', closePopup);
-  prevBtn.addEventListener('click', e => { e.preventDefault(); navTo(-1); });
-  nextBtn.addEventListener('click', e => { e.preventDefault(); navTo(1); });
-  document.addEventListener('keydown', e => {
-    if (!popup.classList.contains('open')) return;
-    if (e.key === 'Escape')      closePopup();
-    if (e.key === 'ArrowLeft')   navTo(-1);
-    if (e.key === 'ArrowRight')  navTo(1);
-  });
-
-});
 </script>
 
 {{ end }}

@@ -96,6 +96,7 @@
           src="{{ $page.Params.image }}"
           alt="{{ $page.Title }}"
           loading="lazy"
+          {{- with partial "img-meta.html" $page.Params.image }} width="{{ .w }}" height="{{ .h }}"{{ end }}
         >
 
       </div>
@@ -186,1164 +187,713 @@
 </div>
 
 <style>
-
-/* ═════════════════════════════════════
-   THE HUNDRED SINS
-   Editorial scatter grid
-   ═════════════════════════════════════ */
-
-
-/* ─────────────────────────────────────
-   SECTION
-   ───────────────────────────────────── */
-
-.sins-section {
-  overflow-x: hidden;
-  padding: 48px 0 0 230px;
-  box-sizing: border-box;
-}
-
-
-/* ─────────────────────────────────────
-   TITLE
-   ───────────────────────────────────── */
-
-.sins-title {
-  width: 100%;
-  margin: 0;
-  padding: 0 40px 55px 0;
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-}
-
-
-/* ─────────────────────────────────────
-   FIXED YEAR FILTER
-   ───────────────────────────────────── */
-
-.sins-sidebar {
-  position: fixed;
-  left: 8%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-
-.sins-deselect {
-  display: none;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.66rem;
-  color: inherit;
-  padding: 4px 0 4px 4px;
-  opacity: 0.45;
-  letter-spacing: 0.05em;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 0.15s;
-  white-space: nowrap;
-}
-
-
-.sins-deselect:hover {
-  opacity: 1;
-}
-
-
-/* ─────────────────────────────────────
-   FILTER ROW
-   ───────────────────────────────────── */
-
-.sins-filters-row {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  gap: 32px;
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  padding: 10px 16px 12px;
-}
-
-
-html.dark .sins-filters-row {
-  background: rgba(15,15,15,0.65);
-}
-
-
-.sins-f {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-
-/* ─────────────────────────────────────
-   FILTER BUTTON
-   ───────────────────────────────────── */
-
-.sins-f-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.74rem;
-  letter-spacing: 0.07em;
-  color: inherit;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  opacity: 0.65;
-  transition: opacity 0.15s;
-  white-space: nowrap;
-}
-
-
-.sins-f-btn:hover,
-.sins-f-btn.open {
-  opacity: 1;
-}
-
-
-/* + / − icon */
-
-.sins-f-icon {
-  position: relative;
-  width: 11px;
-  height: 11px;
-  display: inline-block;
-  flex-shrink: 0;
-}
-
-
-.sins-f-icon::before,
-.sins-f-icon::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  background: currentColor;
-  transform: translate(-50%, -50%);
-  transition: height 0.25s, opacity 0.25s;
-}
-
-
-.sins-f-icon::before {
-  width: 9px;
-  height: 1px;
-}
-
-
-.sins-f-icon::after {
-  width: 1px;
-  height: 9px;
-}
-
-
-.sins-f-btn.open .sins-f-icon::after {
-  height: 0;
-  opacity: 0;
-}
-
-
-/* Selected year */
-
-.sins-f-selected {
-  display: block;
-  font-size: 0.64rem;
-  letter-spacing: 0.05em;
-  opacity: 0.8;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  margin-top: 3px;
-  min-height: 0.9em;
-  pointer-events: none;
-  white-space: nowrap;
-}
-
-
-/* ─────────────────────────────────────
-   DROPDOWN
-   ───────────────────────────────────── */
-
-.sins-f-drop {
-  display: none;
-  flex-direction: column;
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  min-width: 135px;
-  padding: 6px 0;
-  background: rgba(255,255,255,0.78);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-  z-index: 40;
-}
-
-
-html.dark .sins-f-drop {
-  background: rgba(15,15,15,0.78);
-}
-
-
-.sins-f-drop.open {
-  display: flex;
-}
-
-
-.sins-f-opt {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.7rem;
-  color: inherit;
-  padding: 5px 14px;
-  text-align: left;
-  width: 100%;
-  opacity: 0.28;
-  letter-spacing: 0.04em;
-  transition: opacity 0.15s;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
-
-
-.sins-f-opt:hover {
-  opacity: 0.65;
-}
-
-
-.sins-f-opt.on {
-  opacity: 1;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-
-/* ─────────────────────────────────────
-   GRID
-   ───────────────────────────────────── */
-
-.sins-grid {
-  position: relative;
-  width: 100%;
-  min-height: 600px;
-  overflow: visible;
-}
-
-
-/* ─────────────────────────────────────
-   GRID ITEMS
-   ───────────────────────────────────── */
-
-.sins-item {
-  position: absolute;
-  cursor: pointer;
-  overflow: visible;
-  transition:
-    transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-
-
-.sins-item:hover {
-  transform: scale(1.055);
-  z-index: 20 !important;
-}
-
-
-.sins-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  pointer-events: none;
-}
-
-
-.sins-item.sins-off {
-  display: none !important;
-}
-
-
-/* ─────────────────────────────────────
-   LABELS
-   ───────────────────────────────────── */
-
-.sins-lbl {
-  position: absolute;
-  font-size: 0.86rem;
-  letter-spacing: 0.055em;
-  line-height: 1.5;
-  opacity: 0.55;
-  pointer-events: none;
-  color: inherit;
-  font-family: inherit;
-}
-
-
-.sins-lbl-r {
-  left: calc(100% + 12px);
-  top: 0;
-  writing-mode: vertical-lr;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-
-.sins-lbl-l {
-  right: calc(100% + 12px);
-  top: 0;
-  writing-mode: vertical-rl;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-
-.sins-lbl-b {
-  top: calc(100% + 9px);
-  left: 0;
-  writing-mode: horizontal-tb;
-  white-space: normal;
-  word-break: break-word;
-  overflow: hidden;
-}
-
-
-.sins-lbl-a {
-  bottom: calc(100% + 9px);
-  left: 0;
-  writing-mode: horizontal-tb;
-  white-space: normal;
-  word-break: break-word;
-  overflow: hidden;
-}
-
-
-/* ─────────────────────────────────────
-   POPUP
-   ───────────────────────────────────── */
-
-.sins-popup {
-  position: fixed;
-  inset: 0;
-  z-index: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.38s ease;
-}
-
-
-.sins-popup.open {
-  opacity: 1;
-  pointer-events: all;
-}
-
-
-.sins-popup-bg {
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.48);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
-}
-
-
-html.dark .sins-popup-bg {
-  background: rgba(0,0,0,0.52);
-}
-
-
-.sins-popup-pane {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: flex-start;
-  gap: 44px;
-  max-width: min(1100px,94vw);
-  max-height: 90vh;
-  padding: 48px 64px 40px 44px;
-  transform: scale(0.95);
-  transition:
-    transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-
-
-.sins-popup.open .sins-popup-pane {
-  transform: scale(1);
-}
-
-
-/* Close */
-
-.sins-popup-x {
-  position: absolute;
-  top: 12px;
-  right: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 2.2rem;
-  color: inherit;
-  padding: 0;
-  line-height: 1;
-  font-weight: 200;
-  opacity: 0.5;
-  transition: opacity 0.15s;
-}
-
-
-.sins-popup-x:hover {
-  opacity: 1;
-}
-
-
-/* Image */
-
-.sins-popup-img-col {
-  flex-shrink: 0;
-}
-
-
-.sins-popup-img {
-  display: block;
-  max-height: 78vh;
-  max-width: 52vw;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-
-/* Text */
-
-.sins-popup-text-col {
-  flex: 1;
-  min-width: 160px;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-top: 4px;
-}
-
-
-.sins-popup-year {
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  opacity: 0.4;
-  display: block;
-}
-
-
-.sins-popup-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.02em;
-  margin: 0;
-}
-
-
-.sins-popup-comment {
-  font-size: 0.78rem;
-  line-height: 1.7;
-  opacity: 0.7;
-  margin: 0;
-}
-
-
-.sins-popup-vert {
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-lr;
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  opacity: 0.22;
-}
-
-
-/* ─────────────────────────────────────
-   POPUP ARROWS
-   ───────────────────────────────────── */
-
-.sins-arrow {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  color: inherit;
-  opacity: 0.6;
-  background: none !important;
-  border: none !important;
-  text-decoration: none !important;
-  box-shadow: none !important;
-  padding: 16px 10px !important;
-  z-index: 560;
-  transition: opacity 0.22s;
-  line-height: 0;
-  cursor: pointer;
-  display: none;
-}
-
-
-.sins-arrow:hover {
-  opacity: 0.2;
-}
-
-
-.sins-arrow-prev {
-  left: 16px;
-}
-
-
-.sins-arrow-next {
-  right: 16px;
-}
-
-
-/* ─────────────────────────────────────
-   END
-   ───────────────────────────────────── */
-
-.sins-end {
-  position: relative;
-  width: 90%;
-  box-sizing: border-box;
-  margin-top: 9vh;
-  padding-bottom: 80px;
-}
-
-
-.sins-end-1 {
-  display: block;
-  width: 100%;
-  text-align: center;
-  font-size: inherit;
-  letter-spacing: inherit;
-}
-
-
-/* ═════════════════════════════════════
-   RESPONSIVE
-   ═════════════════════════════════════ */
-
-
-/* Medium */
-
-@media (max-width: 1100px) {
   .sins-section {
-    padding-left: 190px;
+    overflow-x:hidden;
+    padding:48px 0 0 230px;
+    box-sizing:border-box;
   }
-  .sins-sidebar {
-    left: 16px;
-  }
-}
-
-
-/* Small */
-
-@media (max-width: 800px) {
-  .sins-section {
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 72px;
-  }
-
   .sins-title {
-    padding: 0 20px 40px;
-    font-size: 1.7rem;
+    width:100%;
+    margin:0;
+    padding:0 40px 55px 0;
+    box-sizing:border-box;
+    text-align:center;
+    font-size:2rem;
+    font-weight:600;
+    line-height:1.2;
+    letter-spacing:.01em;
   }
-
   .sins-sidebar {
-    position: fixed;
-    top: 60px;
-    left: 20px;
-    right: auto;
-    width: auto;
-    transform: none;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    z-index: 40;
-    padding: 8px 16px 10px;
-    background: rgba(255,255,255,0.78);
-    backdrop-filter: blur(16px) saturate(1.1);
-    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    position:fixed;
+    left:8%;
+    top:50%;
+    transform:translateY(-50%);
+    z-index:40;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
   }
-
-  html.dark .sins-sidebar {
-    background: rgba(15,15,15,0.80);
-  }
-
   .sins-deselect {
-    padding: 0 0 2px 0;
-    margin: 0;
+    display:none;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.66rem;
+    color:inherit;
+    padding:4px 0 4px 4px;
+    opacity:.45;
+    letter-spacing:.05em;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    transition:opacity .15s;
+    white-space:nowrap;
   }
-
+  .sins-deselect:hover {
+    opacity:1;
+  }
   .sins-filters-row {
-    background: none !important;
-    backdrop-filter: none !important;
-    -webkit-backdrop-filter: none !important;
-    padding: 0;
-    gap: 24px;
-    width: auto;
+    display:flex;
+    flex-direction:row;
+    align-items:flex-start;
+    gap:32px;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(16px)saturate(1.1);
+    -webkit-backdrop-filter:blur(16px)saturate(1.1);
+    padding:10px 16px 12px;
   }
-
+  html.dark .sins-filters-row {
+    background:var(--glass-bar);
+  }
+  .sins-f {
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .sins-f-btn {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.74rem;
+    letter-spacing:.07em;
+    color:inherit;
+    padding:0;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    opacity:.65;
+    transition:opacity .15s;
+    white-space:nowrap;
+  }
+  .sins-f-btn:hover,.sins-f-btn.open {
+    opacity:1;
+  }
+  .sins-f-icon {
+    position:relative;
+    width:11px;
+    height:11px;
+    display:inline-block;
+    flex-shrink:0;
+  }
+  .sins-f-icon::before,.sins-f-icon::after {
+    content:"";
+    position:absolute;
+    left:50%;
+    top:50%;
+    background:currentColor;
+    transform:translate(-50%,-50%);
+    transition:height .25s,opacity .25s;
+  }
+  .sins-f-icon::before {
+    width:9px;
+    height:1px;
+  }
+  .sins-f-icon::after {
+    width:1px;
+    height:9px;
+  }
+  .sins-f-btn.open .sins-f-icon::after {
+    height:0;
+    opacity:0;
+  }
+  .sins-f-selected {
+    display:block;
+    font-size:.64rem;
+    letter-spacing:.05em;
+    opacity:.8;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    margin-top:3px;
+    min-height:.9em;
+    pointer-events:none;
+    white-space:nowrap;
+  }
+  .sins-f-drop {
+    display:none;
+    flex-direction:column;
+    position:absolute;
+    top:calc(100% + 4px);
+    left:0;
+    min-width:135px;
+    padding:6px 0;
+    background:rgba(255,255,255,.78);
+    backdrop-filter:blur(16px)saturate(1.1);
+    -webkit-backdrop-filter:blur(16px)saturate(1.1);
+    z-index:40;
+  }
+  html.dark .sins-f-drop {
+    background:var(--glass-overlay);
+  }
+  .sins-f-drop.open {
+    display:flex;
+  }
+  .sins-f-opt {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.7rem;
+    color:inherit;
+    padding:5px 14px;
+    text-align:left;
+    width:100%;
+    opacity:.28;
+    letter-spacing:.04em;
+    transition:opacity .15s;
+    white-space:nowrap;
+    box-sizing:border-box;
+  }
+  .sins-f-opt:hover {
+    opacity:.65;
+  }
+  .sins-f-opt.on {
+    opacity:1;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
   .sins-grid {
-    padding: 0 16px;
-    box-sizing: border-box;
+    position:relative;
+    width:100%;
+    min-height:600px;
+    overflow:visible;
   }
-}
-
-
-/* Very small */
-
-@media (max-width: 600px) {
+  .sins-item {
+    position:absolute;
+    cursor:pointer;
+    overflow:visible;
+    transition:transform .32s cubic-bezier(.25,.46,.45,.94);
+  }
+  .sins-item:hover {
+    transform:scale(1.055);
+    z-index:20!important;
+  }
+  .sins-img {
+    display:block;
+    width:100%;
+    height:auto;
+    pointer-events:none;
+  }
+  .sins-item.sins-off {
+    display:none!important;
+  }
+  .sins-lbl {
+    position:absolute;
+    font-size:.86rem;
+    letter-spacing:.055em;
+    line-height:1.5;
+    opacity:.55;
+    pointer-events:none;
+    color:inherit;
+    font-family:inherit;
+  }
+  .sins-lbl-r {
+    left:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-lr;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .sins-lbl-l {
+    right:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-rl;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .sins-lbl-b {
+    top:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  .sins-lbl-a {
+    bottom:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  .sins-popup {
+    position:fixed;
+    inset:0;
+    z-index:500;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .38s ease;
+  }
+  .sins-popup.open {
+    opacity:1;
+    pointer-events:all;
+  }
+  .sins-popup-bg {
+    position:absolute;
+    inset:0;
+    background:rgba(255,255,255,.48);
+    backdrop-filter:blur(16px)saturate(1.1);
+    -webkit-backdrop-filter:blur(16px)saturate(1.1);
+  }
+  html.dark .sins-popup-bg {
+    background:rgba(0,0,0,.52);
+  }
   .sins-popup-pane {
-    flex-direction: column;
-    gap: 20px;
-    padding: 44px 20px 80px;
-    overflow-y: auto;
-    max-height: 92vh;
+    position:relative;
+    z-index:1;
+    display:flex;
+    align-items:flex-start;
+    gap:44px;
+    max-width:min(1100px,94vw);
+    max-height:90vh;
+    padding:48px 64px 40px 44px;
+    transform:scale(.95);
+    transition:transform .38s cubic-bezier(.25,.46,.45,.94);
   }
-
+  .sins-popup.open .sins-popup-pane {
+    transform:scale(1);
+  }
+  .sins-popup-x {
+    position:absolute;
+    top:12px;
+    right:20px;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:2.2rem;
+    color:inherit;
+    padding:0;
+    line-height:1;
+    font-weight:200;
+    opacity:.5;
+    transition:opacity .15s;
+  }
+  .sins-popup-x:hover {
+    opacity:1;
+  }
+  .sins-popup-img-col {
+    flex-shrink:0;
+  }
   .sins-popup-img {
-    max-width: 88vw;
-    max-height: 52vh;
+    display:block;
+    max-height:78vh;
+    max-width:52vw;
+    width:auto;
+    height:auto;
+    object-fit:contain;
   }
-
   .sins-popup-text-col {
-    max-width: none;
+    flex:1;
+    min-width:160px;
+    max-width:300px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding-top:4px;
   }
-
+  .sins-popup-year {
+    font-size:.68rem;
+    letter-spacing:.12em;
+    opacity:.4;
+    display:block;
+  }
+  .sins-popup-title {
+    font-size:1.05rem;
+    font-weight:600;
+    line-height:1.35;
+    letter-spacing:.02em;
+    margin:0;
+  }
+  .sins-popup-comment {
+    font-size:.78rem;
+    line-height:1.7;
+    opacity:.7;
+    margin:0;
+  }
   .sins-popup-vert {
-    display: none;
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    writing-mode:vertical-lr;
+    font-size:.6rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    opacity:.22;
   }
-
   .sins-arrow {
-    top: auto !important;
-    bottom: 28px;
-    transform: none !important;
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    align-items:center;
+    color:inherit;
+    opacity:.6;
+    background:0 0!important;
+    border:none!important;
+    text-decoration:none!important;
+    box-shadow:none!important;
+    padding:16px 10px!important;
+    z-index:560;
+    transition:opacity .22s;
+    line-height:0;
+    cursor:pointer;
+    display:none;
   }
-}
-
-
-@media (max-width: 480px) {
-  .sins-title {
-    font-size: 1.5rem;
+  .sins-arrow:hover {
+    opacity:.2;
   }
-}
-
-
-/* End spacing on mobile */
-
-@media (max-width: 800px) {
+  .sins-arrow-prev {
+    left:16px;
+  }
+  .sins-arrow-next {
+    right:16px;
+  }
   .sins-end {
-    margin-top: -4vh;
-    width: 100%;
+    position:relative;
+    width:90%;
+    box-sizing:border-box;
+    margin-top:9vh;
+    padding-bottom:80px;
   }
-}
-
-
+  .sins-end-1 {
+    display:block;
+    width:100%;
+    text-align:center;
+    font-size:inherit;
+    letter-spacing:inherit;
+  }
+  @media(max-width:1100px) {
+    .sins-section {
+      padding-left:190px;
+    }
+    .sins-sidebar {
+      left:16px;
+    }
+  }
+  @media(max-width:800px) {
+    .sins-section {
+      padding-left:0;
+      padding-right:0;
+      padding-top:72px;
+    }
+    .sins-title {
+      padding:0 20px 40px;
+      font-size:1.7rem;
+    }
+    .sins-sidebar {
+      position:fixed;
+      top:60px;
+      left:20px;
+      right:auto;
+      width:auto;
+      transform:none;
+      flex-direction:column;
+      align-items:flex-start;
+      gap:4px;
+      z-index:40;
+      padding:8px 16px 10px;
+      background:rgba(255,255,255,.78);
+      backdrop-filter:blur(16px)saturate(1.1);
+      -webkit-backdrop-filter:blur(16px)saturate(1.1);
+    }
+    html.dark .sins-sidebar {
+      background:var(--glass-overlay);
+    }
+    .sins-deselect {
+      padding:0 0 2px;
+      margin:0;
+    }
+    .sins-filters-row {
+      background:0 0!important;
+      backdrop-filter:none!important;
+      -webkit-backdrop-filter:none!important;
+      padding:0;
+      gap:24px;
+      width:auto;
+    }
+    .sins-grid {
+      padding:0 16px;
+      box-sizing:border-box;
+    }
+  }
+  @media(max-width:600px) {
+    .sins-popup-pane {
+      flex-direction:column;
+      gap:20px;
+      padding:44px 20px 80px;
+      overflow-y:auto;
+      max-height:92vh;
+    }
+    .sins-popup-img {
+      max-width:88vw;
+      max-height:52vh;
+    }
+    .sins-popup-text-col {
+      max-width:none;
+    }
+    .sins-popup-vert {
+      display:none;
+    }
+    .sins-arrow {
+      top:auto!important;
+      bottom:28px;
+      transform:none!important;
+    }
+  }
+  @media(max-width:480px) {
+    .sins-title {
+      font-size:1.5rem;
+    }
+  }
+  @media(max-width:800px) {
+    .sins-end {
+      margin-top:-4vh;
+      width:100%;
+    }
+  }
 </style>
 
 <script>
-
-document.addEventListener('DOMContentLoaded', () => {
-
-  /* ═══════════════════════════════════════════
-     DETERMINISTIC RANDOM NUMBER GENERATOR
-
-     This does NOT randomize artwork order.
-     collection_order determines the artwork
-     sequence. The seeded value is only used to
-     create the scattered visual positioning.
-     ═══════════════════════════════════════════ */
-
-  function mkRng(seed) {
-    let s = seed >>> 0;
-    return () => {
-      s = Math.imul(s ^ (s >>> 15), s | 1);
-      s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
-      return ((s ^ (s >>> 14)) >>> 0) / 0x100000000;
-    };
-  }
-
-  const grid = document.getElementById('sinsGrid');
-  const items = Array.from(grid.querySelectorAll('.sins-item'));
-
-  const popup = document.getElementById('sinsPopup');
-  const pBg = document.getElementById('sinsPopupBg');
-  const pImg = document.getElementById('sinsPopupImg');
-  const pLink = document.getElementById('sinsPopupLink');
-  const pTitle = document.getElementById('sinsPopupTitle');
-  const pYear = document.getElementById('sinsPopupYear');
-  const pCom = document.getElementById('sinsPopupComment');
-  const pVert = document.getElementById('sinsPopupVert');
-  const pX = document.getElementById('sinsPopupX');
-
-  const prevBtn = document.getElementById('sinsPrevBtn');
-  const nextBtn = document.getElementById('sinsNextBtn');
-
-  const desBt = document.getElementById('sinsDeselect');
-
-  const yearSelEl = document.getElementById('sinsYearSelected');
-
-  const activeF = {
-    year: 'all'
-  };
-
-  /* ═══════════════════════════════════════════
-     LABELS
-     ═══════════════════════════════════════════ */
-
-  const MAX_H = 42;
-  const MAX_V = 36;
-
-  function addLabels(item, imgW, imgH) {
-    item.querySelectorAll('.sins-lbl').forEach(l => l.remove());
-
-    const idx = parseInt(item.dataset.idx, 10) || 0;
-    const r = mkRng(idx * 7919 + 31);
-
-    const year = (item.dataset.year || '').trim();
-    const title = (item.dataset.title || '').trim();
-    const comment = (item.dataset.comment || '').trim();
-
-    /*
-     * The year can appear vertically on either
-     * side of the image.
-     */
-    const yearRight = r() < 0.5;
-
-    /*
-     * Titles and comments retain the same
-     * editorial behaviour as the Archive.
-     */
-    const showTitle = title && r() < 0.82;
-    const showComment = comment && r() < 0.18;
-
-    const lbDefs = [];
-
-    if (year) {
-      lbDefs.push({
-        text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
-        pos: yearRight ? 'r' : 'l',
-        maxH: Math.round(imgH * 0.70),
-        maxW: null
-      });
+  document.addEventListener("DOMContentLoaded", () => {
+    function x(e) {
+      let t = e >>> 0;
+      return () => (
+        (t = Math.imul(t ^ (t >>> 15), t | 1)),
+        (t ^= t + Math.imul(t ^ (t >>> 7), t | 61)),
+        ((t ^ (t >>> 14)) >>> 0) / 4294967296
+      );
     }
-
-    if (showTitle) {
-      const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
-
-      lbDefs.push({
-        text: t,
-        pos: 'b',
-        maxH: Math.round(1.5 * 0.86 * 16 * 2.2),
-        maxW: Math.round(imgW * 0.88)
-      });
-    }
-
-    if (showComment) {
-      const c = comment.length > MAX_H ? comment.slice(0, MAX_H - 1) + '…' : comment;
-
-      lbDefs.push({
-        text: c,
-        pos: 'a',
-        maxH: Math.round(1.5 * 0.86 * 16 * 1.2),
-        maxW: Math.round(imgW * 0.88)
-      });
-    }
-
-    lbDefs.forEach(({ text, pos, maxH, maxW }) => {
-      const el = document.createElement('div');
-
-      el.className = `sins-lbl sins-lbl-${pos}`;
-      el.textContent = text;
-
-      if (maxH) el.style.maxHeight = maxH + 'px';
-      if (maxW) el.style.maxWidth = maxW + 'px';
-
-      item.appendChild(el);
-    });
-  }
-
-  /* ═══════════════════════════════════════════
-     SCATTER LAYOUT
-
-     IMPORTANT:
-     The items array is already ordered by
-     collection_order DESC from Hugo.
-
-     Therefore item 0 = newest/highest order.
-     item 1 = next newest.
-     etc.
-
-     The layout only determines where each item
-     is visually positioned.
-     ═══════════════════════════════════════════ */
-
-  function layout() {
-    const W = grid.offsetWidth;
-
-    if (!W) {
-      requestAnimationFrame(layout);
-      return;
-    }
-
-    const mobile = window.innerWidth <= 800;
-
-    /*
-     * Number of visual columns.
-     */
-    const NCOLS =
-      W > 1100 ? 11
-      : W > 900 ? 9
-      : W > 680 ? 6
-      : W > 480 ? 3
-      : 2;
-
-    const H_GAP = mobile ? 24 : 50;
-    const PAD_L = mobile ? 0 : 30;
-    const PAD_R = mobile ? 0 : 50;
-    const V_MIN = mobile ? 50 : 70;
-    const V_EXTRA = mobile ? 40 : 50;
-
-    const vis = items.filter(it => !it.classList.contains('sins-off'));
-
-    if (!vis.length) {
-      grid.style.height = '300px';
-      return;
-    }
-
-    const usableW = W - PAD_L - PAD_R;
-    const colW = usableW / NCOLS;
-    const bots = new Array(NCOLS).fill(40);
-
-    vis.forEach((item, vi) => {
-
-      /*
-       * The index is based on the Hugo-sorted
-       * collection_order sequence.
-       */
-      const idx = parseInt(item.dataset.idx, 10) || vi;
-
-      /*
-       * Seed only affects positioning.
-       * It does NOT affect artwork order.
-       */
-      const r = mkRng(idx * 3331 + 113);
-
-      /*
-       * Image width:
-       * 2–4 columns normally.
-       * Every seventh image is larger.
-       */
-      const isLarge = idx % 7 === 0;
-      const wBase = isLarge ? 3 : 2;
-      const wExtra = Math.floor(r() * (isLarge ? 2 : 3));
-      const wCols = Math.min(NCOLS, wBase + wExtra);
-
-      /*
-       * Mobile cap.
-       */
-      const wColsCapped = mobile
-        ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8)))
-        : wCols;
-
-      const maxStart = Math.max(0, NCOLS - wColsCapped);
-      const startCol = Math.floor(r() * (maxStart + 1));
-
-      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
-
-      const vGap = V_MIN + Math.floor(r() * V_EXTRA);
-      const topY = spanMax + vGap;
-
-      const slotW = wColsCapped * colW;
-      const imgW = Math.max(60, slotW - H_GAP);
-
-      const leftX = PAD_L + startCol * colW + H_GAP / 2;
-
-      item.style.left = leftX + 'px';
-      item.style.top = topY + 'px';
-      item.style.width = imgW + 'px';
-
-      const img = item.querySelector('img');
-
-      const ar =
-        (img.naturalWidth > 0 && img.naturalHeight > 0)
-          ? img.naturalHeight / img.naturalWidth
-          : 1.25;
-
-      const imgH = imgW * ar;
-
-      addLabels(item, imgW, imgH);
-
-      for (let c = startCol; c < startCol + wColsCapped; c++) {
-        bots[c] = topY + imgH;
+    const o = document.getElementById("sinsGrid"),
+      u = Array.from(o.querySelectorAll(".sins-item")),
+      r = document.getElementById("sinsPopup"),
+      P = document.getElementById("sinsPopupBg"),
+      f = document.getElementById("sinsPopupImg"),
+      R = document.getElementById("sinsPopupLink"),
+      T = document.getElementById("sinsPopupTitle"),
+      F = document.getElementById("sinsPopupYear"),
+      g = document.getElementById("sinsPopupComment"),
+      k = document.getElementById("sinsPopupVert"),
+      z = document.getElementById("sinsPopupX"),
+      l = document.getElementById("sinsPrevBtn"),
+      d = document.getElementById("sinsNextBtn"),
+      y = document.getElementById("sinsDeselect"),
+      v = document.getElementById("sinsYearSelected"),
+      e = { year: "all" },
+      h = 42,
+      b = 36;
+    function N(e, t, n) {
+      e.querySelectorAll(".sins-lbl").forEach((e) => e.remove());
+      const c = parseInt(e.dataset.idx, 10) || 0,
+        r = x(c * 7919 + 31),
+        s = (e.dataset.year || "").trim(),
+        o = (e.dataset.title || "").trim(),
+        i = (e.dataset.comment || "").trim(),
+        l = r() < 0.5,
+        d = o && r() < 0.82,
+        u = i && r() < 0.18,
+        a = [];
+      if (
+        (s &&
+          a.push({
+            text: s.length > b ? s.slice(0, b - 1) + "…" : s,
+            pos: l ? "r" : "l",
+            maxH: Math.round(n * 0.7),
+            maxW: null,
+          }),
+        d)
+      ) {
+        const e = o.length > h ? o.slice(0, h - 1) + "…" : o;
+        a.push({ text: e, pos: "b", maxH: Math.round(1.5 * 0.86 * 16 * 2.2), maxW: Math.round(t * 0.88) });
       }
-    });
-
-    grid.style.height = (Math.max(...bots) + 220) + 'px';
-  }
-
-  /* ═══════════════════════════════════════════
-     IMAGE LOADING
-     ═══════════════════════════════════════════ */
-
-  let loaded = 0;
-
-  Array.from(grid.querySelectorAll('img')).forEach(img => {
-
-    const done = () => {
-      loaded++;
-
-      if (loaded <= 8 || loaded % 4 === 0) {
-        layout();
+      if (u) {
+        const e = i.length > h ? i.slice(0, h - 1) + "…" : i;
+        a.push({ text: e, pos: "a", maxH: Math.round(1.5 * 0.86 * 16 * 1.2), maxW: Math.round(t * 0.88) });
       }
-    };
-
-    if (img.complete)
-      done();
-    else {
-      img.onload = done;
-      img.onerror = done;
+      a.forEach(({ text: t, pos: n, maxH: s, maxW: o }) => {
+        const i = document.createElement("div");
+        ((i.className = `sins-lbl sins-lbl-${n}`),
+          (i.textContent = t),
+          s && (i.style.maxHeight = s + "px"),
+          o && (i.style.maxWidth = o + "px"),
+          e.appendChild(i));
+      });
     }
-  });
-
-  layout();
-
-  let rt;
-
-  window.addEventListener('resize', () => {
-    clearTimeout(rt);
-    rt = setTimeout(layout, 180);
-  });
-
-  /* ═══════════════════════════════════════════
-     YEAR FILTER
-     ═══════════════════════════════════════════ */
-
-  function updateSelectedLabels() {
-    if (yearSelEl) {
-      yearSelEl.textContent = activeF.year === 'all' ? '' : activeF.year;
+    function i() {
+      const e = o.offsetWidth;
+      if (!e) {
+        requestAnimationFrame(i);
+        return;
+      }
+      const t = window.innerWidth <= 800,
+        n = e > 1100 ? 11 : e > 900 ? 9 : e > 680 ? 6 : e > 480 ? 3 : 2,
+        a = t ? 24 : 50,
+        r = t ? 0 : 30,
+        d = t ? 0 : 50,
+        h = t ? 50 : 70,
+        m = t ? 40 : 50,
+        c = u.filter((e) => !e.classList.contains("sins-off"));
+      if (!c.length) {
+        o.style.height = "300px";
+        return;
+      }
+      const f = e - r - d,
+        l = f / n,
+        s = new Array(n).fill(40);
+      (c.forEach((e, o) => {
+        const j = parseInt(e.dataset.idx, 10) || o,
+          u = x(j * 3331 + 113),
+          g = j % 7 === 0,
+          O = g ? 3 : 2,
+          A = Math.floor(u() * (g ? 2 : 3)),
+          p = Math.min(n, O + A),
+          d = t ? Math.min(p, Math.max(2, Math.round(n * 0.8))) : p,
+          M = Math.max(0, n - d),
+          c = Math.floor(u() * (M + 1)),
+          w = Math.max(...s.slice(c, c + d)),
+          k = h + Math.floor(u() * m),
+          _ = w + k,
+          E = d * l,
+          f = Math.max(60, E - a),
+          C = r + c * l + a / 2;
+        ((e.style.left = C + "px"), (e.style.top = _ + "px"), (e.style.width = f + "px"));
+        const i = e.querySelector("img"),
+          y = i.getAttribute("width") | 0,
+          b = i.getAttribute("height") | 0,
+          S =
+            y > 0 && b > 0
+              ? b / y
+              : i.naturalWidth > 0 && i.naturalHeight > 0
+                ? i.naturalHeight / i.naturalWidth
+                : 1.25,
+          v = f * S;
+        N(e, f, v);
+        for (let e = c; e < c + d; e++) s[e] = _ + v;
+      }),
+        (o.style.height = Math.max(...s) + 220 + "px"));
     }
-  }
-
-  function applyFilters() {
-    items.forEach(it => {
-      const yo =
-        activeF.year === 'all' ||
-        String(it.dataset.year) === String(activeF.year);
-
-      it.classList.toggle('sins-off', !yo);
+    let p = 0;
+    (Array.from(o.querySelectorAll("img")).forEach((e) => {
+      const t = () => {
+        (p++, (p <= 8 || p % 4 === 0) && i());
+      };
+      e.complete ? t() : ((e.onload = t), (e.onerror = t));
+    }),
+      i());
+    let w,
+      O = window.innerWidth;
+    window.addEventListener("resize", () => {
+      if (window.innerWidth === O) return;
+      ((O = window.innerWidth), clearTimeout(w), (w = setTimeout(i, 180)));
     });
-
-    const anyOn = activeF.year !== 'all';
-
-    desBt.style.display = anyOn ? 'block' : 'none';
-
-    updateSelectedLabels();
-
-    setTimeout(layout, 40);
-  }
-
-  const yearBtn = document.getElementById('sinsYearBtn');
-  const yearDrop = document.getElementById('sinsYearDrop');
-
-  yearBtn.addEventListener('click', e => {
-    e.stopPropagation();
-
-    const isOpen = yearDrop.classList.contains('open');
-
-    yearDrop.classList.toggle('open', !isOpen);
-    yearBtn.classList.toggle('open', !isOpen);
-  });
-
-  yearDrop.querySelectorAll('.sins-f-opt').forEach(opt => {
-    opt.addEventListener('click', e => {
+    function M() {
+      v && (v.textContent = e.year === "all" ? "" : e.year);
+    }
+    function C() {
+      u.forEach((t) => {
+        const n = e.year === "all" || String(t.dataset.year) === String(e.year);
+        t.classList.toggle("sins-off", !n);
+      });
+      const t = e.year !== "all";
+      ((y.style.display = t ? "block" : "none"), M(), setTimeout(i, 40));
+    }
+    const E = document.getElementById("sinsYearBtn"),
+      c = document.getElementById("sinsYearDrop");
+    (E.addEventListener("click", (e) => {
       e.stopPropagation();
-
-      yearDrop.querySelectorAll('.sins-f-opt').forEach(o => o.classList.remove('on'));
-
-      opt.classList.add('on');
-
-      activeF.year = opt.dataset.val;
-
-      applyFilters();
-
-      /*
-       * Dropdown deliberately remains open,
-       * matching the Archive behaviour.
-       */
-    });
-  });
-
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.sins-sidebar')) {
-      document.querySelectorAll('.sins-f-drop').forEach(d => d.classList.remove('open'));
-      document.querySelectorAll('.sins-f-btn').forEach(b => b.classList.remove('open'));
+      const t = c.classList.contains("open");
+      (c.classList.toggle("open", !t), E.classList.toggle("open", !t));
+    }),
+      c.querySelectorAll(".sins-f-opt").forEach((t) => {
+        t.addEventListener("click", (n) => {
+          (n.stopPropagation(),
+            c.querySelectorAll(".sins-f-opt").forEach((e) => e.classList.remove("on")),
+            t.classList.add("on"),
+            (e.year = t.dataset.val),
+            C());
+        });
+      }),
+      document.addEventListener("click", (e) => {
+        e.target.closest(".sins-sidebar") ||
+          (document.querySelectorAll(".sins-f-drop").forEach((e) => e.classList.remove("open")),
+          document.querySelectorAll(".sins-f-btn").forEach((e) => e.classList.remove("open")));
+      }),
+      y.addEventListener("click", () => {
+        ((e.year = "all"),
+          document.querySelectorAll(".sins-f-opt").forEach((e) => e.classList.remove("on")),
+          document.querySelectorAll('.sins-f-opt[data-val="all"]').forEach((e) => e.classList.add("on")),
+          C());
+      }));
+    const A =
+        '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+      S =
+        '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+    ((l.innerHTML = A), (d.innerHTML = S));
+    let s = [],
+      t = -1,
+      n = null;
+    function _() {
+      return u.filter((e) => !e.classList.contains("sins-off"));
     }
+    function D() {
+      ((l.style.display = t > 0 ? "flex" : "none"), (d.style.display = t < s.length - 1 ? "flex" : "none"));
+    }
+    function j(e) {
+      ((f.src = e.dataset.img || ""),
+        (f.alt = e.dataset.title || ""),
+        (R.href = e.dataset.url || "#"),
+        (T.textContent = e.dataset.title || ""),
+        (F.textContent = e.dataset.year || ""),
+        (g.textContent = e.dataset.comment || ""),
+        (g.style.display = e.dataset.comment ? "block" : "none"),
+        (k.textContent = "The Hundred Sins"),
+        D());
+    }
+    function L(e) {
+      ((s = _()),
+        (t = s.indexOf(e)),
+        (n = e),
+        j(e),
+        r.classList.add("open"),
+        (document.body.style.overflow = "hidden"));
+    }
+    function m() {
+      (r.classList.remove("open"),
+        (document.body.style.overflow = ""),
+        (n = null),
+        (l.style.display = "none"),
+        (d.style.display = "none"),
+        setTimeout(() => {
+          r.classList.contains("open") || (f.src = "");
+        }, 420));
+    }
+    function a(e) {
+      const i = _(),
+        a = n ? i.indexOf(n) : -1;
+      ((s = i), a !== -1 && (t = a));
+      const o = t + e;
+      if (o < 0 || o >= s.length) return;
+      ((t = o), (n = s[t]), j(n));
+    }
+    (u.forEach((e) => e.addEventListener("click", () => L(e))),
+      z.addEventListener("click", m),
+      P.addEventListener("click", m),
+      l.addEventListener("click", (e) => {
+        (e.preventDefault(), a(-1));
+      }),
+      d.addEventListener("click", (e) => {
+        (e.preventDefault(), a(1));
+      }),
+      document.addEventListener("keydown", (e) => {
+        if (!r.classList.contains("open")) return;
+        (e.key === "Escape" && m(), e.key === "ArrowLeft" && a(-1), e.key === "ArrowRight" && a(1));
+      }));
   });
-
-  desBt.addEventListener('click', () => {
-    activeF.year = 'all';
-
-    document.querySelectorAll('.sins-f-opt').forEach(o => o.classList.remove('on'));
-    document.querySelectorAll('.sins-f-opt[data-val="all"]').forEach(o => o.classList.add('on'));
-
-    applyFilters();
-  });
-
-  /* ═══════════════════════════════════════════
-     POPUP
-     ═══════════════════════════════════════════ */
-
-  const leftArrowSVG =
-    '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/>' +
-    '<polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>' +
-    '</svg>';
-
-  const rightArrowSVG =
-    '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/>' +
-    '<polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/>' +
-    '</svg>';
-
-  prevBtn.innerHTML = leftArrowSVG;
-  nextBtn.innerHTML = rightArrowSVG;
-
-  let visibleItems = [];
-  let currentIdx = -1;
-  let currentItemRef = null;
-
-  function getFilteredItems() {
-    return items.filter(it => !it.classList.contains('sins-off'));
-  }
-
-  function updateNavArrows() {
-    prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
-    nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
-  }
-
-  function populatePopup(item) {
-    pImg.src = item.dataset.img || '';
-    pImg.alt = item.dataset.title || '';
-
-    pLink.href = item.dataset.url || '#';
-
-    pTitle.textContent = item.dataset.title || '';
-    pYear.textContent = item.dataset.year || '';
-    pCom.textContent = item.dataset.comment || '';
-
-    pCom.style.display = item.dataset.comment ? 'block' : 'none';
-
-    /*
-     * The collection order is intentionally
-     * not displayed. It only controls sequence.
-     */
-    pVert.textContent = 'The Hundred Sins';
-
-    updateNavArrows();
-  }
-
-  function openPopup(item) {
-    visibleItems = getFilteredItems();
-    currentIdx = visibleItems.indexOf(item);
-    currentItemRef = item;
-
-    populatePopup(item);
-
-    popup.classList.add('open');
-
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closePopup() {
-    popup.classList.remove('open');
-
-    document.body.style.overflow = '';
-
-    currentItemRef = null;
-
-    prevBtn.style.display = 'none';
-    nextBtn.style.display = 'none';
-
-    setTimeout(() => {
-      if (!popup.classList.contains('open')) {
-        pImg.src = '';
-      }
-    }, 420);
-  }
-
-  function navTo(dir) {
-    const fresh = getFilteredItems();
-    const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
-
-    visibleItems = fresh;
-
-    if (freshIdx !== -1) currentIdx = freshIdx;
-
-    const newIdx = currentIdx + dir;
-
-    if (newIdx < 0 || newIdx >= visibleItems.length) return;
-
-    currentIdx = newIdx;
-    currentItemRef = visibleItems[currentIdx];
-
-    populatePopup(currentItemRef);
-  }
-
-  /* Open popup */
-  items.forEach(it => it.addEventListener('click', () => openPopup(it)));
-
-  /* Close */
-  pX.addEventListener('click', closePopup);
-  pBg.addEventListener('click', closePopup);
-
-  /* Navigation */
-  prevBtn.addEventListener('click', e => {
-    e.preventDefault();
-    navTo(-1);
-  });
-
-  nextBtn.addEventListener('click', e => {
-    e.preventDefault();
-    navTo(1);
-  });
-
-  /* Keyboard */
-  document.addEventListener('keydown', e => {
-    if (!popup.classList.contains('open')) return;
-
-    if (e.key === 'Escape') closePopup();
-    if (e.key === 'ArrowLeft') navTo(-1);
-    if (e.key === 'ArrowRight') navTo(1);
-  });
-
-});
-
 </script>
 
 {{ end }}

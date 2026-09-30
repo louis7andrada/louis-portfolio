@@ -1,23 +1,42 @@
+{{- /* schema.org VisualArtwork for one artwork page. Reconstructed from the live site. */ -}}
+{{- $site := site.BaseURL | strings.TrimSuffix "/" -}}
+{{- $dims := findRESubmatch `^\s*([0-9]+(?:\.[0-9]+)?)\s*x\s*([0-9]+(?:\.[0-9]+)?)\s*in\s*$` (.Params.size | default "") -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "VisualArtwork",
+  "@id": "{{ .Permalink }}#artwork",
   "name": "{{ .Title }}",
-  "creator": {
-    "@type": "Person",
-    "name": "Louis Andrada"
-  },
-  "image": "{{ .Params.image }}",
-  "artMedium": "{{ .Params.medium }}",
-  "artform": "Painting",
-  "width": "{{ .Params.size }}",
   "url": "{{ .Permalink }}",
+  "license": "{{ "license/" | absURL }}",
+  "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "copyrightHolder": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+  "artform": "Painting",
+  "artMedium": "{{ .Params.medium }}",
   "dateCreated": "{{ .Params.year }}",
+  {{- with $dims }}
+  "width": { "@type": "QuantitativeValue", "value": "{{ index (index . 0) 1 }}", "unitText": "in" },
+  "height": { "@type": "QuantitativeValue", "value": "{{ index (index . 0) 2 }}", "unitText": "in" },
+  {{- end }}
+  "image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ .Params.image }}",
+    "creditText": "Louis Andrada (Han’drada)",
+    "copyrightNotice": "© Louis Andrada",
+    "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
+    "license": "{{ "license/" | absURL }}",
+    "acquireLicensePage": "{{ "inquiry/" | absURL }}"
+  },
+  "isPartOf": { "@id": "{{ "/" | absURL }}#website" }
+  {{- with .Params.price }},
   "offers": {
     "@type": "Offer",
-    "price": "{{ .Params.price }}",
+    "price": "{{ . }}",
     "priceCurrency": "USD",
-    "availability": "{{ if eq .Params.availability "Available" }}InStock{{ else }}OutOfStock{{ end }}"
+    "url": "{{ $.Permalink }}",
+    "availability": "https://schema.org/{{ if eq $.Params.availability "Available" }}InStock{{ else }}OutOfStock{{ end }}",
+    "seller": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" }
   }
+  {{- end }}
 }
 </script>

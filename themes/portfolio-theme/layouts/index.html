@@ -5,6 +5,15 @@
   {{ $artwork = index $all 0 }}
 {{ end }}
 
+{{/* Every numbered artwork (not individual collection panels), alphabetical, for search engines */}}
+{{ $gridPages := slice }}
+{{ range where (where .Site.RegularPages "Section" "artworks") "Params.worknum" "!=" nil }}
+  {{ if findRE "\\.[0-9]+$" .Params.id }}{{ continue }}{{ end }}
+  {{ $gridPages = $gridPages | append . }}
+{{ end }}
+{{ partial "jsonld/site.html" . }}
+{{ partial "jsonld/collection.html" (dict "page" . "pages" (sort $gridPages "Title")) }}
+
 <section id="home-section" class="mb-14">
   <!--  All Rights Reserved - Louis Andrada - 2026 -->
 <!--   Webdesign by Jinah Park & Louis Andrada   -->
@@ -28,13 +37,14 @@
          data-id="{{ .Params.id }}"
          data-comment="{{ .Params.comment }}"
          data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}">
-        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="hp-image" />
+        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="hp-image"{{ with partial "img-meta.html" .Params.image }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }} />
       </a>
       <!-- <span class="hp-year">{{ .Params.year }}</span> -->
     </div>
     <nav class="hp-nav">
       <div class="hp-nav-inner">
         <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkSection" class="hp-nav-link hp-nav--artworks">Artworks</a>
+        <a href="/oeuvre/" class="hp-nav-link hp-nav--oeuvre">Oeuvre</a>
         <a href="/about/" class="hp-nav-link hp-nav--about">About</a>
         <a href="/inquiry/" class="hp-nav-link hp-nav--acquisition">Inquiry</a>
         <a href="/archive/" class="hp-nav-link hp-nav--archive">Archive</a>
@@ -49,39 +59,192 @@
 </div>
 
 <style>
-  .homepage-wrapper { min-height: calc(100vh - 80px); }
-  .homepage-layout { display: flex; align-items: stretch; padding: 3rem 1rem 2rem 8rem; gap: 10rem; min-height: calc(100vh - 80px); }
-  .hp-left { flex: 0 0 auto; width: clamp(420px, 62vw, 900px); display: flex; flex-direction: column; }
-  .hp-title { font-size: 0.9rem; letter-spacing: 0.02em; margin: 0 0 0.6rem 0; }
-  .hp-image-link { display: block; }
-  .hp-image { width: 60%; height: auto; display: block; margin-left: auto; margin-right: auto; transform: translateX(40px); transition: opacity 0.3s ease; }
-  .hp-image-link:hover .hp-image { opacity: 0.82; }
-  .hp-year { font-size: 0.9rem; letter-spacing: 0.05em; align-self: flex-end; margin-top: 0.5rem; }
-  .hp-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
-  .hp-nav-inner { display: flex; flex-direction: column; justify-content: space-between; height: 60%; }
-  .hp-nav-link { font-size: 1.1rem; text-decoration: none; color: inherit; letter-spacing: 0.04em; display: inline-block; padding: 0.3rem 0; transition: font-weight 0.1s ease; white-space: nowrap; }
-  .hp-nav-link:hover { text-decoration: underline; font-weight: 700; }
-  .hp-nav--artworks { margin-left: 0%; } .hp-nav--acquisition { margin-left: 40%; }
-  .hp-nav--archive { margin-left: 20%; } .hp-nav--about { margin-left: 25%; } .hp-nav--links { margin-left: 60%; }
-
-  @media (max-width: 1200px) {
-    .hp-image { width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto; transform: translateX(0px); transition: opacity 0.3s ease; }
-    .homepage-layout { flex-direction: column; padding: 2rem 2.5rem; gap: 3rem; align-items: center; }
-    .hp-left { width: 100%; max-width: 680px; }
-    .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
-    .hp-nav-inner { height: auto; gap: 1rem; width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .hp-nav-link { font-size: 1.3rem; }
-    .hp-nav--artworks { margin-left: -20%; } .hp-nav--acquisition { margin-left: 45%; }
-    .hp-nav--archive { margin-left: -5%; } .hp-nav--about { margin-left: 15%; } .hp-nav--links { margin-left: 40%; }
+  .homepage-wrapper {
+    min-height:calc(100vh - 80px);
   }
-  @media (max-width: 699px) {
-    .homepage-layout { flex-direction: column; padding: 1.5rem 1.2rem; gap: 2.5rem; align-items: center; }
-    .hp-left { width: 100%; max-width: 100%; }
-    .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
-    .hp-nav-inner { height: auto; gap: 0.9rem; display: flex; flex-direction: column; align-items: center; width: 100%; }
-    .hp-nav-link { font-size: 1.1rem; }
-    .hp-nav--artworks { margin-left: -20%; } .hp-nav--acquisition { margin-left: 45%; }
-    .hp-nav--archive { margin-left: -5%; } .hp-nav--about { margin-left: 15%; } .hp-nav--links { margin-left: 40%; }
+  .homepage-layout {
+    display:flex;
+    align-items:stretch;
+    padding:3rem 1rem 2rem 8rem;
+    gap:10rem;
+    min-height:calc(100vh - 80px);
+  }
+  .hp-left {
+    flex:none;
+    width:clamp(420px,62vw,900px);
+    display:flex;
+    flex-direction:column;
+  }
+  .hp-title {
+    font-size:.9rem;
+    letter-spacing:.02em;
+    margin:0 0 .6rem;
+  }
+  .hp-image-link {
+    display:block;
+  }
+  .hp-image {
+    width:60%;
+    height:auto;
+    display:block;
+    margin-left:auto;
+    margin-right:auto;
+    transform:translateX(40px);
+    transition:opacity .3s ease;
+  }
+  .hp-image-link:hover .hp-image {
+    opacity:.82;
+  }
+  .hp-year {
+    font-size:.9rem;
+    letter-spacing:.05em;
+    align-self:flex-end;
+    margin-top:.5rem;
+  }
+  .hp-nav {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-width:0;
+  }
+  .hp-nav-inner {
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    height:60%;
+  }
+  .hp-nav-link {
+    font-size:1.1rem;
+    text-decoration:none;
+    color:inherit;
+    letter-spacing:.04em;
+    display:inline-block;
+    padding:.3rem 0;
+    transition:font-weight .1s ease;
+    white-space:nowrap;
+  }
+  .hp-nav-link:hover {
+    text-decoration:none;
+  }
+  .hp-nav--artworks {
+    margin-left:0%;
+  }
+  .hp-nav--oeuvre {
+    margin-left:10%;
+  }
+  .hp-nav--acquisition {
+    margin-left:40%;
+  }
+  .hp-nav--archive {
+    margin-left:20%;
+  }
+  .hp-nav--about {
+    margin-left:25%;
+  }
+  .hp-nav--links {
+    margin-left:60%;
+  }
+  @media(max-width:1200px) {
+    .hp-image {
+      width:85%;
+      height:auto;
+      display:block;
+      margin-left:auto;
+      margin-right:auto;
+      transform:translateX(0);
+      transition:opacity .3s ease;
+    }
+    .homepage-layout {
+      flex-direction:column;
+      padding:2rem 2.5rem;
+      gap:3rem;
+      align-items:center;
+    }
+    .hp-left {
+      width:100%;
+      max-width:680px;
+    }
+    .hp-nav {
+      width:100%;
+      justify-content:flex-start;
+      align-items:center;
+    }
+    .hp-nav-inner {
+      height:auto;
+      gap:1rem;
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .hp-nav-link {
+      font-size:1.3rem;
+    }
+    .hp-nav--artworks {
+      margin-left:-20%;
+    }
+    .hp-nav--oeuvre {
+      margin-left:-10%;
+    }
+    .hp-nav--acquisition {
+      margin-left:45%;
+    }
+    .hp-nav--archive {
+      margin-left:-5%;
+    }
+    .hp-nav--about {
+      margin-left:15%;
+    }
+    .hp-nav--links {
+      margin-left:40%;
+    }
+  }
+  @media(max-width:699px) {
+    .homepage-layout {
+      flex-direction:column;
+      padding:1.5rem 1.2rem;
+      gap:2.5rem;
+      align-items:center;
+    }
+    .hp-left {
+      width:100%;
+      max-width:100%;
+    }
+    .hp-nav {
+      width:100%;
+      justify-content:flex-start;
+      align-items:center;
+    }
+    .hp-nav-inner {
+      height:auto;
+      gap:.9rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      width:100%;
+    }
+    .hp-nav-link {
+      font-size:1.1rem;
+    }
+    .hp-nav--artworks {
+      margin-left:-20%;
+    }
+    .hp-nav--oeuvre {
+      margin-left:-10%;
+    }
+    .hp-nav--acquisition {
+      margin-left:45%;
+    }
+    .hp-nav--archive {
+      margin-left:-5%;
+    }
+    .hp-nav--about {
+      margin-left:15%;
+    }
+    .hp-nav--links {
+      margin-left:40%;
+    }
   }
 </style>
 
@@ -180,7 +343,7 @@
        data-image="{{ $page.Params.image }}"
        data-id="{{ $page.Params.id }}"
        data-comment="{{ $page.Params.comment }}">
-      <img src="{{ $page.Params.image }}" alt="{{ $page.Title }}" class="aw-img" loading="lazy" />
+      <img src="{{ $page.Params.image }}" alt="{{ $page.Title }}" class="aw-img" loading="lazy"{{ with partial "img-meta.html" $page.Params.image }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }} />
     </a>
     {{ end }}
   </div>
@@ -193,8 +356,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h2>
           <div class="grid grid-cols-3 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "tree") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
-              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -202,8 +365,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h2>
           <div class="grid grid-cols-4 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "snake") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
-              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -211,8 +374,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h2>
           <div class="grid grid-cols-3 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" /></div>
-              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -220,21 +383,21 @@
       <div class="mt-24 grid items-start" style="grid-template-columns: 3fr 4fr 3fr; gap:3px;">
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h3>
-          {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}{{ with index $treeFull 0 }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" /></a>{{ end }}
+          {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}{{ with index $treeFull 0 }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" loading="lazy" /></a>{{ end }}
         </div>
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h3>
-          {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}{{ with index $snakeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}{{ end }}
+          {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}{{ with index $snakeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
         </div>
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h3>
-          {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}{{ with index $fruitFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}{{ end }}
+          {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}{{ with index $fruitFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
         </div>
       </div>
       <h1 class="text-2xl font-semibold mt-24 mb-10 text-center whitespace-nowrap">The Tree, The Snake, The Fruit</h1>
       <div class="grid grid-cols-1" style="gap:0px;">
         <div class="flex flex-col items-center">
-          {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}{{ with index $completeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" /></a>{{ end }}{{ end }}
+          {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}{{ with index $completeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
         </div>
       </div>
     </section>
@@ -299,671 +462,1145 @@
 
 
 <style>
-/* ── AW SCATTER GRID (Hundred Sins layout style) ── */
-.aw-grid {
-  position: relative;
-  width: 100%;
-  min-height: 600px;
-  overflow: visible;
-  padding: 0 clamp(4rem, 7vw, 9rem);
-  box-sizing: border-box;
-  margin-top: -20vh;
-}
-.aw-item {
-  position: absolute;
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  overflow: visible;
-  transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-.aw-item:hover { transform: scale(1.02); z-index: 20 !important; }
-.aw-img { display: block; width: 100%; height: auto; pointer-events: none; }
-.aw-lbl {
-  position: absolute;
-  font-size: 0.86rem;
-  letter-spacing: 0.055em;
-  line-height: 1.5;
-  opacity: 0.55;
-  pointer-events: none;
-  color: inherit;
-  font-family: inherit;
-}
-.aw-lbl-r { left: calc(100% + 12px); top: 0; writing-mode: vertical-lr; white-space: nowrap; overflow: hidden; }
-.aw-lbl-l { right: calc(100% + 12px); top: 0; writing-mode: vertical-rl; white-space: nowrap; overflow: hidden; }
-.aw-lbl-b { top: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
-.aw-lbl-a { bottom: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
-
-@media (max-width: 700px) {
-  .aw-grid { padding: 0 1.5rem; 
-  margin-top: -10vh;}
-  
+  .aw-grid {
+    position:relative;
+    width:100%;
+    min-height:600px;
+    overflow:visible;
+    padding:0 clamp(4rem,7vw,9rem);
+    box-sizing:border-box;
+    margin-top:-20vh;
+  }
+  .aw-item {
+    position:absolute;
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    cursor:pointer;
+    overflow:visible;
+    transition:transform .32s cubic-bezier(.25,.46,.45,.94);
+  }
+  .aw-item:hover {
+    transform:scale(1.02);
+    z-index:20!important;
+  }
+  .aw-img {
+    display:block;
+    width:100%;
+    height:auto;
+    pointer-events:none;
+  }
   .aw-lbl {
-  position: absolute;
-  font-size: 0.8rem;
-  letter-spacing: 0.055em;
-  line-height: 0.8;
-  opacity: 0.55;
-  pointer-events: none;
-  color: inherit;
-  font-family: inherit;
-}
-}
-
-/* ── SPACERS ── */
-.end-spacer-1 { height: 20vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 1vh; }
-@media (max-width: 768px) { .end-spacer-1 { height: 15vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 8vh; } }
-@media (max-width: 480px) { .end-spacer-1 { height: 10vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 5vh; } }
-.end-message2 { display: block; width: 100%; text-align: right !important; box-sizing: border-box; padding-right: 1.5rem; }
-
-/* ── FILTER BAR ── */
-.artwork-filter-bar { position: sticky; top: 100px; z-index: 110; display: inline-flex; align-items: flex-start; gap: 1.2rem; width: fit-content; max-width: min(90vw, 900px); margin-bottom: 1rem; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.65); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); transition: background 0.2s ease; }
-html.dark .artwork-filter-bar { background: rgba(15, 15, 15, 0.65); }
-.artwork-filter-bar.filter-open { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-.artwork-filter-bar.filter-open .artwork-active-tags { display: none; }
-.artwork-filter-toggle { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: inherit; opacity: 0.55; padding: 0; transition: opacity 0.2s; font-family: inherit; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.5rem; }
-.artwork-filter-toggle:hover, .artwork-filter-toggle.open { opacity: 1; }
-.artwork-filter-toggle .filter-label { text-decoration: underline; text-underline-offset: 3px; }
-.artwork-filter-toggle.filter-spacer { opacity: 0; pointer-events: none; cursor: default; }
-.filter-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 11px; height: 11px; flex-shrink: 0; }
-.fbar { position: absolute; background: currentColor; border-radius: 1px; top: 50%; left: 50%; }
-.fbar-h { width: 11px; height: 1.5px; transform: translate(-50%,-50%); }
-.fbar-v { width: 1.5px; height: 11px; transform: translate(-50%,-50%); transform-origin: center center; transition: transform 0.35s ease, opacity 0.25s ease; }
-.artwork-filter-toggle.open .fbar-v { transform: translate(-50%,-50%) scaleY(0); opacity: 0; }
-.artwork-active-tags { display: flex; flex-wrap: wrap; gap: 1rem; max-width: 700px; }
-.artwork-active-tag-group { display: flex; flex-direction: column; gap: 0.1rem; white-space: nowrap; }
-.artwork-active-tag-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; text-decoration: underline; text-underline-offset: 2px; }
-.artwork-active-tag-value { font-size: 0.78rem; letter-spacing: 0.03em; opacity: 0.75; }
-.artwork-filter-overlay {
-  position: fixed; inset: 0; z-index: 100;
-  background: rgba(255,255,255,0.72); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-  display: flex; align-items: flex-start; justify-content: flex-start;
-  padding: 7rem 4rem 3rem 5rem; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
-  /* Closed is the default — deliberately not a class named "hidden",
-     since that collides with a sitewide display:none utility that
-     silently overrides this and blocks any transition from playing. */
-  opacity: 0;
-  transform: scale(0.96);
-  filter: blur(10px);
-  pointer-events: none;
-  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
-}
-@media (max-width: 700px) { .artwork-filter-overlay { padding: 6rem 1.5rem 4rem 1.5rem; } .artwork-filter-inner { padding-bottom: 3rem; } }
-body.filter-lock { overflow: hidden; }
-html.dark .artwork-filter-overlay { background: rgba(12,12,12,0.78); backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; }
-.artwork-filter-overlay.open {
-  opacity: 1;
-  transform: scale(1);
-  filter: blur(0px);
-  pointer-events: auto;
-}
-.artwork-filter-inner { display: flex; align-items: flex-start; gap: 3rem; width: 100%; }
-.artwork-filter-columns { display: flex; gap: 4rem; flex-wrap: wrap; }
-.artwork-filter-group { display: flex; flex-direction: column; gap: 0.5rem; min-width: 110px; }
-.artwork-filter-group-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; margin-bottom: 0.3rem; text-decoration: underline; text-underline-offset: 3px; }
-.artwork-filter-options { display: flex; flex-direction: column; gap: 0.25rem; }
-.artwork-filter-option:nth-child(1) { margin-left: 0px; } .artwork-filter-option:nth-child(2) { margin-left: 8px; } .artwork-filter-option:nth-child(3) { margin-left: 16px; } .artwork-filter-option:nth-child(4) { margin-left: 24px; } .artwork-filter-option:nth-child(5) { margin-left: 32px; } .artwork-filter-option:nth-child(6) { margin-left: 40px; } .artwork-filter-option:nth-child(7) { margin-left: 48px; } .artwork-filter-option:nth-child(8) { margin-left: 56px; }
-.artwork-filter-option { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.03em; color: inherit; opacity: 0.3; text-align: left; padding: 0.1rem 0; transition: opacity 0.15s; font-family: inherit; }
-.artwork-filter-option:hover { opacity: 0.7; }
-.artwork-filter-option.active { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
-.artwork-filter-reset-btn { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.03em; color: inherit; opacity: 0.45; text-align: left; padding: 0.1rem 0; font-family: inherit; transition: opacity 0.15s; margin-left: 0; margin-top: 1.5rem; }
-.artwork-filter-reset-btn:hover { opacity: 1; }
-.artwork-filter-left-col { display: flex; flex-direction: column; gap: 1.2rem; flex-shrink: 0; }
-
-/* ══════════════════════════════════════════
-   ARTWORK POPUP MODAL
-   ══════════════════════════════════════════ */
-.arw-modal {
-  position: fixed; inset: 0; z-index: 200;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.9s ease;
-}
-.arw-modal.open { opacity: 1; pointer-events: all; }
-.arw-modal-bg {
-  position: absolute; inset: 0; cursor: pointer;
-  background: rgba(240,240,240,0.55);
-  backdrop-filter: blur(26px) saturate(1.1);
-  -webkit-backdrop-filter: blur(26px) saturate(1.1);
-}
-html.dark .arw-modal-bg {
-  background: rgba(8,8,8,0.6);
-  backdrop-filter: blur(26px) brightness(0.55);
-  -webkit-backdrop-filter: blur(26px) brightness(0.55);
-}
-.arw-close {
-  position: fixed; top: 20px; right: 24px; z-index: 280;
-  background: none; border: none; cursor: pointer;
-  font-size: 2rem; color: inherit; padding: 0;
-  line-height: 1; font-weight: 200; opacity: 0.5;
-  transition: opacity 0.15s;
-}
-.arw-close:hover { opacity: 1; }
-.arw-modal-pane {
-  position: absolute; inset: 0; z-index: 1;
-  transform: scale(0.94);
-  filter: blur(8px);
-  transition: transform 0.9s ease, filter 0.9s ease;
-}
-.arw-modal.open .arw-modal-pane { transform: scale(1); filter: blur(0px); }
-.arw-sp-row { position: relative; width: 100%; height: 100%; }
-.arw-modal-pane .sp-img-wrap {
-  position: absolute; top: 50%; left: 34%;
-  transform: translate(-50%, -50%);
-  width: clamp(320px, 52vw, 980px);
-  max-width: min(52vw, 980px);
-  height: calc(100% - 100px);
-  display: flex; align-items: center; justify-content: center;
-}
-.arw-modal-pane .sp-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: pointer; }
-.arw-modal-pane .sp-info {
-  position: absolute; top: 50%; left: 78%;
-  transform: translate(-50%, -50%);
-  width: clamp(240px, 26vw, 320px);
-  display: flex; flex-direction: column; gap: 28px;
-}
-.arw-modal-pane .sp-info-top { display: flex; flex-direction: column; gap: 2px; }
-.arw-modal-pane .sp-title { font-size: clamp(1rem, 3.8vw, 1.2rem); font-weight: 600; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.01em; }
-.arw-modal-pane .sp-info-top p { margin: 0; font-size: clamp(0.78rem, 2.2vw, 0.93rem); line-height: 1.45; opacity: 0.62; }
-.arw-modal-pane .sp-comment { font-size: 0.83rem !important; margin-top: 6px !important; }
-.arw-modal-pane .sp-info-bottom { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-.arw-modal-pane .sp-info-bottom p { margin: 0; font-size: 0.93rem; line-height: 1.75; opacity: 0.62; text-align: right; }
-.arw-modal-pane .sp-purchase { display: inline-block; margin-top: 6px; font-size: 0.93rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; color: inherit !important; background: none !important; border: none !important; padding: 0 !important; opacity: 0.85; transition: opacity 0.22s; }
-.arw-modal-pane .sp-purchase:hover { opacity: 0.3; }
-.arw-nav-arrow {
-  position: fixed; top: 50%; transform: translateY(-50%);
-  display: none; align-items: center;
-  color: inherit; opacity: 0.6;
-  background: none !important; border: none !important;
-  text-decoration: none !important; box-shadow: none !important;
-  padding: 16px 10px !important; z-index: 260;
-  transition: opacity 0.22s; line-height: 0; cursor: pointer;
-}
-.arw-nav-arrow:hover { opacity: 0.2; }
-.sp-arrow-prev.arw-nav-arrow { left: 16px; }
-.sp-arrow-next.arw-nav-arrow { right: 16px; }
-.arw-modal-pane .sp-mobile-arrows { display: none; }
-@media (max-width: 900px) {
-  .arw-sp-row { position: static; display: flex; flex-direction: column; align-items: center; padding: 52px 20px 80px; gap: 0; height: auto; min-height: 100%; }
-  .arw-modal-pane .sp-img-wrap { position: static; transform: none; width: 100%; height: auto; min-height: 45vh; max-height: 45vh; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .arw-modal-pane .sp-img { width: auto; height: auto; max-width: 90vw; max-height: 46vh; }
-  .arw-modal-pane .sp-info { position: static; transform: none; width: 100%; max-width: 74vw; margin: 18px auto 0; padding-left: 1.2rem; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-  .arw-modal-pane .sp-info-top { text-align: left; width: 100%; max-width: 520px; }
-  .arw-modal-pane .sp-info-bottom { align-items: flex-start; text-align: left; width: 100%; max-width: 520px; }
-  .arw-modal-pane .sp-info-bottom p { text-align: left; }
-  .arw-nav-arrow { display: flex !important; }
-  .arw-modal-pane .sp-mobile-arrows { display: none !important; }
-}
-
-/* ══════════════════════════════════════════
-   LIGHTBOX (for popup)
-   ══════════════════════════════════════════ */
-.lightbox-overlay { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(255,255,255,0.18); backdrop-filter: blur(18px) saturate(0.7); -webkit-backdrop-filter: blur(18px) saturate(0.7); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
-html.dark .lightbox-overlay { background: rgba(15,15,15,0.35); }
-.lightbox-overlay.active { opacity: 1; pointer-events: auto; }
-.lightbox-img { max-width: 88vw; max-height: 88vh; width: auto; height: auto; object-fit: contain; cursor: default; transform-origin: center center; transition: transform 0.18s linear, max-width 0.18s linear, max-height 0.18s linear; }
-.lightbox-img:not(.is-rotated) { transform: scale(1); }
-.lightbox-img.is-rotated { transform: rotate(90deg) scale(0.96); max-width: 84vh; max-height: 84vw; }
-@media (max-width: 900px) { .lightbox-img.is-rotated { max-width: min(92vh,140vw); max-height: min(92vw,140vh); transform: rotate(90deg) scale(0.94); } }
-.lightbox-close { position: fixed; top: 1rem; right: 50%; font-size: 1.3rem; font-family: inherit; font-weight: bold; text-transform: uppercase; background: none; border: none; cursor: pointer; color: inherit; opacity: 0.8; letter-spacing: 0.05em; transition: opacity 0.2s ease; z-index: 9999; }
-.lightbox-close:hover { opacity: 1; }
-.rotate-hint { position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); font-size: 0.85rem; opacity: 0.65; color: inherit; display: none; cursor: pointer; z-index: 9999; text-align: center; user-select: none; }
-.rotate-hint:hover { opacity: 0.3; }
-
+    position:absolute;
+    font-size:.86rem;
+    letter-spacing:.055em;
+    line-height:1.5;
+    opacity:.55;
+    pointer-events:none;
+    color:inherit;
+    font-family:inherit;
+  }
+  .aw-lbl-r {
+    left:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-lr;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .aw-lbl-l {
+    right:calc(100% + 12px);
+    top:0;
+    writing-mode:vertical-rl;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .aw-lbl-b {
+    top:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  .aw-lbl-a {
+    bottom:calc(100% + 9px);
+    left:0;
+    writing-mode:horizontal-tb;
+    white-space:normal;
+    word-break:break-word;
+    overflow:hidden;
+  }
+  @media(max-width:700px) {
+    .aw-grid {
+      padding:0 1.5rem;
+      margin-top:-10vh;
+    }
+    .aw-lbl {
+      position:absolute;
+      font-size:.8rem;
+      letter-spacing:.055em;
+      line-height:.8;
+      opacity:.55;
+      pointer-events:none;
+      color:inherit;
+      font-family:inherit;
+    }
+  }
+  .end-spacer-1 {
+    height:20vh;
+  }
+  .end-spacer-2 {
+    height:20vh;
+  }
+  .end-spacer-3 {
+    height:1vh;
+  }
+  @media(max-width:768px) {
+    .end-spacer-1 {
+      height:15vh;
+    }
+    .end-spacer-2 {
+      height:30vh;
+    }
+    .end-spacer-3 {
+      height:8vh;
+    }
+  }
+  @media(max-width:480px) {
+    .end-spacer-1 {
+      height:10vh;
+    }
+    .end-spacer-2 {
+      height:20vh;
+    }
+    .end-spacer-3 {
+      height:5vh;
+    }
+  }
+  .end-message2 {
+    display:block;
+    width:100%;
+    text-align:right!important;
+    box-sizing:border-box;
+    padding-right:1.5rem;
+  }
+  .artwork-filter-bar {
+    position:sticky;
+    top:100px;
+    z-index:110;
+    display:inline-flex;
+    align-items:flex-start;
+    gap:1.2rem;
+    width:fit-content;
+    max-width:min(90vw,900px);
+    margin-bottom:1rem;
+    padding:.6rem .9rem;
+    background:rgba(255,255,255,.65);
+    backdrop-filter:blur(5px);
+    -webkit-backdrop-filter:blur(5px);
+    transition:background .2s ease;
+  }
+  html.dark .artwork-filter-bar {
+    background:var(--glass-bar);
+  }
+  .artwork-filter-bar.filter-open {
+    background:0 0!important;
+    backdrop-filter:none!important;
+    -webkit-backdrop-filter:none!important;
+  }
+  .artwork-filter-bar.filter-open .artwork-active-tags {
+    display:none;
+  }
+  .artwork-filter-toggle {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:.82rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:inherit;
+    opacity:.55;
+    padding:0;
+    transition:opacity .2s;
+    font-family:inherit;
+    white-space:nowrap;
+    flex-shrink:0;
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+  }
+  .artwork-filter-toggle:hover,.artwork-filter-toggle.open {
+    opacity:1;
+  }
+  .artwork-filter-toggle .filter-label {
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .artwork-filter-toggle.filter-spacer {
+    opacity:0;
+    pointer-events:none;
+    cursor:default;
+  }
+  .filter-icon {
+    position:relative;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:11px;
+    height:11px;
+    flex-shrink:0;
+  }
+  .fbar {
+    position:absolute;
+    background:currentColor;
+    border-radius:1px;
+    top:50%;
+    left:50%;
+  }
+  .fbar-h {
+    width:11px;
+    height:1.5px;
+    transform:translate(-50%,-50%);
+  }
+  .fbar-v {
+    width:1.5px;
+    height:11px;
+    transform:translate(-50%,-50%);
+    transform-origin:center center;
+    transition:transform .35s ease,opacity .25s ease;
+  }
+  .artwork-filter-toggle.open .fbar-v {
+    transform:translate(-50%,-50%)scaleY(0);
+    opacity:0;
+  }
+  .artwork-active-tags {
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    max-width:700px;
+  }
+  .artwork-active-tag-group {
+    display:flex;
+    flex-direction:column;
+    gap:.1rem;
+    white-space:nowrap;
+  }
+  .artwork-active-tag-label {
+    font-size:.65rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.35;
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .artwork-active-tag-value {
+    font-size:.78rem;
+    letter-spacing:.03em;
+    opacity:.75;
+  }
+  .artwork-filter-overlay {
+    position:fixed;
+    inset:0;
+    z-index:100;
+    background:rgba(255,255,255,.72);
+    backdrop-filter:blur(15px);
+    -webkit-backdrop-filter:blur(15px);
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    padding:7rem 4rem 3rem 5rem;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    opacity:0;
+    transform:scale(.96);
+    filter:blur(10px);
+    pointer-events:none;
+    transition:opacity .7s ease,transform .7s ease,filter .7s ease;
+  }
+  @media(max-width:700px) {
+    .artwork-filter-overlay {
+      padding:6rem 1.5rem 4rem;
+    }
+    .artwork-filter-inner {
+      padding-bottom:3rem;
+    }
+  }
+  body.filter-lock {
+    overflow:hidden;
+  }
+  html.dark .artwork-filter-overlay {
+    background:var(--glass-overlay);
+    backdrop-filter:blur(20px)!important;
+    -webkit-backdrop-filter:blur(20px)!important;
+  }
+  .artwork-filter-overlay.open {
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0);
+    pointer-events:auto;
+  }
+  .artwork-filter-inner {
+    display:flex;
+    align-items:flex-start;
+    gap:3rem;
+    width:100%;
+  }
+  .artwork-filter-columns {
+    display:flex;
+    gap:4rem;
+    flex-wrap:wrap;
+  }
+  .artwork-filter-group {
+    display:flex;
+    flex-direction:column;
+    gap:.5rem;
+    min-width:110px;
+  }
+  .artwork-filter-group-label {
+    font-size:.72rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    opacity:.35;
+    margin-bottom:.3rem;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .artwork-filter-options {
+    display:flex;
+    flex-direction:column;
+    gap:.25rem;
+  }
+  .artwork-filter-option:nth-child(1) {
+    margin-left:0;
+  }
+  .artwork-filter-option:nth-child(2) {
+    margin-left:8px;
+  }
+  .artwork-filter-option:nth-child(3) {
+    margin-left:16px;
+  }
+  .artwork-filter-option:nth-child(4) {
+    margin-left:24px;
+  }
+  .artwork-filter-option:nth-child(5) {
+    margin-left:32px;
+  }
+  .artwork-filter-option:nth-child(6) {
+    margin-left:40px;
+  }
+  .artwork-filter-option:nth-child(7) {
+    margin-left:48px;
+  }
+  .artwork-filter-option:nth-child(8) {
+    margin-left:56px;
+  }
+  .artwork-filter-option {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:inherit;
+    opacity:.3;
+    text-align:left;
+    padding:.1rem 0;
+    transition:opacity .15s;
+    font-family:inherit;
+  }
+  .artwork-filter-option:hover {
+    opacity:.7;
+  }
+  .artwork-filter-option.active {
+    opacity:1;
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
+  .artwork-filter-reset-btn {
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:.82rem;
+    letter-spacing:.03em;
+    color:inherit;
+    opacity:.45;
+    text-align:left;
+    padding:.1rem 0;
+    font-family:inherit;
+    transition:opacity .15s;
+    margin-left:0;
+    margin-top:1.5rem;
+  }
+  .artwork-filter-reset-btn:hover {
+    opacity:1;
+  }
+  .artwork-filter-left-col {
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+    flex-shrink:0;
+  }
+  .arw-modal {
+    position:fixed;
+    inset:0;
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .9s ease;
+  }
+  .arw-modal.open {
+    opacity:1;
+    pointer-events:all;
+  }
+  .arw-modal-bg {
+    position:absolute;
+    inset:0;
+    cursor:pointer;
+    background:rgba(240,240,240,.55);
+    backdrop-filter:blur(26px)saturate(1.1);
+    -webkit-backdrop-filter:blur(26px)saturate(1.1);
+  }
+  html.dark .arw-modal-bg {
+    background:var(--glass-modal-soft);
+    backdrop-filter:blur(26px)brightness(.55);
+    -webkit-backdrop-filter:blur(26px)brightness(.55);
+  }
+  .arw-close {
+    position:fixed;
+    top:20px;
+    right:24px;
+    z-index:280;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    font-size:2rem;
+    color:inherit;
+    padding:0;
+    line-height:1;
+    font-weight:200;
+    opacity:.5;
+    transition:opacity .15s;
+  }
+  .arw-close:hover {
+    opacity:1;
+  }
+  .arw-modal-pane {
+    position:absolute;
+    inset:0;
+    z-index:1;
+    transform:scale(.94);
+    filter:blur(8px);
+    transition:transform .9s ease,filter .9s ease;
+  }
+  .arw-modal.open .arw-modal-pane {
+    transform:scale(1);
+    filter:blur(0);
+  }
+  .arw-sp-row {
+    position:relative;
+    width:100%;
+    height:100%;
+  }
+  .arw-modal-pane .sp-img-wrap {
+    position:absolute;
+    top:50%;
+    left:34%;
+    transform:translate(-50%,-50%);
+    width:clamp(320px,52vw,980px);
+    max-width:min(52vw,980px);
+    height:calc(100% - 100px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .arw-modal-pane .sp-img {
+    display:block;
+    max-width:100%;
+    max-height:100%;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    cursor:pointer;
+  }
+  .arw-modal-pane .sp-info {
+    position:absolute;
+    top:50%;
+    left:78%;
+    transform:translate(-50%,-50%);
+    width:clamp(240px,26vw,320px);
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+  .arw-modal-pane .sp-info-top {
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .arw-modal-pane .sp-title {
+    font-size:clamp(1rem,3.8vw,1.2rem);
+    font-weight:600;
+    line-height:1.15;
+    margin:0 0 8px;
+    letter-spacing:-.01em;
+  }
+  .arw-modal-pane .sp-info-top p {
+    margin:0;
+    font-size:clamp(.78rem,2.2vw,.93rem);
+    line-height:1.45;
+    opacity:.62;
+  }
+  .arw-modal-pane .sp-comment {
+    font-size:.83rem!important;
+    margin-top:6px!important;
+  }
+  .arw-modal-pane .sp-info-bottom {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:2px;
+  }
+  .arw-modal-pane .sp-info-bottom p {
+    margin:0;
+    font-size:.93rem;
+    line-height:1.75;
+    opacity:.62;
+    text-align:right;
+  }
+  .arw-modal-pane .sp-purchase {
+    display:inline-block;
+    margin-top:6px;
+    font-size:.93rem;
+    font-weight:700;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    color:inherit!important;
+    background:0 0!important;
+    border:none!important;
+    padding:0!important;
+    opacity:.85;
+    transition:opacity .22s;
+  }
+  .arw-modal-pane .sp-purchase:hover {
+    opacity:.3;
+  }
+  .arw-nav-arrow {
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    display:none;
+    align-items:center;
+    color:inherit;
+    opacity:.6;
+    background:0 0!important;
+    border:none!important;
+    text-decoration:none!important;
+    box-shadow:none!important;
+    padding:16px 10px!important;
+    z-index:260;
+    transition:opacity .22s;
+    line-height:0;
+    cursor:pointer;
+  }
+  .arw-nav-arrow:hover {
+    opacity:.2;
+  }
+  .sp-arrow-prev.arw-nav-arrow {
+    left:16px;
+  }
+  .sp-arrow-next.arw-nav-arrow {
+    right:16px;
+  }
+  .arw-modal-pane .sp-mobile-arrows {
+    display:none;
+  }
+  @media(max-width:900px) {
+    .arw-sp-row {
+      position:static;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:52px 20px 80px;
+      gap:0;
+      height:auto;
+      min-height:100%;
+    }
+    .arw-modal-pane .sp-img-wrap {
+      position:static;
+      transform:none;
+      width:100%;
+      height:auto;
+      min-height:45vh;
+      max-height:45vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .arw-modal-pane .sp-img {
+      width:auto;
+      height:auto;
+      max-width:90vw;
+      max-height:46vh;
+    }
+    .arw-modal-pane .sp-info {
+      position:static;
+      transform:none;
+      width:100%;
+      max-width:74vw;
+      margin:18px auto 0;
+      padding-left:1.2rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+    .arw-modal-pane .sp-info-top {
+      text-align:left;
+      width:100%;
+      max-width:520px;
+    }
+    .arw-modal-pane .sp-info-bottom {
+      align-items:flex-start;
+      text-align:left;
+      width:100%;
+      max-width:520px;
+    }
+    .arw-modal-pane .sp-info-bottom p {
+      text-align:left;
+    }
+    .arw-nav-arrow {
+      display:flex!important;
+    }
+    .arw-modal-pane .sp-mobile-arrows {
+      display:none!important;
+    }
+  }
+  .lightbox-overlay {
+    position:fixed;
+    inset:0;
+    z-index:300;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    background:rgba(255,255,255,.18);
+    backdrop-filter:blur(18px)saturate(.7);
+    -webkit-backdrop-filter:blur(18px)saturate(.7);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  html.dark .lightbox-overlay {
+    background:var(--glass-veil);
+  }
+  .lightbox-overlay.active {
+    opacity:1;
+    pointer-events:auto;
+  }
+  .lightbox-img {
+    max-width:88vw;
+    max-height:88vh;
+    width:auto;
+    height:auto;
+    object-fit:contain;
+    cursor:default;
+    transform-origin:center center;
+    transition:transform .18s linear,max-width .18s linear,max-height .18s linear;
+  }
+  .lightbox-img:not(.is-rotated) {
+    transform:scale(1);
+  }
+  .lightbox-img.is-rotated {
+    transform:rotate(90deg)scale(.96);
+    max-width:84vh;
+    max-height:84vw;
+  }
+  @media(max-width:900px) {
+    .lightbox-img.is-rotated {
+      max-width:min(92vh,140vw);
+      max-height:min(92vw,140vh);
+      transform:rotate(90deg)scale(.94);
+    }
+  }
+  .lightbox-close {
+    position:fixed;
+    top:1rem;
+    right:50%;
+    font-size:1.3rem;
+    font-family:inherit;
+    font-weight:700;
+    text-transform:uppercase;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    color:inherit;
+    opacity:.8;
+    letter-spacing:.05em;
+    transition:opacity .2s ease;
+    z-index:9999;
+  }
+  .lightbox-close:hover {
+    opacity:1;
+  }
+  .rotate-hint {
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:.85rem;
+    opacity:.65;
+    color:inherit;
+    display:none;
+    cursor:pointer;
+    z-index:9999;
+    text-align:center;
+    user-select:none;
+  }
+  .rotate-hint:hover {
+    opacity:.3;
+  }
 </style>
 
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle    = document.getElementById("filterToggle");
-  const filterBar = document.getElementById("artworkFilterBar");
-  const overlay   = document.getElementById("filterOverlay");
-  const tagsEl    = document.getElementById("activeFilterTags");
-  const gallery   = document.getElementById("artworkGallery");
-  const items     = gallery ? Array.from(gallery.querySelectorAll(".artwork-item")) : [];
-  const active    = { year: "all", availability: "all", collection: "all" };
-  const filterLabels = { year: "Years", availability: "Availability", collection: "Collection" };
-
-  function openOverlay()  { toggle.classList.add("open"); filterBar.classList.add("filter-open"); overlay.classList.add("open"); document.body.classList.add("filter-lock"); }
-  function closeOverlay() { overlay.classList.remove("open"); toggle.classList.remove("open"); filterBar.classList.remove("filter-open"); document.body.classList.remove("filter-lock"); }
-  document.getElementById('filterResetBtn')?.addEventListener('click', () => {
-    active.year = 'all'; active.availability = 'all'; active.collection = 'all';
-    document.querySelectorAll('.artwork-filter-option').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.artwork-filter-option[data-value="all"]').forEach(b => b.classList.add('active'));
-    const galleryView = document.getElementById("artworkGallery");
-    const treeView    = document.getElementById("treeCollectionView");
-    treeView.style.display = 'none'; galleryView.style.display = '';
-    applyFilters(); renderTags();
-  });
-
-  toggle.addEventListener("click", () => !overlay.classList.contains("open") ? openOverlay() : closeOverlay());
-  overlay.addEventListener("click", (e) => { if (e.target === overlay) closeOverlay(); });
-
-  document.querySelectorAll(".artwork-filter-option").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const filter = btn.dataset.filter; const value = btn.dataset.value;
-      btn.closest(".artwork-filter-options").querySelectorAll(".artwork-filter-option").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active"); active[filter] = value;
-      const galleryView = document.getElementById("artworkGallery");
-      const treeView    = document.getElementById("treeCollectionView");
-      if (filter === "collection" && value === "The Tree, The Snake, The Fruit") {
-        active.year = "all"; active.availability = "all";
-        document.querySelectorAll('[data-filter="year"], [data-filter="availability"]').forEach(b => b.classList.remove("active"));
-        document.querySelectorAll('[data-filter="year"][data-value="all"], [data-filter="availability"][data-value="all"]').forEach(b => b.classList.add("active"));
-        galleryView.style.display = "none"; treeView.style.display = "block";
-        renderTags(); return;
-      }
-      treeView.style.display = "none"; galleryView.style.display = "";
-      applyFilters(); renderTags();
-    });
-  });
-
-  function applyFilters() {
-    items.forEach(item => {
-      const year  = String(item.dataset.year || "");
-      const avail = (item.dataset.availability || "").toLowerCase();
-      const col   = item.dataset.collection || "";
-      const matchYear  = active.year === "all" || year === String(active.year);
-      const matchAvail = active.availability === "all" || avail === active.availability.toLowerCase();
-      const matchCol   = active.collection === "all" || col.split(",").map(s => s.trim()).includes(active.collection);
-      item.style.display = (matchYear && matchAvail && matchCol) ? "" : "none";
-    });
-    window._artworkLayout?.();
-  }
-
-  function renderTags() {
-    tagsEl.innerHTML = "";
-    Object.entries(active).forEach(([key, val]) => {
-      if (val === "all") return;
-      const group = document.createElement("div"); group.className = "artwork-active-tag-group";
-      const label = document.createElement("span"); label.className = "artwork-active-tag-label"; label.textContent = filterLabels[key];
-      const value = document.createElement("span"); value.className = "artwork-active-tag-value"; value.textContent = val;
-      group.appendChild(label); group.appendChild(value); tagsEl.appendChild(group);
-    });
-  }
-
-  if (window.location.hash === "#artworks-section") {
-    document.documentElement.style.opacity = '0';
-    const target = document.getElementById("artworks-section");
-    setTimeout(() => {
-      const headerH = document.getElementById("siteHeader")?.offsetHeight || 0;
-      window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY - headerH);
-      requestAnimationFrame(() => {
-        document.documentElement.style.transition = 'opacity 0.2s ease';
-        document.documentElement.style.opacity = '1';
-        setTimeout(() => { document.documentElement.style.opacity = ''; document.documentElement.style.transition = ''; }, 250);
-      });
-    }, 200);
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const collectionParam = params.get("collection");
-  if (collectionParam) {
-    active.collection = collectionParam;
-    document.querySelectorAll('[data-filter="collection"]').forEach(b => { b.classList.remove("active"); if (b.dataset.value === collectionParam) b.classList.add("active"); });
-    const galleryView = document.getElementById("artworkGallery");
-    const treeView    = document.getElementById("treeCollectionView");
-    if (collectionParam === "The Tree, The Snake, The Fruit") { galleryView.style.display = "none"; treeView.style.display = "block"; }
-    else { applyFilters(); }
-    renderTags();
-  }
-});
-
-/* ── SCATTER GALLERY LAYOUT (Hundred Sins layout style) ── */
-(function () {
-  const grid = document.getElementById('artworkGallery');
-  if (!grid) return;
-
-  function mkRng(seed) {
-    let s = seed >>> 0;
-    return () => {
-      s = Math.imul(s ^ (s >>> 15), s | 1);
-      s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
-      return ((s ^ (s >>> 14)) >>> 0) / 0x100000000;
-    };
-  }
-
-  const items = Array.from(grid.querySelectorAll('.aw-item'));
-  const MAX_H = 42;
-  const MAX_V = 36;
-
-  function addLabels(item, imgW, imgH) {
-  item.querySelectorAll('.aw-lbl').forEach(l => l.remove());
-
-  const year = (item.dataset.year || '').trim();
-  const title = (item.dataset.title || '').trim();
-
-  const idx = parseInt(item.dataset.idx, 10) || 0;
-  const r = mkRng(idx * 7919 + 31);
-
-  const yearRight = r() < 0.5;
-
-  const lbDefs = [];
-
-  if (year) {
-    lbDefs.push({
-      text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
-      pos: yearRight ? 'r' : 'l',
-      maxH: Math.round(imgH * 0.70),
-      maxW: null
-    });
-  }
-
-  if (title) {
-    const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
-    lbDefs.push({
-      text: t,
-      pos: 'b',
-      maxH: Math.round(1.5 * 0.86 * 16 * 2.2),
-      maxW: Math.round(imgW * 0.88)
-    });
-  }
-
-  lbDefs.forEach(({ text, pos, maxH, maxW }) => {
-    const el = document.createElement('div');
-    el.className = `aw-lbl aw-lbl-${pos}`;
-    el.textContent = text;
-    if (maxH) el.style.maxHeight = maxH + 'px';
-    if (maxW) el.style.maxWidth = maxW + 'px';
-    item.appendChild(el);
-  });
-}
-
-  function visible() {
-    return items.filter(it => it.style.display !== 'none');
-  }
-
-  function layout() {
-    const W = grid.offsetWidth;
-    if (!W) { requestAnimationFrame(layout); return; }
-
-    const mobile = window.innerWidth <= 700;
-    const NCOLS = W > 1100 ? 11 : W > 900 ? 9 : W > 680 ? 6 : W > 480 ? 3 : 2;
-    const H_GAP = mobile ? 24 : 50;
-    const V_MIN = mobile ? 50 : 70;
-    const V_EXTRA = mobile ? 40 : 50;
-
-    const vis = visible();
-    if (!vis.length) { grid.style.height = '300px'; return; }
-
-    const colW = W / NCOLS;
-    const bots = new Array(NCOLS).fill(40);
-
-    vis.forEach((item, vi) => {
-      const idx = parseInt(item.dataset.idx, 10) || vi;
-      const r = mkRng(idx * 3331 + 113);
-
-      const isLarge = idx % 7 === 0;
-      const wBase = isLarge ? 3 : 2;
-      const wExtra = Math.floor(r() * (isLarge ? 2 : 3));
-      const wCols = Math.min(NCOLS, wBase + wExtra);
-
-      const wColsCapped = mobile
-        ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8)))
-        : wCols;
-
-      const maxStart = Math.max(0, NCOLS - wColsCapped);
-      const startCol = Math.floor(r() * (maxStart + 1));
-
-      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
-      const vGap = V_MIN + Math.floor(r() * V_EXTRA);
-      const topY = spanMax + vGap;
-
-      const slotW = wColsCapped * colW;
-      const imgW = Math.max(60, slotW - H_GAP);
-      const leftX = startCol * colW + H_GAP / 2;
-
-      item.style.left = leftX + 'px';
-      item.style.top = topY + 'px';
-      item.style.width = imgW + 'px';
-
-      const img = item.querySelector('img');
-      const ar = (img && img.naturalWidth > 0 && img.naturalHeight > 0)
-        ? img.naturalHeight / img.naturalWidth
-        : 1.25;
-      const imgH = imgW * ar;
-
-      addLabels(item, imgW, imgH);
-
-      for (let c = startCol; c < startCol + wColsCapped; c++) {
-        bots[c] = topY + imgH;
-      }
-    });
-
-    grid.style.height = (Math.max(...bots) + 220) + 'px';
-  }
-
-  window._artworkLayout = layout;
-
-  let loaded = 0;
-  Array.from(grid.querySelectorAll('img')).forEach(img => {
-    const done = () => {
-      loaded++;
-      if (loaded <= 8 || loaded % 4 === 0) layout();
-    };
-    if (img.complete) done();
-    else { img.onload = done; img.onerror = done; }
-  });
-
-  window.addEventListener('load', layout);
-  document.addEventListener('DOMContentLoaded', () => setTimeout(layout, 100));
-
-  let rt;
-  window.addEventListener('resize', () => {
-    clearTimeout(rt);
-    rt = setTimeout(layout, 180);
-  });
-})();
-
-/* ══════════════════════════════════════════════════════
-   ARTWORK POPUP — opens single.html layout as overlay
-   ══════════════════════════════════════════════════════ */
-(function () {
-  const leftArrowSVG  = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
-  const rightArrowSVG = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
-
-  const modal      = document.getElementById('arwModal');
-  const closeBtn   = document.getElementById('arwClose');
-  const arwImg     = document.getElementById('arwImg');
-  const arwTitle   = document.getElementById('arwTitle');
-  const arwYear    = document.getElementById('arwYear');
-  const arwSize    = document.getElementById('arwSize');
-  const arwMedium  = document.getElementById('arwMedium');
-  const arwColl    = document.getElementById('arwCollection');
-  const arwComment = document.getElementById('arwComment');
-  const arwAvail   = document.getElementById('arwAvailability');
-  const arwPrice   = document.getElementById('arwPrice');
-  const arwPurch   = document.getElementById('arwPurchase');
-  const prevBtn    = document.getElementById('arwPrevBtn');
-  const nextBtn    = document.getElementById('arwNextBtn');
-
-  prevBtn.innerHTML = leftArrowSVG;
-  nextBtn.innerHTML = rightArrowSVG;
-
-  let visibleItems   = [];
-  let currentIdx     = -1;
-  let currentItemRef = null;
-
-  function getFilteredGalleryItems() {
-    return Array.from(document.querySelectorAll('#artworkGallery .artwork-item'))
-      .filter(i => i.style.display !== 'none');
-  }
-
-  function setField(el, val) {
-    if (!el) return;
-    if (val && String(val).trim()) { el.textContent = val; el.style.display = ''; }
-    else { el.style.display = 'none'; }
-  }
-
-  function formatCollection(raw) {
-    if (!raw) return '';
-    const cols = raw.split(',').map(s => s.trim()).filter(Boolean);
-    if (!cols.length) return '';
-    if (cols.length === 1) return '"' + cols[0] + '" Collection';
-    return cols.map(c => '"' + c + '"').join(', ') + ' Collections';
-  }
-
-  function updateNavArrows() {
-    prevBtn.style.display = currentIdx > 0 ? 'flex' : 'none';
-    nextBtn.style.display = currentIdx < visibleItems.length - 1 ? 'flex' : 'none';
-    positionArrowsAtTitle();
-  }
-
-  function positionArrowsAtTitle() {
-    if (window.innerWidth > 900) return;
-    requestAnimationFrame(() => {
-      const titleEl = document.getElementById('arwTitle');
-      if (!titleEl) return;
-      const rect = titleEl.getBoundingClientRect();
-      const y = rect.top + rect.height / 2;
-      [prevBtn, nextBtn].forEach(btn => {
-        btn.style.top       = y + 'px';
-        btn.style.transform = 'translateY(-50%)';
-      });
-    });
-  }
-
-  function populateModal(el) {
-    const d = el.dataset;
-    arwImg.src = d.image || '';
-    arwImg.alt = d.title || '';
-    setField(arwTitle, d.title);
-    setField(arwYear, d.year);
-    setField(arwSize, d.size);
-    setField(arwMedium, d.medium);
-    setField(arwColl, formatCollection(d.collection));
-    setField(arwComment, d.comment);
-    setField(arwAvail, d.availability);
-    if (d.availability === 'Available' && d.price) { arwPrice.textContent = '$ ' + d.price; arwPrice.style.display = ''; }
-    else { arwPrice.style.display = 'none'; }
-    if (d.availability === 'Available') { arwPurch.href = '/inquiry/?add=' + (d.id || ''); arwPurch.style.display = ''; }
-    else { arwPurch.style.display = 'none'; }
-    updateNavArrows();
-  }
-
-  function navTo(dir) {
-    const fresh = getFilteredGalleryItems();
-    const freshIdx = currentItemRef ? fresh.indexOf(currentItemRef) : -1;
-    visibleItems = fresh;
-    if (freshIdx !== -1) currentIdx = freshIdx;
-    const newIdx = currentIdx + dir;
-    if (newIdx < 0 || newIdx >= visibleItems.length) return;
-    currentIdx = newIdx;
-    currentItemRef = visibleItems[currentIdx];
-    populateModal(currentItemRef);
-  }
-
-  function openModal(el) {
-    visibleItems = getFilteredGalleryItems();
-    currentIdx = visibleItems.indexOf(el);
-    currentItemRef = el;
-    populateModal(el);
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-    currentItemRef = null;
-    setTimeout(() => { if (!modal.classList.contains('open')) arwImg.src = ''; }, 420);
-    closeArwLightbox();
-  }
-
-  arwImg.addEventListener('click', () => { if (arwImg.src) openArwLightbox(arwImg.src, arwImg.alt); });
-
-  document.querySelectorAll('#artworkGallery .artwork-item').forEach(item => {
-    item.addEventListener('click', e => {
-      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
-      e.preventDefault();
-      openModal(item);
-    });
-  });
-
-  const hpLink = document.querySelector('.hp-image-link[data-image]');
-  if (hpLink) {
-    hpLink.addEventListener('click', e => {
-      if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
-      e.preventDefault();
-      visibleItems = [hpLink];
-      currentIdx = 0;
-      currentItemRef = hpLink;
-      populateModal(hpLink);
-      modal.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
-  }
-
-  modal.addEventListener('click', e => {
-    if (!e.target.closest('.sp-img-wrap, .sp-info, .arw-nav-arrow, .arw-close')) {
-      closeModal();
+  (document.addEventListener("DOMContentLoaded", () => {
+    const o = document.getElementById("filterToggle"),
+      l = document.getElementById("artworkFilterBar"),
+      t = document.getElementById("filterOverlay"),
+      a = document.getElementById("activeFilterTags"),
+      c = document.getElementById("artworkGallery"),
+      h = c ? Array.from(c.querySelectorAll(".artwork-item")) : [],
+      e = { year: "all", availability: "all", collection: "all" },
+      d = { year: "Years", availability: "Availability", collection: "Collection" };
+    function u() {
+      (o.classList.add("open"),
+        l.classList.add("filter-open"),
+        t.classList.add("open"),
+        document.body.classList.add("filter-lock"));
     }
-  });
-  closeBtn.addEventListener('click', closeModal);
-  prevBtn.addEventListener('click', e => { e.preventDefault(); navTo(-1); });
-  nextBtn.addEventListener('click', e => { e.preventDefault(); navTo(1); });
-  document.addEventListener('keydown', e => {
-    if (!modal.classList.contains('open')) return;
-    if (e.key === 'Escape') closeModal();
-    if (e.key === 'ArrowLeft')  navTo(-1);
-    if (e.key === 'ArrowRight') navTo(1);
-  });
-
-  window.openArwLightbox = function(src, alt) {
-    const lb  = document.getElementById('arwLightbox');
-    const img = document.getElementById('arwLightboxImg');
-    img.classList.remove('is-rotated');
-    img.src = src; img.alt = alt || '';
-    lb.classList.add('active');
-    img.onload = updateArwRotateHint;
-    updateArwRotateHint();
-  };
-  window.closeArwLightbox = function() { document.getElementById('arwLightbox').classList.remove('active'); };
-  window.toggleArwRotate  = function() { document.getElementById('arwLightboxImg').classList.toggle('is-rotated'); };
-
-  function updateArwRotateHint() {
-    const img  = document.getElementById('arwLightboxImg');
-    const hint = document.getElementById('arwRotateHint');
-    if (!img || !hint) return;
-    hint.style.display = (window.innerWidth <= 900 && img.naturalWidth > img.naturalHeight) ? 'block' : 'none';
-  }
-
-  document.getElementById('arwLightbox').addEventListener('click', () => window.closeArwLightbox());
-})();
-
-/* ══════════════════════════════════════════════════════
-   MAILING LIST AUTO-TRIGGER (homepage only)
-   ══════════════════════════════════════════════════════ */
-(function () {
-  const STORAGE_KEY  = 'la-ml-status';
-  const DISMISS_DAYS = 10;
-
-  function shouldShow() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (!raw) return true;
-      const { status, ts } = JSON.parse(raw);
-      if (status === 'subscribed') return false;
-      if (status === 'dismissed') return (Date.now() - ts) / 86400000 >= DISMISS_DAYS;
-    } catch {}
-    return true;
-  }
-
-  if (!shouldShow()) return;
-
-  let triggered = false;
-  function trigger() {
-    if (triggered) return;
-    triggered = true;
-    clearTimeout(timer);
-    window.removeEventListener('scroll', onScroll);
-    setTimeout(() => window.openMailingPopup?.(), 400);
-  }
-  const timer = setTimeout(trigger, 8000);
-  function onScroll() { if (window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.2) trigger(); }
-  window.addEventListener('scroll', onScroll, { passive: true });
-})();
+    function r() {
+      (t.classList.remove("open"),
+        o.classList.remove("open"),
+        l.classList.remove("filter-open"),
+        document.body.classList.remove("filter-lock"));
+    }
+    (document.getElementById("filterResetBtn")?.addEventListener("click", () => {
+      ((e.year = "all"),
+        (e.availability = "all"),
+        (e.collection = "all"),
+        document.querySelectorAll(".artwork-filter-option").forEach((e) => e.classList.remove("active")),
+        document
+          .querySelectorAll('.artwork-filter-option[data-value="all"]')
+          .forEach((e) => e.classList.add("active")));
+      const t = document.getElementById("artworkGallery"),
+        n = document.getElementById("treeCollectionView");
+      ((n.style.display = "none"), (t.style.display = ""), i(), s());
+    }),
+      o.addEventListener("click", () => (t.classList.contains("open") ? r() : u())),
+      t.addEventListener("click", (e) => {
+        e.target === t && r();
+      }),
+      document.querySelectorAll(".artwork-filter-option").forEach((t) => {
+        t.addEventListener("click", () => {
+          const n = t.dataset.filter,
+            o = t.dataset.value;
+          (t
+            .closest(".artwork-filter-options")
+            .querySelectorAll(".artwork-filter-option")
+            .forEach((e) => e.classList.remove("active")),
+            t.classList.add("active"),
+            (e[n] = o));
+          const a = document.getElementById("artworkGallery"),
+            r = document.getElementById("treeCollectionView");
+          if (n === "collection" && o === "The Tree, The Snake, The Fruit") {
+            ((e.year = "all"),
+              (e.availability = "all"),
+              document
+                .querySelectorAll('[data-filter="year"], [data-filter="availability"]')
+                .forEach((e) => e.classList.remove("active")),
+              document
+                .querySelectorAll(
+                  '[data-filter="year"][data-value="all"], [data-filter="availability"][data-value="all"]',
+                )
+                .forEach((e) => e.classList.add("active")),
+              (a.style.display = "none"),
+              (r.style.display = "block"),
+              s());
+            return;
+          }
+          ((r.style.display = "none"), (a.style.display = ""), i(), s());
+        });
+      }));
+    function i() {
+      (h.forEach((t) => {
+        const n = String(t.dataset.year || ""),
+          s = (t.dataset.availability || "").toLowerCase(),
+          o = t.dataset.collection || "",
+          i = e.year === "all" || n === String(e.year),
+          a = e.availability === "all" || s === e.availability.toLowerCase(),
+          r =
+            e.collection === "all" ||
+            o
+              .split(",")
+              .map((e) => e.trim())
+              .includes(e.collection);
+        t.style.display = i && a && r ? "" : "none";
+      }),
+        window._artworkLayout?.());
+    }
+    function s() {
+      ((a.innerHTML = ""),
+        Object.entries(e).forEach(([e, t]) => {
+          if (t === "all") return;
+          const n = document.createElement("div");
+          n.className = "artwork-active-tag-group";
+          const s = document.createElement("span");
+          ((s.className = "artwork-active-tag-label"), (s.textContent = d[e]));
+          const o = document.createElement("span");
+          ((o.className = "artwork-active-tag-value"),
+            (o.textContent = t),
+            n.appendChild(s),
+            n.appendChild(o),
+            a.appendChild(n));
+        }));
+    }
+    if (window.location.hash === "#artworks-section") {
+      document.documentElement.style.opacity = "0";
+      const e = document.getElementById("artworks-section");
+      setTimeout(() => {
+        const t = document.getElementById("siteHeader")?.offsetHeight || 0;
+        (window.scrollTo(0, e.getBoundingClientRect().top + window.scrollY - t),
+          requestAnimationFrame(() => {
+            ((document.documentElement.style.transition = "opacity 0.2s ease"),
+              (document.documentElement.style.opacity = "1"),
+              setTimeout(() => {
+                ((document.documentElement.style.opacity = ""),
+                  (document.documentElement.style.transition = ""));
+              }, 250));
+          }));
+      }, 200);
+    }
+    const m = new URLSearchParams(window.location.search),
+      n = m.get("collection");
+    if (n) {
+      ((e.collection = n),
+        document.querySelectorAll('[data-filter="collection"]').forEach((e) => {
+          (e.classList.remove("active"), e.dataset.value === n && e.classList.add("active"));
+        }));
+      const t = document.getElementById("artworkGallery"),
+        o = document.getElementById("treeCollectionView");
+      (n === "The Tree, The Snake, The Fruit" ? ((t.style.display = "none"), (o.style.display = "block")) : i(),
+        s());
+    }
+  }),
+    (function () {
+      const e = document.getElementById("artworkGallery");
+      if (!e) return;
+      function s(e) {
+        let t = e >>> 0;
+        return () => (
+          (t = Math.imul(t ^ (t >>> 15), t | 1)),
+          (t ^= t + Math.imul(t ^ (t >>> 7), t | 61)),
+          ((t ^ (t >>> 14)) >>> 0) / 4294967296
+        );
+      }
+      const c = Array.from(e.querySelectorAll(".aw-item")),
+        o = 42,
+        i = 36;
+      function l(e, t, n) {
+        e.querySelectorAll(".aw-lbl").forEach((e) => e.remove());
+        const a = (e.dataset.year || "").trim(),
+          r = (e.dataset.title || "").trim(),
+          l = parseInt(e.dataset.idx, 10) || 0,
+          d = s(l * 7919 + 31),
+          u = d() < 0.5,
+          c = [];
+        if (
+          (a &&
+            c.push({
+              text: a.length > i ? a.slice(0, i - 1) + "…" : a,
+              pos: u ? "r" : "l",
+              maxH: Math.round(n * 0.7),
+              maxW: null,
+            }),
+          r)
+        ) {
+          const e = r.length > o ? r.slice(0, o - 1) + "…" : r;
+          c.push({ text: e, pos: "b", maxH: Math.round(1.5 * 0.86 * 16 * 2.2), maxW: Math.round(t * 0.88) });
+        }
+        c.forEach(({ text: t, pos: n, maxH: s, maxW: o }) => {
+          const i = document.createElement("div");
+          ((i.className = `aw-lbl aw-lbl-${n}`),
+            (i.textContent = t),
+            s && (i.style.maxHeight = s + "px"),
+            o && (i.style.maxWidth = o + "px"),
+            e.appendChild(i));
+        });
+      }
+      function d() {
+        return c.filter((e) => e.style.display !== "none");
+      }
+      function t() {
+        const n = e.offsetWidth;
+        if (!n) {
+          requestAnimationFrame(t);
+          return;
+        }
+        const i = window.innerWidth <= 700,
+          o = n > 1100 ? 11 : n > 900 ? 9 : n > 680 ? 6 : n > 480 ? 3 : 2,
+          r = i ? 24 : 50,
+          h = i ? 50 : 70,
+          m = i ? 40 : 50,
+          c = d();
+        if (!c.length) {
+          e.style.height = "300px";
+          return;
+        }
+        const u = n / o,
+          a = new Array(o).fill(40);
+        (c.forEach((e, t) => {
+          const y = parseInt(e.dataset.idx, 10) || t,
+            f = s(y * 3331 + 113),
+            v = y % 7 === 0,
+            x = v ? 3 : 2,
+            A = Math.floor(f() * (v ? 2 : 3)),
+            g = Math.min(o, x + A),
+            d = i ? Math.min(g, Math.max(2, Math.round(o * 0.8))) : g,
+            M = Math.max(0, o - d),
+            c = Math.floor(f() * (M + 1)),
+            O = Math.max(...a.slice(c, c + d)),
+            k = h + Math.floor(f() * m),
+            w = O + k,
+            E = d * u,
+            p = Math.max(60, E - r),
+            C = c * u + r / 2;
+          ((e.style.left = C + "px"), (e.style.top = w + "px"), (e.style.width = p + "px"));
+          const n = e.querySelector("img"),
+            _ = n ? n.getAttribute("width") | 0 : 0,
+            j = n ? n.getAttribute("height") | 0 : 0,
+            S =
+              _ > 0 && j > 0
+                ? j / _
+                : n && n.naturalWidth > 0 && n.naturalHeight > 0
+                  ? n.naturalHeight / n.naturalWidth
+                  : 1.25,
+            b = p * S;
+          l(e, p, b);
+          for (let e = c; e < c + d; e++) a[e] = w + b;
+        }),
+          (e.style.height = Math.max(...a) + 220 + "px"),
+          window.dispatchEvent(new Event("sitelayout")));
+      }
+      window._artworkLayout = t;
+      let n = 0;
+      (Array.from(e.querySelectorAll("img")).forEach((e) => {
+        const s = () => {
+          (n++, (n <= 8 || n % 4 === 0) && t());
+        };
+        e.complete ? s() : ((e.onload = s), (e.onerror = s));
+      }),
+        window.addEventListener("load", t),
+        document.addEventListener("DOMContentLoaded", () => setTimeout(t, 100)));
+      let a,
+        r = window.innerWidth;
+      window.addEventListener("resize", () => {
+        if (window.innerWidth === r) return;
+        ((r = window.innerWidth), clearTimeout(a), (a = setTimeout(t, 180)));
+      });
+    })(),
+    (function () {
+      const x =
+          '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+        S =
+          '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>',
+        i = document.getElementById("arwModal"),
+        A = document.getElementById("arwClose"),
+        s = document.getElementById("arwImg"),
+        k = document.getElementById("arwTitle"),
+        C = document.getElementById("arwYear"),
+        g = document.getElementById("arwSize"),
+        y = document.getElementById("arwMedium"),
+        j = document.getElementById("arwCollection"),
+        b = document.getElementById("arwComment"),
+        v = document.getElementById("arwAvailability"),
+        h = document.getElementById("arwPrice"),
+        m = document.getElementById("arwPurchase"),
+        l = document.getElementById("arwPrevBtn"),
+        r = document.getElementById("arwNextBtn");
+      ((l.innerHTML = x), (r.innerHTML = S));
+      let o = [],
+        e = -1,
+        n = null;
+      function p() {
+        return Array.from(document.querySelectorAll("#artworkGallery .artwork-item")).filter(
+          (e) => e.style.display !== "none",
+        );
+      }
+      function t(e, t) {
+        if (!e) return;
+        t && String(t).trim() ? ((e.textContent = t), (e.style.display = "")) : (e.style.display = "none");
+      }
+      function _(e) {
+        if (!e) return "";
+        const t = e
+          .split(",")
+          .map((e) => e.trim())
+          .filter(Boolean);
+        return t.length
+          ? t.length === 1
+            ? '"' + t[0] + '" Collection'
+            : t.map((e) => '"' + e + '"').join(", ") + " Collections"
+          : "";
+      }
+      function w() {
+        ((l.style.display = e > 0 ? "flex" : "none"),
+          (r.style.display = e < o.length - 1 ? "flex" : "none"),
+          O());
+      }
+      function O() {
+        if (window.innerWidth > 900) return;
+        requestAnimationFrame(() => {
+          const e = document.getElementById("arwTitle");
+          if (!e) return;
+          const t = e.getBoundingClientRect(),
+            n = t.top + t.height / 2;
+          [l, r].forEach((e) => {
+            ((e.style.top = n + "px"), (e.style.transform = "translateY(-50%)"));
+          });
+        });
+      }
+      function u(e) {
+        const n = e.dataset;
+        ((s.src = n.image || ""),
+          (s.alt = n.title || ""),
+          t(k, n.title),
+          t(C, n.year),
+          t(g, n.size),
+          t(y, n.medium),
+          t(j, _(n.collection)),
+          t(b, n.comment),
+          t(v, n.availability),
+          n.availability === "Available" && n.price
+            ? ((h.textContent = "$ " + n.price), (h.style.display = ""))
+            : (h.style.display = "none"),
+          n.availability === "Available"
+            ? ((m.href = "/inquiry/?add=" + (n.id || "")), (m.style.display = ""))
+            : (m.style.display = "none"),
+          w());
+      }
+      function c(t) {
+        const i = p(),
+          a = n ? i.indexOf(n) : -1;
+        ((o = i), a !== -1 && (e = a));
+        const s = e + t;
+        if (s < 0 || s >= o.length) return;
+        ((e = s), (n = o[e]), u(n));
+      }
+      function E(t) {
+        ((o = p()),
+          (e = o.indexOf(t)),
+          (n = t),
+          u(t),
+          i.classList.add("open"),
+          (document.body.style.overflow = "hidden"));
+      }
+      function d() {
+        (i.classList.remove("open"),
+          (document.body.style.overflow = ""),
+          (n = null),
+          setTimeout(() => {
+            i.classList.contains("open") || (s.src = "");
+          }, 900),
+          closeArwLightbox());
+      }
+      (s.addEventListener("click", () => {
+        s.src && openArwLightbox(s.src, s.alt);
+      }),
+        document.querySelectorAll("#artworkGallery .artwork-item").forEach((e) => {
+          e.addEventListener("click", (t) => {
+            if (t.ctrlKey || t.metaKey || t.shiftKey || t.button === 1) return;
+            (t.preventDefault(), E(e));
+          });
+        }));
+      const a = document.querySelector(".hp-image-link[data-image]");
+      (a &&
+        a.addEventListener("click", (t) => {
+          if (t.ctrlKey || t.metaKey || t.shiftKey || t.button === 1) return;
+          (t.preventDefault(),
+            (o = [a]),
+            (e = 0),
+            (n = a),
+            u(a),
+            i.classList.add("open"),
+            (document.body.style.overflow = "hidden"));
+        }),
+        i.addEventListener("click", (e) => {
+          e.target.closest(".sp-img-wrap, .sp-info, .arw-nav-arrow, .arw-close") || d();
+        }),
+        A.addEventListener("click", d),
+        l.addEventListener("click", (e) => {
+          (e.preventDefault(), c(-1));
+        }),
+        r.addEventListener("click", (e) => {
+          (e.preventDefault(), c(1));
+        }),
+        document.addEventListener("keydown", (e) => {
+          if (!i.classList.contains("open")) return;
+          (e.key === "Escape" && d(), e.key === "ArrowLeft" && c(-1), e.key === "ArrowRight" && c(1));
+        }),
+        (window.openArwLightbox = function (e, t) {
+          const s = document.getElementById("arwLightbox"),
+            n = document.getElementById("arwLightboxImg");
+          (n.classList.remove("is-rotated"),
+            (n.src = e),
+            (n.alt = t || ""),
+            s.classList.add("active"),
+            (n.onload = f),
+            f());
+        }),
+        (window.closeArwLightbox = function () {
+          document.getElementById("arwLightbox").classList.remove("active");
+        }),
+        (window.toggleArwRotate = function () {
+          document.getElementById("arwLightboxImg").classList.toggle("is-rotated");
+        }));
+      function f() {
+        const e = document.getElementById("arwLightboxImg"),
+          t = document.getElementById("arwRotateHint");
+        if (!e || !t) return;
+        t.style.display = window.innerWidth <= 900 && e.naturalWidth > e.naturalHeight ? "block" : "none";
+      }
+      document.getElementById("arwLightbox").addEventListener("click", () => window.closeArwLightbox());
+    })(),
+    (function () {
+      const s = "la-ml-status",
+        o = 10;
+      function i() {
+        try {
+          const e = localStorage.getItem(s);
+          if (!e) return !0;
+          const { status: t, ts: n } = JSON.parse(e);
+          if (t === "subscribed") return !1;
+          if (t === "dismissed") return (Date.now() - n) / 864e5 >= o;
+        } catch {}
+        return !0;
+      }
+      if (!i()) return;
+      let e = !1;
+      function t() {
+        if (e) return;
+        ((e = !0),
+          clearTimeout(a),
+          window.removeEventListener("scroll", n),
+          setTimeout(() => window.openMailingPopup?.(), 400));
+      }
+      const a = setTimeout(t, 8e3);
+      function n() {
+        window.scrollY / (document.body.scrollHeight - window.innerHeight) >= 0.2 && t();
+      }
+      window.addEventListener("scroll", n, { passive: !0 });
+    })());
 </script>
 
 {{ end }}

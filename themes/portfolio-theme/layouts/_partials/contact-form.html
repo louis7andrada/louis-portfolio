@@ -51,120 +51,104 @@
   </button>
 </form>
 <script>
-const form = document.getElementById("contactForm");
-const successMessage = document.getElementById("contactSuccessMessage");
-const errorMessage = document.getElementById("contactErrorMessage");
-const submitBtn = form.querySelector('button[type="submit"]');
-
-form.addEventListener("submit", async function(event) {
-  event.preventDefault();
-
-  // Looked up fresh on every submit, not cached at script-load time —
-  // this partial's <script> runs before the page's own mobile-submit
-  // button (defined after the partial's include point) exists in the
-  // DOM, so caching it at the top would silently capture null forever.
-  const mobileBtn = document.querySelector('.inq-mobile-submit[data-target="contactForm"]');
-  const triggerButtons = [submitBtn, mobileBtn].filter(Boolean);
-  const originalLabels = triggerButtons.map(function(b){ return b.textContent; });
-
-  function setBusy() {
-    triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
-  }
-  function setIdle() {
-    triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
-  }
-
-  successMessage.classList.add("hidden");
-  errorMessage.classList.add("hidden");
-  setBusy();
-
-  // Absolute last-resort safety net — guarantees the buttons never stay
-  // stuck disabled no matter what unexpected path is hit.
-  let watchdogCleared = false;
-  const watchdog = setTimeout(() => {
-    if (watchdogCleared) return;
-    setIdle();
-  }, 15000);
-  const clearWatchdog = () => { watchdogCleared = true; clearTimeout(watchdog); };
-
-  // Reuses the exact same per-character "convergence" animation as the
-  // Purchase/Commission forms (see inquiry_final's shared script). If for
-  // any reason that shared API isn't available (e.g. the main inquiry
-  // script hasn't loaded), everything below still works — it just runs
-  // without the animation, exactly as before.
-  var convergenceApi = window.__inqSubmitConvergence;
-  var panelEl = form.closest(".inq-panel");
-  var convergenceTarget = (mobileBtn && mobileBtn.offsetParent !== null) ? mobileBtn : (submitBtn && submitBtn.offsetParent !== null ? submitBtn : mobileBtn || submitBtn);
-  var convergence = (convergenceApi && panelEl && convergenceTarget)
-    ? convergenceApi.run(panelEl, convergenceTarget)
-    : { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
-
-  async function failAndRestore(message) {
-    await convergence.reverseAndRestore();
-    clearWatchdog();
-    setIdle();
-    errorMessage.textContent = message;
-    errorMessage.classList.remove("hidden");
-  }
-
-  if (typeof grecaptcha === "undefined") {
-    await failAndRestore("reCAPTCHA not loaded. Please refresh and try again.");
-    return;
-  }
-
-  try {
-    const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
-    const verifyRes = await fetch("/.netlify/functions/verifyRecaptcha", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-    const verifyData = await verifyRes.json();
-    if (!verifyData.success || verifyData.score < 0.5) {
-      await failAndRestore("Your submission was flagged by our security check. Please try again.");
-      return;
+  const form = document.getElementById("contactForm"),
+    successMessage = document.getElementById("contactSuccessMessage"),
+    errorMessage = document.getElementById("contactErrorMessage"),
+    submitBtn = form.querySelector('button[type="submit"]');
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const s = document.querySelector('.inq-mobile-submit[data-target="contactForm"]'),
+      t = [submitBtn, s].filter(Boolean),
+      r = t.map(function (e) {
+        return e.textContent;
+      });
+    function h() {
+      t.forEach(function (e) {
+        ((e.disabled = !0), (e.style.opacity = "0.5"), (e.textContent = "Sending…"));
+      });
     }
-    form.querySelector(".recaptcha-token-field").value = token;
-
-    const payload = {
-      action: "contact",
-      email: form.querySelector('[name="email"]').value.trim(),
-      fullName: form.querySelector('[name="name"]').value.trim(),
-      phone: form.querySelector('[name="phone"]').value.trim(),
-      message: form.querySelector('[name="message"]').value.trim()
-    };
-
-    const fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain" },
-      body: JSON.stringify(payload)
-    }).then(function (r) {
-      return r.text().then(function (t) { return { ok: r.ok, text: t }; });
-    });
-
-    // Same rule as the other forms: only confirm success once BOTH the
-    // network response and the full animation have finished.
-    const combined = await Promise.all([fetchPromise, convergence.finished]);
-    const fetchResult = combined[0];
-    const result = String(fetchResult.text).trim();
-
-    if (fetchResult.ok && result === "OK") {
-      if (convergenceApi) convergenceApi.showSuccess(triggerButtons);
-      else triggerButtons.forEach(function(b){ b.textContent = "Sent"; });
-
-      setTimeout(function () {
-        convergence.restore();
-        form.reset();
-        successMessage.classList.remove("hidden");
-        if (convergenceApi) convergenceApi.clearSuccess(triggerButtons, originalLabels);
-        clearWatchdog();
-        setIdle();
-      }, 1800);
-    } else {
-      await failAndRestore("There was an error. Please try again later.");
+    function i() {
+      t.forEach(function (e, t) {
+        ((e.disabled = !1), (e.style.opacity = ""), (e.textContent = r[t]));
+      });
     }
-  } catch (err) {
-    await failAndRestore("There was an error. Please try again later.");
-  }
-});
+    (successMessage.classList.add("hidden"), errorMessage.classList.add("hidden"), h());
+    let c = !1;
+    const m = setTimeout(() => {
+        if (c) return;
+        i();
+      }, 15e3),
+      l = () => {
+        ((c = !0), clearTimeout(m));
+      };
+    var n = window.__inqSubmitConvergence,
+      d = form.closest(".inq-panel"),
+      u =
+        s && s.offsetParent !== null
+          ? s
+          : submitBtn && submitBtn.offsetParent !== null
+            ? submitBtn
+            : s || submitBtn,
+      o =
+        n && d && u
+          ? n.run(d, u)
+          : {
+              finished: Promise.resolve(),
+              restore: function () {},
+              reverseAndRestore: function () {
+                return Promise.resolve();
+              },
+            };
+    async function a(e) {
+      (await o.reverseAndRestore(),
+        l(),
+        i(),
+        (errorMessage.textContent = e),
+        errorMessage.classList.remove("hidden"));
+    }
+    try {
+      const e = await window.checkHuman();
+      if (!e.human) {
+        await a("Your submission was flagged by our security check. Please try again.");
+        return;
+      }
+      e.token && (form.querySelector(".recaptcha-token-field").value = e.token);
+      const c = {
+          action: "contact",
+          email: form.querySelector('[name="email"]').value.trim(),
+          fullName: form.querySelector('[name="name"]').value.trim(),
+          phone: form.querySelector('[name="phone"]').value.trim(),
+          message: form.querySelector('[name="message"]').value.trim(),
+        },
+        d = fetch(window.APP_CONFIG.googleScriptUrl, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: JSON.stringify(c),
+        }).then(function (e) {
+          return e.text().then(function (t) {
+            return { ok: e.ok, text: t };
+          });
+        }),
+        u = await Promise.all([d, o.finished]),
+        s = u[0],
+        h = String(s.text).trim();
+      s.ok && h === "OK"
+        ? (n
+            ? n.showSuccess(t)
+            : t.forEach(function (e) {
+                e.textContent = "Sent";
+              }),
+          setTimeout(function () {
+            (o.restore(),
+              form.reset(),
+              successMessage.classList.remove("hidden"),
+              n && n.clearSuccess(t, r),
+              l(),
+              i());
+          }, 1800))
+        : await a("There was an error. Please try again later.");
+    } catch {
+      await a("There was an error. Please try again later.");
+    }
+  });
 </script>

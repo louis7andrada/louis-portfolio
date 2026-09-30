@@ -22,16 +22,15 @@
 
       <nav class="flex flex-col items-end text-right">
         <div class="tw-header links-header">Links</div>
-        <a href="https://www.louisandrada.com" target="_blank" rel="noopener noreferrer" class="tw-link">Po<span class="ink i0">rt</span><span class="ink i1">fo</span><span class="ink i3">l</span><span class="ink i4">i</span><span class="ink i4">o</span></a>
-        <a href="https://louisandrada.com/#artworks-section" target="_blank" rel="noopener noreferrer" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
-        <a href="https://www.louisandrada.com/inquiry" target="_blank" rel="noopener noreferrer" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
-        <a href="https://www.louisandrada.com/about" target="_blank" rel="noopener noreferrer" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
-        <a href="https://www.reddit.com/user/louis_20102/" target="_blank" rel="noopener noreferrer" class="tw-link">R<span class="ink i0">e</span><span class="ink i1">dd</span><span class="ink i3">i</span><span class="ink i4">t</span></a>
+        <a href="https://handrada.com" target="_blank" rel="noopener noreferrer" class="tw-link">Po<span class="ink i0">rt</span><span class="ink i1">fo</span><span class="ink i3">l</span><span class="ink i4">i</span><span class="ink i4">o</span></a>
+        <a href="https://handrada.com/#artworks-section" target="_blank" rel="noopener noreferrer" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
+        <a href="https://handrada.com/inquiry" target="_blank" rel="noopener noreferrer" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
+        <a href="https://handrada.com/about" target="_blank" rel="noopener noreferrer" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
         <a><br></a>
         <div class="tw-header">In Progress</div>
         <div class="tw-headermini">Collections</div>
-        <a href="https://louisandrada.com/artworks/collection-sins/" target="_blank" rel="noopener noreferrer" class="tw-link">The Hu<span class="ink i0">ndr</span><span class="ink i1">ed</span><span class="ink i2"> Si</span><span class="ink i3">n</span><span class="ink i4">s</span></a>
-        <a href="https://louisandrada.com/artworks/collection-the_tree_the_snake_the_fruit/" target="_blank" rel="noopener noreferrer" class="tw-link">T. <span class="ink i1">S. </span><span class="ink i3">F.</span></a>
+        <a href="https://handrada.com/artworks/collection-sins/" target="_blank" rel="noopener noreferrer" class="tw-link">The Hu<span class="ink i0">ndr</span><span class="ink i1">ed</span><span class="ink i2"> Si</span><span class="ink i3">n</span><span class="ink i4">s</span></a>
+        <a href="https://handrada.com/artworks/collection-the_tree_the_snake_the_fruit/" target="_blank" rel="noopener noreferrer" class="tw-link">T. <span class="ink i1">S. </span><span class="ink i3">F.</span></a>
         <div class="tw-headermini2">Exhibitions</div>
         <a href="https://maps.app.goo.gl/zhQhJNUrLyGq258z6" target="_blank" rel="noopener noreferrer" class="tw-link">Carbon</span><span class="ink i0">ic C</span><span class="ink i1">o</span><span class="ink i2">f</span><span class="ink i3">f<span class="ink i4">ee</span></span></a>
       </nav>
@@ -62,409 +61,406 @@
 
 <style>
   .links-page {
-  --tw-prose-links: #ececec !important;
-  margin-bottom: 0.75rem;
-}
-.dark .tw-link,
-.dark .tw-link:visited,
-.dark .tw-link:active {
-  color: #ececec !important;
-  text-decoration: none !important;
-}
-
-.dark .tw-link:hover {
-  color: #ffffff !important;
-}
-  /*
-   * On md+ the section fills the space between nav and footer so the
-   * content block can center itself with margin: auto.
-   * 120px = estimated nav (~65px) + footer (~55px). Adjust if your layout differs.
-   */
-  @media (min-width: 641px) {
+    --tw-prose-links:#ececec !important;
+    margin-bottom:.75rem;
+  }
+  .dark .tw-link,.dark .tw-link:visited,.dark .tw-link:active {
+    color:#ececec!important;
+    text-decoration:none!important;
+  }
+  .dark .tw-link:hover {
+    color:#fff!important;
+  }
+  @media(min-width:641px) {
     .links-page {
-      min-height: calc(100vh - 155px);
+      min-height:calc(100vh - 155px);
     }
     .content-block {
-      margin-top: auto;
-      margin-bottom: auto;
+      margin-top:auto;
+      margin-bottom:auto;
     }
     .tw-textarea {
-      min-height: 5rem;
+      min-height:5rem;
     }
   }
-
   .name-band {
-    font-weight: 700;
-    font-size: 1.05rem;
-    letter-spacing: 0.02em;
-    color: #161616;
+    font-weight:700;
+    font-size:1.05rem;
+    letter-spacing:.02em;
+    color:#161616;
   }
-  .dark .name-band { color: #ececec; }
-
-  /* width locked by JS once rendered so the form can't shift it */
-  .content-block { width: fit-content; }
-  .links-col     { width: fit-content; }
-
+  .dark .name-band {
+    color:#ececec;
+  }
+  .content-block {
+    width:fit-content;
+  }
+  .links-col {
+    width:fit-content;
+  }
   .tw-link {
-    -webkit-appearance: none;
-    appearance: none;
-    display: inline-block;
-    position: relative;
-    background: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-    white-space: nowrap;
-    font-size: 1.2rem;
-    line-height: 1.32;
-    letter-spacing: 0.01em;
-    color: #161616;
-    text-decoration: none !important;
-    transition: color 0.15s ease;
+    -webkit-appearance:none;
+    appearance:none;
+    display:inline-block;
+    position:relative;
+    background:0 0;
+    border:none;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    white-space:nowrap;
+    font-size:1.2rem;
+    line-height:1.32;
+    letter-spacing:.01em;
+    color:#161616;
+    text-decoration:none!important;
+    transition:color .15s ease;
   }
   .tw-link::after {
-    content: '';
-    position: absolute;
-    left: 0; right: 0; bottom: 3px;
-    height: 1px;
-    background: currentColor;
-    display: none;
+    content:'';
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:3px;
+    height:1px;
+    background:currentColor;
+    display:none;
   }
   .tw-link:hover {
-    background: transparent !important;
-    font-weight: 700;
-    color: #000;
-    text-decoration: none !important;
+    background:0 0!important;
+    font-weight:700;
+    color:#000;
+    text-decoration:none!important;
   }
-  .tw-link:hover::after { display: block; }
-  .dark .tw-link { color: #ececec; }
-  .dark .tw-link:hover { color: #fff; }
-  
-  @media (max-width: 640px) {
+  .tw-link:hover::after {
+    display:block;
+  }
+  .dark .tw-link {
+    color:#ececec;
+  }
+  .dark .tw-link:hover {
+    color:#fff;
+  }
+  @media(max-width:640px) {
     .tw-link {
-      font-size: 1.1rem;
+      font-size:1.1rem;
     }
   }
-
-  /* Section headers ("On-going Collections:", "Next Exhibition:") match the
-     link font size but never show the hover underline, since they aren't
-     links themselves. */
   .tw-header {
-  font-size: 0.95rem;
-  line-height: 1.32;
-  letter-spacing: 0.01em;
-  font-weight: 400;
-  color: #161616;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: default;
-  margin-top: 0.4rem;
-}
-
-.dark .tw-header {
-  color: #ececec;
-}
-
-.links-header {
-  margin-top: 0;
-  margin-bottom: 0.15rem;
-}
-
-@media (max-width: 640px) {
-  .tw-header {
-    font-size: 0.85rem;
-    margin-top: 0.4rem;
+    font-size:.95rem;
+    line-height:1.32;
+    letter-spacing:.01em;
+    font-weight:400;
+    color:#161616;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    cursor:default;
+    margin-top:.4rem;
   }
-
+  .dark .tw-header {
+    color:#ececec;
+  }
   .links-header {
-    margin-top: 0;
+    margin-top:0;
+    margin-bottom:.15rem;
   }
-}
-
-.tw-headermini {
-  font-size: 0.7rem;
-  line-height: 1.32;
-  letter-spacing: 0.01em;
-  font-weight: 400;
-  color: #161616;
-  cursor: default;
-  margin-top: 0.2rem;
-}
-
-.dark .tw-headermini {
-  color: #ececec;
-}
-
-.links-headermini {
-  margin-top: 0.9rem;
-  margin-bottom: 0.15rem;
-}
-
-@media (max-width: 640px) {
+  @media(max-width:640px) {
+    .tw-header {
+      font-size:.85rem;
+      margin-top:.4rem;
+    }
+    .links-header {
+      margin-top:0;
+    }
+  }
   .tw-headermini {
-    margin-top: 0.4rem;
+    font-size:.7rem;
+    line-height:1.32;
+    letter-spacing:.01em;
+    font-weight:400;
+    color:#161616;
+    cursor:default;
+    margin-top:.2rem;
   }
-
+  .dark .tw-headermini {
+    color:#ececec;
+  }
   .links-headermini {
-    margin-top: 0;
+    margin-top:.9rem;
+    margin-bottom:.15rem;
   }
-}
-
-.tw-headermini2 {
-  font-size: 0.7rem;
-  line-height: 1.32;
-  letter-spacing: 0.01em;
-  font-weight: 400;
-  color: #161616;
-  cursor: default;
-  margin-top: 0.8rem;
-}
-
-.dark .tw-headermini2 {
-  color: #ececec;
-}
-
-.links-headermini2 {
-  margin-top: 0.9rem;
-  margin-bottom: 0.15rem;
-}
-
-@media (max-width: 640px) {
+  @media(max-width:640px) {
+    .tw-headermini {
+      margin-top:.4rem;
+    }
+    .links-headermini {
+      margin-top:0;
+    }
+  }
   .tw-headermini2 {
-    margin-top: 0.8rem;
+    font-size:.7rem;
+    line-height:1.32;
+    letter-spacing:.01em;
+    font-weight:400;
+    color:#161616;
+    cursor:default;
+    margin-top:.8rem;
   }
-
+  .dark .tw-headermini2 {
+    color:#ececec;
+  }
   .links-headermini2 {
-    margin-top: 0;
+    margin-top:.9rem;
+    margin-bottom:.15rem;
   }
-}
-
-  .tw-send { font-size: 1.1rem; }
-
-  /* Sub-items under a header line (collection/exhibition names). Sized down
-     from the main nav links so the hierarchy reads clearly, and kept on a
-     single line so titles like "The Tree, The Snake, The Fruit" don't wrap. */
+  @media(max-width:640px) {
+    .tw-headermini2 {
+      margin-top:.8rem;
+    }
+    .links-headermini2 {
+      margin-top:0;
+    }
+  }
+  .tw-send {
+    font-size:1.1rem;
+  }
   .exhibition-link {
-    white-space: nowrap;
-    max-width: 100%;
-    display: inline-block;
-    margin-top: 0.3rem;
+    white-space:nowrap;
+    max-width:100%;
+    display:inline-block;
+    margin-top:.3rem;
   }
-
-@media (max-width: 640px) {
-  .exhibition-link {
-    /* Scales with viewport width so the longest title still fits on one
-       line on narrow screens instead of wrapping. */
-    font-size: clamp(0.85rem, 5vw, 1.08rem);
-    margin-top: 0.4rem;
+  @media(max-width:640px) {
+    .exhibition-link {
+      font-size:clamp(.85rem,5vw,1.08rem);
+      margin-top:.4rem;
+    }
   }
-}
-
-  /* ── INK — per-character stacking ── */
-  .ink { font-weight: 900; color: #000; display: inline; }
-  .dark .ink { color: #fff; }
-
-  .i0{
-    text-shadow: 0 0 0.5px currentColor,
+  .ink {
+    font-weight:900;
+    color:#000;
+    display:inline;
+  }
+  .dark .ink {
+    color:#fff;
+  }
+  .i0 {
+    text-shadow:0 0 .5px currentColor,;
   }
   .i1 {
-    text-shadow: 0 0 0.5px currentColor, 0 0 0.5px currentColor;
+    text-shadow:0 0 .5px currentColor,0 0 .5px currentColor;
   }
   .i2 {
-    text-shadow:
-      0 0 0.5px currentColor,
-      0 0 0.5px currentColor,
-      1.5px 0.3px 0.6px currentColor;
+    text-shadow:0 0 .5px currentColor,0 0 .5px currentColor,1.5px .3px .6px currentColor;
   }
   .i3 {
-    text-shadow:
-      0 0 0.5px currentColor,
-      0 0 0.5px currentColor,
-      1.5px 0.3px 0.6px currentColor,
-      3px 0.6px 1.2px currentColor;
+    text-shadow:0 0 .5px currentColor,0 0 .5px currentColor,1.5px .3px .6px currentColor,3px .6px 1.2px currentColor;
   }
   .i4 {
-    text-shadow:
-      0 0 0.5px currentColor,
-      0 0 0.5px currentColor,
-      1.5px 0.3px 0.6px currentColor,
-      3px 0.6px 1.2px currentColor,
-      4.5px 0.9px 1.8px currentColor;
+    text-shadow:0 0 .5px currentColor,0 0 .5px currentColor,1.5px .3px .6px currentColor,3px .6px 1.2px currentColor,4.5px .9px 1.8px currentColor;
   }
-
   .tw-field {
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    text-align: right;
-    padding: 0.2rem 0;
-    font-size: 1.1rem;
-    line-height: 1.3;
-    color: #5a5a5a;
-    resize: none;
-    transition: color 0.15s ease;
+    width:100%;
+    background:0 0;
+    border:none;
+    outline:none;
+    text-align:right;
+    padding:.2rem 0;
+    font-size:1.1rem;
+    line-height:1.3;
+    color:#5a5a5a;
+    resize:none;
+    transition:color .15s ease;
   }
-  .tw-field::placeholder { color: #9a9a9a; opacity: 1; }
-  .tw-field:hover { font-weight: 700; color: #161616; }
-  .tw-field:hover::placeholder { font-weight: 700; color: #5f5f5f; }
-  .dark .tw-field { color: #b4b4b4; }
-  .dark .tw-field::placeholder { color: #7d7d7d; }
-  .dark .tw-field:hover { color: #ececec; }
-
+  .tw-field::placeholder {
+    color:#9a9a9a;
+    opacity:1;
+  }
+  .tw-field:hover {
+    font-weight:700;
+    color:#161616;
+  }
+  .tw-field:hover::placeholder {
+    font-weight:700;
+    color:#5f5f5f;
+  }
+  .dark .tw-field {
+    color:#b4b4b4;
+  }
+  .dark .tw-field::placeholder {
+    color:#7d7d7d;
+  }
+  .dark .tw-field:hover {
+    color:#ececec;
+  }
   .tw-textarea {
-    width: min(28rem, 75vw);
-    min-height: 8rem;
-    line-height: 1.4;
-    overflow-y: auto;
-    padding-right: 4px;
-    scrollbar-width: thin;
-    scrollbar-color: #bdbdbd #ededed;
+    width:min(28rem,75vw);
+    min-height:8rem;
+    line-height:1.4;
+    overflow-y:auto;
+    padding-right:4px;
+    scrollbar-width:thin;
+    scrollbar-color:#bdbdbd #ededed;
   }
-  .tw-textarea::-webkit-scrollbar { width: 15px; }
-  .tw-textarea::-webkit-scrollbar-track { background: #ededed; border-left: 1px solid #c4c4c4; }
-  .tw-textarea::-webkit-scrollbar-thumb { background: #c9c9c9; border: 1px solid #9a9a9a; }
-  .tw-textarea::-webkit-scrollbar-thumb:hover { background: #bbbbbb; }
+  .tw-textarea::-webkit-scrollbar {
+    width:15px;
+  }
+  .tw-textarea::-webkit-scrollbar-track {
+    background:#ededed;
+    border-left:1px solid #c4c4c4;
+  }
+  .tw-textarea::-webkit-scrollbar-thumb {
+    background:#c9c9c9;
+    border:1px solid #9a9a9a;
+  }
+  .tw-textarea::-webkit-scrollbar-thumb:hover {
+    background:#bbb;
+  }
   .tw-textarea::-webkit-scrollbar-button {
-    height: 15px; background-color: #e6e6e6; border: 1px solid #c4c4c4;
-    background-repeat: no-repeat; background-position: center; background-size: 8px 8px;
+    height:15px;
+    background-color:#e6e6e6;
+    border:1px solid #c4c4c4;
+    background-repeat:no-repeat;
+    background-position:50%;
+    background-size:8px 8px;
   }
   .tw-textarea::-webkit-scrollbar-button:vertical:decrement {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 2.5 L8.5 7.5 L1.5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M5 2.5 L8.5 7.5 L1.5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
   }
   .tw-textarea::-webkit-scrollbar-button:vertical:increment {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 2.5 L8.5 2.5 L5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1.5 2.5 L8.5 2.5 L5 7.5 Z' fill='%23555'/%3E%3C/svg%3E");
   }
-  .tw-textarea::-webkit-scrollbar-button:vertical:start:increment,
-  .tw-textarea::-webkit-scrollbar-button:vertical:end:decrement { display: none; }
-  .dark .tw-textarea { scrollbar-color: #5a5a5a #2b2b2b; }
-  .dark .tw-textarea::-webkit-scrollbar-track { background: #2b2b2b; border-left-color: #3d3d3d; }
-  .dark .tw-textarea::-webkit-scrollbar-thumb { background: #555; border-color: #777; }
-  .dark .tw-textarea::-webkit-scrollbar-button { background-color: #333; border-color: #3d3d3d; }
-
-  /* Desktop photo: height driven by viewport so it never causes scroll */
+  .tw-textarea::-webkit-scrollbar-button:vertical:start:increment,.tw-textarea::-webkit-scrollbar-button:vertical:end:decrement {
+    display:none;
+  }
+  .dark .tw-textarea {
+    scrollbar-color:#5a5a5a #2b2b2b;
+  }
+  .dark .tw-textarea::-webkit-scrollbar-track {
+    background:#2b2b2b;
+    border-left-color:#3d3d3d;
+  }
+  .dark .tw-textarea::-webkit-scrollbar-thumb {
+    background:#555;
+    border-color:#777;
+  }
+  .dark .tw-textarea::-webkit-scrollbar-button {
+    background-color:#333;
+    border-color:#3d3d3d;
+  }
   .links-photo {
-    width: clamp(200px, 24vw, 280px);
-    height: clamp(280px, 52vh, 430px);
-    object-fit: cover;
-    object-position: center;
-    filter: grayscale(100%) contrast(1.05);
-    display: block;
+    width:clamp(200px,24vw,280px);
+    height:clamp(280px,52vh,430px);
+    object-fit:cover;
+    object-position:center;
+    filter:grayscale(100%)contrast(1.05);
+    display:block;
   }
-
-  /* Mobile */
-  @media (max-width: 640px) {
-    .name-band { font-size: 0.95rem; }
-    .content-block {
-      flex-direction: column-reverse;
-      align-items: center;
-      gap: 1.5rem;
-      margin-top: 2rem;
-      width: 100% !important;
+  @media(max-width:640px) {
+    .name-band {
+      font-size:.95rem;
     }
-    .links-col { align-items: center; width: 100% !important; }
-    .links-col nav { align-items: center; text-align: center; }
-    #contactSection { text-align: center; }
-    #contactSection form { align-items: center; }
-    .tw-field { text-align: center; }
-    .tw-textarea { width: 100%; min-height: 8rem; }
-    /* Small portrait photo on mobile so it doesn't shove the links down */
+    .content-block {
+      flex-direction:column-reverse;
+      align-items:center;
+      gap:1.5rem;
+      margin-top:2rem;
+      width:100%!important;
+    }
+    .links-col {
+      align-items:center;
+      width:100%!important;
+    }
+    .links-col nav {
+      align-items:center;
+      text-align:center;
+    }
+    #contactSection {
+      text-align:center;
+    }
+    #contactSection form {
+      align-items:center;
+    }
+    .tw-field {
+      text-align:center;
+    }
+    .tw-textarea {
+      width:100%;
+      min-height:8rem;
+    }
     .links-photo {
-      width: min(240px, 62vw);
-      height: auto;
-      aspect-ratio: 2 / 3;
+      width:min(240px,62vw);
+      height:auto;
+      aspect-ratio:2/3;
     }
     .links-page {
-      margin-bottom: 1.125rem;
+      margin-bottom:1.125rem;
     }
   }
-
-  html.dark .links-page .tw-link,
-  html.dark .links-page .tw-link:visited,
-  html.dark .links-page .tw-link:hover,
-  html.dark .links-page .tw-link:active {
-    color: #ececec !important;
+  html.dark .links-page .tw-link,html.dark .links-page .tw-link:visited,html.dark .links-page .tw-link:hover,html.dark .links-page .tw-link:active {
+    color:#ececec!important;
   }
-
 </style>
 
 <script>
-(function () {
-  /* Lock column width so opening the form never shifts the centered layout */
-  requestAnimationFrame(function () {
-    var col = document.querySelector('.links-col');
-    if (col) col.style.width = col.getBoundingClientRect().width + 'px';
-  });
-
-  var toggleBtn = document.getElementById('toggleContact');
-  var contactSection = document.getElementById('contactSection');
-  if (toggleBtn && contactSection) {
-    toggleBtn.onclick = function () {
-      contactSection.classList.toggle('hidden');
-    };
-  }
-
-  var submitBtn = document.getElementById('submitBtn');
-if (submitBtn) {
-  submitBtn.addEventListener('click', async function () {
-    var form = document.getElementById('contactForm');
-    var successMessage = document.getElementById('contactSuccessMessage');
-    if (typeof grecaptcha === 'undefined') { alert('reCAPTCHA not loaded.'); return; }
-
-    var originalLabel = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.style.opacity = "0.5";
-    submitBtn.textContent = "Sending…";
-
-    try {
-      const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
-      const verifyRes = await fetch('/.netlify/functions/verifyRecaptcha', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token })
-      });
-      const verifyData = await verifyRes.json();
-      if (!verifyData.success || verifyData.score < 0.5) {
-        alert('Your submission was flagged. Please try again.'); return;
-      }
-      form.querySelector('.recaptcha-token-field').value = token;
-
-      const payload = {
-        action: 'contact',
-        email: form.querySelector('[name="email"]').value.trim(),
-        fullName: form.querySelector('[name="name"]').value.trim(),
-        phone: form.querySelector('[name="phone"]').value.trim(),
-        message: form.querySelector('[name="message"]').value.trim()
-      };
-
-      const res = await fetch(window.APP_CONFIG.googleScriptUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-      });
-      const result = String(await res.text()).trim();
-
-      if (res.ok && result === "OK") {
-        form.reset();
-        successMessage.classList.remove('hidden');
-      } else {
-        alert('There was an error. Please try again.');
-      }
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.style.opacity = "";
-      submitBtn.textContent = originalLabel;
-    }
-  });
-}
-
-  var params = new URLSearchParams(window.location.search);
-  if (params.get('success') === 'true' && contactSection) {
-    contactSection.classList.remove('hidden');
-    var sm = document.getElementById('contactSuccessMessage');
-    if (sm) sm.classList.remove('hidden');
-  }
-})();
+  (function () {
+    requestAnimationFrame(function () {
+      var e = document.querySelector(".links-col");
+      e && (e.style.width = e.getBoundingClientRect().width + "px");
+    });
+    var e,
+      n,
+      o,
+      s = document.getElementById("toggleContact"),
+      t = document.getElementById("contactSection");
+    (s &&
+      t &&
+      (s.onclick = function () {
+        t.classList.toggle("hidden");
+      }),
+      (e = document.getElementById("submitBtn")),
+      e &&
+        e.addEventListener("click", async function () {
+          var t = document.getElementById("contactForm"),
+            n = document.getElementById("contactSuccessMessage"),
+            s = e.textContent;
+          ((e.disabled = !0), (e.style.opacity = "0.5"), (e.textContent = "Sending…"));
+          try {
+            const e = await window.checkHuman();
+            if (!e.human) {
+              alert("Your submission was flagged. Please try again.");
+              return;
+            }
+            e.token && (t.querySelector(".recaptcha-token-field").value = e.token);
+            const o = {
+                action: "contact",
+                email: t.querySelector('[name="email"]').value.trim(),
+                fullName: t.querySelector('[name="name"]').value.trim(),
+                phone: t.querySelector('[name="phone"]').value.trim(),
+                message: t.querySelector('[name="message"]').value.trim(),
+              },
+              s = await fetch(window.APP_CONFIG.googleScriptUrl, {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: JSON.stringify(o),
+              }),
+              i = String(await s.text()).trim();
+            s.ok && i === "OK"
+              ? (t.reset(), n.classList.remove("hidden"))
+              : alert("There was an error. Please try again.");
+          } catch {
+            alert("There was an error sending your message. Please try again.");
+          } finally {
+            ((e.disabled = !1), (e.style.opacity = ""), (e.textContent = s));
+          }
+        }),
+      (o = new URLSearchParams(window.location.search)),
+      o.get("success") === "true" &&
+        t &&
+        (t.classList.remove("hidden"),
+        (n = document.getElementById("contactSuccessMessage")),
+        n && n.classList.remove("hidden")));
+  })();
 </script>
 
 <script>

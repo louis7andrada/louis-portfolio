@@ -330,19 +330,3 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   });
 });
-
-
-// -----------------------------
-// IMAGE PROTECTION (no pointer-events interference)
-// -----------------------------
-document.addEventListener('contextmenu', function(e) {
-  if ((e.target as HTMLElement).tagName === 'IMG') {
-    e.preventDefault();
-  }
-});
-
-document.addEventListener('dragstart', function(e) {
-  if ((e.target as HTMLElement).tagName === 'IMG') {
-    e.preventDefault();
-  }
-});

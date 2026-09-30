@@ -1,3 +1,4 @@
 ---
 title: "Unsubscribe"
+recaptcha: true
 ---

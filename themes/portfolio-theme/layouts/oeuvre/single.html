@@ -1,0 +1,659 @@
+{{ define "main" }}
+<!--  All Rights Reserved - Louis Andrada - 2026 -->
+<!--   Webdesign by Jinah Park & Louis Andrada   -->
+<!--     AndradaMono Font by Louis Andrada       -->
+<!--       Codes by Louis Andrada                -->
+{{- $base := printf "%s/%s" site.Params.books_image_base .Params.id -}}
+{{/* newest book (highest No.) first; "previous" = newer, "next" = older */}}
+{{- $books := sort (where site.RegularPages "Section" "oeuvre") "Params.order" "desc" -}}
+{{- $idx := -1 -}}
+{{- range $i, $b := $books }}{{ if eq $b.RelPermalink $.RelPermalink }}{{ $idx = $i }}{{ end }}{{ end -}}
+{{ partial "jsonld/book.html" . }}
+{{ partial "books/shared-style.html" . }}
+<section class="sp-section">
+  <a href="/oeuvre/" class="sp-back"><svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg><span>Back to Oeuvre</span></a>
+  <div class="sp-row">
+    <div class="sp-img-wrap">
+      <div class="book-viewport" data-page-mode="{{ .Params.pageMode }}" data-default-page-view="{{ .Params.defaultPageView }}" data-page-count="{{ .Params.pageCount }}" data-frames-per-flip="{{ .Params.framesPerFlip }}" data-frames-per-open-close="{{ .Params.framesPerOpenClose }}" data-fps="{{ .Params.fps }}" data-image-base="{{ $base }}" data-opens-fullscreen="{{ .Params.opensFullscreen }}"><div class="book-visual"></div></div>
+    </div>
+    <div class="sp-info">
+      <div class="sp-info-top">
+        <h1 class="sp-title">{{ .Title }}</h1>
+        <p>No. {{ .Params.order }}</p>
+        <p>{{ .Params.year }}</p>
+        <p class="sp-comment">{{ .Params.description }}</p>
+      </div>
+      <div class="sp-info-bottom">
+        <p class="book-page-indicator">Closed</p>
+      </div>
+    </div>
+    <div class="sp-mobile-arrows"></div>
+  </div>
+  {{- if gt $idx 0 }}{{ with index $books (sub $idx 1) }}
+  <a href="{{ .RelPermalink }}" class="sp-arrow sp-arrow-prev" id="prevBtnDesktop" aria-label="Previous Book"><svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg></a>
+  {{- end }}{{ end }}
+  {{- if lt $idx (sub (len $books) 1) }}{{ with index $books (add $idx 1) }}
+  <a href="{{ .RelPermalink }}" class="sp-arrow sp-arrow-next" id="nextBtnDesktop" aria-label="Next Book"><svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg></a>
+  {{- end }}{{ end }}
+</section>
+<details class="book-text"><summary>Read as text</summary><div class="book-text-body"><p class="book-text-note">The full text of <em>{{ .Title }}</em> &mdash; {{ .Params.description }},
+by Louis Andrada (Han’drada).
+Also available as <a href="/oeuvre/{{ .Params.id }}.txt">plain text</a>.</p>
+{{- range partial "books/pages.html" . }}<section class="book-text-page" aria-label="Page {{ .n }}"><span class="book-text-pagenum">{{ .n }}</span>{{ range .paras }}<p>{{ . }}</p>{{ end }}</section>{{ end -}}
+</div></details>
+<style>
+  .book-text {
+    max-width:44rem;
+    margin:0 auto 3.5rem;
+    padding:0 1.5rem;
+  }
+  .book-text>summary {
+    cursor:pointer;
+    font-size:.85rem;
+    letter-spacing:.04em;
+    opacity:.55;
+    padding:.5rem 0;
+    list-style:none;
+    transition:opacity .22s;
+    width:fit-content;
+  }
+  .book-text>summary::-webkit-details-marker {
+    display:none;
+  }
+  .book-text>summary::before {
+    content:"+ ";
+    opacity:.7;
+  }
+  .book-text[open]>summary::before {
+    content:"– ";
+  }
+  .book-text>summary:hover {
+    opacity:.9;
+  }
+  .book-text-body {
+    padding-top:1rem;
+  }
+  .book-text-note {
+    font-size:.78rem;
+    opacity:.5;
+    margin-bottom:2.25rem;
+    line-height:1.6;
+  }
+  .book-text-note a {
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .book-text-page {
+    position:relative;
+    margin-bottom:2.25rem;
+  }
+  .book-text-pagenum {
+    display:block;
+    font-size:.68rem;
+    opacity:.32;
+    margin-bottom:.6rem;
+    letter-spacing:.08em;
+  }
+  .book-text-page p {
+    font-size:.95rem;
+    line-height:1.75;
+    margin-bottom:1rem;
+    opacity:.88;
+  }
+  @media(max-width:640px) {
+    .book-text-page p {
+      font-size:.9rem;
+      line-height:1.7;
+    }
+  }
+  .sp-section {
+    position:relative;
+    box-sizing:border-box;
+    display:flex;
+    flex-direction:column;
+    min-height:calc(100vh - 130px);
+  }
+  .sp-row {
+    position:relative;
+    flex:1;
+    width:100%;
+    min-height:0;
+  }
+  .sp-back {
+    position:absolute;
+    top:20px;
+    left:24px;
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    font-size:.88rem;
+    text-decoration:none;
+    z-index:10;
+    color:#111!important;
+    opacity:.65;
+    transition:opacity .22s;
+    line-height:1;
+  }
+  .sp-back svg {
+    flex-shrink:0;
+  }
+  .sp-back:hover {
+    opacity:.25;
+  }
+  html.dark .sp-back {
+    color:#d0d0d0!important;
+    opacity:.65;
+  }
+  html.dark .sp-back:hover {
+    opacity:.25;
+  }
+  .sp-img-wrap {
+    position:absolute;
+    top:50%;
+    left:34%;
+    transform:translate(-50%,-50%);
+    width:clamp(320px,52vw,980px);
+    max-width:min(52vw,980px);
+    height:calc(100% - 100px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .sp-info {
+    position:absolute;
+    top:50%;
+    left:78%;
+    transform:translate(-50%,-50%);
+    width:clamp(240px,26vw,320px);
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+  .sp-info-top {
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+  }
+  .sp-title {
+    font-size:clamp(1rem,3.8vw,1.2rem);
+    font-weight:600;
+    line-height:1.15;
+    margin:0 0 8px;
+    letter-spacing:-.01em;
+  }
+  .sp-info-top p {
+    margin:0;
+    font-size:clamp(.78rem,2.2vw,.93rem);
+    line-height:1.45;
+    opacity:.62;
+  }
+  .sp-comment {
+    font-size:.83rem!important;
+    margin-top:6px!important;
+  }
+  .sp-info-bottom {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:2px;
+  }
+  .sp-info-bottom p {
+    margin:0;
+    font-size:.93rem;
+    line-height:1.75;
+    opacity:.62;
+    text-align:right;
+  }
+  .sp-purchase {
+    display:inline-block;
+    margin-top:6px;
+    font-size:.93rem;
+    font-weight:700;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    color:inherit!important;
+    background:0 0!important;
+    border:none!important;
+    padding:0!important;
+    opacity:.85;
+    transition:opacity .22s;
+  }
+  .sp-purchase:hover {
+    opacity:.3;
+  }
+  .sp-mobile-arrows {
+    display:none;
+  }
+  .sp-arrow {
+    position:fixed;
+    top:50%;
+    transform:translateY(-50%);
+    display:flex;
+    align-items:center;
+    color:#111!important;
+    opacity:.6;
+    background:0 0!important;
+    border:none!important;
+    text-decoration:none!important;
+    box-shadow:none!important;
+    padding:16px 10px!important;
+    z-index:40;
+    transition:opacity .22s;
+    line-height:0;
+  }
+  .sp-arrow:hover {
+    opacity:.2!important;
+    background:0 0!important;
+  }
+  html.dark .sp-arrow {
+    color:#d0d0d0!important;
+    opacity:.6;
+  }
+  html.dark .sp-arrow:hover {
+    opacity:.2!important;
+  }
+  .sp-arrow-prev {
+    left:16px;
+  }
+  .sp-arrow-next {
+    right:16px;
+  }
+  #prevBtnDesktop,#nextBtnDesktop {
+    all:unset!important;
+    position:fixed!important;
+    top:50%!important;
+    transform:translateY(-50%)!important;
+    display:flex!important;
+    align-items:center!important;
+    line-height:0!important;
+    color:#111!important;
+    opacity:.6!important;
+    background:0 0!important;
+    padding:16px 10px!important;
+    z-index:40!important;
+    transition:opacity .22s!important;
+    cursor:pointer!important;
+    text-decoration:none!important;
+    border:none!important;
+    box-shadow:none!important;
+  }
+  html.dark #prevBtnDesktop,html.dark #nextBtnDesktop {
+    color:#d0d0d0!important;
+  }
+  #prevBtnDesktop {
+    left:16px!important;
+  }
+  #nextBtnDesktop {
+    right:16px!important;
+  }
+  #prevBtnDesktop:hover,#nextBtnDesktop:hover {
+    opacity:.2!important;
+    background:0 0!important;
+  }
+  @media(max-width:900px) {
+    .sp-section {
+      min-height:unset;
+      height:auto!important;
+      overflow-x:hidden;
+    }
+    .sp-row {
+      position:static;
+      flex:none;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:52px 20px 20px;
+      gap:0;
+      height:auto;
+    }
+    .sp-img-wrap {
+      position:static;
+      transform:none;
+      width:100%;
+      height:auto;
+      min-height:45vh;
+      max-height:45vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-shrink:0;
+    }
+    .sp-info-top,.sp-info-bottom {
+      width:100%;
+      max-width:520px;
+    }
+    .sp-info {
+      position:static;
+      transform:none;
+      width:100%;
+      max-width:74vw;
+      margin:18px auto 0;
+      padding-left:1.2rem;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
+    .sp-info-top {
+      text-align:left;
+    }
+    .sp-info-bottom {
+      align-items:flex-start;
+      text-align:left;
+    }
+    .sp-info-bottom p {
+      text-align:left;
+    }
+    .book-page-toggle {
+      align-self:flex-start;
+    }
+    .sp-mobile-arrows {
+      position:fixed;
+      top:50%;
+      left:0;
+      right:0;
+      transform:translateY(-50%);
+      display:grid;
+      grid-template-columns:48px 1fr 48px;
+      align-items:center;
+      width:100%;
+      min-height:48px;
+      z-index:50;
+      pointer-events:none;
+    }
+    .sp-mobile-arrows>* {
+      pointer-events:auto;
+    }
+    .sp-mobile-arrows>span:first-child {
+      display:flex;
+      justify-content:flex-start;
+    }
+    .sp-mobile-arrows>span:last-child {
+      display:flex;
+      justify-content:flex-end;
+    }
+    .sp-ma-spacer {
+      width:100%;
+    }
+    #prevBtnDesktop,#nextBtnDesktop {
+      display:none!important;
+    }
+    [data-mc] {
+      position:static!important;
+      transform:none!important;
+      display:flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      width:48px!important;
+      height:48px!important;
+      opacity:.6!important;
+      color:#111!important;
+      text-decoration:none!important;
+      background:0 0!important;
+      border:none!important;
+      box-shadow:none!important;
+      line-height:0!important;
+      cursor:pointer!important;
+      transition:opacity .22s!important;
+    }
+    [data-mc] svg {
+      width:34px;
+      height:10px;
+      display:block;
+    }
+    html.dark [data-mc] {
+      color:#d0d0d0!important;
+    }
+    [data-mc]:hover {
+      opacity:.25!important;
+    }
+  }
+</style>{{ partial "books/viewer-script.html" . }}<div id=bookFullscreen class=book-fullscreen-overlay>
+<button class=book-fullscreen-close id=bookFullscreenClose aria-label=Close>&#x2715;</button><div class=book-fullscreen-stage>
+<div class=book-viewport data-allow-rotate=true>
+<div class=book-visual>
+</div>
+</div>
+</div>
+<div class=book-fullscreen-controls>
+<p class=book-page-indicator>
+</p>
+<button class=book-page-toggle id=bookFullscreenToggle>Single page</button><form class=book-jump autocomplete=off>
+<label><span class=book-jump-label>Go to page</span>
+<input class=book-jump-input type=number inputmode=numeric min=1 step=1 aria-label="Go to page"></label>
+<button type=submit>Go</button></form>
+</div>
+</div>
+<style>
+  .book-fullscreen-overlay {
+    position:fixed;
+    inset:0;
+    z-index:450;
+    display:flex;
+    align-items:flex-start;
+    justify-content:flex-start;
+    overflow:auto;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    background:rgba(255,255,255,.18);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  html.dark .book-fullscreen-overlay {
+    background:var(--glass-veil);
+  }
+  .book-fullscreen-overlay::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    pointer-events:none;
+    backdrop-filter:blur(18px)saturate(.7);
+    -webkit-backdrop-filter:blur(18px)saturate(.7);
+  }
+  .book-fullscreen-overlay.active {
+    opacity:1;
+    pointer-events:auto;
+  }
+  .book-fullscreen-stage {
+    position:relative;
+    width:calc(min(94vw,1400px) * var(--bz,1));
+    height:calc(min(86vh,1400px) * var(--bz,1));
+    margin:auto;
+    flex:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .book-fullscreen-close {
+    position:fixed;
+    top:1rem;
+    right:50%;
+    font-size:1.3rem;
+    font-family:andradamono,courier new,Courier,monospace;
+    font-weight:700;
+    text-transform:uppercase;
+    background:0 0;
+    border:none;
+    cursor:pointer;
+    color:inherit;
+    opacity:.8;
+    letter-spacing:.05em;
+    transition:opacity .2s ease;
+    z-index:460;
+  }
+  .book-fullscreen-close:hover {
+    opacity:1;
+  }
+  .book-fullscreen-controls {
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:460;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    text-align:center;
+  }
+  .book-fullscreen-controls .book-page-indicator,.book-fullscreen-controls .book-page-toggle {
+    margin:0;
+  }
+  body.book-fullscreen-lock,html:has(body.book-fullscreen-lock) {
+    overflow:hidden;
+  }
+  .book-jump {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin:4px 0 0;
+    font-size:.8rem;
+    letter-spacing:.04em;
+  }
+  .book-jump label {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  @media(max-width:800px) {
+    .book-fullscreen-controls {
+      left:12px;
+      right:auto;
+      transform:none;
+      align-items:flex-start;
+      bottom:calc(14px + env(safe-area-inset-bottom,0px));
+    }
+    .book-jump-label {
+      display:none;
+    }
+  }
+  .book-jump-input {
+    width:4.2em;
+    padding:2px 6px;
+    text-align:center;
+    color:inherit;
+    font:inherit;
+    background:rgba(128,128,128,.18);
+    border:1px solid rgba(128,128,128,.35);
+    border-radius:6px;
+    -moz-appearance:textfield;
+  }
+  .book-jump-input::-webkit-outer-spin-button,.book-jump-input::-webkit-inner-spin-button {
+    -webkit-appearance:none;
+    margin:0;
+  }
+  .book-jump button {
+    background:0 0;
+    border:1px solid rgba(128,128,128,.35);
+    border-radius:6px;
+    color:inherit;
+    font:inherit;
+    padding:2px 10px;
+    cursor:pointer;
+  }
+  .book-jump button:hover {
+    background:rgba(128,128,128,.25);
+  }
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const e = document.getElementById("bookFullscreen"),
+      n = document.getElementById("bookFullscreenClose");
+    if (!e) return;
+    const o = document.getElementById("bookFullscreenToggle"),
+      s = e.querySelector(".book-fullscreen-stage"),
+      t = window.createZoomBar
+        ? window.createZoomBar(e, (e) => {
+            (s.style.setProperty("--bz", e), window.dispatchEvent(new Event("resize")));
+          })
+        : null;
+    ((window.openBookFullscreen = function (n) {
+      const s = e.querySelector(".book-viewport");
+      ((s.className = "book-viewport"),
+        s.setAttribute("data-allow-rotate", "true"),
+        s.setAttribute("data-page-mode", n.pageMode || "spread"),
+        s.setAttribute("data-default-page-view", n.defaultPageView || "two"),
+        s.setAttribute("data-page-count", n.pageCount || 0),
+        s.setAttribute("data-frames-per-flip", n.framesPerFlip || 6),
+        s.setAttribute("data-frames-per-open-close", n.framesPerOpenClose || 8),
+        s.setAttribute("data-fps", n.fps || 12),
+        s.setAttribute("data-image-base", n.imageBase || ""),
+        t && t.reset(),
+        e.scrollTo(0, 0),
+        e.classList.add("active"),
+        document.body.classList.add("book-fullscreen-lock"),
+        window.mountBookViewer && window.mountBookViewer(e));
+    }),
+      (window.closeBookFullscreen = function () {
+        (e.classList.remove("active"), document.body.classList.remove("book-fullscreen-lock"), t && t.reset());
+      }),
+      n?.addEventListener("click", window.closeBookFullscreen));
+  });
+</script>
+<script>
+  (function () {
+    const t = document.querySelector(".sp-row");
+    t && window.mountBookViewer && window.mountBookViewer(t);
+    function n() {
+      var s,
+        o,
+        t = document.querySelector("header"),
+        n = document.querySelector("footer"),
+        e = document.querySelector(".sp-section");
+      if (!e) return;
+      window.innerWidth > 900
+        ? ((s = t ? t.offsetHeight : 64),
+          (o = n ? n.offsetHeight : 50),
+          (e.style.height = window.innerHeight - s - o + "px"))
+        : (e.style.height = "");
+    }
+    function s() {
+      var t,
+        n,
+        s,
+        o,
+        i,
+        a,
+        r,
+        e = document.querySelector(".sp-mobile-arrows");
+      if (!e) return;
+      if (((e.innerHTML = ""), window.innerWidth > 900)) return;
+      if (
+        ((t = document.getElementById("prevBtnDesktop")),
+        (n = document.getElementById("nextBtnDesktop")),
+        !t && !n)
+      ) {
+        e.style.display = "none";
+        return;
+      }
+      ((e.style.display = "grid"),
+        (i = document.createElement("span")),
+        t && ((s = t.cloneNode(!0)), s.removeAttribute("id"), s.setAttribute("data-mc", ""), i.appendChild(s)),
+        e.appendChild(i),
+        (a = document.createElement("span")),
+        (a.className = "sp-ma-spacer"),
+        e.appendChild(a),
+        (r = document.createElement("span")),
+        n && ((o = n.cloneNode(!0)), o.removeAttribute("id"), o.setAttribute("data-mc", ""), r.appendChild(o)),
+        e.appendChild(r),
+        requestAnimationFrame(function () {
+          var t,
+            s,
+            n = document.querySelector(".sp-title");
+          if (!n) return;
+          ((t = n.getBoundingClientRect()),
+            (s = t.top + t.height / 2),
+            (e.style.top = s + "px"),
+            (e.style.transform = "translateY(-50%)"));
+        }));
+    }
+    function e() {
+      (n(), s());
+    }
+    (document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", e) : e(),
+      window.addEventListener("resize", e));
+  })();
+</script>
+{{ end }}
