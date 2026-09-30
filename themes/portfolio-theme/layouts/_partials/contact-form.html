@@ -120,7 +120,7 @@
           phone: form.querySelector('[name="phone"]').value.trim(),
           message: form.querySelector('[name="message"]').value.trim(),
         },
-        d = fetch(window.APP_CONFIG.googleScriptUrl, {
+        d = window.laPost(window.APP_CONFIG.googleScriptUrl, {
           method: "POST",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify(c),

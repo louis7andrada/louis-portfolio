@@ -101,34 +101,51 @@
   <script>
     ((window.APP_CONFIG = {
       googleScriptUrl:
-        "{{ .Site.Params.webhook_url }}",
+        "/.netlify/functions/submit",
     }),
-      (window.checkHuman = function () {
-        var e = (async function () {
-            if (typeof grecaptcha == "undefined" || typeof RECAPTCHA_SITE_KEY == "undefined")
-              return { human: !0, token: null };
-            await new Promise(function (e) {
-              grecaptcha.ready(e);
-            });
-            var t = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" }),
-              n = await fetch("/.netlify/functions/verifyRecaptcha", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: t }),
-              }),
-              e = await n.json(),
-              s = e && e.success === !0 && typeof e.score == "number" && e.score < 0.5;
-            return { human: !s, token: t };
-          })(),
-          t = new Promise(function (e) {
-            setTimeout(function () {
-              e({ human: !0, token: null });
-            }, 8e3);
-          });
-        return Promise.race([e, t]).catch(function () {
-          return { human: !0, token: null };
+      // window.checkHuman(): gets a reCAPTCHA v3 token (loading reCAPTCHA on
+    // demand, so the newsletter popup works on every page). The token is
+    // verified on the server by /.netlify/functions/submit — never here —
+    // so a bot can't skip the check.
+    (window.checkHuman = async function () {
+      function load() {
+        if (window.grecaptcha && window.grecaptcha.execute) return Promise.resolve();
+        return new Promise(function (resolve, reject) {
+          var s = document.createElement("script");
+          s.src = "https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}";
+          s.async = true;
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
         });
-      }));
+      }
+      try {
+        await Promise.race([
+          load(),
+          new Promise(function (_, reject) { setTimeout(reject, 8e3); }),
+        ]);
+        await new Promise(function (r) { grecaptcha.ready(r); });
+        var token = await grecaptcha.execute("{{ .Site.Params.recaptcha_site_key }}", { action: "submit" });
+        return { human: !0, token: token };
+      } catch (err) {
+        // No token: the server will refuse the form and the visitor sees a retry message.
+        return { human: !0, token: null };
+      }
+    }),
+    // window.laPost(url, options): drop-in for fetch() used by every form.
+    // Adds a fresh reCAPTCHA token and sends the form to the server function,
+    // which checks the token and forwards it to the Google Apps Script.
+    (window.laPost = async function (url, opts) {
+      var h = await window.checkHuman();
+      var data = {};
+      try { data = JSON.parse((opts && opts.body) || "{}"); } catch (e) {}
+      data.token = h.token;
+      return fetch("/.netlify/functions/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    }));
   </script>
 
   <!-- Favicon -->
@@ -139,7 +156,7 @@
   <script defer src="https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}"></script>
   <script>
     const RECAPTCHA_SITE_KEY = "{{ .Site.Params.recaptcha_site_key }}";
-    window.APP_CONFIG = { googleScriptUrl: "{{ .Site.Params.webhook_url }}" };
+    window.APP_CONFIG = { googleScriptUrl: "/.netlify/functions/submit" };
   </script>
   {{ end }}
 </head>

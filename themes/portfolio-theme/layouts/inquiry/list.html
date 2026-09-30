@@ -2042,7 +2042,7 @@
         ((x = C.token),
           x && ((_ = c.querySelector(".recaptcha-token-field")), _ && (_.value = x)),
           (S = i === "purchaseForm" ? ae(c) : re(c)),
-          (M = fetch(window.APP_CONFIG.googleScriptUrl, {
+          (M = window.laPost(window.APP_CONFIG.googleScriptUrl, {
             method: "POST",
             headers: { "Content-Type": "text/plain" },
             body: JSON.stringify(S),

@@ -514,7 +514,7 @@ Join the List
           return;
         }
         try {
-          const d = fetch(window.APP_CONFIG.googleScriptUrl, {
+          const d = window.laPost(window.APP_CONFIG.googleScriptUrl, {
               method: "POST",
               headers: { "Content-Type": "text/plain" },
               body: JSON.stringify({ email: a }),
@@ -535,8 +535,8 @@ Join the List
               setTimeout(o, 5e3));
             return;
           }
-          r === "DUPLICATE"
-            ? await s("This email is already registered.")
+          r === "RECAPTCHA_FAILED"
+            ? await s("Verification failed. Please try again.")
             : r === "NO_EMAIL"
               ? await s("Email missing.")
               : r === "SCHEMA_ERROR"
@@ -718,9 +718,6 @@ Join the List
         e ? 16e3 : 5e3,
       ));
   })();
-</script>
-<script>
-  fetch("/.netlify/functions/log-ip").catch((e) => console.error("Log-IP function failed:", e));
 </script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {

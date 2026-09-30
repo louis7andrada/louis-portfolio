@@ -27,8 +27,8 @@
       </div>
 
       <div id="unsubSuccess" class="unsub-success" style="display:none;">
-        <p class="unsub-success-msg">You have been unsubscribed.</p>
-        <p class="unsub-success-sub">You will no longer receive emails from Louis Andrada.</p>
+        <p class="unsub-success-msg">Done.</p>
+        <p class="unsub-success-sub">If that address was on the list, it has been removed and will no longer receive emails from Louis Andrada.</p>
       </div>
 
     </div>
@@ -205,7 +205,7 @@
         return;
       }
       try {
-        const s = await fetch(window.APP_CONFIG.googleScriptUrl, {
+        const s = await window.laPost(window.APP_CONFIG.googleScriptUrl, {
             method: "POST",
             headers: { "Content-Type": "text/plain" },
             body: JSON.stringify({ email: a, action: "unsubscribe" }),
@@ -213,8 +213,8 @@
           n = String(await s.text()).trim();
         s.ok && n === "OK"
           ? ((o.style.display = "none"), (i.style.display = "block"))
-          : n === "NOT_FOUND"
-            ? (t("This email isn't on our mailing list.", !0),
+          : n === "RECAPTCHA_FAILED"
+            ? (t("Verification failed. Please try again.", !0),
               (e.disabled = !1),
               (e.textContent = "Unsubscribe"))
             : n === "INVALID_EMAIL"
