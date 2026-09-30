@@ -15,7 +15,7 @@
 {{- if .IsHome -}}
   {{- $title = printf "%s — Paintings & Artist Books" $name -}}
   {{- $desc = $defaultDesc -}}
-{{- else if eq .Section "artworks" -}}
+{{- else if and (eq .Section "artworks") .IsPage .Params.year -}}
   {{- $type = "article" -}}
   {{- $title = printf "%s (%v)" .Title .Params.year -}}
   {{- $parts := slice -}}
@@ -29,16 +29,18 @@
   {{- if eq .Params.availability "Available" }}{{ $desc = printf "%s Available for purchase." $desc }}{{ end -}}
   {{- with .Params.image }}{{ $img = . }}{{ end -}}
   {{- $imgAlt = printf "%s (%v), %s by %s" .Title .Params.year (.Params.medium | default "painting") $name -}}
-{{- else if eq .Section "archive" -}}
+{{- else if and (eq .Section "archive") .IsPage -}}
+  {{- $t := .Title | default (printf "Untitled photograph (%v)" .Params.year) -}}
+  {{- $title = printf "%s — %s" $t $name -}}
   {{- $type = "article" -}}
   {{- with .Params.comment -}}
     {{- $desc = . -}}
   {{- else -}}
-    {{- $desc = printf "%s (%v) — from the archive of %s, a Brazilian-born artist based in Toronto." .Title .Params.year $name -}}
+    {{- $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $name -}}
   {{- end -}}
   {{- with .Params.image }}{{ $img = . }}{{ end -}}
-  {{- $imgAlt = printf "%s — archive photograph, %s" .Title $name -}}
-{{- else if eq .Section "oeuvre" -}}
+  {{- $imgAlt = printf "%s — archive photograph, %s" $t $name -}}
+{{- else if and (eq .Section "oeuvre") .IsPage -}}
   {{- $type = "article" -}}
   {{- $title = printf "%s — %s — A book by %s" .Title .Params.description $name -}}
   {{- $desc = printf "%s, %s — a %v-page illustrated book by %s, %v. Read the full text free online." .Title .Params.description .Params.pageCount $name .Params.year -}}

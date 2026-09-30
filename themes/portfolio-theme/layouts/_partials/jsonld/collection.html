@@ -20,7 +20,7 @@
     "itemListOrder": "https://schema.org/ItemListUnordered",
     "itemListElement": [
       {{- range $i, $e := $pages }}{{ if $i }},{{ end }}
-      { "@type": "ListItem", "position": {{ add $i 1 }}, "url": "{{ $e.Permalink }}", "name": "{{ $e.Title }}" }
+      { "@type": "ListItem", "position": {{ add $i 1 }}, "url": "{{ $e.Permalink }}", "name": "{{ $e.Title | default (printf "Untitled photograph (%v)" $e.Params.year) }}" }
       {{- end }}
     ]
   }

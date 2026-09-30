@@ -69,7 +69,7 @@
          data-title="{{ $it.page.Title }}"
          data-comment="{{ $it.page.Params.comment }}"
          data-img="{{ $it.page.Params.image }}">
-      <img class="arch-img" src="{{ $it.page.Params.image }}" alt="{{ $it.page.Title }}" loading="lazy"{{ with partial "img-meta.html" $it.page.Params.image }} width="{{ .w }}" height="{{ .h }}"{{ end }}>
+      <img class="arch-img" src="{{ partial "img-url.html" (dict "src" $it.page.Params.image "width" 800) }}" alt="{{ $it.page.Title | default "Photograph by Louis Andrada" }}" loading="lazy"{{ with partial "img-meta.html" $it.page.Params.image }} width="{{ .w }}" height="{{ .h }}"{{ end }}>
     </div>
     {{ end }}
   </div>

@@ -93,7 +93,7 @@
 
         <img
           class="sins-img"
-          src="{{ $page.Params.image }}"
+          src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 800) }}"
           alt="{{ $page.Title }}"
           loading="lazy"
           {{- with partial "img-meta.html" $page.Params.image }} width="{{ .w }}" height="{{ .h }}"{{ end }}

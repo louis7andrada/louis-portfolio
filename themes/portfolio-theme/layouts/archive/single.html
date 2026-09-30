@@ -22,8 +22,8 @@
     <div class="archive-img-wrap">
       {{ if .Params.image }}
         <img
-          src="{{ .Params.image }}"
-          alt="{{ .Title }}"
+          src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}"
+          alt="{{ .Title | default "Photograph by Louis Andrada" }}"
           class="archive-img"
           onclick="openLightbox('{{ .Params.image }}', '{{ .Title }}')"
         />

@@ -201,7 +201,7 @@
     {{ $sorted := sort $clean "Params.worknum" "desc" }}
     {{ range $sorted }}
     <div class="artworkChoice" data-id="{{ .File.BaseFileName }}" data-title="{{ .Title }}" data-image="{{ .Params.image }}">
-      <img src="{{ .Params.image }}" alt="{{ .Title }}">
+      <img loading="lazy" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 400) }}" alt="{{ .Title }}">
       <div class="checkmark-overlay hidden">&#x2713;</div>
       <p class="artwork-sel-label">{{ .Title }}</p>
     </div>

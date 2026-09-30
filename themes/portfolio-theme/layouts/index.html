@@ -37,7 +37,7 @@
          data-id="{{ .Params.id }}"
          data-comment="{{ .Params.comment }}"
          data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}">
-        <img src="{{ .Params.image }}" alt="{{ .Title }}" class="hp-image"{{ with partial "img-meta.html" .Params.image }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }} />
+        <img src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" alt="{{ .Title }}" class="hp-image"{{ with partial "img-meta.html" .Params.image }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }} />
       </a>
       <!-- <span class="hp-year">{{ .Params.year }}</span> -->
     </div>
@@ -343,7 +343,7 @@
        data-image="{{ $page.Params.image }}"
        data-id="{{ $page.Params.id }}"
        data-comment="{{ $page.Params.comment }}">
-      <img src="{{ $page.Params.image }}" alt="{{ $page.Title }}" class="aw-img" loading="lazy"{{ with partial "img-meta.html" $page.Params.image }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }} />
+      <img src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 800) }}" alt="{{ $page.Title }}" class="aw-img" loading="lazy"{{ with partial "img-meta.html" $page.Params.image }} width="{{ .w }}" height="{{ .h }}" data-lqip="{{ .lqip | safeURL }}"{{ end }} />
     </a>
     {{ end }}
   </div>
@@ -356,8 +356,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h2>
           <div class="grid grid-cols-3 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "tree") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
-              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -365,8 +365,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h2>
           <div class="grid grid-cols-4 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "snake") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
-              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -374,8 +374,8 @@
           <h2 class="text-2xl text-center mb-4 min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h2>
           <div class="grid grid-cols-3 content-start" style="gap:3px;">
             {{ range sort (where (where .Site.RegularPages "Params.collection" "The Tree, The Snake, The Fruit") "Params.subgroup" "fruit") "Params.collection_order" "asc" }}
-              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
-              {{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
+              {{ if .Params.inprogress }}<div class="artwork-inprogress"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow opacity-80 dark:brightness-50" loading="lazy" /></div>
+              {{ else }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}
             {{ end }}
           </div>
         </div>
@@ -383,21 +383,21 @@
       <div class="mt-24 grid items-start" style="grid-template-columns: 3fr 4fr 3fr; gap:3px;">
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Tree</h3>
-          {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}{{ with index $treeFull 0 }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" loading="lazy" /></a>{{ end }}
+          {{ $treeFull := first 1 (where .Site.RegularPages "Params.id" "LA2025-mo6") }}{{ with index $treeFull 0 }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" class="w-full object-cover shadow-lg" style="aspect-ratio:72/108;" loading="lazy" /></a>{{ end }}
         </div>
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Snake</h3>
-          {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}{{ with index $snakeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
+          {{ $snakeFull := first 1 (where .Site.RegularPages "Params.id" "LA2026-mo6") }}{{ with index $snakeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:96/108;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
         </div>
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-semibold mb-6 text-center min-h-[3rem] flex items-center justify-center whitespace-nowrap">The Fruit</h3>
-          {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}{{ with index $fruitFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
+          {{ $fruitFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6") }}{{ with index $fruitFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:72/108;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
         </div>
       </div>
       <h1 class="text-2xl font-semibold mt-24 mb-10 text-center whitespace-nowrap">The Tree, The Snake, The Fruit</h1>
       <div class="grid grid-cols-1" style="gap:0px;">
         <div class="flex flex-col items-center">
-          {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}{{ with index $completeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img src="{{ .Params.image }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img src="{{ .Params.image }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
+          {{ $completeFull := first 1 (where .Site.RegularPages "Params.id" "LA2027-mo6c") }}{{ with index $completeFull 0 }}{{ if .Params.inprogress }}<div class="artwork-inprogress"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" class="w-full object-cover shadow-lg opacity-80 dark:brightness-50" style="aspect-ratio:20/9;" loading="lazy"/></div>{{ else }}<a href="{{ .RelPermalink }}"><img alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow" loading="lazy" /></a>{{ end }}{{ end }}
         </div>
       </div>
     </section>

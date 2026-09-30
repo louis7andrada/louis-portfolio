@@ -1,0 +1,39 @@
+{{- /*
+  Returns the URL of a resized copy of an image, built by Hugo at build
+  time and served from Netlify's CDN instead of the full-size original on
+  raw.githubusercontent.com.
+
+  Usage: {{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}
+  Optional "format": "webp" (default) or "jpg" (for link previews).
+
+  If the image can't be fetched or processed for any reason, the original
+  URL is returned unchanged, so a network hiccup never breaks the build.
+*/ -}}
+{{- $src := .src -}}
+{{- $width := .width | default 800 -}}
+{{- $format := .format | default "webp" -}}
+{{- $out := $src -}}
+{{- if and $src (strings.HasSuffix $src "/inprogress.jpeg") -}}
+  {{- /* shared "in progress" placeholder: small already, keep as is */ -}}
+{{- else if and $src (hasPrefix $src "http") -}}
+  {{- with try (resources.GetRemote $src) -}}
+    {{- with .Err -}}
+      {{- warnf "img-url: could not fetch %s: %s" $src . -}}
+    {{- else with .Value -}}
+      {{- /* Publish the resized copies under /images/r/ instead of the site root. */ -}}
+      {{- with resources.Copy (printf "images/r/%s" (strings.TrimPrefix "https://" $src | replaceRE "^[^/]+/[^/]+/[^/]+/[^/]+/" "")) . -}}
+      {{- if eq .MediaType.MainType "image" -}}
+        {{- $img := . | images.Filter images.AutoOrient -}}
+        {{- $opts := printf "%s q80" $format -}}
+        {{- if gt $img.Width $width -}}
+          {{- $opts = printf "%dx %s" $width $opts -}}
+          {{- $out = ($img.Resize $opts).RelPermalink -}}
+        {{- else -}}
+          {{- $out = ($img.Process $opts).RelPermalink -}}
+        {{- end -}}
+      {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

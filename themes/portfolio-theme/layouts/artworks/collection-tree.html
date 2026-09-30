@@ -44,11 +44,11 @@
           {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
             
             {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-              <img src="{{ .Params.image }}" class="w-full h-auto shadow {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" />
+              <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" />
             {{ if not .Params.inprogress }}</a>{{ end }}
 
           {{ else }}
-            <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-50" />
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow opacity-50" />
           {{ end }}
         {{ end }}
       </div>
@@ -69,11 +69,11 @@
           {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
             
             {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-              <img src="{{ .Params.image }}" class="w-full h-auto shadow {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" />
+              <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" />
             {{ if not .Params.inprogress }}</a>{{ end }}
 
           {{ else }}
-            <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-50" />
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow opacity-50" />
           {{ end }}
         {{ end }}
       </div>
@@ -94,11 +94,11 @@
           {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
             
             {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-              <img src="{{ .Params.image }}" class="w-full h-auto shadow {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" />
+              <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" />
             {{ if not .Params.inprogress }}</a>{{ end }}
 
           {{ else }}
-            <img src="{{ .Params.image }}" class="w-full h-auto shadow opacity-50" />
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}" class="w-full h-auto shadow opacity-50" />
           {{ end }}
         {{ end }}
       </div>
@@ -123,13 +123,13 @@
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
 
           {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-            <img src="{{ .Params.image }}" 
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
               class="w-full object-cover shadow-lg {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" 
               style="aspect-ratio: 72 / 108;" />
           {{ if not .Params.inprogress }}</a>{{ end }}
 
         {{ else }}
-          <img src="{{ .Params.image }}" 
+          <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
             class="w-full object-cover shadow-lg" 
             style="aspect-ratio: 72 / 108;" />
         {{ end }}
@@ -147,13 +147,13 @@
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
 
           {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-            <img src="{{ .Params.image }}" 
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
               class="w-full object-cover shadow-lg {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" 
               style="aspect-ratio: 96 / 108;" />
           {{ if not .Params.inprogress }}</a>{{ end }}
 
         {{ else }}
-          <img src="{{ .Params.image }}" 
+          <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
             class="w-full object-cover shadow-lg" 
             style="aspect-ratio: 96 / 108;" />
         {{ end }}
@@ -171,13 +171,13 @@
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
 
           {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-            <img src="{{ .Params.image }}" 
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
               class="w-full object-cover shadow-lg {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" 
               style="aspect-ratio: 72 / 108;" />
           {{ if not .Params.inprogress }}</a>{{ end }}
 
         {{ else }}
-          <img src="{{ .Params.image }}" 
+          <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
             class="w-full object-cover shadow-lg" 
             style="aspect-ratio: 72 / 108;" />
         {{ end }}
@@ -199,13 +199,13 @@
         {{ if ne .Params.image "/images/artworks/inprogress.jpeg" }}
 
           {{ if not .Params.inprogress }}<a href="{{ .RelPermalink }}">{{ end }}
-            <img src="{{ .Params.image }}" 
+            <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" 
               class="w-full object-cover shadow-lg {{ if .Params.inprogress }}opacity-75 dark:brightness-50{{ end }}" 
               style="aspect-ratio: 20 / 9;" />
           {{ if not .Params.inprogress }}</a>{{ end }}
 
         {{ else }}
-          <img src="{{ .Params.image }}" class="w-full h-auto shadow-lg opacity-75" />
+          <img loading="lazy" alt="{{ .Title }}" src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" class="w-full h-auto shadow-lg opacity-75" />
         {{ end }}
       {{ end }}
     </div>
