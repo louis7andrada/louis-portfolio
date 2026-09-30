@@ -1482,7 +1482,7 @@
           t(b, n.comment),
           t(v, n.availability),
           n.availability === "Available" && n.price
-            ? ((h.textContent = "$ " + n.price), (h.style.display = ""))
+            ? ((h.textContent = "$" + Number(n.price).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " USD"), (h.style.display = ""))
             : (h.style.display = "none"),
           n.availability === "Available"
             ? ((m.href = "/inquiry/?add=" + (n.id || "")), (m.style.display = ""))

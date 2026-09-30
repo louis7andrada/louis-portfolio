@@ -68,6 +68,9 @@
   <meta name="keywords" content="Louis Andrada, Han’drada, Handrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings, Brazilian painter, Dark art, Dark Artworks, Figuratism, Existentialism, artist books">
   <meta name="author" content="Louis Andrada (Han’drada)">
   <link rel="canonical" href="{{ .Permalink }}">
+  {{- if or (eq .Kind "404") .Params.noindex }}
+  <meta name="robots" content="noindex">
+  {{- end }}
   {{- range .AlternativeOutputFormats }}{{ if eq .Name "rss" }}
   <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Title }} — Louis Andrada">
   {{- end }}{{ end }}
@@ -149,7 +152,8 @@
   </script>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
   {{- /* reCAPTCHA v3 only on pages with forms (front matter: recaptcha: true) */}}
   {{ if .Params.recaptcha }}

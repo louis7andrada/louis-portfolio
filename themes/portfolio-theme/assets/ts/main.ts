@@ -8,6 +8,7 @@ const menu = document.getElementById("mobileMenu");
 btn?.addEventListener("click", () => {
   btn.classList.toggle("open");
   menu.classList.toggle("open");
+  btn.setAttribute("aria-expanded", menu.classList.contains("open") ? "true" : "false");
 
   if (menu.classList.contains("open")) {
     document.body.setAttribute("data-menu-open", "true");

@@ -61,7 +61,7 @@
       <div class="sp-info-bottom">
         {{ with .Params.availability }}<p>{{ . }}</p>{{ end }}
         {{ if and (eq .Params.availability "Available") (isset .Params "price") }}
-          <p>$ {{ .Params.price }}</p>
+          <p>${{ lang.FormatNumber 2 (float .Params.price) }} USD</p>
         {{ end }}
         {{ if eq .Params.availability "Available" }}
           <a href="/inquiry/?add={{ .Params.id }}" class="sp-purchase">Purchase Artwork</a>

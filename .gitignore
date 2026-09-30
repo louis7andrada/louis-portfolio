@@ -19,8 +19,17 @@ resources/_gen/
 # =========================
 static/images/artworks/
 static/images/archive/
-static/images/archive/
+static/images/books/
 static/images/docs/
+
+# =========================
+# Private files — never publish (this repo is public)
+# =========================
+Newsletter emails/
+*.msg
+*.eml
+*.pst
+static/images/docs/mailing list email templates/
 
 # =========================
 # Local analytics + scripts (private)
@@ -35,7 +44,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
 

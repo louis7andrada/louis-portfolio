@@ -3,6 +3,8 @@ languageCode = "en-us"
 title = "Louis Andrada"
 theme = "portfolio-theme"
 enableRobotsTXT = false
+# No tags/categories are used on this site; don't generate empty pages for them.
+disableKinds = ["taxonomy", "term"]
 
 [sitemap]
   changefreq = "monthly"

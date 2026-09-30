@@ -1,6 +1,6 @@
 # Louis Andrada – Portfolio Website
 
-This repository contains the source code for louisandrada.com, a static portfolio website built using Hugo and TailwindCSS, deployed on Netlify.
+This repository contains the source code for handrada.com (louisandrada.com redirects there), a static portfolio website built using Hugo and TailwindCSS, deployed on Netlify.
 
 The site generates static HTML files at build time and serves them via a CDN for maximum performance.
 
@@ -29,7 +29,7 @@ Install the following software before running the project locally.
 1. Node.js (v18 or newer)
    https://nodejs.org
 
-2. Hugo Extended (v0.156.0 or compatible)
+2. Hugo Extended (v0.157.0 or compatible)
    https://gohugo.io/installation/
 
 Important: you must install the extended version of Hugo because Tailwind requires it.
@@ -67,7 +67,7 @@ static/images/artworks/example.jpg
 
 becomes:
 
-https://louisandrada.com/images/artworks/example.jpg
+https://handrada.com/images/artworks/example.jpg
 
 ---
 
@@ -173,8 +173,6 @@ Static assets must be placed in:
 
 /static/images/artworks      # Finished artworks
 /static/images/archive       # Older or in-progress artworks
-/static/robots.txt
-/static/sitemap.xml
 
 Files will be directly accessible on the deployed site.
 
@@ -203,6 +201,66 @@ content/
 Each markdown file becomes a page on the site.
 
 ---
+
+# Forms, reCAPTCHA and the mailing list
+
+Every form (newsletter popup, unsubscribe, contact, purchase, commission)
+submits to the Netlify function `netlify/functions/submit.js`. It:
+
+1. verifies the reCAPTCHA v3 token with Google on the server (score >= 0.5),
+2. forwards the form as JSON to the Google Apps Script web app,
+3. hides whether an address is already on / not on the mailing list.
+
+reCAPTCHA loads on pages with forms, and on demand when someone uses the newsletter popup.
+
+Netlify environment variables (Site configuration → Environment variables):
+
+| Name | Required | What it is |
+|---|---|---|
+| `RECAPTCHA_SECRET_KEY` | yes | reCAPTCHA v3 secret key |
+| `FORMS_SHARED_SECRET` | recommended | long random string; also stored in the Apps Script |
+| `APPS_SCRIPT_URL` | optional | Apps Script web-app URL (defaults to the current one) |
+
+When `FORMS_SHARED_SECRET` is set, the function adds it to every request as
+`secret`. The Apps Script should reject anything without it, so nobody can post
+to the script directly. At the top of the script's `doPost(e)`:
+
+```js
+var data = JSON.parse(e.postData.contents);
+var expected = PropertiesService.getScriptProperties().getProperty("FORMS_SHARED_SECRET");
+if (expected && data.secret !== expected) {
+  return ContentService.createTextOutput("FORBIDDEN");
+}
+delete data.secret;
+```
+
+(Project Settings → Script properties → add `FORMS_SHARED_SECRET` with the same value.)
+
+# Private files
+
+This repository is public. Never commit newsletter emails (`.msg`), subscriber
+lists, or anything with other people's details. `npm run deploy` commits
+everything in the folder, so `.gitignore` blocks `Newsletter emails/` and
+`*.msg`. The font source files live in `font-source/`, which is not published
+on the website.
+
+# Prices
+
+Prices come from each artwork's `price:` field and are shown as `$1,234.50 USD`.
+
+# Images, blur placeholders and the fog
+
+Artwork, archive and book images live in the `louis-andrada-images` GitHub
+repo. At build time Hugo downloads each one once to read its size, make an
+8x8 blur placeholder (`data-lqip`, used by the site-mirror fog) and resized
+WebP thumbnails for the grids (`_partials/img-meta.html`, `img-url.html`).
+The first build takes a couple of minutes; later builds reuse the cache.
+
+# Deploying
+
+Netlify builds from the `main` branch on GitHub. If you deploy from your
+PC with `npm run deploy`, it now stops if the GitHub push fails, so GitHub
+and the live site can't drift apart again.
 
 # Useful Hugo Commands
 
