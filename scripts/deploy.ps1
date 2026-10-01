@@ -65,6 +65,17 @@ if (Test-Path .\.hugo_build.lock) { Remove-Item -Force .\.hugo_build.lock }
 npm run build
 if ($LASTEXITCODE -ne 0) { Stop-Deploy "the site build failed (GitHub is updated; the live site is unchanged)." }
 
+# The build regenerates static/css/output.css. If that changed it, GitHub must
+# get the new file too, or it would lag one deploy behind the live site.
+if (git status --porcelain) {
+  git add .
+  git commit -m "compiled CSS"
+  if ($LASTEXITCODE -ne 0) { Stop-Deploy "committing the rebuilt CSS failed." }
+  git push origin main
+  if ($LASTEXITCODE -ne 0) { Stop-Deploy "pushing the rebuilt CSS to GitHub failed." }
+  $head = (git rev-parse HEAD).Trim()
+}
+
 # 6. Deploy.
 netlify deploy --prod --dir=public
 if ($LASTEXITCODE -ne 0) { Stop-Deploy "the Netlify upload failed (GitHub is updated; run npm run deploy again to retry)." }
