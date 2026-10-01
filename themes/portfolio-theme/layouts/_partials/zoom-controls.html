@@ -1,0 +1,110 @@
+<!-- ═══════════════════════════════════════════════════
+     ZOOM CONTROLS for every fullscreen viewer (artwork / archive lightboxes here,
+     the book viewer in book-fullscreen.html via window.createZoomBar).
+     100% -> 120 -> 140 -> 160 -> 180 and back; nothing is remembered: each open starts at 100%.
+     A zoomed item is simply BIGGER, so the fullscreen layer scrolls (both ways) while
+     the page behind stays put (overscroll-behavior + html.lb-lock).
+     ═══════════════════════════════════════════════════ -->
+<style>
+.zoom-bar {
+  position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 5;
+  display: inline-flex; align-items: center; gap: 2px; padding: 3px 6px;
+  border-radius: 999px;
+  font-family: 'AndradaMono','Courier New',Courier,monospace; font-size: 0.8rem; letter-spacing: 0.04em;
+  color: inherit; cursor: default; user-select: none; -webkit-user-select: none;
+  background: var(--glass-bar, rgba(255,255,255,0.35));
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 0 22px rgba(0,0,0,0.25);
+}
+.zoom-bar button {
+  background: none; border: 0; color: inherit; font: inherit; font-size: 1.15rem; line-height: 1;
+  width: 2rem; height: 2rem; border-radius: 50%; cursor: pointer; opacity: 0.85;
+}
+.zoom-bar button:hover:not(:disabled) { opacity: 1; background: rgba(128,128,128,0.25); }
+.zoom-bar button:disabled { opacity: 0.25; cursor: default; }
+/* phones: bottom-right, the thumb's natural resting spot, clear of the home indicator */
+@media (max-width: 800px) {
+  .zoom-bar { right: 12px; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+  .zoom-bar button { width: 2.5rem; height: 2.5rem; font-size: 1.3rem; }
+}
+.zoom-bar .zoom-label { min-width: 3.2em; text-align: center; opacity: 0.9; }
+
+html.lb-lock, html.lb-lock body { overflow: hidden !important; overscroll-behavior: none; }
+
+/* image lightboxes: the overlay scrolls; the image keeps its centre when it is smaller than the screen */
+/* backdrop-filter on the scrolling overlay itself would make every position:fixed child (zoom bar, close X)
+   scroll away with the content; the blur lives on a fixed ::before instead so those children stay put. */
+.lightbox-overlay.lb-zoomable { backdrop-filter: none; -webkit-backdrop-filter: none; }
+.lightbox-overlay.lb-zoomable::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; backdrop-filter: blur(18px) saturate(0.7); -webkit-backdrop-filter: blur(18px) saturate(0.7); }
+.lightbox-overlay.lb-zoomable { overflow: auto; overscroll-behavior: contain; justify-content: flex-start; align-items: flex-start; -webkit-overflow-scrolling: touch; }
+.lightbox-overlay.lb-zoomable > .lightbox-img { margin: auto; flex: none; }
+</style>
+<script>
+(function () {
+  var MIN = 1, MAX = 1.8, STEP = 0.2;
+  var fmt = function (z) { return Math.round(z * 100) + "%"; };
+
+  // host: element the bar is appended to (a fullscreen overlay). onChange(z) applies the zoom.
+  window.createZoomBar = function (host, onChange) {
+    var z = MIN;
+    var bar = document.createElement("div");
+    bar.className = "zoom-bar";
+    bar.setAttribute("role", "group");
+    bar.setAttribute("aria-label", "Zoom");
+    bar.innerHTML = '<button type="button" data-z="out" aria-label="Zoom out">&minus;</button>' +
+      '<span class="zoom-label" aria-live="polite">100%</span>' +
+      '<button type="button" data-z="in" aria-label="Zoom in">+</button>';
+    var out = bar.querySelector('[data-z="out"]'), inn = bar.querySelector('[data-z="in"]'), label = bar.querySelector(".zoom-label");
+    function apply() {
+      label.textContent = fmt(z);
+      out.disabled = z <= MIN + 0.001;
+      inn.disabled = z >= MAX - 0.001;
+      onChange(z);
+    }
+    function set(v) { z = Math.max(MIN, Math.min(MAX, Math.round(v * 10) / 10)); apply(); }
+    // the overlays close on a background click / must not flip pages: keep the bar's clicks to itself
+    ["click", "mousedown", "touchstart", "pointerdown"].forEach(function (t) { bar.addEventListener(t, function (e) { e.stopPropagation(); }, { passive: true }); });
+    out.addEventListener("click", function () { set(z - STEP); });
+    inn.addEventListener("click", function () { set(z + STEP); });
+    host.appendChild(bar);
+    apply();
+    return { bar: bar, get: function () { return z; }, set: set, reset: function () { set(MIN); } };
+  };
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var canZoom = window.CSS && CSS.supports && CSS.supports("zoom", "1.2");
+    document.querySelectorAll(".lightbox-overlay").forEach(function (lb) {
+      if (lb.closest("#siteMirror")) return;
+      var img = lb.querySelector(".lightbox-img");
+      if (!img) return;
+      lb.classList.add("lb-zoomable");
+      var base = null;
+      var ctl = window.createZoomBar(lb, function (z) {
+        if (canZoom) { img.style.zoom = z === 1 ? "" : z; return; }
+        // browsers without CSS zoom: size the image explicitly
+        if (z === 1) { img.style.width = img.style.height = img.style.maxWidth = img.style.maxHeight = ""; return; }
+        if (!base) base = { w: img.offsetWidth, h: img.offsetHeight };
+        img.style.maxWidth = img.style.maxHeight = "none";
+        img.style.width = base.w * z + "px"; img.style.height = base.h * z + "px";
+      });
+      var wasActive = false;
+      function sync() {
+        var on = lb.classList.contains("active");
+        if (on === wasActive) return;
+        wasActive = on;
+        base = null;
+        ctl.reset();                       // every open (and close) is back at 100%
+        lb.scrollTo(0, 0);
+        document.documentElement.classList.toggle("lb-lock", on);
+      }
+      new MutationObserver(sync).observe(lb, { attributes: true, attributeFilter: ["class"] });
+      document.addEventListener("keydown", function (e) {
+        if (!lb.classList.contains("active") || e.ctrlKey || e.metaKey) return;
+        if (e.key === "+" || e.key === "=") ctl.set(ctl.get() + STEP);
+        else if (e.key === "-" || e.key === "_") ctl.set(ctl.get() - STEP);
+        else if (e.key === "0") ctl.reset();
+      });
+    });
+  });
+})();
+</script>

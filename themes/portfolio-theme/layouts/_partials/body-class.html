@@ -1,8 +1,0 @@
-{{- $c := "" -}}
-{{- if .IsHome }}{{ $c = "page-home" }}
-{{- else if eq .Section "oeuvre" }}{{ $c = "page-books" }}
-{{- else if eq .RelPermalink "/about/" }}{{ $c = "page-about" }}
-{{- else if eq .Type "inquiry" }}{{ $c = "page-inquiry" }}
-{{- else if eq .Type "links" }}{{ $c = "page-links" }}
-{{- end -}}
-{{- return $c -}}

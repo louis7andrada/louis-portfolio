@@ -37,201 +37,196 @@
 
   <style>
   .unsub-section {
-    position:relative;
-    min-height:calc(100vh - 80px);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:4rem 2rem;
-    box-sizing:border-box;
+    position: relative;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    box-sizing: border-box;
   }
   .unsub-back {
-    position:fixed;
-    top:clamp(16px,3.5vw,28px);
-    left:clamp(16px,3.5vw,32px);
-    color:inherit;
-    opacity:.5;
-    transition:opacity .2s;
-    z-index:10;
-    display:flex;
-    align-items:center;
+    position: fixed;
+    top: clamp(16px, 3.5vw, 28px);
+    left: clamp(16px, 3.5vw, 32px);
+    color: inherit;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    z-index: 10;
+    display: flex;
+    align-items: center;
   }
-  .unsub-back:hover {
-    opacity:1;
-  }
+  .unsub-back:hover { opacity: 1; }
   .unsub-body {
-    width:min(560px,90vw);
+    width: min(560px, 90vw);
   }
   .unsub-title {
-    font-size:.78rem!important;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    font-weight:700;
-    margin:0 0 .6rem;
-    opacity:.9;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.6rem;
+    opacity: 0.9;
   }
   .unsub-desc {
-    font-size:.76rem!important;
-    line-height:1.65;
-    opacity:.55;
-    margin:0 0 1.6rem;
-    letter-spacing:.01em;
+    font-size: 0.76rem !important;
+    line-height: 1.65;
+    opacity: 0.55;
+    margin: 0 0 1.6rem;
+    letter-spacing: 0.01em;
   }
   .unsub-field-wrap {
-    margin-bottom:.5rem;
+    margin-bottom: 0.5rem;
   }
   .unsub-input {
-    width:100%;
-    box-sizing:border-box;
-    padding:.75rem 1rem;
-    font-family:inherit;
-    font-size:.8rem;
-    letter-spacing:.04em;
-    background:0 0;
-    border:1px solid rgba(0,0,0,.22);
-    color:inherit;
-    outline:none;
-    transition:border-color .15s;
-    border-radius:0!important;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.22);
+    color: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+    border-radius: 0 !important;
   }
-  .unsub-input::placeholder {
-    color:inherit;
-    opacity:.5;
-  }
-  .unsub-input:focus {
-    border-color:rgba(0,0,0,.6);
-  }
-  html.dark .unsub-input {
-    border-color:rgba(255,255,255,.22);
-  }
-  html.dark .unsub-input:focus {
-    border-color:rgba(255,255,255,.6);
-  }
+  .unsub-input::placeholder { color: inherit; opacity: 0.5; }
+  .unsub-input:focus { border-color: rgba(0,0,0,0.6); }
+  html.dark .unsub-input { border-color: rgba(255,255,255,0.22); }
+  html.dark .unsub-input:focus { border-color: rgba(255,255,255,0.6); }
   .unsub-btn {
-    width:100%;
-    margin-top:.5rem;
-    padding:.75rem 1rem;
-    font-family:inherit;
-    font-size:.78rem;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    font-weight:700;
-    background:#111;
-    color:#fff;
-    border:none;
-    border-radius:0!important;
-    cursor:pointer;
-    transition:opacity .18s;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 0 !important;
+    cursor: pointer;
+    transition: opacity 0.18s;
   }
-  .unsub-btn:hover {
-    opacity:.75;
-  }
-  .unsub-btn:disabled {
-    opacity:.4;
-    cursor:default;
-  }
-  html.dark .unsub-btn {
-    background:#efefef;
-    color:#111;
-  }
+  .unsub-btn:hover { opacity: 0.75; }
+  .unsub-btn:disabled { opacity: 0.4; cursor: default; }
+  html.dark .unsub-btn { background: #efefef; color: #111; }
   .unsub-note {
-    margin:.8rem 0 0;
-    font-size:.68rem;
-    letter-spacing:.02em;
-    line-height:1.5;
-    opacity:0;
-    transition:opacity .2s;
+    margin: 0.8rem 0 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity 0.2s;
   }
-  .unsub-note.visible {
-    opacity:.85;
-  }
-  .unsub-note.error {
-    color:#c0392b;
-  }
-  html.dark .unsub-note.error {
-    color:#e74c3c;
-  }
+  .unsub-note.visible { opacity: 0.85; }
+  .unsub-note.error { color: #c0392b; }
+  html.dark .unsub-note.error { color: #e74c3c; }
   .unsub-disclaimer {
-    margin:1.4rem 0 0;
-    font-size:.6rem!important;
-    letter-spacing:.01em;
-    line-height:1.7;
-    opacity:.38;
+    margin: 1.4rem 0 0;
+    font-size: 0.6rem !important;
+    letter-spacing: 0.01em;
+    line-height: 1.7;
+    opacity: 0.38;
   }
   .unsub-success {
-    text-align:left;
+    text-align: left;
   }
   .unsub-success-msg {
-    font-size:.78rem;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    font-weight:700;
-    margin:0 0 .5rem;
-    opacity:.9;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    opacity: 0.9;
   }
   .unsub-success-sub {
-    font-size:.74rem;
-    line-height:1.65;
-    opacity:.5;
-    margin:0;
-    letter-spacing:.01em;
+    font-size: 0.74rem;
+    line-height: 1.65;
+    opacity: 0.5;
+    margin: 0;
+    letter-spacing: 0.01em;
   }
-</style>
+  </style>
 
   <script>
   (function () {
-    const n = document.getElementById("unsubEmail"),
-      e = document.getElementById("unsubBtn"),
-      s = document.getElementById("unsubNote"),
-      o = document.getElementById("unsubForm"),
-      i = document.getElementById("unsubSuccess");
-    function t(e, t) {
-      ((s.textContent = e), (s.className = "unsub-note visible" + (t ? " error" : "")));
+    const emailEl  = document.getElementById('unsubEmail');
+    const btn      = document.getElementById('unsubBtn');
+    const noteEl   = document.getElementById('unsubNote');
+    const formEl   = document.getElementById('unsubForm');
+    const successEl = document.getElementById('unsubSuccess');
+
+    function showNote(msg, isError) {
+      noteEl.textContent = msg;
+      noteEl.className   = 'unsub-note visible' + (isError ? ' error' : '');
     }
-    (e.addEventListener("click", async () => {
-      const a = n.value.trim();
-      if (!a) {
-        (t("Please enter your email address.", !0), n.focus());
+
+    btn.addEventListener('click', async () => {
+      const email = emailEl.value.trim();
+
+      if (!email) {
+        showNote('Please enter your email address.', true);
+        emailEl.focus();
         return;
       }
-      if (!n.validity.valid) {
-        (t("Please enter a valid email address.", !0), n.focus());
+      if (!emailEl.validity.valid) {
+        showNote('Please enter a valid email address.', true);
+        emailEl.focus();
         return;
       }
-      ((e.disabled = !0), (e.textContent = "Sending…"), (s.className = "unsub-note"), (s.textContent = ""));
-      const r = await window.checkHuman();
-      if (!r.human) {
-        (t("Verification failed. Please try again.", !0), (e.disabled = !1), (e.textContent = "Unsubscribe"));
+
+      btn.disabled    = true;
+      btn.textContent = 'Sending…';
+      noteEl.className = 'unsub-note';
+      noteEl.textContent = '';
+
+      // Only a real bot verdict from Google stops a submission; a missing,
+      // blocked or broken check never does (see window.checkHuman in baseof.html).
+      const check = await window.checkHuman();
+      if (!check.human) {
+        showNote('Verification failed. Please try again.', true);
+        btn.disabled    = false;
+        btn.textContent = 'Unsubscribe';
         return;
       }
+
       try {
-        const s = await window.laPost(window.APP_CONFIG.googleScriptUrl, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify({ email: a, action: "unsubscribe" }),
-          }),
-          n = String(await s.text()).trim();
-        s.ok && n === "OK"
-          ? ((o.style.display = "none"), (i.style.display = "block"))
-          : n === "RECAPTCHA_FAILED"
-            ? (t("Verification failed. Please try again.", !0),
-              (e.disabled = !1),
-              (e.textContent = "Unsubscribe"))
-            : n === "INVALID_EMAIL"
-              ? (t("Please enter a valid email address.", !0),
-                (e.disabled = !1),
-                (e.textContent = "Unsubscribe"))
-              : (t("Something went wrong. Please try again.", !0),
-                (e.disabled = !1),
-                (e.textContent = "Unsubscribe"));
-      } catch {
-        (t("Network error. Please try again.", !0), (e.disabled = !1), (e.textContent = "Unsubscribe"));
-      }
-    }),
-      n.addEventListener("keydown", (t) => {
-        t.key === "Enter" && e.click();
-      }));
+    const res = await fetch(window.APP_CONFIG.googleScriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ email, action: 'unsubscribe' })
+    });
+
+    const result = String(await res.text()).trim();
+
+    // "Not on the list" looks exactly like a removal, so the page never
+    // reveals whether an address is on the mailing list.
+    if (res.ok && (result === "OK" || result === "NOT_FOUND")) {
+      formEl.style.display    = 'none';
+      successEl.style.display = 'block';
+    } else if (result === "INVALID_EMAIL") {
+      showNote("Please enter a valid email address.", true);
+      btn.disabled    = false;
+      btn.textContent = 'Unsubscribe';
+    } else {
+      showNote("Something went wrong. Please try again.", true);
+      btn.disabled    = false;
+      btn.textContent = 'Unsubscribe';
+    }
+  } catch {
+    showNote('Network error. Please try again.', true);
+    btn.disabled    = false;
+    btn.textContent = 'Unsubscribe';
+  }
+    });
+
+    emailEl.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); });
   })();
-</script>
+  </script>
 
   {{ end }}

@@ -5,93 +5,182 @@
   <!--   Webdesign by Jinah Park & Louis Andrada   -->
   <!--     AndradaMono Font by Louis Andrada       -->
   <!--       Codes by Louis Andrada                -->
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- The font is only discovered once the stylesheet is parsed; preloading it
+       starts the download immediately, so text usually paints in AndradaMono
+       straight away instead of swapping in later. -->
   <link rel="preload" href="/fonts/AndradaMono.woff2" as="font" type="font/woff2" crossorigin>
 
-  <!-- Early dark-mode apply: runs before first paint (default dark). -->
+  <!-- ══════════════════════════════════════════════════════
+       EARLY DARK-MODE APPLY — must be inline and synchronous
+       (no defer/async), and must run before the stylesheet
+       below, so the 'dark' class is already on <html> before
+       the browser paints anything. This mirrors main.ts's own
+       theme logic exactly (same 'theme' key, same default-to-
+       dark behavior) so there's never a mismatch between this
+       early check and the toggle script that runs later.
+       ══════════════════════════════════════════════════════ -->
   <script>
     (function () {
       try {
-        var e = localStorage.getItem("theme");
-        e === "light"
-          ? document.documentElement.classList.remove("dark")
-          : document.documentElement.classList.add("dark");
-      } catch {
+        var t = localStorage.getItem("theme");
+        if (t === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {
+        // Storage unavailable for some reason — match main.ts's own
+        // default-to-dark fallback rather than leaving it undecided.
         document.documentElement.classList.add("dark");
       }
     })();
   </script>
 
-  <!-- Reveal boot: hides main + footer until the reveal system is ready (2.5s failsafe). -->
-  <style>
-    html.reveal-boot body>main,html.reveal-boot #footerWrap {
-      opacity:0;
-    }
-  </style>
+  <!-- ══════════════════════════════════════════════════════
+       PAGE FOG-IN GATE — content is held invisible for the instant
+       between first paint and the reveal script tagging it (end of
+       body), so nothing flashes in and then vanishes to fog in.
+       Failsafe: if that script never runs, the gate lifts by itself.
+       ══════════════════════════════════════════════════════ -->
+  <style>html.reveal-boot body > main, html.reveal-boot #footerWrap { opacity: 0; }</style>
   <script>
     (function () {
-      var e = document.documentElement;
+      var h = document.documentElement;
+      // No IntersectionObserver = no fog-in (content just shows). "Reduce motion" does NOT
+      // skip it - the fog still plays, but as a plain opacity fade with no scale/blur movement.
       if (!("IntersectionObserver" in window)) return;
-      try {
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches && e.classList.add("reveal-reduced");
-      } catch {}
-      (e.classList.add("reveal-boot"),
-        setTimeout(function () {
-          window.__revealReady || e.classList.remove("reveal-boot");
-        }, 2500));
+      try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) h.classList.add("reveal-reduced"); } catch (e) {}
+      h.classList.add("reveal-boot");
+      setTimeout(function () { if (!window.__revealReady) h.classList.remove("reveal-boot"); }, 2500);
     })();
   </script>
 
-  <!-- Smooth theme transition -->
+  <!-- ══════════════════════════════════════════════════════
+       SMOOTH THEME TRANSITION — makes the manual dark/light
+       toggle fade colors across the whole page instead of
+       snapping instantly. Applied broadly (not just body) since
+       Tailwind's dark: utilities are scattered across many
+       elements throughout the site.
+
+       This does NOT reintroduce the load-time flash: CSS
+       transitions only play when an already-rendered element's
+       property value changes — the very first paint has nothing
+       to transition FROM, so it still applies instantly and
+       correctly on load, exactly as the script above intends.
+       ══════════════════════════════════════════════════════ -->
   <style>
-    *,*::before,*::after {
-      transition:background-color .45s ease,color .45s ease,border-color .45s ease,fill .45s ease,stroke .45s ease;
+    *, *::before, *::after {
+      transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, fill 0.45s ease, stroke 0.45s ease;
     }
   </style>
 
-  {{- $seo := partial "seo.html" . }}
-  <title>{{ $seo.title }}</title>
+  {{/* ══════════════════════════════════════════════════════════════════════
+       PER-PAGE METADATA
+       Every page describes itself, built from the front matter it already
+       carries. This used to be one hardcoded title and one generic
+       description repeated across all 250+ pages — which meant 146 artwork
+       pages looked identical to search engines and AI crawlers, and sharing
+       any of them showed a stock graphic instead of the actual painting.
+       None of this is visible in the page body; it's all <head> metadata
+       plus the browser/search-result title.
+       ══════════════════════════════════════════════════════════════════════ */}}
+  {{ $artist := printf "%s (%s)" site.Params.artist site.Params.artist_alt }}
+  {{ $pageTitle := printf "%s — %s" .Title $artist }}
+  {{ $desc := site.Params.tagline }}
+  {{ $ogImage := "/images/og-default.jpg" | absURL }}
+  {{ $ogType := "website" }}
+  {{ $imageAlt := printf "Artwork by %s" $artist }}
+
+  {{ if .IsHome }}
+    {{ $pageTitle = printf "%s — Paintings & Artist Books" $artist }}
+    {{ $desc = site.Params.tagline }}
+
+  {{/* Only real items take the per-item branches. Section lists and the
+       collection pages (no year/subtitle) used to print "%!s(<nil>)". */}}
+  {{ else if and (eq .Type "artworks") .IsPage .Params.year }}
+    {{ $ogType = "article" }}
+    {{ $bits := slice }}
+    {{ with .Params.medium }}{{ $bits = $bits | append . }}{{ end }}
+    {{ with .Params.size }}{{ if ne . "Not measured" }}{{ $bits = $bits | append . }}{{ end }}{{ end }}
+    {{ $detail := delimit $bits ", " }}
+    {{ $pageTitle = printf "%s (%v)%s — %s" .Title .Params.year (cond (eq $detail "") "" (printf " — %s" $detail)) $artist }}
+    {{ $desc = printf "%s, %v.%s Original painting by %s, a Brazilian-born artist based in Toronto.%s" .Title .Params.year (cond (eq $detail "") "" (printf " %s." $detail)) $artist (cond (eq (printf "%v" .Params.availability) "Available") " Available for purchase." "") }}
+    {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
+    {{ $imageAlt = printf "%s (%v), %s by %s" .Title .Params.year (default "painting" .Params.medium) $artist }}
+
+  {{ else if and (eq .Type "oeuvre") .IsPage }}
+    {{ $ogType = "article" }}
+    {{ $sub := .Params.description }}
+    {{ $pageTitle = printf "%s%s — A book by %s" .Title (cond (eq $sub "") "" (printf " — %s" $sub)) $artist }}
+    {{ $desc = printf "%s%s — a %v-page illustrated book by %s, %v. Read the full text free online." .Title (cond (eq $sub "") "" (printf ", %s" $sub)) .Params.pageCount $artist .Params.year }}
+    {{ with .Params.imageBase }}{{ $ogImage = printf "%s/cover.jpg" . }}{{ end }}
+    {{ $imageAlt = printf "Cover of %s, a book by %s" .Title $artist }}
+
+  {{ else if and (eq .Type "archive") .IsPage }}
+    {{ $ogType = "article" }}
+    {{/* Untitled photos get a real name instead of an empty title. */}}
+    {{ $t := .Title | default (printf "Untitled photograph (%v)" .Params.year) }}
+    {{ $pageTitle = printf "%s — %s" $t $artist }}
+    {{ $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $artist }}
+    {{ with .Params.comment }}{{ $desc = . }}{{ end }}
+    {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
+    {{ $imageAlt = printf "%s — archive photograph, %s" $t $artist }}
+
+  {{ else }}
+    {{ with .Params.description }}{{ $desc = . }}{{ end }}
+  {{ end }}
+
+  <title>{{ $pageTitle }}</title>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MSBCR3QFML"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    (gtag("js", new Date()), gtag("config", "G-MSBCR3QFML"));
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-MSBCR3QFML');
   </script>
 
   <!-- SEO -->
-  <meta name="description" content="{{ $seo.desc }}">
+  <meta name="description" content="{{ $desc }}">
   <meta name="keywords" content="Louis Andrada, Han’drada, Handrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings, Brazilian painter, Dark art, Dark Artworks, Figuratism, Existentialism, artist books">
-  <meta name="author" content="Louis Andrada (Han’drada)">
+  <meta name="author" content="{{ $artist }}">
+
+  {{/* Canonical URL. The site answers on more than one hostname, so without
+       this crawlers have to guess which address is the real one. */}}
   <link rel="canonical" href="{{ .Permalink }}">
   {{- if or (eq .Kind "404") .Params.noindex }}
   <meta name="robots" content="noindex">
   {{- end }}
-  {{- range .AlternativeOutputFormats }}{{ if eq .Name "rss" }}
-  <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ $.Title }} — Louis Andrada">
-  {{- end }}{{ end }}
+
+  {{/* Feed discovery — without a link tag the RSS feed is effectively invisible. */}}
+  {{ range .AlternativeOutputFormats -}}
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Title }} — {{ site.Params.artist }}">
+  {{ end }}
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="{{ $seo.title }}">
-  <meta property="og:description" content="{{ $seo.desc }}">
-  <meta property="og:type" content="{{ $seo.type }}">
-  <meta property="og:url" content="{{ .Permalink }}">
-  <meta property="og:site_name" content="Louis Andrada (Han’drada)">
-  <meta property="og:locale" content="en_US">
-  <meta property="og:image" content="{{ $seo.img }}">
-  <meta property="og:image:secure_url" content="{{ $seo.img }}">
-  <meta property="og:image:alt" content="{{ $seo.imgAlt }}">
+  <meta property="og:title" content="{{ $pageTitle }}" />
+  <meta property="og:description" content="{{ $desc }}" />
+  <meta property="og:type" content="{{ $ogType }}" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:site_name" content="{{ $artist }}" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:image" content="{{ $ogImage }}" />
+  <meta property="og:image:secure_url" content="{{ $ogImage }}" />
+  <meta property="og:image:alt" content="{{ $imageAlt }}" />
 
   <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{ $seo.title }}">
-  <meta name="twitter:description" content="{{ $seo.desc }}">
-  <meta name="twitter:image" content="{{ $seo.img }}">
-  <meta name="twitter:image:alt" content="{{ $seo.imgAlt }}">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ $pageTitle }}" />
+  <meta name="twitter:description" content="{{ $desc }}" />
+  <meta name="twitter:image" content="{{ $ogImage }}" />
+  <meta name="twitter:image:alt" content="{{ $imageAlt }}" />
+
+  <!-- font URL -->
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet"> -->
 
   <!-- Styles -->
   <link rel="stylesheet" href="/css/output.css">
@@ -100,82 +189,774 @@
   {{ $scripts := resources.Get "ts/main.ts" | js.Build }}
   <script defer src="{{ $scripts.RelPermalink }}"></script>
 
-  <!-- Form config + window.checkHuman() (reCAPTCHA v3 check shared by all forms) -->
+  <!-- Google Script -->
   <script>
-    ((window.APP_CONFIG = {
-      googleScriptUrl:
-        "/.netlify/functions/submit",
-    }),
-      // window.checkHuman(): gets a reCAPTCHA v3 token (loading reCAPTCHA on
-    // demand, so the newsletter popup works on every page). The token is
-    // verified on the server by /.netlify/functions/submit — never here —
-    // so a bot can't skip the check.
-    (window.checkHuman = async function () {
-      function load() {
-        if (window.grecaptcha && window.grecaptcha.execute) return Promise.resolve();
-        return new Promise(function (resolve, reject) {
-          var s = document.createElement("script");
-          s.src = "https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}";
-          s.async = true;
-          s.onload = resolve;
-          s.onerror = reject;
-          document.head.appendChild(s);
+    window.APP_CONFIG = {
+      googleScriptUrl: "{{ .Site.Params.webhook_url }}"
+    };
+
+    // ══════════════════════════════════════════════════════════════════════
+    // SPAM CHECK FOR EVERY FORM - built so it can never stop a real client.
+    // The forms are the only way clients reach Louis (no public email/phone),
+    // so a broken check must never block a message. Resolves
+    //   { human: false } ONLY when Google actually scored the visitor as a bot
+    //   { human: true, token } in every other case - including reCAPTCHA
+    //   blocked by an ad-blocker, a network hiccup, a timeout, or a key/domain
+    //   misconfiguration (e.g. the site moving to a domain the key isn't
+    //   registered for, which once silently blocked every form).
+    // This costs no real protection: the Apps Script webhook accepts posts
+    // directly, so a check in the visitor's browser never stopped a real bot.
+    // ══════════════════════════════════════════════════════════════════════
+    window.checkHuman = function () {
+      var check = (async function () {
+        if (typeof grecaptcha === "undefined" || typeof RECAPTCHA_SITE_KEY === "undefined") return { human: true, token: null };
+        await new Promise(function (resolve) { grecaptcha.ready(resolve); });
+        var token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: "submit" });
+        var res = await fetch("/.netlify/functions/verifyRecaptcha", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token: token })
         });
-      }
-      try {
-        await Promise.race([
-          load(),
-          new Promise(function (_, reject) { setTimeout(reject, 8e3); }),
-        ]);
-        await new Promise(function (r) { grecaptcha.ready(r); });
-        var token = await grecaptcha.execute("{{ .Site.Params.recaptcha_site_key }}", { action: "submit" });
-        return { human: !0, token: token };
-      } catch (err) {
-        // No token: the server will refuse the form and the visitor sees a retry message.
-        return { human: !0, token: null };
-      }
-    }),
-    // window.laPost(url, options): drop-in for fetch() used by every form.
-    // Adds a fresh reCAPTCHA token and sends the form to the server function,
-    // which checks the token and forwards it to the Google Apps Script.
-    (window.laPost = async function (url, opts) {
-      var h = await window.checkHuman();
-      var data = {};
-      try { data = JSON.parse((opts && opts.body) || "{}"); } catch (e) {}
-      data.token = h.token;
-      return fetch("/.netlify/functions/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-    }));
+        var data = await res.json();
+        var botVerdict = data && data.success === true && typeof data.score === "number" && data.score < 0.5;
+        return { human: !botVerdict, token: token };
+      })();
+      var timeout = new Promise(function (resolve) { setTimeout(function () { resolve({ human: true, token: null }); }, 8000); });
+      return Promise.race([check, timeout]).catch(function () { return { human: true, token: null }; });
+    };
   </script>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
-  {{- /* reCAPTCHA v3 only on pages with forms (front matter: recaptcha: true) */}}
-  {{ if .Params.recaptcha }}
+  <!-- reCAPTCHA v3 — only pages with a form (or that otherwise call
+       grecaptcha.execute) actually need this: inquiry and
+       unsubscribe. Loading it site-wide was a render-blocking script
+       (no async/defer) on every other page for no functional reason;
+       `defer` here plus this gate removes it entirely from the rest. -->
+  {{ if or (eq .Type "inquiry") (eq .Type "unsubscribe") }}
   <script defer src="https://www.google.com/recaptcha/api.js?render={{ .Site.Params.recaptcha_site_key }}"></script>
   <script>
     const RECAPTCHA_SITE_KEY = "{{ .Site.Params.recaptcha_site_key }}";
-    window.APP_CONFIG = { googleScriptUrl: "/.netlify/functions/submit" };
+    window.APP_CONFIG = { googleScriptUrl: "{{ .Site.Params.webhook_url }}" };
   </script>
   {{ end }}
+
 </head>
 
-<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white{{ with partial "body-class.html" . }} {{ . }}{{ end }}">
-  <div id="headerMirrorEcho" aria-hidden="true" inert></div>
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if eq .Type "oeuvre" }}page-books{{ end }}">
+
+  <!-- ══════════════════════════════════════════════════════
+       SITE MIRROR — a vertically-flipped, color-inverted,
+       heavily blurred clone of THIS page's own content, fixed
+       behind everything as a faint frosted-glass backdrop.
+       Reuses the exact frosted-glass recipe from the artwork
+       modal (.arw-modal-bg) so the whole site shares one visual
+       language. Populated by the script near the end of body;
+       degrades gracefully to a plain background if JS is off.
+       ══════════════════════════════════════════════════════ -->
 
   {{ if ne .Params.hideHeader true }}
+  <div id="headerMirrorEcho" aria-hidden="true" inert></div>
   {{ partial "header.html" . }}
+  <div id="headerBleed" aria-hidden="true" inert><div class="edge-layer edge-core"></div><div class="edge-layer edge-mid"></div><div class="edge-layer edge-far"></div></div>
   {{ end }}
+  {{ partial "zoom-controls.html" . }}
 
   <main class="flex-1 flex flex-col">
     {{ block "main" . }}{{ end }}
   </main>
 
-  {{ partial "footer.html" . }}
+  <div class="relative" id="footerWrap">
+    <div id="footerMirrorEcho" aria-hidden="true" inert></div>
+    <div id="footerBleed" aria-hidden="true" inert><div class="edge-layer edge-far"></div><div class="edge-layer edge-mid"></div><div class="edge-layer edge-core"></div></div>
+    {{ partial "footer.html" . }}
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE FOG-IN — every page, every load (not only the first).
+       Each piece of content comes out of fog by itself, the moment
+       it is ready, using the same opacity + scale + blur "coming
+       into focus" language as the site's popups (a touch faster
+       than the door's, since the reader is just browsing):
+         • text/headings: fog in as they come into view, in a quick
+           staggered wave (nothing waits for anything else);
+         • images: from the instant their first pixels arrive they
+           show as a heavy blur (browsers paint images progressively
+           as they download), then clear the moment loading finishes.
+       On a first visit it holds until the intro door is gone; on
+       phones it drops the blur/scale (opacity only, plus a light
+       blur on images) to stay cheap. Failsafe: nothing stays hidden.
+       ══════════════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    var html = document.documentElement;
+    if (!html.classList.contains("reveal-boot")) return; // reduced motion / no IntersectionObserver
+    var stats = window.__revealStats = { tagged: 0, revealed: 0, loadingShown: 0 };
+
+    function storageGet(k) {
+      try { var v = sessionStorage.getItem(k); if (v !== null) return v; } catch (e) {}
+      try { var m = document.cookie.match(new RegExp("(?:^|; )" + k + "=([^;]*)")); return m ? decodeURIComponent(m[1]) : null; } catch (e) {}
+      return null;
+    }
+    var firstVisit = !!document.getElementById("intro-door") && !storageGet("intro-seen");
+    var held = firstVisit;
+    if (firstVisit) html.classList.add("reveal-first");
+
+    var EXCLUDE = "#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #arwModal, #lightbox, #arwLightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown, #bookModal, .book-modal, #bookFullscreen, .artwork-filter-overlay, #siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho";
+    if (!firstVisit) EXCLUDE += ", #siteHeader"; // the header stays steady while pages change
+    var SKIP = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, SVG: 1, PATH: 1, INPUT: 1, TEXTAREA: 1, SELECT: 1, OPTION: 1 };
+
+    function hasDirectText(el) {
+      for (var c = el.firstChild; c; c = c.nextSibling) if (c.nodeType === 3 && c.textContent.trim()) return true;
+      return false;
+    }
+
+    // ---- tag ----
+    var cands = [];
+    document.body.querySelectorAll("*").forEach(function (el) {
+      if (SKIP[el.tagName] || el.closest(EXCLUDE)) return;
+      if (el.tagName === "IMG" || hasDirectText(el)) cands.push(el);
+    });
+    var set = new Set(cands);
+    var items = cands.filter(function (el) { // a tagged ancestor already covers its text descendants
+      for (var p = el.parentElement; p; p = p.parentElement) if (set.has(p) && p.tagName !== "IMG") return false;
+      return true;
+    });
+
+    items.forEach(function (el) {
+      var own = { t: "none", f: "none" };
+      try {
+        var cs = getComputedStyle(el); own.t = cs.transform; own.f = cs.filter;
+        // reveal TO the element's own opacity (captions sit at .55 etc.), so removing the classes later can't make it jump
+        if (cs.opacity && cs.opacity !== "1") el.style.setProperty("--fog-o", cs.opacity);
+      } catch (e) {}
+      var hasT = own.t && own.t !== "none", hasF = own.f && own.f !== "none";
+      el.classList.add(hasT && hasF ? "reveal-item-opacity-only" : hasF ? "reveal-item-no-filter" : hasT ? "reveal-item-no-transform" : "reveal-item");
+      el.__isImg = el.tagName === "IMG";
+      el.__inview = false; el.__done = false;
+      el.__loaded = !el.__isImg || (el.complete && el.naturalWidth > 0);
+      stats.tagged++;
+    });
+
+    // The fogged starting state must land instantly: the item classes carry a
+    // transition, so without this, every tagged item animated FROM fully visible
+    // towards hidden while the page gate lifted in the same frame - a sharp flash,
+    // then a snap into fog (seen on the homepage picture and "Join the List").
+    html.classList.add("reveal-notrans", "reveal-pending");
+    void document.body.offsetHeight; // flush styles so the hidden state is committed
+    html.classList.remove("reveal-notrans");
+    html.classList.remove("reveal-boot");
+    window.__revealReady = true;
+
+    // ---- reveal ----
+    var wave = 0, waveTimer = null;
+    function cleanup(el) {
+      el.classList.remove("reveal-item", "reveal-item-no-filter", "reveal-item-no-transform", "reveal-item-opacity-only", "reveal-loading", "revealed");
+      el.style.transitionDelay = "";
+      el.style.removeProperty("--fog-o");
+    }
+    function reveal(el) {
+      if (el.__done) return;
+      el.__done = true;
+      var delay = 0;
+      if (!el.__isImg) { delay = Math.min(wave * 16, 190); wave++; clearTimeout(waveTimer); waveTimer = setTimeout(function () { wave = 0; }, 120); }
+      if (delay) el.style.transitionDelay = delay + "ms";
+      requestAnimationFrame(function () {
+        el.classList.remove("reveal-loading");
+        el.classList.add("revealed");
+        stats.revealed++;
+        // once it has finished, drop the classes so hover effects etc. aren't slowed by the reveal's transition
+        setTimeout(function () { cleanup(el); }, (firstVisit ? 900 : 560) + delay + 120);
+      });
+    }
+    function consider(el) {
+      if (el.__done || held || !el.__inview) return;
+      if (el.__isImg && !el.__loaded) {
+        // pixels are (progressively) arriving: show them as heavy fog right away
+        if (!el.classList.contains("reveal-loading")) { el.classList.add("reveal-loading"); stats.loadingShown++; }
+        return;
+      }
+      reveal(el);
+    }
+
+    items.forEach(function (el) {
+      if (el.__isImg && !el.__loaded) {
+        var done = function () { el.__loaded = true; consider(el); };
+        el.addEventListener("load", done, { once: true });
+        el.addEventListener("error", done, { once: true });
+      }
+    });
+
+    function seen(entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.__inview = true; io.unobserve(e.target); endIo.unobserve(e.target); consider(e.target); }
+      });
+    }
+    var io = new IntersectionObserver(seen, { rootMargin: "0px 0px -3% 0px", threshold: 0 });
+    // The -3% margin makes things wait until they're a little way up the screen.
+    // Anything in the page's last strip (the footer: "Join the List", its logo)
+    // can never scroll that far, so it would stay invisible for good - those
+    // use the whole viewport instead.
+    var endIo = new IntersectionObserver(seen, { threshold: 0 });
+    var endLine = document.documentElement.scrollHeight - window.innerHeight * 0.03;
+    items.forEach(function (el) {
+      el.__atEnd = el.getBoundingClientRect().bottom + window.scrollY > endLine;
+      (el.__atEnd ? endIo : io).observe(el);
+    });
+
+    function release() {
+      if (!held) return;
+      held = false;
+      items.forEach(consider);
+    }
+    if (firstVisit) {
+      document.addEventListener("door-done", release, { once: true });
+      setTimeout(release, 14000); // failsafe if the door never reports back
+    }
+    // failsafe: nothing may stay hidden, whatever happens
+    setTimeout(function () {
+      held = false;
+      // only what is actually on screen: the rest still fogs in when scrolled to
+      items.forEach(function (el) {
+        if (el.__done) return;
+        var top = el.getBoundingClientRect().top;
+        if (top < window.innerHeight * (el.__atEnd ? 1 : 0.97)) { el.__inview = true; el.__loaded = true; consider(el); }
+      });
+    }, firstVisit ? 16000 : 5000);
+  })();
+  </script>
+
+  <!-- Hidden reCAPTCHA token input for forms -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const forms = document.querySelectorAll("form");
+      forms.forEach(form => {
+        if (!form.querySelector(".recaptcha-token-field")) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = "g-recaptcha-response";
+          input.classList.add("recaptcha-token-field");
+          form.appendChild(input);
+        }
+      });
+    });
+  </script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (window.location.hash === "#artworks-section") {
+    const target = document.getElementById("artworks-section");
+    if (target) {
+      // Small delay ensures page is rendered before scrolling
+      setTimeout(() => target.scrollIntoView({ behavior: "smooth" }), 150);
+    }
+  }
+});
+</script>
+
+  <!-- Site mirror: clone this page's real content into the fixed
+       backdrop above, then flip + invert + blur it so it reads only
+       as soft, moody atmosphere behind the frosted glass pane. -->
+  <script>
+(function () {
+  var REVEAL_CLASSES = ["reveal-item", "reveal-item-no-filter", "reveal-item-no-transform", "reveal-item-opacity-only", "reveal-loading", "revealed"];
+
+  // Strips anything in a clone that could collide with or be reachable
+  // on the real page (duplicate ids, live scripts, focusable elements),
+  // and strips the first-visit reveal classes (see html.reveal-pending
+  // in main.css) so the clone always renders at its final, fully-
+  // visible appearance immediately — independent of however far the
+  // REAL page's own fade-in has actually progressed. That means we
+  // don't have to wait for that multi-second sequence before cloning.
+  function sanitize(el, keepIds) {
+    // Page copies keep their ids: plenty of layout CSS is keyed by id
+    // (e.g. #books-section's padding), and without it the copy drifts
+    // away from the real page. The copies are inert and come after the
+    // real page in the DOM, so the duplicates are harmless.
+    if (!keepIds) { el.removeAttribute("id"); el.querySelectorAll("[id]").forEach(function (n) { n.removeAttribute("id"); }); }
+    el.querySelectorAll("script").forEach(function (n) { n.remove(); });
+    // A book page carries its full text (thousands of words) so it can be read
+    // and indexed. This copy gets cloned up to four more times for the fog
+    // stack, so that text would land in the DOM five times over for something
+    // blurred past legibility. The <summary> stays, so the copy's height is
+    // unchanged — only the collapsed body, which renders nothing, is dropped.
+    el.querySelectorAll(".book-text-body").forEach(function (n) { n.remove(); });
+    el.querySelectorAll("a, button, input, textarea, select").forEach(function (n) {
+      n.setAttribute("tabindex", "-1");
+    });
+    el.querySelectorAll("img").forEach(function (n) { n.decoding = "async"; });
+    el.classList.remove.apply(el.classList, REVEAL_CLASSES);
+    el.querySelectorAll(".reveal-item, .reveal-item-no-filter, .reveal-item-no-transform, .reveal-item-opacity-only, .reveal-loading").forEach(function (n) {
+      n.classList.remove.apply(n.classList, REVEAL_CLASSES);
+    });
+    return el;
+  }
+
+  // Fades a populated mirror layer in (opacity only — it's already
+  // blurred via its own filter) instead of letting it just pop in
+  // once built, echoing the same "materialize" language as the real
+  // page's own first-visit reveal. Double rAF so the browser commits
+  // the starting opacity:0 frame before we transition away from it.
+  function fadeIn(el) {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        el.classList.add("mirror-ready");
+      });
+    });
+  }
+
+  // Marks elements that directly hold text (and no imagery) so CSS can make
+  // the smudge behind thin type fade out sooner than the smudge behind
+  // paintings/photos/covers, which are large and read fine at full reach.
+  function markText(root) {
+    root.querySelectorAll("*").forEach(function (n) {
+      if (n.querySelector("img, video, canvas, iframe, svg")) return;
+      for (var c = n.firstChild; c; c = c.nextSibling) {
+        if (c.nodeType === 3 && c.textContent.trim()) { n.classList.add("bleed-text"); return; }
+      }
+    });
+    return root;
+  }
+
+  // Copies keep lazy loading (the real page decides what loads), so their
+  // images have no size until they load; give each the size of its real
+  // twin so the copy's layout doesn't shift under the smudge.
+  function syncImgSizes(realRoot, copyRoot) {
+    if (!realRoot || !copyRoot) return;
+    var real = realRoot.querySelectorAll("img"), copy = copyRoot.querySelectorAll("img");
+    for (var i = 0; i < Math.min(real.length, copy.length); i++) {
+      // offsetWidth/Height are layout sizes: getBoundingClientRect would
+      // include the reveal animation's scale() and shrink the copy.
+      var rw = real[i].offsetWidth, rh = real[i].offsetHeight;
+      if (rw > 0) {
+        copy[i].style.width = rw + "px";
+        copy[i].style.maxWidth = "none";
+        // flex parents would otherwise shrink the copy by its own (tiny preview) proportions
+        copy[i].style.minWidth = rw + "px";
+        copy[i].style.flex = "none";
+        if (rh > 0) { copy[i].style.height = rh + "px"; copy[i].style.minHeight = rh + "px"; copy[i].style.maxHeight = "none"; }
+      }
+    }
+  }
+
+  // Smudge copies drop pinned elements (they'd sit in the wrong place):
+  // fixed ones are removed outright, in-flow ones (sticky header, footer)
+  // are emptied but keep their height so nothing else shifts.
+  function pruneSkipped(root) {
+    root.querySelectorAll("[data-bleed-skip]").forEach(function (n) {
+      if (n.getAttribute("data-bleed-skip") === "fixed") { n.remove(); return; }
+      var h = n.getAttribute("data-bleed-h");
+      // Only block-level ones can be emptied safely; emptying an inline-level
+      // element (the inline-flex filter bar) shifts baseline alignment.
+      if (/^inline/.test(n.getAttribute("data-bleed-d") || "")) {
+        n.style.setProperty("visibility", "hidden", "important");
+        return;
+      }
+      n.textContent = "";
+      n.style.setProperty("box-sizing", "border-box", "important");
+      n.style.setProperty("padding", "0", "important");
+      n.style.setProperty("border", "0", "important");
+      if (h) n.style.setProperty("height", h + "px", "important");
+      n.style.setProperty("visibility", "hidden", "important");
+    });
+    return root;
+  }
+
+  // Every page-sized layer holds its copy in a .fx-inner that sits at the
+  // page's own coordinates while the LAYER is only a window (see
+  // updateWindows), so a long page never becomes one enormous filtered
+  // texture (that is what stalled scrolling and made phones reload).
+  function mount(target, node) {
+    var w = document.createElement("div");
+    w.className = "fx-inner";
+    w.appendChild(node);
+    target.appendChild(w);
+  }
+
+  // "Lite" (phones / narrow screens): one cheap background layer instead of
+  // the full stack. Phone browsers reload a tab that uses too much graphics
+  // memory, and a fast scroll made the full stack blow that budget.
+  function isLite() { return !!(window.matchMedia && window.matchMedia("(max-width: 800px)").matches); }
+
+  // ── Effect level on small screens ─────────────────────────────────────────
+  // Desktop always gets everything. On phones the same fog stack is built, but only as much of it
+  // as the device can afford, and the site protects itself:
+  //   level 3  everything (5 page-sized layers incl. the frost) - desktop look
+  //   level 2  back-most copy + Core + mid fog        level 1  back-most copy + Core
+  //   level 0  back-most copy only (the old "lite" mode)
+  // Header/footer fog and echoes (tiny) come with level >= 1.
+  // 1) BUDGET: estimated graphics memory of one page-sized layer window (width x window height x dpr^2 x 4 bytes,
+  //    doubled for the blur's working copy) decides how many layers fit.
+  // 2) CIRCUIT BREAKER: if the browser kills the tab while it is visible (what the fast-scroll reload was), the
+  //    next load sees the "running" flag still set and drops one level for good (localStorage).
+  // Testing on a real phone: add ?fx=0|1|2|3 to any URL to force a level, ?fx=auto to go back to automatic.
+  var SMALL_SPAN = 1.9, SMALL_MARGIN = 0.25;
+  var FX_MAX = 3;
+  function fxStore(k, v) {
+    try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {}
+    return null;
+  }
+  (function fxBoot() {
+    try {
+      var q = /[?&]fx=(auto|[0-3])\b/.exec(location.search);
+      if (q) fxStore("fx-force", q[1] === "auto" ? null : q[1]);
+      if (q && q[1] === "auto") fxStore("fx-demote", null);
+      if (!isLite()) return;
+      if (sessionStorage.getItem("fx-run") === "1") {
+        fxStore("fx-demote", String(Math.min(FX_MAX, (parseInt(fxStore("fx-demote"), 10) || 0) + 1)));
+      }
+      sessionStorage.setItem("fx-run", "1");
+      var setRun = function (on) { try { sessionStorage.setItem("fx-run", on ? "1" : "0"); } catch (e) {} };
+      document.addEventListener("visibilitychange", function () { setRun(document.visibilityState === "visible"); });
+      window.addEventListener("pagehide", function () { setRun(false); });
+    } catch (e) {}
+  })();
+  function fxLevel() {
+    if (!isLite()) return FX_MAX;
+    var force = fxStore("fx-force");
+    if (force !== null && force !== undefined && /^[0-3]$/.test(force)) return parseInt(force, 10);
+    var dpr = window.devicePixelRatio || 1, vh = window.innerHeight, vw = window.innerWidth;
+    var mb = vw * dpr * (SMALL_SPAN * vh * dpr) * 8 / 1e6;
+    var budget = 140, dm = navigator.deviceMemory;
+    if (dm && dm <= 2) budget = 50; else if (dm && dm <= 4) budget = 100;
+    var layers = Math.floor(budget / Math.max(1, mb));
+    var lvl = layers >= 5 ? 3 : layers >= 3 ? 2 : layers >= 2 ? 1 : 0;
+    if (navigator.connection && navigator.connection.saveData) lvl = 0;
+    var demote = parseInt(fxStore("fx-demote"), 10) || 0;
+    return Math.max(0, lvl - demote);
+  }
+  function applyFxLevel() {
+    var lvl = fxLevel();
+    window.__fxLevel = lvl;
+    // the "lite" CSS (no backdrop blurs, smaller mirror blur) applies to every small-screen level below 3
+    document.documentElement.classList.toggle("fx-lite", isLite() && lvl < 3);
+    return lvl;
+  }
+  applyFxLevel();
+
+  var winY = -1, winH = -1, pageH = -1;
+  function updateWindows(force) {
+    var m = document.getElementById("siteMirror");
+    if (!m) return;
+    var lite = isLite();
+    var H = m.offsetHeight, vh = window.innerHeight, s = window.scrollY || 0;
+    var span = (lite ? SMALL_SPAN : 4) * vh;
+    var wy, wh;
+    if (H <= span + vh) { wy = 0; wh = H; }
+    else {
+      wh = Math.round(span);
+      // recentre only once the viewport nears the window's edge
+      var margin = (lite ? SMALL_MARGIN : 0.5) * vh;
+      var nearTop = winY > 0 && s < winY + margin;
+      var nearBottom = winY + winH < H && s + vh > winY + winH - margin;
+      if (winY >= 0 && winH === wh && pageH === H && !force && !nearTop && !nearBottom) return;
+      wy = Math.max(0, Math.min(H - wh, Math.round(s + vh / 2 - wh / 2)));
+    }
+    if (wy === winY && wh === winH && H === pageH) return;
+    winY = wy; winH = wh; pageH = H;
+    m.style.setProperty("--wy", wy + "px");
+    m.style.setProperty("--wh", wh + "px");
+    m.style.setProperty("--ph", H + "px");
+  }
+
+  // Pinching the page in (visual-viewport scale > 1) makes the browser re-render every blurred layer at the
+  // zoomed size, which is enough graphics memory to get a phone tab killed and reloaded. While zoomed in, the
+  // whole background stack (and the backdrop blurs) is switched off; it comes back when the page is back at 1x.
+  (function watchPinchZoom() {
+    var vv = window.visualViewport;
+    if (!vv) return;
+    function sync() {
+      var on = vv.scale > 1.02;
+      document.documentElement.classList.toggle("fx-zoomed", on);
+      window.__fxZoomed = on;
+    }
+    vv.addEventListener("resize", sync);
+    window.addEventListener("resize", sync);
+    sync();
+  })();
+
+  var scrollTick = false, lastScrollAt = 0;
+  var lastY = window.scrollY || 0, lastT = performance.now(), paused = false, pauseTimer = null;
+  // While the reader is flinging on a phone the background is hidden and NOT
+  // re-rendered; it comes back (recentred once) a moment after scrolling
+  // slows. That removes the burst of graphics work that got the tab killed.
+  function setPaused(on) {
+    var m = document.getElementById("siteMirror");
+    paused = on;
+    if (m) m.classList.toggle("fx-paused", on);
+  }
+  window.addEventListener("scroll", function () {
+    lastScrollAt = Date.now();
+    if (scrollTick) return;
+    scrollTick = true;
+    requestAnimationFrame(function () {
+      scrollTick = false;
+      var now = performance.now(), y = window.scrollY || 0;
+      var v = Math.abs(y - lastY) / Math.max(1, now - lastT) * 1000;
+      lastY = y; lastT = now;
+      if (isLite()) {
+        if (v > 1400 || paused) {
+          setPaused(true);
+          clearTimeout(pauseTimer);
+          pauseTimer = setTimeout(function () { updateWindows(false); setPaused(false); }, 160);
+          return;
+        }
+      }
+      updateWindows(false);
+    });
+  }, { passive: true });
+  // Width only: on phones the address bar sliding in/out mid-scroll fires
+  // resize events with an unchanged width; re-rendering on those made
+  // scrolling stutter.
+  var lastResizeW = window.innerWidth;
+  window.addEventListener("resize", function () {
+    if (window.innerWidth === lastResizeW) return;
+    lastResizeW = window.innerWidth;
+    updateWindows(true);
+  });
+
+  window.__mirrorBuilds = 0;
+
+  // The back-most fog layer (the flipped, inverted copy) is blurred so far that
+  // the real images are pointless in it: it paints each image's 8px preview
+  // (data-lqip, from data/imageDims.json) instead. No downloads, so it can be
+  // built at once and stay put while the real images load and fog in.
+  function useTinyImages(root) {
+    root.querySelectorAll("img[data-lqip]").forEach(function (n) {
+      n.removeAttribute("loading");
+      n.removeAttribute("srcset");
+      n.src = n.getAttribute("data-lqip");
+    });
+  }
+
+  // baseOnly: just that back-most layer (early, cheap); otherwise everything.
+  function buildSiteMirror(baseOnly) {
+    baseOnly = baseOnly === true;
+    window.__mirrorBuilds++;
+    // Rebuilds replace the old copies (see the resize handler below).
+    (baseOnly ? ["siteMirrorClone"] : ["siteMirrorClone", "siteMirrorBleedCore", "siteMirrorBleed", "siteMirrorBleedDark", "headerMirrorEcho", "footerMirrorEcho"]).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = "";
+    });
+    if (!baseOnly) document.querySelectorAll("#headerBleed .edge-layer, #footerBleed .edge-layer").forEach(function (el) { el.textContent = ""; });
+    var header = document.querySelector("body > header");
+    var main = document.querySelector("body > main");
+    var footer = document.querySelector("#footerWrap > footer");
+
+    // Fixed/sticky elements (the header, the Oeuvre/Archive filter
+    // clusters, hidden modals) follow the viewport on the real page but
+    // would sit at the top of the page inside a static copy, so their
+    // smudge would land in the wrong place. Tag them on the real page for
+    // the moment of cloning so the smudge copies can hide them (hidden,
+    // not removed, so nothing else in the copy shifts).
+    var pinned = [];
+    document.querySelectorAll(".fog-pinned").forEach(function (n) { n.classList.remove("fog-pinned"); });
+    [header, main, footer].forEach(function (root) {
+      if (!root) return;
+      var all = [root].concat(Array.prototype.slice.call(root.querySelectorAll("*")));
+      all.forEach(function (n) {
+        var pos = getComputedStyle(n).position;
+        if (pos === "fixed" || pos === "sticky") {
+          n.setAttribute("data-bleed-skip", pos === "fixed" ? "fixed" : "sticky");
+          n.setAttribute("data-bleed-h", Math.round(n.getBoundingClientRect().height));
+          n.setAttribute("data-bleed-d", getComputedStyle(n).display);
+          pinned.push(n);
+          // Pinned UI that is actually on screen gets its smudge as a text-shadow
+          // fog on the element itself, which follows it wherever it is pinned.
+          if (n !== root && root === main) {
+            var r = n.getBoundingClientRect(), cs = getComputedStyle(n);
+            if (r.width > 0 && r.height > 0 && parseFloat(cs.opacity) > 0.05 && cs.visibility !== "hidden") n.classList.add("fog-pinned");
+          }
+        }
+      });
+    });
+
+    if (footer) {
+      footer.setAttribute("data-bleed-skip", "footer");
+      footer.setAttribute("data-bleed-h", Math.round(footer.getBoundingClientRect().height));
+      footer.setAttribute("data-bleed-d", getComputedStyle(footer).display);
+      pinned.push(footer);
+    }
+
+    // Main mirror: the whole page, inverted + flipped (styling in CSS).
+    var mirror = document.getElementById("siteMirror");
+    var mainTarget = document.getElementById("siteMirrorClone");
+    if (mainTarget) {
+      var source = document.createElement("div");
+      // Same flex column + full height as <body>, so <main> grows to fill
+      // short pages; otherwise the copy is shorter than the page and the
+      // flipped mirror stops short of the bottom, leaving a hard seam.
+      source.style.cssText = "display:flex;flex-direction:column;min-height:100%;";
+      // About/Inquiry render almost nothing but text on body's inherited
+      // background, so there's barely any opaque pixel left to invert
+      // once cloned in isolation — only these two pages need a solid
+      // fill behind the clone to actually show anything.
+      if (document.body.classList.contains("page-about") || document.body.classList.contains("page-inquiry")) {
+        source.style.background = getComputedStyle(document.body).backgroundColor;
+      }
+      if (header) source.appendChild(header.cloneNode(true));
+      if (main) source.appendChild(main.cloneNode(true));
+      if (footer) source.appendChild(footer.cloneNode(true));
+      sanitize(source, true);
+      syncImgSizes(main, source.querySelector("main"));
+      // Every page-sized layer is blurred well past recognising detail, so all of
+      // them paint the tiny previews: no downloads, ready at once, no waiting for
+      // the real images to scroll into view.
+      useTinyImages(source);
+      // Ink-bleed layer: a plain copy of the same (already sanitized)
+      // page, minus any solid fill, so only real elements leak color.
+      var bleedTarget = document.getElementById("siteMirrorBleed");
+      var saveData = navigator.connection && navigator.connection.saveData;
+      var lvl = applyFxLevel();
+      if (!baseOnly && bleedTarget && !saveData && lvl >= 1) {
+        var bleed = source.cloneNode(true);
+        bleed.style.background = "";
+        markText(bleed);
+        pruneSkipped(bleed);
+        var darkTarget = document.getElementById("siteMirrorBleedDark");
+        var coreTarget = document.getElementById("siteMirrorBleedCore");
+        if (coreTarget) mount(coreTarget, bleed.cloneNode(true));
+        if (lvl >= 2) mount(bleedTarget, bleed.cloneNode(true));
+        if (lvl >= 3 && darkTarget) mount(darkTarget, bleed.cloneNode(true));
+        [bleedTarget, darkTarget, coreTarget].forEach(function (l) { if (l) requestAnimationFrame(function () { requestAnimationFrame(function () { l.classList.add("layer-in"); }); }); });
+      }
+      mount(mainTarget, source);
+      updateWindows(true);
+      if (mirror) fadeIn(mirror);
+    }
+    pinned.forEach(function (n) { n.removeAttribute("data-bleed-skip"); n.removeAttribute("data-bleed-h"); n.removeAttribute("data-bleed-d"); });
+    if (baseOnly) return;
+
+    // Header/footer smudge: their own three layers (a bit tighter than the
+    // page's), because the header follows the viewport and the footer sits
+    // at the very end, so neither can ride on the static page copies.
+    if (!(navigator.connection && navigator.connection.saveData) && window.__fxLevel >= 1) {
+      [["headerBleed", header], ["footerBleed", footer]].forEach(function (pair) {
+        var host = document.getElementById(pair[0]);
+        if (!host || !pair[1]) return;
+        host.querySelectorAll(".edge-layer").forEach(function (layer) {
+          var c = pair[1].cloneNode(true);
+          c.removeAttribute("data-bleed-skip"); c.removeAttribute("data-bleed-h"); c.removeAttribute("data-bleed-d");
+          // The header copy keeps its ids (its CSS is id-keyed: #mobileMenuBtn, #desktopNav...)
+          // and is safe because #headerBleed comes AFTER the real header in the DOM.
+          // The footer copy sits before the real footer, so it stays id-less.
+          var isHeader = pair[0] === "headerBleed";
+          sanitize(c, isHeader);
+          c.classList.add("edge-copy");
+          markText(c);
+          // the copy carries only the content; the real element supplies the glass
+          [["background", "transparent"], ["backdrop-filter", "none"], ["-webkit-backdrop-filter", "none"], ["border-color", "transparent"], ["box-shadow", "none"]].forEach(function (kv) { c.style.setProperty(kv[0], kv[1], "important"); });
+          layer.appendChild(c);
+        });
+        fadeIn(host);
+      });
+    }
+
+    // Header/footer echoes: their own content only, plain colors (no
+    // invert), just blurred — a lighter, non-inverted echo distinct
+    // from the main mirror, for their own frosted-glass chrome.
+    var headerTarget = document.getElementById("headerMirrorEcho");
+    if (headerTarget && header && window.__fxLevel >= 1) {
+      headerTarget.appendChild(sanitize(header.cloneNode(true)));
+      fadeIn(headerTarget);
+    }
+
+    var footerTarget = document.getElementById("footerMirrorEcho");
+    if (footerTarget && footer && window.__fxLevel >= 1) {
+      footerTarget.appendChild(sanitize(footer.cloneNode(true)));
+      fadeIn(footerTarget);
+    }
+    mirrorBuilt = true;
+    lastH = document.body.scrollHeight;
+    lastBuildAt = Date.now();
+  }
+
+  // Defers the (fairly heavy — this deep-clones the whole page) mirror
+  // build to browser idle time so it never competes with the door /
+  // reveal animation or any other work still settling right after
+  // load. Falls back to a short timeout on browsers without
+  // requestIdleCallback (Safari).
+  function schedule(cb) {
+    if ("requestIdleCallback" in window) {
+      requestIdleCallback(cb, { timeout: 1500 });
+    } else {
+      setTimeout(cb, 200);
+    }
+  }
+
+  // Two steps: the back-most layer goes up as soon as the page's structure is
+  // there (it needs no downloads), the rest once everything has loaded.
+  var baseTimer;
+  function buildBase() {
+    clearTimeout(baseTimer);
+    baseTimer = setTimeout(function () { if (!mirrorBuilt) schedule(buildSiteMirror); }, 250);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", buildBase);
+  else buildBase();
+  // the scatter grids position their items a moment after DOMContentLoaded
+  window.addEventListener("sitelayout", function () { if (!mirrorBuilt) buildBase(); });
+  // safety net: if nothing above built it yet, the load event does
+  window.addEventListener("load", function () { if (!mirrorBuilt) schedule(buildSiteMirror); });
+
+  // The copies are static snapshots, so anything that changes the real
+  // page's layout after they're built (window resize, the JS scatter
+  // grids re-laying out, lazy images finishing) leaves them out of step.
+  // Watch the real page's size and rebuild once it settles, so the smudge
+  // and the page it belongs to always match.
+  var mirrorTimer, mirrorBuilt = false, lastBuildAt = 0, lastW = window.innerWidth, lastH = 0;
+  // Rebuilding re-clones the whole page, so it never happens mid-scroll,
+  // ignores tiny size changes (lazy images nudging the height), and is
+  // rate-limited unless the width changed (a real resize/rotation).
+  function requestRebuild(delay) {
+    clearTimeout(mirrorTimer);
+    mirrorTimer = setTimeout(function () {
+      var widthChanged = window.innerWidth !== lastW;
+      // Phones: a few pixels of layout shift is invisible behind the single
+      // blurred layer, so never re-clone the page for anything but a real resize.
+      if (isLite() && !widthChanged) return;
+      if (Date.now() - lastScrollAt < 800) return requestRebuild(500);
+      if (!widthChanged && Date.now() - lastBuildAt < 2500) return requestRebuild(1200);
+      lastW = window.innerWidth;
+      lastBuildAt = Date.now();
+      lastH = document.body.scrollHeight;
+      schedule(buildSiteMirror);
+    }, delay);
+  }
+  // The artwork/book scatter grids position items with JS and re-run that
+  // whenever images load or a filter changes.
+  window.addEventListener("sitelayout", function () { if (mirrorBuilt) requestRebuild(900); });
+  // A real image finishing its (lazy) load changes the page's layout by a
+  // few pixels the size check above ignores; images inside the copies
+  // themselves are excluded or this would loop.
+  document.addEventListener("load", function (e) {
+    var n = e.target;
+    if (!mirrorBuilt || !n || n.tagName !== "IMG") return;
+    if (n.closest("#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho")) return;
+    if (n.hasAttribute("data-lqip") && n.getAttribute("width")) return; // size already known: nothing shifts
+    requestRebuild(1200);
+  }, true);
+  function watchMirror() {
+    if (!("ResizeObserver" in window)) return;
+    new ResizeObserver(function () {
+      if (!mirrorBuilt) return;
+      var widthChanged = window.innerWidth !== lastW;
+      if (!widthChanged && Math.abs(document.body.scrollHeight - lastH) < 60) return;
+      requestRebuild(900);
+    }).observe(document.body);
+  }
+  watchMirror();
+})();
+  </script>
+
+  <!-- Kept LAST in the document (it paints behind everything via z-index)
+       so that getElementById / querySelector always find the real page's
+       elements before the copies' duplicate ids. -->
+  <div id="siteMirror" aria-hidden="true" inert>
+    <div id="siteMirrorClone"></div>
+    <div id="siteMirrorFrost"></div>
+    <div id="siteMirrorBleedCore"></div>
+    <div id="siteMirrorBleed"></div>
+    <div id="siteMirrorBleedDark"></div>
+  </div>
+
 </body>
 </html>

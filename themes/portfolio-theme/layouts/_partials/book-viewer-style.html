@@ -1,0 +1,20 @@
+<style>
+.book-viewport { position: relative; overflow: hidden; cursor: pointer; transition: width 0.25s ease, height 0.25s ease, transform 0.3s ease; }
+.book-visual { position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-repeat: no-repeat; background-size: 100% 100%; transition: transform 0.25s ease; }
+.book-viewport.single-page:not(.showing-cover) .book-visual { width: 200%; }
+.book-viewport.single-page:not(.showing-cover) .book-visual.show-right { transform: translateX(-50%); }
+/* Two-page spreads turn the whole viewport on its side on narrow screens
+   (fullscreen only, see data-allow-rotate) instead of squeezing a wide
+   spread into a tall, narrow box — the same trick the artwork lightbox
+   uses to enlarge a landscape image on a portrait phone. */
+.book-visual2 { display: none; }
+.book-viewport.pair-view .book-visual { width: 50%; }
+.book-viewport.pair-view .book-visual2 { display: block; left: 50%; width: 50%; }
+.book-viewport.is-rotated { transform: rotate(90deg); }
+
+@keyframes book-sprite-play { from { background-position-x: 0%; } to { background-position-x: 100%; } }
+
+.book-page-indicator { opacity: 0.5 !important; font-size: 0.82rem !important; }
+.book-page-toggle { display: inline-block; background: none; border: none; padding: 0; font-family: inherit; font-size: 0.82rem; color: inherit; opacity: 0.62; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; transition: opacity 0.22s; margin-bottom: 4px; }
+.book-page-toggle:hover { opacity: 0.3; }
+</style>

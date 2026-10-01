@@ -1,0 +1,44 @@
+// Uses the fetch built into Node 18+ (node-fetch isn't installed, so requiring it
+// would fail when Netlify builds the site from GitHub).
+
+exports.handler = async function(event, context) {
+  try {
+    const { token } = JSON.parse(event.body);
+
+    if (!token) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ success: false, error: "No token provided" }),
+      };
+    }
+
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+
+    const response = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ secret: secretKey || "", response: token }).toString(),
+      }
+    );
+
+    const data = await response.json();
+
+    // Log the full response and the score
+    console.log("reCAPTCHA response data:", data);
+    if (data.score !== undefined) {
+      console.log("reCAPTCHA score:", data.score);
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data),
+    };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ success: false, error: err.message }),
+    };
+  }
+};

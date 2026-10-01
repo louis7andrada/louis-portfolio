@@ -1,0 +1,50 @@
+{{/* An archive entry: exhibition records, gallery history, photographs.
+
+     These 74 pages carry the evidence that the work is real and shown in
+     public — where it hung, when, and what happened — which is exactly the
+     kind of corroboration that establishes an artist as a known entity rather
+     than a name on a website. They had no structured data at all, so none of
+     it was attributable.
+
+     Typed as CreativeWork (the entries mix photographs, exhibitions and
+     documentation) with the image described properly and credited. */}}
+{{ $person := printf "%s#person" site.BaseURL }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": "{{ .Permalink }}#work",
+  "name": "{{ .Title | default (printf "Untitled photograph (%v)" .Params.year) }}",
+  "url": "{{ .Permalink }}",
+  "license": "{{ "/license/" | absURL }}",
+  {{ with .Params.comment }}"description": "{{ . }}",
+  {{ end }}{{ with .Params.year }}"dateCreated": "{{ . }}",
+  {{ end }}{{ with .Params.category }}"genre": "{{ . }}",
+  {{ end }}"creator": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  "copyrightHolder": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  {{ with .Params.image }}"image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ . }}",
+    "creditText": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+    "copyrightNotice": "© {{ site.Params.artist }}",
+    "creator": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ site.Params.artist }}"
+    },
+    "license": "{{ "/license/" | absURL }}",
+    "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
+  },
+  {{ end }}"isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  }
+}
+</script>

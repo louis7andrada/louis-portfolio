@@ -2,7 +2,7 @@ baseURL = "https://handrada.com/"
 languageCode = "en-us"
 title = "Louis Andrada"
 theme = "portfolio-theme"
-enableRobotsTXT = false
+enableRobotsTXT = true
 # No tags/categories are used on this site; don't generate empty pages for them.
 disableKinds = ["taxonomy", "term"]
 
@@ -17,10 +17,25 @@ disableKinds = ["taxonomy", "term"]
 [permalinks]
   artworks = "/artworks/:contentbasename/"
   archive  = "/archive/:contentbasename/"
+  oeuvre   = "/oeuvre/:contentbasename/"
 
 [outputs]
   home = ["HTML", "RSS"]
+  # Section feeds too (/artworks/index.xml, /oeuvre/index.xml, /archive/index.xml).
+  # Feeds are a discovery channel of their own — aggregators and crawlers poll
+  # them, and they surface new work without waiting on a full site crawl.
+  section = ["HTML", "RSS"]
 
 [params]
-  books_image_base = "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books"
   recaptcha_site_key = "6LcOzL8sAAAAAAf811mO6GNulTWREGNzkzxTScVk"
+  webhook_url = "https://script.google.com/macros/s/AKfycbxxnqf8ImE2r9tkV60_7cIQJC4TvdzyDrDc0MovRvk9m4cN_lEntF1LS1EFV5VHmd19/exec"
+
+  # Identity, in one place — used by the <head> metadata and every JSON-LD
+  # block, so the name and profiles never drift between pages.
+  artist = "Louis Andrada"
+  artist_alt = "Han’drada"
+  artist_alt_plain = "Handrada"
+  tagline = "Paintings and artist books by Louis Andrada, also known as Han’drada — a Brazilian-born, Toronto-based painter of dark existentialist work."
+  # Declared to search engines/AI in JSON-LD (sameAs) only — intentionally not
+  # rendered as visible links anywhere on the site.
+  profile_imdb = "https://www.imdb.com/name/nm13775288/"

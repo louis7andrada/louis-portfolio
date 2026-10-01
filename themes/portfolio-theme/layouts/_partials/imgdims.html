@@ -1,0 +1,4 @@
+{{- /* width/height + tiny preview attributes from data/imageDims.json (built by scripts/image-dims.py). Pass the image URL. */ -}}
+{{- $out := "" -}}
+{{- with index site.Data.imageDims . }}{{ $out = printf ` width="%v" height="%v" data-lqip="%s"` (index . 0) (index . 1) (index . 2) }}{{ end -}}
+{{- return ($out | safeHTMLAttr) -}}

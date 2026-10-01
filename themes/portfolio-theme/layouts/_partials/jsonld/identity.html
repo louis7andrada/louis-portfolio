@@ -1,0 +1,76 @@
+{{/* The site's identity graph: who this is, and what this site is.
+
+     Both nodes carry a stable @id ("…/#person", "…/#website"), and every other
+     JSON-LD block on the site points its creator/author at "…/#person" rather
+     than repeating a loose copy of the name. That difference matters: a
+     hundred unlinked "Louis Andrada" strings read as a hundred unrelated
+     mentions, while one @id referenced everywhere reads as a single entity
+     with a body of work attached to it — which is what search engines and AI
+     systems need in order to recognise, and correctly attribute, an artist.
+
+     alternateName carries all three spellings of the working name, so
+     Han’drada (as the books are signed), Han'drada (as it gets typed) and
+     Handrada (the domain) all resolve to the same person.
+
+     sameAs lists authoritative external profiles. These are declared to
+     machines only — deliberately not rendered as visible links anywhere. */}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "{{ site.BaseURL }}#person",
+      "name": "{{ site.Params.artist }}",
+      "alternateName": [
+        "{{ site.Params.artist_alt }}",
+        "Han'drada",
+        "{{ site.Params.artist_alt_plain }}"
+      ],
+      "description": "{{ site.Params.tagline }}",
+      "jobTitle": "Visual Artist",
+      "knowsAbout": [
+        "Painting",
+        "Contemporary art",
+        "Existentialism",
+        "Occult symbolism",
+        "Folklore",
+        "Artist books"
+      ],
+      "nationality": {
+        "@type": "Country",
+        "name": "Brazil"
+      },
+      "homeLocation": {
+        "@type": "Place",
+        "name": "Toronto, Canada"
+      },
+      "image": "{{ "/profile4.jpeg" | absURL }}",
+      "url": "{{ "/about/" | absURL }}",
+      "sameAs": [
+        "{{ site.Params.profile_imdb }}"
+      ],
+      "mainEntityOfPage": {
+        "@id": "{{ site.BaseURL }}#website"
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "{{ site.BaseURL }}#website",
+      "url": "{{ site.BaseURL }}",
+      "name": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+      "description": "{{ site.Params.tagline }}",
+      "inLanguage": "en",
+      "author": {
+        "@id": "{{ site.BaseURL }}#person"
+      },
+      "publisher": {
+        "@id": "{{ site.BaseURL }}#person"
+      },
+      "about": {
+        "@id": "{{ site.BaseURL }}#person"
+      }
+    }
+  ]
+}
+</script>

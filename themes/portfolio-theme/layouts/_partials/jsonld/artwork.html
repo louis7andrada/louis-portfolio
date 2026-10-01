@@ -1,6 +1,24 @@
-{{- /* schema.org VisualArtwork for one artwork page. Reconstructed from the live site. */ -}}
-{{- $site := site.BaseURL | strings.TrimSuffix "/" -}}
-{{- $dims := findRESubmatch `^\s*([0-9]+(?:\.[0-9]+)?)\s*x\s*([0-9]+(?:\.[0-9]+)?)\s*in\s*$` (.Params.size | default "") -}}
+{{/* One artwork. creator/seller point at the site-wide "…#person" node rather
+     than restating the name, so all 146 works attach to one identity.
+
+     The image is described as a full ImageObject with credit and an
+     acquireLicensePage: that is what makes it eligible for the "Licensable"
+     badge in Google Images, which puts a visible link back to the inquiry
+     page on the image itself.
+
+     size ("18 x 24 in") is split into real width/height quantities where it
+     parses — schema.org expects measurements, not a display string. */}}
+{{ $person := printf "%s#person" site.BaseURL }}
+{{ $sizeClean := replace (default "" .Params.size) " in" "" }}
+{{ $dims := split $sizeClean " x " }}
+{{ $hasDims := false }}
+{{ $w := "" }}
+{{ $h := "" }}
+{{ if eq (len $dims) 2 }}
+  {{ $w = index $dims 0 }}
+  {{ $h = index $dims 1 }}
+  {{ if and (findRE "^[0-9.]+$" $w) (findRE "^[0-9.]+$" $h) }}{{ $hasDims = true }}{{ end }}
+{{ end }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -8,35 +26,57 @@
   "@id": "{{ .Permalink }}#artwork",
   "name": "{{ .Title }}",
   "url": "{{ .Permalink }}",
-  "license": "{{ "license/" | absURL }}",
-  "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-  "copyrightHolder": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-  "artform": "Painting",
-  "artMedium": "{{ .Params.medium }}",
-  "dateCreated": "{{ .Params.year }}",
-  {{- with $dims }}
-  "width": { "@type": "QuantitativeValue", "value": "{{ index (index . 0) 1 }}", "unitText": "in" },
-  "height": { "@type": "QuantitativeValue", "value": "{{ index (index . 0) 2 }}", "unitText": "in" },
-  {{- end }}
-  "image": {
-    "@type": "ImageObject",
-    "contentUrl": "{{ .Params.image }}",
-    "creditText": "Louis Andrada (Han’drada)",
-    "copyrightNotice": "© Louis Andrada",
-    "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-    "license": "{{ "license/" | absURL }}",
-    "acquireLicensePage": "{{ "inquiry/" | absURL }}"
+  "license": "{{ "/license/" | absURL }}",
+  "creator": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
   },
-  "isPartOf": { "@id": "{{ "/" | absURL }}#website" }
-  {{- with .Params.price }},
+  "copyrightHolder": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  "artform": "Painting",
+  {{ with .Params.medium }}"artMedium": "{{ . }}",
+  {{ end }}{{ with .Params.year }}"dateCreated": "{{ . }}",
+  {{ end }}{{ if $hasDims }}"width": {
+    "@type": "QuantitativeValue",
+    "value": {{ $w }},
+    "unitText": "in"
+  },
+  "height": {
+    "@type": "QuantitativeValue",
+    "value": {{ $h }},
+    "unitText": "in"
+  },
+  {{ end }}{{ with .Params.image }}"image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ . }}",
+    "creditText": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+    "copyrightNotice": "© {{ site.Params.artist }}",
+    "creator": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ site.Params.artist }}"
+    },
+    "license": "{{ "/license/" | absURL }}",
+    "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
+  },
+  {{ end }}"isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  }{{ if .Params.price }},
   "offers": {
     "@type": "Offer",
-    "price": "{{ . }}",
+    "price": "{{ .Params.price }}",
     "priceCurrency": "USD",
-    "url": "{{ $.Permalink }}",
-    "availability": "https://schema.org/{{ if eq $.Params.availability "Available" }}InStock{{ else }}OutOfStock{{ end }}",
-    "seller": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" }
-  }
-  {{- end }}
+    "url": "{{ .Permalink }}",
+    "availability": "https://schema.org/{{ if eq .Params.availability "Available" }}InStock{{ else }}OutOfStock{{ end }}",
+    "seller": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ site.Params.artist }}"
+    }
+  }{{ end }}
 }
 </script>

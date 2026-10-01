@@ -15,12 +15,15 @@ resources/_gen/
 .hugo_cache/
 
 # =========================
-# Artwork images (hosted externally)
+# Artwork/archive/docs/book-source content (hosted externally, or
+# simply unused by the site — nothing under these paths is referenced
+# by any template or content file, so none of it should ever be
+# committed to this repo or deployed to the site's own server).
 # =========================
 static/images/artworks/
 static/images/archive/
-static/images/books/
 static/images/docs/
+static/images/books/
 
 # =========================
 # Private files — never publish (this repo is public)
@@ -30,11 +33,26 @@ Newsletter emails/
 *.eml
 *.pst
 static/images/docs/mailing list email templates/
+private/
+
+# Old local copy of the theme (backup only — not used by the site)
+themes/portfolio-theme-backup-9-13-2026/
 
 # =========================
 # Local analytics + scripts (private)
 # =========================
 logs/
+
+# =========================
+# Books (hosted externally, same pattern as artwork/archive images) —
+# book-sources/ holds the raw PDFs/GIFs a book was generated from;
+# book-images/ holds the processed JPGs ready to upload to the
+# louis-andrada-images repo. Neither ships with this site or repo —
+# the live site loads book images straight from that GitHub repo
+# (see books_image_base in hugo.toml).
+# =========================
+book-sources/
+book-images/
 
 # =========================
 # Node / package managers
@@ -44,6 +62,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+package-lock.json
 yarn.lock
 pnpm-lock.yaml
 
@@ -78,3 +97,7 @@ Thumbs.db
 # =========================
 *.tmp
 *.log
+# IndexNow submission state (local to this machine)
+.indexnow-state.json
+# Commit last deployed by npm run deploy (local to this machine)
+.last-deploy

@@ -173,6 +173,7 @@ Static assets must be placed in:
 
 /static/images/artworks      # Finished artworks
 /static/images/archive       # Older or in-progress artworks
+/static/robots.txt
 
 Files will be directly accessible on the deployed site.
 
@@ -204,63 +205,53 @@ Each markdown file becomes a page on the site.
 
 # Forms, reCAPTCHA and the mailing list
 
-Every form (newsletter popup, unsubscribe, contact, purchase, commission)
-submits to the Netlify function `netlify/functions/submit.js`. It:
+The forms (newsletter popup, unsubscribe, contact, purchase, commission) are the only way clients reach Louis, so they must never break. Each
+one posts straight to the Google Apps Script (`webhook_url` in `hugo.toml`).
+`window.checkHuman()` in `baseof.html` asks reCAPTCHA v3 for a score (checked by
+`netlify/functions/verifyRecaptcha.js`) and blocks a message ONLY when Google
+returns a real bot score below 0.5. If the check itself fails (ad-blocker,
+timeout, missing `RECAPTCHA_SECRET_KEY`, domain not registered with the key)
+the message goes through. The newsletter and unsubscribe forms never reveal
+whether an address is already on / not on the list.
 
-1. verifies the reCAPTCHA v3 token with Google on the server (score >= 0.5),
-2. forwards the form as JSON to the Google Apps Script web app,
-3. hides whether an address is already on / not on the mailing list.
-
-reCAPTCHA loads on pages with forms, and on demand when someone uses the newsletter popup.
-
-Netlify environment variables (Site configuration → Environment variables):
-
-| Name | Required | What it is |
-|---|---|---|
-| `RECAPTCHA_SECRET_KEY` | yes | reCAPTCHA v3 secret key |
-| `FORMS_SHARED_SECRET` | recommended | long random string; also stored in the Apps Script |
-| `APPS_SCRIPT_URL` | optional | Apps Script web-app URL (defaults to the current one) |
-
-When `FORMS_SHARED_SECRET` is set, the function adds it to every request as
-`secret`. The Apps Script should reject anything without it, so nobody can post
-to the script directly. At the top of the script's `doPost(e)`:
-
-```js
-var data = JSON.parse(e.postData.contents);
-var expected = PropertiesService.getScriptProperties().getProperty("FORMS_SHARED_SECRET");
-if (expected && data.secret !== expected) {
-  return ContentService.createTextOutput("FORBIDDEN");
-}
-delete data.secret;
-```
-
-(Project Settings → Script properties → add `FORMS_SHARED_SECRET` with the same value.)
+Tests: `npm run test:live` with `npm run hugo` running ("Form works end to end").
+See CLAUDE.md before touching forms, the CSP in `netlify.toml`, or reCAPTCHA.
 
 # Private files
 
 This repository is public. Never commit newsletter emails (`.msg`), subscriber
 lists, or anything with other people's details. `npm run deploy` commits
-everything in the folder, so `.gitignore` blocks `Newsletter emails/` and
-`*.msg`. The font source files live in `font-source/`, which is not published
-on the website.
+everything in the folder, so `.gitignore` blocks `Newsletter emails/`, `*.msg`
+and `private/`. Everything inside `static/` is published on the website, so
+private things go in `private/` (not published, not committed). The font
+source files live in `font-source/`, which is not published either.
 
 # Prices
 
 Prices come from each artwork's `price:` field and are shown as `$1,234.50 USD`.
 
-# Images, blur placeholders and the fog
+# Images and thumbnails
 
 Artwork, archive and book images live in the `louis-andrada-images` GitHub
-repo. At build time Hugo downloads each one once to read its size, make an
-8x8 blur placeholder (`data-lqip`, used by the site-mirror fog) and resized
-WebP thumbnails for the grids (`_partials/img-meta.html`, `img-url.html`).
-The first build takes a couple of minutes; later builds reuse the cache.
+repo. Grids show resized WebP copies that Hugo builds once and caches in
+`resources/_gen` (`_partials/img-url.html`); lightboxes and popups open the
+originals. Image sizes and blur previews come from `data/imageDims.json`
+(`python scripts/image-dims.py` after adding images). The first build takes
+about a minute; later builds reuse the cache.
 
 # Deploying
 
-Netlify builds from the `main` branch on GitHub. If you deploy from your
-PC with `npm run deploy`, it now stops if the GitHub push fails, so GitHub
-and the live site can't drift apart again.
+Always deploy with `npm run deploy` from the `main` branch. It
+(`scripts/deploy.ps1`):
+
+1. refuses to run on any other branch,
+2. commits your changes and pulls anything new from GitHub first,
+3. pushes to GitHub, and stops before deploying if that fails,
+4. builds and deploys to Netlify, then notifies search engines.
+
+So GitHub and the live site always hold the same code. If GitHub has changes
+that clash with yours, it stops and nothing is deployed.
+`npm run deploy -- -Force` redeploys even when nothing changed.
 
 # Useful Hugo Commands
 

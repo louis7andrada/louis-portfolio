@@ -21,6 +21,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+      // Courier New is the fallback because its character width (0.600em) matches
+      // AndradaMono's (0.5996em): until the font arrives, text already takes the same
+      // space, so the swap doesn't reflow anything. The generic monospace (Consolas on
+      // Windows) is 9% narrower and made the footer re-wrap and jump 20px on phones.
       sans: ['"AndradaMono"', '"Courier New"', 'Courier', 'monospace'],
       mono: ['"AndradaMono"', '"Courier New"', 'Courier', 'monospace'],
     },

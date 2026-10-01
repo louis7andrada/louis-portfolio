@@ -1,0 +1,142 @@
+<!-- ═══════════════════════════════════════════════════
+     BOOK FULLSCREEN VIEWER — shared by the standalone
+     /oeuvre/<slug>/ page and the Oeuvre grid's popup modal
+     (see book-viewer-engine.html's data-opens-fullscreen).
+     Look and feel copied from the artwork lightbox (the
+     fullscreen image view with the rotate hint), reused
+     here with a single/two-page toggle in place of rotate.
+
+     Closing is X-only, deliberately with no background-click
+     or Escape handler — a pinch- or browser-zoom gesture here
+     must never be mistaken for "tap outside to close".
+     ═══════════════════════════════════════════════════ -->
+<div id="bookFullscreen" class="book-fullscreen-overlay">
+  <button class="book-fullscreen-close" id="bookFullscreenClose" aria-label="Close">&#x2715;</button>
+  <div class="book-fullscreen-stage">
+    <div class="book-viewport" data-allow-rotate="true">
+      <div class="book-visual"></div>
+    </div>
+  </div>
+  <div class="book-fullscreen-controls">
+    <p class="book-page-indicator"></p>
+    <button class="book-page-toggle" id="bookFullscreenToggle">Single page</button>
+    <form class="book-jump" autocomplete="off">
+      <label><span class="book-jump-label">Go to page</span>
+        <input class="book-jump-input" type="number" inputmode="numeric" min="1" step="1" aria-label="Go to page"></label>
+      <button type="submit">Go</button>
+    </form>
+  </div>
+</div>
+
+<style>
+.book-fullscreen-overlay {
+  position: fixed; inset: 0; z-index: 450;
+  display: flex; align-items: flex-start; justify-content: flex-start;
+  overflow: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  background: rgba(255,255,255,0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+html.dark .book-fullscreen-overlay { background: var(--glass-veil); }
+/* the blur sits on a fixed ::before: a backdrop-filter on the scrolling overlay itself would make the
+   fixed controls (close, page counter, jump, zoom) scroll away with the content */
+.book-fullscreen-overlay::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  backdrop-filter: blur(18px) saturate(0.7); -webkit-backdrop-filter: blur(18px) saturate(0.7);
+}
+.book-fullscreen-overlay.active { opacity: 1; pointer-events: auto; }
+
+.book-fullscreen-stage {
+  position: relative;
+  /* --bz: zoom factor (1 - 1.8). A bigger stage = a bigger book; the overlay scrolls, the page behind does not. */
+  width: calc(min(94vw, 1400px) * var(--bz, 1));
+  height: calc(min(86vh, 1400px) * var(--bz, 1));
+  margin: auto; flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-fullscreen-close {
+  position: fixed; top: 1rem; right: 50%;
+  font-size: 1.3rem;
+  font-family: 'AndradaMono','Courier New',Courier,monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: none; border: none; cursor: pointer;
+  color: inherit; opacity: 0.8; letter-spacing: 0.05em;
+  transition: opacity 0.2s ease;
+  z-index: 460;
+}
+.book-fullscreen-close:hover { opacity: 1; }
+
+.book-fullscreen-controls {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  z-index: 460;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  text-align: center;
+}
+.book-fullscreen-controls .book-page-indicator,
+.book-fullscreen-controls .book-page-toggle { margin: 0; }
+
+body.book-fullscreen-lock, html:has(body.book-fullscreen-lock) { overflow: hidden; }
+
+.book-jump { display: flex; align-items: center; gap: 6px; margin: 4px 0 0; font-size: 0.8rem; letter-spacing: 0.04em; }
+.book-jump label { display: inline-flex; align-items: center; gap: 6px; }
+@media (max-width: 800px) {
+  /* phones: page controls bottom-left, zoom bottom-right; the caption text gives way to the placeholder */
+  .book-fullscreen-controls { left: 12px; right: auto; transform: none; align-items: flex-start; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+  .book-jump-label { display: none; }
+}
+.book-jump-input {
+  width: 4.2em; padding: 2px 6px; text-align: center; color: inherit; font: inherit;
+  background: rgba(128,128,128,0.18); border: 1px solid rgba(128,128,128,0.35); border-radius: 6px;
+  -moz-appearance: textfield;
+}
+.book-jump-input::-webkit-outer-spin-button, .book-jump-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.book-jump button { background: none; border: 1px solid rgba(128,128,128,0.35); border-radius: 6px; color: inherit; font: inherit; padding: 2px 10px; cursor: pointer; }
+.book-jump button:hover { background: rgba(128,128,128,0.25); }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay  = document.getElementById('bookFullscreen');
+  const closeBtn = document.getElementById('bookFullscreenClose');
+  if (!overlay) return;
+  const toggle = document.getElementById('bookFullscreenToggle');
+  const stage = overlay.querySelector('.book-fullscreen-stage');
+  // zoom: enlarge the stage, then let the book engine re-fit itself into it (it listens for resize)
+  const zoom = window.createZoomBar ? window.createZoomBar(overlay, (z) => {
+    stage.style.setProperty('--bz', z);
+    window.dispatchEvent(new Event('resize'));
+  }) : null;
+
+  window.openBookFullscreen = function (data) {
+    const viewport = overlay.querySelector('.book-viewport');
+    viewport.className = 'book-viewport';
+    viewport.setAttribute('data-allow-rotate', 'true');
+    viewport.setAttribute('data-page-mode', data.pageMode || 'spread');
+    viewport.setAttribute('data-default-page-view', data.defaultPageView || 'two');
+    viewport.setAttribute('data-page-count', data.pageCount || 0);
+    viewport.setAttribute('data-frames-per-flip', data.framesPerFlip || 6);
+    viewport.setAttribute('data-frames-per-open-close', data.framesPerOpenClose || 8);
+    viewport.setAttribute('data-fps', data.fps || 12);
+    viewport.setAttribute('data-image-base', data.imageBase || '');
+
+    if (zoom) zoom.reset();
+    overlay.scrollTo(0, 0);
+    overlay.classList.add('active');
+    document.body.classList.add('book-fullscreen-lock');
+    if (window.mountBookViewer) window.mountBookViewer(overlay);
+  };
+
+  window.closeBookFullscreen = function () {
+    overlay.classList.remove('active');
+    document.body.classList.remove('book-fullscreen-lock');
+    if (zoom) zoom.reset();
+  };
+
+  closeBtn?.addEventListener('click', window.closeBookFullscreen);
+});
+</script>

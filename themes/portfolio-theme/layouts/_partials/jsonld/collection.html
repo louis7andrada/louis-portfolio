@@ -1,27 +1,39 @@
-{{- /*
-  schema.org CollectionPage + ItemList for a listing page.
-  Usage: {{ partial "jsonld/collection.html" (dict "page" . "pages" $pages) }}
-  Reconstructed from the live site.
-*/ -}}
-{{- $p := .page -}}
-{{- $pages := .pages -}}
+{{/* A listing page, described as a real collection with a real index.
+
+     Without this, /artworks/ is just a wall of images to a crawler: the grid is
+     built for looking at, and the individual works are reachable only by
+     following links. An ItemList states outright what the collection contains
+     and where each item lives, so everything is discoverable in one read
+     instead of depending on how deep a crawler decides to go.
+
+     Call with a dict: {"page": ., "items": <page slice>, "kind": "artworks"}. */}}
+{{ $page := .page }}
+{{ $items := .items }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "{{ $p.Permalink }}#collection",
-  "url": "{{ $p.Permalink }}",
-  "name": "{{ $p.Title }} — Louis Andrada (Han’drada)",
-  "isPartOf": { "@id": "{{ "/" | absURL }}#website" },
-  "about": { "@id": "{{ "/" | absURL }}#person" },
+  "@id": "{{ $page.Permalink }}#collection",
+  "url": "{{ $page.Permalink }}",
+  "name": "{{ $page.Title }} — {{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+  "isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  },
+  "about": {
+    "@id": "{{ site.BaseURL }}#person"
+  },
   "mainEntity": {
     "@type": "ItemList",
-    "numberOfItems": {{ len $pages }},
+    "numberOfItems": {{ len $items }},
     "itemListOrder": "https://schema.org/ItemListUnordered",
     "itemListElement": [
-      {{- range $i, $e := $pages }}{{ if $i }},{{ end }}
-      { "@type": "ListItem", "position": {{ add $i 1 }}, "url": "{{ $e.Permalink }}", "name": "{{ $e.Title | default (printf "Untitled photograph (%v)" $e.Params.year) }}" }
-      {{- end }}
+      {{- range $i, $item := $items }}{{ if $i }},{{ end }}
+      {
+        "@type": "ListItem",
+        "position": {{ add $i 1 }},
+        "url": "{{ $item.Permalink }}",
+        "name": "{{ $item.Title | default (printf "Untitled photograph (%v)" $item.Params.year) }}"
+      }{{ end }}
     ]
   }
 }

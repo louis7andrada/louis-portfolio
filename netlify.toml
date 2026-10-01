@@ -1,6 +1,3 @@
-# Reconstructed Sep 30 2026 from the live deploy's resolved config.
-# (The sitemap and Lighthouse plugins are enabled in the Netlify dashboard.)
-
 [build]
   command = "npm run build"
   publish = "public"
@@ -12,18 +9,26 @@
   NODE_VERSION = "22"
 
 [functions]
-  directory = "netlify/functions"
+directory = "netlify/functions"
 
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "SAMEORIGIN"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
-    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google.com https://www.gstatic.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://raw.githubusercontent.com https://www.google.com https://www.googletagmanager.com; font-src 'self' data:; connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google.com https://www.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com https://ingesteer.services-prod.nsvcs.net; frame-src https://www.google.com https://www.recaptcha.net; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests"
-
+# ─────────────────────────────────────────────────────────────────────────
+# One site, one hostname. louisandrada.com and handrada.com were both
+# serving the full site with a 200 — to a crawler that reads as two
+# competing copies of everything, splitting ranking signals between them
+# and leaving neither authoritative. handrada.com is the canonical host
+# (it matches the artist name Han’drada, and is already Netlify's primary),
+# so the other one hands its traffic and its accumulated authority over
+# with a permanent redirect. `force = true` makes this win even though a
+# real file exists at the requested path.
+# ─────────────────────────────────────────────────────────────────────────
+# ─────────────────────────────────────────────────────────────────────────
+# The Oeuvre section used to live at /books/. Those URLs were already
+# indexed and already submitted to search engines, so they permanently
+# forward to their new home rather than 404ing. Covers the section page,
+# every book page, the per-book .txt files and the section feed.
+# (The images repo keeps its books/<slug>/ folders — those paths are
+# internal to the asset host and never appear in a site URL.)
+# ─────────────────────────────────────────────────────────────────────────
 [[redirects]]
   from = "/books"
   to = "/oeuvre/"
@@ -51,3 +56,52 @@
   to = "https://handrada.com/:splat"
   status = 301
   force = true
+
+# ─────────────────────────────────────────────────────────────────────────
+# Security headers. None of these restrict crawlers/bots (including AI
+# crawlers/trainers) — CSP, X-Frame-Options, etc. are enforced by browsers
+# only, never checked by bots, so they're independent of robots.txt/llms.txt.
+#
+# CSP is as strict as this site's actual architecture allows: it's a fully
+# static Hugo build with no per-request server, so there's no way to mint a
+# fresh nonce per page load for the many inline <script>/<style> blocks
+# templates rely on (dark-mode boot script, fog-in gate, gtag config, the
+# inquiry form's submit logic, book-viewer styles, etc.) — hence
+# 'unsafe-inline' on script-src/style-src below. Everything else is locked
+# to an explicit allowlist built from an audit of every external host this
+# site actually talks to: Google tag manager/analytics, reCAPTCHA v3, the
+# Google Apps Script form webhook, and the louis-andrada-images repo raw
+# content host. Tightening further (nonce/hash-based script-src) would mean
+# moving off fully static hosting or adding Netlify Edge Functions to inject
+# a per-request nonce — a real infra change, not a config tweak.
+# ─────────────────────────────────────────────────────────────────────────
+# FORMS DEPEND ON THIS POLICY. Every form POSTs to the Google Apps Script at
+# script.google.com, and Apps Script answers with a redirect to
+# script.googleusercontent.com, where the "OK" reply is read. Without that
+# host in connect-src the browser blocks the reply and every form shows an
+# error (the message may still have been delivered). Cloudflare, which sits in
+# front of the site, injects its analytics beacon from static.cloudflareinsights.com, and
+# Netlify's real-user monitoring reports to ingesteer.services-prod.nsvcs.net.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
+    Content-Security-Policy = """\
+      default-src 'self'; \
+      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google.com https://www.gstatic.com https://static.cloudflareinsights.com; \
+      style-src 'self' 'unsafe-inline'; \
+      img-src 'self' data: https://raw.githubusercontent.com https://www.google.com https://www.googletagmanager.com; \
+      font-src 'self' data:; \
+      connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google.com https://www.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com https://ingesteer.services-prod.nsvcs.net; \
+      frame-src https://www.google.com https://www.recaptcha.net; \
+      object-src 'none'; \
+      base-uri 'self'; \
+      form-action 'self'; \
+      frame-ancestors 'self'; \
+      upgrade-insecure-requests\
+      """
+

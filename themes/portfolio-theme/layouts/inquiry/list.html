@@ -213,1884 +213,1429 @@
 </div>
 
 <style>
-  .inq-wrap .hidden,#artworkSelectorModal .hidden {
-    display:none!important;
-  }
-  :root {
-    --vspace-xs:0.25rem;
-    --vspace-sm:0.5rem;
-    --vspace-md:0.9rem;
-    --vspace-lg:1.4rem;
-    --vspace-xl:2rem;
-  }
+
+/* Scoped: only hides .hidden within inq elements — does NOT affect site nav.
+   NOTE: #artworkSelectorModal.hidden is intentionally excluded here — that
+   overlay now animates open/close (see .inq-sel-overlay.hidden below)
+   instead of snapping via display:none. */
+.inq-wrap .hidden,
+#artworkSelectorModal .hidden {
+  display: none !important;
+}
+
+:root {
+  --vspace-xs: 0.25rem;
+  --vspace-sm: 0.5rem;
+  --vspace-md: 0.9rem;
+  --vspace-lg: 1.4rem;
+  --vspace-xl: 2rem;
+}
+
+/* ── WRAP ── */
+.inq-wrap { display: flex; flex-direction: column; }
+@media (min-width: 901px) {
   .inq-wrap {
-    display:flex;
-    flex-direction:column;
+    min-height: calc(100vh - 130px);
   }
-  @media(min-width:901px) {
-    .inq-wrap {
-      min-height:calc(100vh - 130px);
-    }
-  }
-  .inq-door {
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  .inq-door-row {
-    display:flex;
-    align-items:center;
-    gap:7rem;
-  }
-  .inq-door-opt {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:1.35rem;
-    line-height:1.32;
-    letter-spacing:.08em;
-    text-transform:uppercase;
-    color:#161616;
-    padding:0;
-    position:relative;
-    display:inline-block;
-    text-decoration:none!important;
-    transition:color .15s;
-    white-space:nowrap;
-  }
-  .inq-door-opt::after {
-    content:'';
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:3px;
-    height:1px;
-    background:currentColor;
-    display:none;
-  }
-  .inq-door-opt:hover {
-    font-weight:700;
-    color:#000;
-  }
-  .inq-door-opt:hover::after {
-    display:block;
-  }
-  .dark .inq-door-opt {
-    color:#ececec;
-  }
-  .dark .inq-door-opt:hover {
-    color:#fff;
-  }
-  html.dark .inq-wrap {
-    color:#e0e0e0;
-  }
-  html.dark .inq-wrap input,html.dark .inq-wrap textarea {
-    color-scheme:light;
-    background:0 0!important;
-    background-color:initial!important;
-    color:#e0e0e0!important;
-    -webkit-text-fill-color:#e0e0e0!important;
-    border:none!important;
-    outline:none!important;
-    box-shadow:none!important;
-    -webkit-box-shadow:0 0 0 1e3px transparent inset!important;
-  }
-  html.dark .inq-wrap label {
-    background:0 0!important;
-    color:#e0e0e0!important;
-  }
-  html.dark .inq-wrap button {
-    -webkit-appearance:none!important;
-    appearance:none!important;
-    background:0 0!important;
-    background-color:initial!important;
-    border:none!important;
-    outline:none!important;
-    box-shadow:none!important;
-    -webkit-box-shadow:none!important;
-    color:#e0e0e0!important;
-    -webkit-text-fill-color:#e0e0e0!important;
-  }
-  html.dark .inq-wrap input::placeholder,html.dark .inq-wrap textarea::placeholder {
-    color:rgba(224,224,224,.5)!important;
-    opacity:1!important;
-    -webkit-text-fill-color:rgba(224,224,224,.5)!important;
-  }
-  html.dark .inq-wrap button {
-    color:#e0e0e0!important;
-  }
-  .dark .inq-door-opt:hover {
-    color:#fff!important;
-  }
-  .dark .inq-side-item.inactive {
-    color:#555!important;
-  }
-  .dark .inq-side-item.inactive:hover {
-    color:#aaa!important;
-  }
-  .inq-active {
-    display:none;
-    opacity:0;
-    transform:scale(.97);
-    filter:blur(8px);
-    transition:opacity .7s ease,transform .7s ease,filter .7s ease;
-  }
-  .inq-active.is-on {
-    display:flex;
-    flex-direction:column;
-    flex:1;
-  }
-  .inq-active.is-on.revealed {
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0);
-  }
-  @media(min-width:901px) {
-    .inq-active.is-on {
-      overflow:hidden;
-    }
-  }
-  .inq-mob-tabs {
-    display:none;
-    justify-content:center;
-    align-items:center;
-    gap:.5rem;
-    padding:1.25rem 1rem .75rem;
-    font-size:.8rem;
-    letter-spacing:.06em;
-    flex-shrink:0;
-  }
-  .inq-mob-tab {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.8rem;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:inherit;
-    opacity:.4;
-    padding:.2rem 0;
-    transition:opacity .2s;
-  }
-  .inq-mob-tab.active {
-    opacity:1;
-    border-bottom:1px solid;
-  }
-  .inq-mob-tab:hover {
-    opacity:.75;
-  }
-  .inq-mob-sep {
-    opacity:.25;
-    font-size:.75rem;
-  }
+}
+
+/* ── DOOR ── */
+.inq-door { flex: 1; display: flex; align-items: center; justify-content: center; }
+.inq-door-row { display: flex; align-items: center; gap: 7rem; }
+.inq-door-opt {
+  -webkit-appearance: none; appearance: none; background: transparent; border: none;
+  cursor: pointer; font-family: inherit; font-size: 1.35rem; line-height: 1.32;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #161616; padding: 0;
+  position: relative; display: inline-block; text-decoration: none !important;
+  transition: color 0.15s; white-space: nowrap;
+}
+.inq-door-opt::after { content: ''; position: absolute; left: 0; right: 0; bottom: 3px; height: 1px; background: currentColor; display: none; }
+.inq-door-opt:hover { font-weight: 700; color: #000; }
+.inq-door-opt:hover::after { display: block; }
+.dark .inq-door-opt { color: #ececec; }
+.dark .inq-door-opt:hover { color: #fff; }
+
+/* ── DARK MODE ──
+   color-scheme:light on .inq-wrap tells the browser to render ALL form widgets
+   inside it (inputs, textareas, labels, buttons, selects) using its LIGHT mode
+   defaults — so it stops injecting dark backgrounds on any of them.
+   We then control all colors explicitly. This is the only reliable cross-browser fix.
+── */
+html.dark .inq-wrap {
+  color: #e0e0e0;
+}
+html.dark .inq-wrap input,
+html.dark .inq-wrap textarea {
+  color-scheme: light;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+}
+html.dark .inq-wrap label {
+  background: transparent !important;
+  color: #e0e0e0 !important;
+}
+html.dark .inq-wrap button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+html.dark .inq-wrap input::placeholder,
+html.dark .inq-wrap textarea::placeholder {
+  color: rgba(224,224,224,0.5) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: rgba(224,224,224,0.5) !important;
+}
+html.dark .inq-wrap button { color: #e0e0e0 !important; }
+.dark .inq-door-opt:hover  { color: #fff !important; }
+.dark .inq-side-item.inactive { color: #555 !important; }
+.dark .inq-side-item.inactive:hover { color: #aaa !important; }
+
+/* ── ACTIVE ──
+   Base state is the pre-reveal look (invisible/blurred/scaled down).
+   JS adds 'is-on' to switch display on, then 'revealed' a frame later
+   to trigger the actual fade/scale/blur-in transition. */
+.inq-active {
+  display: none;
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(8px);
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
+.inq-active.is-on { display: flex; flex-direction: column; flex: 1; }
+.inq-active.is-on.revealed { opacity: 1; transform: scale(1); filter: blur(0px); }
+@media (min-width: 901px) { .inq-active.is-on { overflow: hidden; } }
+
+/* MOBILE TABS */
+.inq-mob-tabs { display: none; justify-content: center; align-items: center; gap: 0.5rem; padding: 1.25rem 1rem 0.75rem; font-size: 0.8rem; letter-spacing: 0.06em; flex-shrink: 0; }
+.inq-mob-tab { -webkit-appearance: none; appearance: none; background: none; border: none; cursor: pointer; font-family: inherit; font-size: 0.8rem; letter-spacing: 0.06em; text-transform: uppercase; color: inherit; opacity: 0.4; padding: 0.2rem 0; transition: opacity 0.2s; }
+.inq-mob-tab.active { opacity: 1; border-bottom: 1px solid currentColor; }
+.inq-mob-tab:hover { opacity: 0.75; }
+.inq-mob-sep { opacity: 0.25; font-size: 0.75rem; }
+
+/* ── BODY ── */
+.inq-body { display: flex; flex: 1; width: 100%; }
+@media (min-width: 901px) {
   .inq-body {
-    display:flex;
-    flex:1;
-    width:100%;
+    margin-left: max(0px, calc(50vw - 600px));
   }
-  @media(min-width:901px) {
-    .inq-body {
-      margin-left:max(0px,calc(50vw - 600px));
-    }
-    .inq-panels {
-      padding-left:4.5rem;
-    }
+
+  .inq-panels {
+    padding-left: 4.5rem;
   }
+}
+
+/* ── SIDEBAR ── */
+.inq-sidebar {
+  flex-shrink: 0;
+  width: auto;
+  min-width: 180px;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 2.5rem 5rem 2.5rem clamp(2.5rem, 6%, 2.5rem);
+}
+@media (min-width: 901px) { .inq-sidebar { overflow: hidden; } }
+.inq-side-nav { display: flex; flex-direction: column; gap: 0.4rem; }
+.inq-side-item { -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0; text-align: left; line-height: 1.5; white-space: nowrap; display: inline-block; transition: color 0.15s; }
+.inq-side-item.active  { font-weight: 700; color: #161616; cursor: default; }
+.inq-side-item.inactive{ color: #b0b0b0; }
+.inq-side-item.inactive:hover { color: #555; }
+
+.inq-side-submit { -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.82rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; display: none; margin-top: 2.5rem; transition: color 0.15s, background-color 0.4s ease, opacity 0.4s ease; }
+.inq-side-submit:hover { color: #999; }
+
+/* ── SUBMIT SUCCESS STATE (green confirmation) ── */
+.inq-side-submit.inq-submit-success,
+.inq-mobile-submit.inq-submit-success {
+  color: #16a34a !important;
+  text-decoration: none;
+}
+html.dark .inq-side-submit.inq-submit-success,
+html.dark .inq-mobile-submit.inq-submit-success {
+  color: #4ade80 !important;
+}
+
+/* ── PANELS ── */
+.inq-panels {
+  flex: 1;
+  min-width: 0;
+  max-width: 1200px;
+  padding: 1.75rem 5rem 1rem 3.5rem;
+}
+@media (min-width: 901px) { .inq-panels { min-height: 0; overflow: hidden; } }
+/* Base = pre-reveal look. .active switches display on; .revealed (added a
+   frame later by JS) triggers the actual fade/scale/blur-in transition,
+   giving every panel-to-panel switch the same morph feel. */
+.inq-panel {
+  display: none;
+  opacity: 0;
+  transform: scale(0.97);
+  filter: blur(6px);
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+}
+.inq-panel.active { display: flex; flex-direction: column; }
+.inq-panel.active.revealed { opacity: 1; transform: scale(1); filter: blur(0px); }
+@media (min-width: 901px) {
+  .inq-panel.active { height: 100%; overflow: hidden; }
+  @media (min-width: 901px) {
+  .inq-panel.active {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .inq-panel.active > form {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+}
+  .inq-contact-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .inq-contact-wrap > form { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+}
+
+.inq-ptitle { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.03em; margin-bottom: 0.25rem; flex-shrink: 0; width: 100%; }
+.inq-pdesc  { font-size: 0.9rem !important; line-height: 1.5; opacity: 0.75; margin-bottom: 0.5rem; flex-shrink: 0; width: 80%; }
+.inq-note   { font-size: 0.8rem; opacity: 0.55; display: block; margin-top: 0.3rem; margin-bottom: 1rem;}
+.inq-success{ font-size: 0.78rem; color: #16a34a; margin-bottom: 0.75rem; flex-shrink: 0; }
+.inq-error  { font-size: 0.78rem; color: #dc2626; margin-bottom: 0.75rem; flex-shrink: 0; }
+html.dark .inq-error { color: #f87171; }
+
+.inq-top-block { flex-shrink: 0; margin-bottom: 1.4rem; }
+.inq-grow { flex: 1; min-height: 0; }
+.inq-flex-col { display: flex; flex-direction: column; }
+.inq-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.75rem; }
+@media (min-width: 901px) { .inq-two-col.inq-grow { align-items: stretch; } }
+.inq-sub-block { margin-bottom: 1.4rem; flex-shrink: 0; }
+.inq-col-head  { font-size: 0.72rem; letter-spacing: 0.04em; opacity: 1; margin-bottom: 0.4rem;}
+.inq-col-sub   { font-size: 0.72rem !important; opacity: 0.5; margin-bottom: 0.3rem; }
+.inq-sub-lbl   { font-size: 0.72rem; opacity: 1; margin: 0.6rem 0 0.35rem; }
+@media (min-width: 901px) {.inq-sub-lbl{margin-bottom: 0.5rem;} .inq-col-head {margin-bottom: 0.4rem;} }
+.inq-indent { padding-left: 0.75rem; }
+
+/* ── FIELDS ── */
+.inq-field { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent; border: none; outline: none; padding: 0.25rem 0; font-family: inherit; font-size: 0.78rem; color: inherit; margin-bottom: 0.55rem; box-sizing: border-box; }
+.inq-field:focus { outline: none; }
+.inq-field::placeholder { opacity: 0.55; font-size: 0.9rem; color: #0f0f0f; }
+.inq-ta-sm   { min-height: 2rem; resize: none; line-height: 1.4; }
+.inq-ta-fill { width: 100%; resize: none; line-height: 1.5; }
+@media (min-width: 901px) { .inq-ta-fill { height: 100%; min-height: 0; } }
+
+/* ── TEXT BUTTON ── */
+.inq-txt-btn { margin-top: 0.5rem; -webkit-appearance: none; appearance: none; background: transparent !important; border: none !important; outline: none !important; box-shadow: none !important; -webkit-box-shadow: none !important; cursor: pointer; font-family: inherit; font-size: 0.90rem; color: #161616; padding: 0; position: relative; display: inline-block; text-decoration: none !important; }
+.inq-txt-btn::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; background: currentColor; display: none; }
+.inq-txt-btn:hover::after { display: block; }
+.inq-txt-btn:hover,
+.inq-txt-btn:focus,
+.inq-txt-btn:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+html.dark .inq-txt-btn,
+html.dark #openArtworkSelector {
+  background: none !important;
+  background-color: transparent !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+  padding: 0 !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+
+/* ── ARTWORK PREVIEW ── */
+.inq-preview { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0 2rem; }
+.inq-preview img { width: 45px; height: 45px; object-fit: cover; border-radius: 2px; }
+.inq-preview > div { font-size: 0.7rem; padding: 2px 7px; background: #e8e8e8; color: #161616; border-radius: 2px; display: flex; align-items: center; }
+html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
+
+/* ── OPTIONS ── */
+.inq-opt { display: block; font-size: 0.9rem; cursor: pointer; opacity: 0.82; margin-top: 0.4rem; user-select: none; transition: opacity 0.1s; }
+.inq-opt:hover { opacity: 1; }
+.inq-opt input { display: none !important; }
+.inq-opt.is-checked { opacity: 1; text-decoration: line-through; text-decoration-thickness: 1px; }
+
+/* ── CONTACT WRAP ── */
+.inq-contact-wrap input[type="hidden"], .inq-contact-wrap .hidden { display: none !important; }
+.inq-contact-wrap input[type="text"], .inq-contact-wrap input[type="email"], .inq-contact-wrap input[type="tel"] { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent !important; border: none !important; outline: none; padding: 0.25rem 0 !important; font-family: inherit !important; font-size: 0.78rem !important; color: inherit !important; margin-bottom: 0.55rem; box-sizing: border-box; }
+.inq-contact-wrap textarea { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent !important; border: none !important; outline: none; padding: 0.25rem 0 !important; font-family: inherit !important; font-size: 0.78rem !important; color: inherit !important; resize: none; line-height: 1.5; box-sizing: border-box; }
+@media (min-width: 901px) { .inq-contact-wrap textarea { flex: 1; min-height: 0; } }
+.inq-contact-wrap input::placeholder, .inq-contact-wrap textarea::placeholder { opacity: 0.55; color: #0f0f0f; font-size: 0.9rem; }
+.inq-contact-wrap input:focus, .inq-contact-wrap textarea:focus { outline: none !important; }
+.inq-contact-wrap button[type="submit"], .inq-contact-wrap input[type="submit"] { display: none !important; }
+
+#panel-contact .inq-pdesc {
+  margin-bottom: 1.8rem;
+}
+
+.inq-contact-wrap form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  padding-left: 0.75rem;
+}
+/* ════════════════════════
+   ARTWORK SELECTOR OVERLAY
+   ════════════════════════ */
+.inq-sel-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(24px) saturate(1.15);
+  -webkit-backdrop-filter: blur(24px) saturate(1.15);
+
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+
+  /* Closed is the default — deliberately NOT using a class named
+     "hidden" here, since that name collides with a sitewide utility
+     class (display:none) that was silently overriding this and
+     preventing any transition from ever playing. */
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(10px);
+  pointer-events: none;
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
+.inq-sel-overlay.open {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  pointer-events: auto;
+}
+.inq-sel-inner {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+html.dark .inq-sel-overlay {
+  background: transparent;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.inq-sel-head {
+  position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding-bottom: 0.75rem; margin-bottom: 1rem;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+html.dark .inq-sel-head { background: var(--glass-overlay); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.inq-sel-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding-top: 0.2rem;
+}
+.inq-sel-actions { display: flex; align-items: flex-start; gap: 1.25rem; }
+.inq-sel-action-group { display: flex; flex-direction: column; align-items: flex-end; gap: 0.2rem; }
+.inq-sel-confirm {font-size: 0.9rem !important; letter-spacing: 0.02em; }
+.inq-deselect-all {font-size: 0.9rem !important; letter-spacing: 0.02em; }
+
+.inq-sel-confirm { -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 0.78rem; letter-spacing: 0.02em; color: #161616; padding: 0; text-decoration: underline; text-underline-offset: 2px; transition: opacity 0.15s; }
+.inq-sel-confirm:hover { opacity: 0.65; }
+.dark .inq-sel-confirm { color: #e0e0e0; }
+
+.inq-deselect-all { -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer; font-family: inherit; font-size: 0.7rem; letter-spacing: 0.02em; color: #161616; padding: 0; opacity: 0.5; transition: opacity 0.15s; }
+.inq-deselect-all:hover { opacity: 1; }
+.dark .inq-deselect-all { color: #e0e0e0; }
+
+.inq-sel-close { background: none; border: none; cursor: pointer; font-size: 2rem; color: inherit; padding: 0; line-height: 1; font-weight: 300; transition: opacity 0.15s; }
+.inq-sel-close:hover { opacity: 0.55; }
+
+.inq-sel-not-listed { margin-bottom: 2rem; }
+.inq-not-listed-input { -webkit-appearance: none; appearance: none; background: transparent; border: none; outline: none; font-family: inherit; font-size: 0.85rem; color: inherit; padding: 0.2rem 0; width: 360px; max-width: 100%; }
+.inq-not-listed-input::placeholder {
+  opacity: 1 !important;
+  color: rgba(0, 0, 0, 0.65);
+}
+
+html.dark .inq-not-listed-input::placeholder { color: rgba(224,224,224,0.65); opacity: 1; }
+.inq-not-listed-input:focus { outline: none; }
+
+.inq-sel-grid {
+  position: relative;
+  width: 100%;
+}
+
+.artworkChoice {
+  position: relative;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.artworkChoice:hover { opacity: 0.82; }
+.artworkChoice img { width: 100%; height: auto; display: block; }
+.artworkChoice.selected { outline: 2px solid #161616; }
+html.dark .artworkChoice.selected { outline-color: #e0e0e0; }
+.checkmark-overlay { position: absolute; top: 6px; right: 6px; background: #161616; color: #fff; font-size: 1rem; padding: 2px 5px; }
+html.dark .checkmark-overlay { background: #e0e0e0; color: #000; }
+
+html.dark #artworkSelectorModal {
+  color: #e0e0e0;
+}
+html.dark #artworkSelectorModal input {
+  color-scheme: light;
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: 0 0 0 1000px transparent inset !important;
+}
+html.dark #artworkSelectorModal button {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #e0e0e0 !important;
+  -webkit-text-fill-color: #e0e0e0 !important;
+}
+html.dark #artworkSelectorModal input::placeholder {
+  color: rgba(224,224,224,0.6) !important;
+  opacity: 1 !important;
+}
+.artwork-sel-label {
+  font-size: 0.58rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+  margin-top: 0.3rem;
+  line-height: 1.3;
+}
+
+/* ── RESPONSIVE ── */
+
+@media (min-width: 901px) and (max-width: 1280px) {
   .inq-sidebar {
-    flex-shrink:0;
-    width:auto;
-    min-width:180px;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    padding:2.5rem 5rem 2.5rem clamp(2.5rem,6%,2.5rem);
-  }
-  @media(min-width:901px) {
-    .inq-sidebar {
-      overflow:hidden;
-    }
-  }
-  .inq-side-nav {
-    display:flex;
-    flex-direction:column;
-    gap:.4rem;
-  }
-  .inq-side-item {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:1rem;
-    letter-spacing:.1em;
-    text-transform:uppercase;
-    padding:0;
-    text-align:left;
-    line-height:1.5;
-    white-space:nowrap;
-    display:inline-block;
-    transition:color .15s;
-  }
-  .inq-side-item.active {
-    font-weight:700;
-    color:#161616;
-    cursor:default;
-  }
-  .inq-side-item.inactive {
-    color:#b0b0b0;
-  }
-  .inq-side-item.inactive:hover {
-    color:#555;
-  }
-  .inq-side-submit {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0!important;
-    border:none!important;
-    box-shadow:none!important;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.82rem;
-    letter-spacing:.02em;
-    color:#161616;
-    padding:0;
-    text-decoration:underline;
-    text-underline-offset:2px;
-    display:none;
-    margin-top:2.5rem;
-    transition:color .15s,background-color .4s ease,opacity .4s ease;
-  }
-  .inq-side-submit:hover {
-    color:#999;
-  }
-  .inq-side-submit.inq-submit-success,.inq-mobile-submit.inq-submit-success {
-    color:#16a34a!important;
-    text-decoration:none;
-  }
-  html.dark .inq-side-submit.inq-submit-success,html.dark .inq-mobile-submit.inq-submit-success {
-    color:#4ade80!important;
+    padding: 1.5rem 2rem 1.5rem 1.5rem;
+    min-width: 130px;
   }
   .inq-panels {
-    flex:1;
-    min-width:0;
-    max-width:1200px;
-    padding:1.75rem 5rem 1rem 3.5rem;
+    padding: 1.25rem 2rem 0.75rem 1.75rem;
   }
-  @media(min-width:901px) {
-    .inq-panels {
-      min-height:0;
-      overflow:hidden;
-    }
-  }
-  .inq-panel {
-    display:none;
-    opacity:0;
-    transform:scale(.97);
-    filter:blur(6px);
-    transition:opacity .5s ease,transform .5s ease,filter .5s ease;
-  }
-  .inq-panel.active {
-    display:flex;
-    flex-direction:column;
-  }
-  .inq-panel.active.revealed {
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0);
-  }
-  @media(min-width:901px) {
-    .inq-panel.active {
-      height:100%;
-      overflow:hidden;
-    }
-    @media(min-width:901px) {
-      .inq-panel.active {
-        height:100%;
-        display:flex;
-        flex-direction:column;
-      }
-      .inq-panel.active>form {
-        flex:1;
-        min-height:0;
-        overflow-y:auto;
-      }
-    }
-    .inq-contact-wrap {
-      flex:1;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
-    }
-    .inq-contact-wrap>form {
-      flex:1;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
-    }
-  }
-  .inq-ptitle {
-    font-size:1.25rem;
-    font-weight:700;
-    letter-spacing:.03em;
-    margin-bottom:.25rem;
-    flex-shrink:0;
-    width:100%;
-  }
-  .inq-pdesc {
-    font-size:.9rem!important;
-    line-height:1.5;
-    opacity:.75;
-    margin-bottom:.5rem;
-    flex-shrink:0;
-    width:80%;
-  }
-  .inq-note {
-    font-size:.8rem;
-    opacity:.55;
-    display:block;
-    margin-top:.3rem;
-    margin-bottom:1rem;
-  }
-  .inq-success {
-    font-size:.78rem;
-    color:#16a34a;
-    margin-bottom:.75rem;
-    flex-shrink:0;
-  }
-  .inq-error {
-    font-size:.78rem;
-    color:#dc2626;
-    margin-bottom:.75rem;
-    flex-shrink:0;
-  }
-  html.dark .inq-error {
-    color:#f87171;
-  }
-  .inq-top-block {
-    flex-shrink:0;
-    margin-bottom:1.4rem;
-  }
-  .inq-grow {
-    flex:1;
-    min-height:0;
-  }
-  .inq-flex-col {
-    display:flex;
-    flex-direction:column;
-  }
+  .inq-two-col { gap: 1.25rem; }
+  .inq-col-head { margin-bottom: 0.2rem; }
+  .inq-sub-block { margin-bottom: 1rem; }
+  .inq-top-block { margin-bottom: 1rem; }
+  .inq-opt { margin-top: 0.3rem; }
+  .inq-field { margin-bottom: 0.35rem; }
+  .inq-ptitle { font-size: 1.05rem; }
+  .inq-pdesc  { margin-bottom: 0.35rem; }
+  .inq-note   { margin-top: 0.2rem; margin-bottom: 0.5rem; }
+}
+@media (max-width: 900px) {
+  .inq-sidebar { display: none; }
+  .inq-mob-tabs { display: flex; }
   .inq-two-col {
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:1.75rem;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
-  @media(min-width:901px) {
-    .inq-two-col.inq-grow {
-      align-items:stretch;
-    }
+  .inq-two-col.inq-top-block,
+  .inq-two-col.inq-grow {
+    gap: 2.5rem;
   }
-  .inq-sub-block {
-    margin-bottom:1.4rem;
-    flex-shrink:0;
-  }
-  .inq-col-head {
-    font-size:.72rem;
-    letter-spacing:.04em;
-    opacity:1;
-    margin-bottom:.4rem;
-  }
-  .inq-col-sub {
-    font-size:.72rem!important;
-    opacity:.5;
-    margin-bottom:.3rem;
-  }
-  .inq-sub-lbl {
-    font-size:.72rem;
-    opacity:1;
-    margin:.6rem 0 .35rem;
-  }
-  @media(min-width:901px) {
-    .inq-sub-lbl {
-      margin-bottom:.5rem;
-    }
-    .inq-col-head {
-      margin-bottom:.4rem;
-    }
-  }
-  .inq-indent {
-    padding-left:.75rem;
-  }
-  .inq-field {
-    -webkit-appearance:none;
-    appearance:none;
-    display:block;
-    width:100%;
-    background:0 0;
-    border:none;
-    outline:none;
-    padding:.25rem 0;
-    font-family:inherit;
-    font-size:.78rem;
-    color:inherit;
-    margin-bottom:.55rem;
-    box-sizing:border-box;
-  }
-  .inq-field:focus {
-    outline:none;
-  }
-  .inq-field::placeholder {
-    opacity:.55;
-    font-size:.9rem;
-    color:#0f0f0f;
-  }
-  .inq-ta-sm {
-    min-height:2rem;
-    resize:none;
-    line-height:1.4;
-  }
-  .inq-ta-fill {
-    width:100%;
-    resize:none;
-    line-height:1.5;
-  }
-  @media(min-width:901px) {
-    .inq-ta-fill {
-      height:100%;
-      min-height:0;
-    }
-  }
-  .inq-txt-btn {
-    margin-top:.5rem;
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0!important;
-    border:none!important;
-    outline:none!important;
-    box-shadow:none!important;
-    -webkit-box-shadow:none!important;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.9rem;
-    color:#161616;
-    padding:0;
-    position:relative;
-    display:inline-block;
-    text-decoration:none!important;
-  }
-  .inq-txt-btn::after {
-    content:'';
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:-1px;
-    height:1px;
-    background:currentColor;
-    display:none;
-  }
-  .inq-txt-btn:hover::after {
-    display:block;
-  }
-  .inq-txt-btn:hover,.inq-txt-btn:focus,.inq-txt-btn:active {
-    background:0 0!important;
-    background-color:initial!important;
-    box-shadow:none!important;
-    outline:none!important;
-  }
-  html.dark .inq-txt-btn,html.dark #openArtworkSelector {
-    background:0 0!important;
-    background-color:initial!important;
-    -webkit-appearance:none!important;
-    appearance:none!important;
-    border:none!important;
-    outline:none!important;
-    box-shadow:none!important;
-    -webkit-box-shadow:none!important;
-    padding:0!important;
-    color:#e0e0e0!important;
-    -webkit-text-fill-color:#e0e0e0!important;
-  }
-  .inq-preview {
-    display:flex;
-    flex-wrap:wrap;
-    gap:.4rem;
-    margin:.4rem 0 2rem;
-  }
-  .inq-preview img {
-    width:45px;
-    height:45px;
-    object-fit:cover;
-    border-radius:2px;
-  }
-  .inq-preview>div {
-    font-size:.7rem;
-    padding:2px 7px;
-    background:#e8e8e8;
-    color:#161616;
-    border-radius:2px;
-    display:flex;
-    align-items:center;
-  }
-  html.dark .inq-preview>div {
-    background:#2a2a2a;
-    color:#e0e0e0;
-  }
-  .inq-opt {
-    display:block;
-    font-size:.9rem;
-    cursor:pointer;
-    opacity:.82;
-    margin-top:.4rem;
-    user-select:none;
-    transition:opacity .1s;
-  }
-  .inq-opt:hover {
-    opacity:1;
-  }
-  .inq-opt input {
-    display:none!important;
-  }
-  .inq-opt.is-checked {
-    opacity:1;
-    text-decoration:line-through;
-    text-decoration-thickness:1px;
-  }
-  .inq-contact-wrap input[type=hidden],.inq-contact-wrap .hidden {
-    display:none!important;
-  }
-  .inq-contact-wrap input[type=text],.inq-contact-wrap input[type=email],.inq-contact-wrap input[type=tel] {
-    -webkit-appearance:none;
-    appearance:none;
-    display:block;
-    width:100%;
-    background:0 0!important;
-    border:none!important;
-    outline:none;
-    padding:.25rem 0!important;
-    font-family:inherit!important;
-    font-size:.78rem!important;
-    color:inherit!important;
-    margin-bottom:.55rem;
-    box-sizing:border-box;
-  }
-  .inq-contact-wrap textarea {
-    -webkit-appearance:none;
-    appearance:none;
-    display:block;
-    width:100%;
-    background:0 0!important;
-    border:none!important;
-    outline:none;
-    padding:.25rem 0!important;
-    font-family:inherit!important;
-    font-size:.78rem!important;
-    color:inherit!important;
-    resize:none;
-    line-height:1.5;
-    box-sizing:border-box;
-  }
-  @media(min-width:901px) {
-    .inq-contact-wrap textarea {
-      flex:1;
-      min-height:0;
-    }
-  }
-  .inq-contact-wrap input::placeholder,.inq-contact-wrap textarea::placeholder {
-    opacity:.55;
-    color:#0f0f0f;
-    font-size:.9rem;
-  }
-  .inq-contact-wrap input:focus,.inq-contact-wrap textarea:focus {
-    outline:none!important;
-  }
-  .inq-contact-wrap button[type=submit],.inq-contact-wrap input[type=submit] {
-    display:none!important;
-  }
-  #panel-contact .inq-pdesc {
-    margin-bottom:1.8rem;
-  }
-  .inq-contact-wrap form {
-    display:flex;
-    flex-direction:column;
-    gap:1.1rem;
-    padding-left:.75rem;
-  }
-  .inq-sel-overlay {
-    position:fixed;
-    inset:0;
-    z-index:50;
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    overflow-y:auto;
-    background:rgba(255,255,255,.15);
-    backdrop-filter:blur(24px)saturate(1.15);
-    -webkit-backdrop-filter:blur(24px)saturate(1.15);
-    padding:4rem 2rem;
-    box-sizing:border-box;
-    opacity:0;
-    transform:scale(.96);
-    filter:blur(10px);
-    pointer-events:none;
-    transition:opacity .7s ease,transform .7s ease,filter .7s ease;
-  }
-  .inq-sel-overlay.open {
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0);
-    pointer-events:auto;
-  }
-  .inq-sel-inner {
-    width:min(1100px,100%);
-    margin:0 auto;
-  }
-  html.dark .inq-sel-overlay {
-    background:0 0;
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
+  .inq-panels { padding: 1.25rem 1.5rem 2rem; }
+  .inq-door-row { gap: 3rem; }
+}
+@media (max-width: 500px) {
+  .inq-door-row { gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+  .inq-door-opt { font-size: 1.1rem; }
+  .inq-panels { padding: 1rem 1rem 2rem; }
+  .inq-sel-overlay { padding: 1.5rem 1.25rem 3rem; }
+}
+@media (max-width: 700px) {
+  .artworkChoice {
+    position: relative !important;
+    width: 100% !important;
   }
   .inq-sel-head {
-    position:sticky;
-    top:0;
-    z-index:2;
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    padding-bottom:.75rem;
-    margin-bottom:1rem;
-    background:rgba(255,255,255,.6);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
   }
-  html.dark .inq-sel-head {
-    background:var(--glass-overlay);
-    backdrop-filter:blur(12px);
-    -webkit-backdrop-filter:blur(12px);
-  }
-  .inq-sel-title {
-    font-size:1.05rem;
-    font-weight:700;
-    letter-spacing:.02em;
-    padding-top:.2rem;
-  }
-  .inq-sel-actions {
-    display:flex;
-    align-items:flex-start;
-    gap:1.25rem;
-  }
-  .inq-sel-action-group {
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:.2rem;
-  }
-  .inq-sel-confirm {
-    font-size:.9rem!important;
-    letter-spacing:.02em;
-  }
-  .inq-deselect-all {
-    font-size:.9rem!important;
-    letter-spacing:.02em;
-  }
-  .inq-sel-confirm {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.78rem;
-    letter-spacing:.02em;
-    color:#161616;
-    padding:0;
-    text-decoration:underline;
-    text-underline-offset:2px;
-    transition:opacity .15s;
-  }
-  .inq-sel-confirm:hover {
-    opacity:.65;
-  }
-  .dark .inq-sel-confirm {
-    color:#e0e0e0;
-  }
-  .inq-deselect-all {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    font-family:inherit;
-    font-size:.7rem;
-    letter-spacing:.02em;
-    color:#161616;
-    padding:0;
-    opacity:.5;
-    transition:opacity .15s;
-  }
-  .inq-deselect-all:hover {
-    opacity:1;
-  }
-  .dark .inq-deselect-all {
-    color:#e0e0e0;
-  }
-  .inq-sel-close {
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    font-size:2rem;
-    color:inherit;
-    padding:0;
-    line-height:1;
-    font-weight:300;
-    transition:opacity .15s;
-  }
-  .inq-sel-close:hover {
-    opacity:.55;
-  }
+  .inq-sel-title   { flex: 1 1 auto; }
+  .inq-sel-actions { flex-shrink: 0; }
   .inq-sel-not-listed {
-    margin-bottom:2rem;
+    order: 3;
+    flex: 0 0 100%;
+    margin-bottom: 0.25rem;
   }
-  .inq-not-listed-input {
-    -webkit-appearance:none;
-    appearance:none;
-    background:0 0;
-    border:none;
-    outline:none;
-    font-family:inherit;
-    font-size:.85rem;
-    color:inherit;
-    padding:.2rem 0;
-    width:360px;
-    max-width:100%;
+  .inq-not-listed-input { width: 100%; max-width: 100%; }
+}
+
+@media (max-width: 900px) {
+  #panel-commission .inq-col-head {
+    line-height: 1.6;
   }
-  .inq-not-listed-input::placeholder {
-    opacity:1!important;
-    color:rgba(0,0,0,.65);
+
+  #panel-commission .inq-col-head:has(+ .inq-indent input[name="commissionBudget"]) {
+    margin-bottom: 1rem;
   }
-  html.dark .inq-not-listed-input::placeholder {
-    color:rgba(224,224,224,.65);
-    opacity:1;
+
+  #panel-commission .inq-sub-block:has(input[name="commissionBudget"]) {
+    margin-top: 2.2rem;
   }
-  .inq-not-listed-input:focus {
-    outline:none;
-  }
-  .inq-sel-grid {
-    position:relative;
-    width:100%;
-  }
-  .artworkChoice {
-    position:relative;
-    cursor:pointer;
-    transition:opacity .15s;
-  }
-  .artworkChoice:hover {
-    opacity:.82;
-  }
-  .artworkChoice img {
-    width:100%;
-    height:auto;
-    display:block;
-  }
-  .artworkChoice.selected {
-    outline:2px solid #161616;
-  }
-  html.dark .artworkChoice.selected {
-    outline-color:#e0e0e0;
-  }
-  .checkmark-overlay {
-    position:absolute;
-    top:6px;
-    right:6px;
-    background:#161616;
-    color:#fff;
-    font-size:1rem;
-    padding:2px 5px;
-  }
-  html.dark .checkmark-overlay {
-    background:#e0e0e0;
-    color:#000;
-  }
-  html.dark #artworkSelectorModal {
-    color:#e0e0e0;
-  }
-  html.dark #artworkSelectorModal input {
-    color-scheme:light;
-    background:0 0!important;
-    background-color:initial!important;
-    color:#e0e0e0!important;
-    -webkit-text-fill-color:#e0e0e0!important;
-    border:none!important;
-    box-shadow:none!important;
-    -webkit-box-shadow:0 0 0 1e3px transparent inset!important;
-  }
-  html.dark #artworkSelectorModal button {
-    -webkit-appearance:none!important;
-    appearance:none!important;
-    background:0 0!important;
-    background-color:initial!important;
-    border:none!important;
-    box-shadow:none!important;
-    color:#e0e0e0!important;
-    -webkit-text-fill-color:#e0e0e0!important;
-  }
-  html.dark #artworkSelectorModal input::placeholder {
-    color:rgba(224,224,224,.6)!important;
-    opacity:1!important;
-  }
-  .artwork-sel-label {
-    font-size:.58rem;
-    text-transform:none;
-    letter-spacing:.02em;
-    opacity:.55;
-    margin-top:.3rem;
-    line-height:1.3;
-  }
-  @media(min-width:901px) and (max-width:1280px) {
-    .inq-sidebar {
-      padding:1.5rem 2rem 1.5rem 1.5rem;
-      min-width:130px;
-    }
-    .inq-panels {
-      padding:1.25rem 2rem .75rem 1.75rem;
-    }
-    .inq-two-col {
-      gap:1.25rem;
-    }
-    .inq-col-head {
-      margin-bottom:.2rem;
-    }
-    .inq-sub-block {
-      margin-bottom:1rem;
-    }
-    .inq-top-block {
-      margin-bottom:1rem;
-    }
-    .inq-opt {
-      margin-top:.3rem;
-    }
-    .inq-field {
-      margin-bottom:.35rem;
-    }
-    .inq-ptitle {
-      font-size:1.05rem;
-    }
-    .inq-pdesc {
-      margin-bottom:.35rem;
-    }
-    .inq-note {
-      margin-top:.2rem;
-      margin-bottom:.5rem;
-    }
-  }
-  @media(max-width:900px) {
-    .inq-sidebar {
-      display:none;
-    }
-    .inq-mob-tabs {
-      display:flex;
-    }
-    .inq-two-col {
-      grid-template-columns:1fr;
-      gap:1.5rem;
-    }
-    .inq-two-col.inq-top-block,.inq-two-col.inq-grow {
-      gap:2.5rem;
-    }
-    .inq-panels {
-      padding:1.25rem 1.5rem 2rem;
-    }
-    .inq-door-row {
-      gap:3rem;
-    }
-  }
-  @media(max-width:500px) {
-    .inq-door-row {
-      gap:1.5rem;
-      flex-wrap:wrap;
-      justify-content:center;
-    }
-    .inq-door-opt {
-      font-size:1.1rem;
-    }
-    .inq-panels {
-      padding:1rem 1rem 2rem;
-    }
-    .inq-sel-overlay {
-      padding:1.5rem 1.25rem 3rem;
-    }
-  }
-  @media(max-width:700px) {
-    .artworkChoice {
-      position:relative!important;
-      width:100%!important;
-    }
-    .inq-sel-head {
-      flex-wrap:wrap;
-      row-gap:.5rem;
-    }
-    .inq-sel-title {
-      flex:auto;
-    }
-    .inq-sel-actions {
-      flex-shrink:0;
-    }
-    .inq-sel-not-listed {
-      order:3;
-      flex:0 0 100%;
-      margin-bottom:.25rem;
-    }
-    .inq-not-listed-input {
-      width:100%;
-      max-width:100%;
-    }
-  }
-  @media(max-width:900px) {
-    #panel-commission .inq-col-head {
-      line-height:1.6;
-    }
-    #panel-commission .inq-col-head:has(+.inq-indent input[name=commissionBudget]) {
-      margin-bottom:1rem;
-    }
-    #panel-commission .inq-sub-block:has(input[name=commissionBudget]) {
-      margin-top:2.2rem;
-    }
-  }
+}
+
+.inq-mobile-submit {
+  display: none;
+  width: 100%;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.4s ease, opacity 0.4s ease;
+}
+
+@media (max-width: 900px) {
   .inq-mobile-submit {
-    display:none;
-    width:100%;
-    margin-top:2rem;
-    margin-bottom:2rem;
-    text-align:center;
-    font-family:inherit;
-    font-size:.85rem;
-    letter-spacing:.04em;
-    background:0 0;
-    border:none;
-    cursor:pointer;
-    text-decoration:underline;
-    text-underline-offset:3px;
-    transition:color .4s ease,opacity .4s ease;
+    display: block;
   }
-  @media(max-width:900px) {
-    .inq-mobile-submit {
-      display:block;
-    }
+}
+
+/* ── DOOR (fixed full-screen overlay) ──
+   Base = fully visible. .hidden fades/blurs/shrinks it out — JS removes
+   it from the layout entirely (display:none) once that transition ends,
+   the same "dissolve" pattern used by the site's intro door. */
+.inq-door {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+  /* The flex box itself spans the full viewport (inset:0), but only its
+     centered button row should actually catch clicks — otherwise the
+     empty space around the buttons silently intercepts clicks meant for
+     whatever's underneath (e.g. the footer's "Join the List" button). */
+  pointer-events: none;
+}
+.inq-door-row {
+  pointer-events: auto;
+}
+.inq-door.hidden {
+  opacity: 0;
+  transform: scale(0.94);
+  filter: blur(10px);
+  pointer-events: none;
+}
+@media (max-width: 900px) {
+  .inq-panels {
+    padding-left: 3rem !important;
+    padding-right: 3rem !important;
   }
-  .inq-door {
-    position:fixed;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:30;
-    opacity:1;
-    transform:scale(1);
-    filter:blur(0);
-    transition:opacity .7s ease,transform .7s ease,filter .7s ease;
-    pointer-events:none;
-  }
-  .inq-door-row {
-    pointer-events:auto;
-  }
-  .inq-door.hidden {
-    opacity:0;
-    transform:scale(.94);
-    filter:blur(10px);
-    pointer-events:none;
-  }
-  @media(max-width:900px) {
-    .inq-panels {
-      padding-left:3rem!important;
-      padding-right:3rem!important;
-    }
-  }
+} 
+
+/* ══════════════════════════════════════════
+   SUBMIT CONVERGENCE ANIMATION
+   Handled entirely via the Web Animations API in JS (per-character,
+   curved, independently-timed) — see runSubmitConvergence() below.
+   No shared CSS transition class is needed for it.
+   ══════════════════════════════════════════ */
 </style>
 
 <script>
-  (document.addEventListener("DOMContentLoaded", function () {
-    ((l = {
-      purchase: { label: "PURCHASE", submit: "Submit Purchase Request" },
-      commission: { label: "COMMISSION", submit: "Submit Commission Request" },
-      contact: { label: "CONTACT", submit: "Send Message" },
-    }),
-      (ne = {
-        purchase: ["contact", "purchase", "commission"],
-        commission: ["contact", "commission", "purchase"],
-        contact: ["purchase", "contact", "commission"],
-      }),
-      (D = document.getElementById("inqDoor")),
-      (h = document.getElementById("inqActive")),
-      (x = document.getElementById("inqSideNav")),
-      (s = document.getElementById("inqSideSubmit")),
-      (z = document.querySelectorAll(".inq-mob-tab")),
-      (u = null),
-      (P = 700),
-      (I = 450));
-    function oe(e) {
-      var n = document.querySelector(".inq-panel.active"),
-        t = document.getElementById("panel-" + e);
-      if (!t || n === t) return;
-      function s() {
-        (t.classList.add("active"),
-          void t.offsetWidth,
-          requestAnimationFrame(function () {
-            t.classList.add("revealed");
-          }));
-      }
-      n
-        ? (n.classList.remove("revealed"),
-          setTimeout(function () {
-            (n.classList.remove("active"), s());
-          }, I))
-        : s();
-    }
-    function m(e) {
-      if (!l[e]) return;
-      var t,
-        n = !h.classList.contains("is-on");
-      ((u = e),
-        sessionStorage.setItem("inquiry_section", e),
-        te(e),
-        s && ((s.textContent = l[e].submit || ""), (s.style.display = l[e].submit ? "inline-block" : "none")),
-        z.forEach(function (t) {
-          t.classList.toggle("active", t.dataset.section === e);
-        }),
-        n
-          ? (D.classList.add("hidden"),
-            setTimeout(function () {
-              D.style.display = "none";
-            }, P),
-            h.classList.add("is-on"),
-            void h.offsetWidth,
-            requestAnimationFrame(function () {
-              h.classList.add("revealed");
-            }),
-            (t = document.getElementById("panel-" + e)),
-            t &&
-              (t.classList.add("active"),
-              void t.offsetWidth,
-              requestAnimationFrame(function () {
-                t.classList.add("revealed");
-              })))
-          : oe(e));
-    }
-    function te(e) {
-      if (!x) return;
-      ((x.innerHTML = ""),
-        ["purchase", "commission", "contact"].forEach(function (t) {
-          var n = document.createElement("button");
-          ((n.className = "inq-side-item " + (t === e ? "active" : "inactive")),
-            (n.textContent = l[t].label),
-            (n.dataset.section = t),
-            t !== e &&
-              n.addEventListener("click", function () {
-                m(t);
-              }),
-            x.appendChild(n));
-        }));
-    }
-    (document.querySelectorAll(".inq-door-opt").forEach(function (e) {
-      e.addEventListener("click", function () {
-        m(e.dataset.section);
-      });
-    }),
-      z.forEach(function (e) {
-        e.addEventListener("click", function () {
-          m(e.dataset.section);
-        });
-      }),
-      s &&
-        s.addEventListener("click", function () {
-          if (!u) return;
-          if (u === "contact") {
-            var t,
-              e = document.querySelector("#panel-contact form");
-            e && e.dispatchEvent(new Event("submit", { bubbles: !0, cancelable: !0 }));
-          } else ((t = document.getElementById(u + "Form")), t.requestSubmit());
-        }),
-      (L = new URLSearchParams(window.location.search)),
-      (y = L.get("add")),
-      y
-        ? (m("purchase"), window.history.replaceState({}, document.title, window.location.pathname))
-        : ((j = sessionStorage.getItem("inquiry_section")), j && l[j] && m(j)));
-    function V() {
-      document.querySelectorAll(".inq-opt").forEach(function (e) {
-        var t = e.querySelector("input");
-        if (!t) return;
-        (t.checked && e.classList.add("is-checked"),
-          t.addEventListener("change", function () {
-            t.type === "radio"
-              ? (document.querySelectorAll('input[name="' + t.name + '"]').forEach(function (e) {
-                  var t = e.closest(".inq-opt");
-                  t && t.classList.toggle("is-checked", e.checked);
-                }),
-                H())
-              : e.classList.toggle("is-checked", t.checked);
-          }));
+document.addEventListener("DOMContentLoaded", function() {
+
+  var SECTIONS = {
+    purchase:   { label: "PURCHASE",   submit: "Submit Purchase Request" },
+    commission: { label: "COMMISSION", submit: "Submit Commission Request" },
+    contact:    { label: "CONTACT",    submit: "Send Message" }
+  };
+  var SIDEBAR_ORDER = {
+    purchase:   ["contact", "purchase", "commission"],
+    commission: ["contact", "commission", "purchase"],
+    contact:    ["purchase", "contact", "commission"]
+  };
+
+  var door       = document.getElementById("inqDoor");
+  var activeView = document.getElementById("inqActive");
+  var sideNav    = document.getElementById("inqSideNav");
+  var sideSubmit = document.getElementById("inqSideSubmit");
+  var mobTabs    = document.querySelectorAll(".inq-mob-tab");
+  var currentSection = null;
+
+  var DOOR_FADE_MS  = 700;  // must match .inq-door's transition duration
+  var PANEL_FADE_MS = 450;  // must match .inq-panel's transition duration (fade-out half)
+
+  /* ── PANEL CROSSFADE ── fades the current panel out, then fades the
+     next one in — sequential (not overlapping) so layout never has two
+     panels visible/flexed at once. */
+  function switchPanel(section) {
+    var current = document.querySelector(".inq-panel.active");
+    var next = document.getElementById("panel-" + section);
+    if (!next || current === next) return;
+
+    function revealNext() {
+      next.classList.add("active");
+      void next.offsetWidth; // force reflow so the transition-in actually triggers
+      requestAnimationFrame(function () {
+        next.classList.add("revealed");
       });
     }
-    (V(),
-      (T = document.getElementById("artworkOtherRadio")),
-      (i = document.getElementById("artworkOtherInput")),
-      (S = document.getElementById("artworkLicenseRadio")),
-      (r = document.getElementById("artworkLicenseInput")));
-    function H() {
-      if (i) {
-        var e,
-          t = T && T.checked;
-        (i.classList.toggle("hidden", !t), (i.required = !!t), t || (i.value = ""));
-      }
-      r && ((e = S && S.checked), r.classList.toggle("hidden", !e), (r.required = !!e), e || (r.value = ""));
+
+    if (current) {
+      current.classList.remove("revealed");
+      setTimeout(function () {
+        current.classList.remove("active");
+        revealNext();
+      }, PANEL_FADE_MS);
+    } else {
+      revealNext();
     }
-    ((v = document.getElementById("commissionOtherCheckbox")),
-      (d = document.getElementById("commissionOtherInput")));
-    function R() {
-      if (!d) return;
-      var e = v && v.checked;
-      (d.classList.toggle("hidden", !e), e || (d.value = ""));
+  }
+
+  function showSection(section) {
+    if (!SECTIONS[section]) return;
+    var firstReveal = !activeView.classList.contains("is-on");
+    currentSection = section;
+    sessionStorage.setItem("inquiry_section", section);
+
+    renderSideNav(section);
+    if (sideSubmit) {
+      sideSubmit.textContent = SECTIONS[section].submit || "";
+      sideSubmit.style.display = SECTIONS[section].submit ? "inline-block" : "none";
     }
-    (v && v.addEventListener("change", R),
-      (n = document.getElementById("artworkSelectorModal")),
-      (M = document.getElementById("openArtworkSelector")),
-      (k = document.getElementById("closeArtworkSelector")),
-      (p = document.getElementById("selConfirmText")),
-      (f = document.getElementById("selDeselectAll")),
-      (a = document.getElementById("selectedArtworksPreview")),
-      (o = document.getElementById("selectedArtworkIDs")),
-      (e = document.getElementById("notListedInput")),
-      (t = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"))),
-      (c = Array.from(document.getElementsByClassName("artworkChoice"))),
-      y && (t.add(y), localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(t)))),
-      (E = localStorage.getItem("notListedCustom")),
-      e && E && (e.value = E));
-    function O() {
-      var n = t.size > 0 || (e && e.value.trim().length > 0),
-        s = t.size > 0;
-      (p && p.classList.toggle("hidden", !n), f && f.classList.toggle("hidden", !s));
-    }
-    function g() {
-      if (!a) return;
-      a.innerHTML = "";
-      var i,
-        s = Array.from(t),
-        n = e ? e.value.trim() : "";
-      (o &&
-        (o.value =
-          s.length === 0 && !n
-            ? "Please select artworks above"
-            : JSON.stringify({ selected: s, custom: n || null })),
-        s.forEach(function (e) {
-          var t,
-            n = document.querySelector('.artworkChoice[data-id="' + e + '"]');
-          if (!n) return;
-          ((t = document.createElement("img")), (t.src = n.dataset.image), a.appendChild(t));
-        }),
-        n && ((i = document.createElement("div")), (i.textContent = n), a.appendChild(i)),
-        O());
-    }
-    function w() {
-      (c.forEach(function (e) {
-        var s = e.dataset.id,
-          n = e.querySelector(".checkmark-overlay");
-        t.has(s)
-          ? (e.classList.add("selected"), n && n.classList.remove("hidden"))
-          : (e.classList.remove("selected"), n && n.classList.add("hidden"));
-      }),
-        O());
-    }
-    (w(), g());
-    function _() {
-      (g(), n && n.classList.remove("open"));
-    }
-    (M &&
-      M.addEventListener("click", function () {
-        (n.classList.add("open"),
-          O(),
-          requestAnimationFrame(function () {
-            requestAnimationFrame(b);
-          }));
-      }),
-      k && k.addEventListener("click", _),
-      p && p.addEventListener("click", _),
-      n &&
-        n.addEventListener("click", function (e) {
-          e.target === n && _();
-        }),
-      document.getElementById("confirmArtworkSelection") &&
-        document.getElementById("confirmArtworkSelection").addEventListener("click", _),
-      f &&
-        f.addEventListener("click", function () {
-          (t.clear(), localStorage.setItem("selectedArtworks", "[]"), w(), g());
-        }),
-      c.forEach(function (e) {
-        e.addEventListener("click", function () {
-          var n = e.dataset.id;
-          (t.has(n) ? t.delete(n) : t.add(n),
-            localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(t))),
-            w(),
-            g());
-        });
-      }),
-      e &&
-        e.addEventListener("input", function () {
-          (g(), localStorage.setItem("notListedCustom", e.value), O());
-        }),
-      e &&
-        e.addEventListener("click", function (e) {
-          e.stopPropagation();
-        }));
-    var l,
-      ne,
-      e,
-      t,
-      n,
-      s,
-      o,
-      i,
-      a,
-      r,
-      c,
-      d,
-      u,
-      h,
-      f,
-      p,
-      v,
-      j,
-      y,
-      x,
-      E,
-      k,
-      S,
-      M,
-      T,
-      z,
-      D,
-      L,
-      P,
-      I,
-      G,
-      F = 40,
-      ie = 90,
-      ee = 38,
-      $ = [340, 400, 280, 360, 310, 420, 290],
-      N = [0.82, 0.92, 0.76, 0.88, 0.84, 0.95, 0.79],
-      U = ["left", "right", "center", "left", "right", "left", "center"],
-      se = {
-        1: [[0]],
-        2: [
-          [0, 90],
-          [90, 0],
-          [0, 60],
-          [60, 0],
-          [40, 0],
-          [0, 40],
-        ],
-        3: [
-          [0, 80, 30],
-          [60, 0, 90],
-          [30, 90, 0],
-          [80, 20, 60],
-          [0, 50, 80],
-          [70, 30, 0],
-        ],
-      },
-      q = [0.93, 0.97, 1.05, 0.91, 1.08, 0.95, 1.03, 0.89, 1.06, 0.92];
-    function b() {
-      if (((i = document.getElementById("inqSelGrid")), !i || !n.classList.contains("open"))) return;
-      if (window.innerWidth <= 700) {
-        (c.forEach(function (e) {
-          ((e.style.left = ""), (e.style.top = ""), (e.style.width = ""));
-        }),
-          (i.style.height = ""));
-        return;
-      }
-      if (((s = i.offsetWidth), s <= 0)) return;
-      if (
-        ((e = c.map(function (e, t) {
-          var n = e.querySelector("img"),
-            s = n && n.naturalWidth && n.naturalHeight ? n.naturalWidth / n.naturalHeight : 0;
-          return { el: e, ar: s, mult: q[t % q.length] };
-        })),
-        (j = e.filter(function (e) {
-          return e.ar > 0;
-        }).length),
-        j < e.length * 0.5 && e.length > 2)
-      ) {
-        setTimeout(b, 250);
-        return;
-      }
-      e.forEach(function (e) {
-        e.ar === 0 && (e.ar = 0.75);
+    mobTabs.forEach(function(t) { t.classList.toggle("active", t.dataset.section === section); });
+
+    if (firstReveal) {
+      // Door fades/blurs/shrinks out; the active view materializes in
+      // underneath it at the same time — a single crossfade rather than
+      // an instant swap. The target panel appears directly (nothing was
+      // showing before it, so no need for the fade-out half of switchPanel).
+      door.classList.add("hidden");
+      setTimeout(function () { door.style.display = "none"; }, DOOR_FADE_MS);
+
+      activeView.classList.add("is-on");
+      void activeView.offsetWidth;
+      requestAnimationFrame(function () {
+        activeView.classList.add("revealed");
       });
-      for (var e, t, s, i, a, r, l, d, u, p, g, j, f = [], o = 0, h = 0; o < e.length;) {
-        for (
-          u = $[h % $.length], p = e[o] && e[o].ar > 1.05, d = h % 8 === 5 && p, g = d ? 2 : 3, t = [], l = 0;
-          o < e.length && t.length < g;
-        ) {
-          var m = e[o],
-            v = u * m.mult * m.ar,
-            y = t.length * F;
-          if (t.length > 0 && l + y + v > s * 1.1) break;
-          (t.push(m), (l += v), o++);
-        }
-        (f.push({ items: t, targetH: u, solo: d }), h++);
-      }
-      ((r = 0),
-        (a = 0),
-        f.forEach(function (e, t) {
-          var n = e.items,
-            c = e.targetH,
-            l = e.solo,
-            g = t === f.length - 1,
-            d = n.length,
-            o = n.reduce(function (e, t) {
-              return e + c * t.mult * t.ar;
-            }, 0),
-            u = F * (d - 1),
-            v = l ? (s * 0.78) / o : g && o + u < s * 0.5 ? 1 : (s - u) / o,
-            h = se[d] || [[0]],
-            m = h[t % h.length],
-            p = 0,
-            i = 0;
-          (n.forEach(function (e, t) {
-            var s,
-              o,
-              d,
-              u,
-              h,
-              f,
-              g,
-              n = c * e.mult * e.ar * v;
-            (l && e.ar > 1.15 && (n *= 1.18),
-              (u = N[a % N.length]),
-              (o = U[a % U.length]),
-              (s = n * u),
-              (d = n - s),
-              (h = o === "left" ? 0 : o === "right" ? d : d / 2),
-              (e.el.style.position = "absolute"),
-              (e.el.style.left = p + h + "px"),
-              (e.el.style.top = r + m[t] + "px"),
-              (e.el.style.width = s + "px"),
-              (f = s / e.ar),
-              (g = m[t] + f + ee),
-              (i = Math.max(i, g)),
-              (p += n + F),
-              a++);
-          }),
-            (r += i + ie));
-        }),
-        (i.style.height = r + "px"));
-    }
-    (c.forEach(function (e) {
-      var t = e.querySelector("img");
-      t &&
-        !t.complete &&
-        (t.addEventListener(
-          "load",
-          function () {
-            n.classList.contains("open") && b();
-          },
-          { once: !0 },
-        ),
-        t.addEventListener(
-          "error",
-          function () {
-            n.classList.contains("open") && b();
-          },
-          { once: !0 },
-        ));
-    }),
-      window.addEventListener("resize", function () {
-        (clearTimeout(G),
-          (G = setTimeout(function () {
-            n.classList.contains("open") && b();
-          }, 150)));
-      }));
-    function C(e, t, n, s, o, i) {
-      var r = s - t,
-        c = o - n,
-        a = (r * r + c * c) ** 0.5,
-        l = (Math.random() * 2 - 1) * Math.min(a * 0.35, 160),
-        d = a ? -c / a : 0,
-        u = a ? r / a : 0,
-        h = r * 0.5 + d * l,
-        m = c * 0.5 + u * l,
-        f = 1100 + Math.random() * 900,
-        p = Math.min(a / 2400, 0.4) * 1e3 + Math.random() * 150,
-        g = e.animate(
-          [
-            { transform: "translate(0px, 0px) scale(1)", opacity: 1, filter: "blur(0px)", offset: 0 },
-            {
-              transform: "translate(" + h + "px," + m + "px) scale(0.7)",
-              opacity: 0.6,
-              filter: "blur(2px)",
-              offset: 0.55,
-            },
-            {
-              transform: "translate(" + r + "px," + c + "px) scale(0.05)",
-              opacity: 0,
-              filter: "blur(9px)",
-              offset: 1,
-            },
-          ],
-          { duration: f, delay: p, easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)", fill: "forwards" },
-        );
-      i.push(g);
-    }
-    function Q(e, t, n) {
-      var s,
-        i,
-        o = e.getBoundingClientRect();
-      return o.width === 0 || o.height === 0
-        ? null
-        : ((i = getComputedStyle(e)),
-          (s = document.createElement("div")),
-          (s.style.position = "fixed"),
-          (s.style.left = o.left + "px"),
-          (s.style.top = o.top + "px"),
-          (s.style.width = o.width + "px"),
-          (s.style.height = o.height + "px"),
-          (s.style.font = i.font),
-          (s.style.color = i.color),
-          (s.style.lineHeight = i.lineHeight),
-          (s.style.letterSpacing = i.letterSpacing),
-          (s.style.whiteSpace = "pre-wrap"),
-          (s.style.pointerEvents = "none"),
-          (s.style.zIndex = "9999"),
-          n && Object.assign(s.style, n),
-          document.body.appendChild(s),
-          Array.from(t).forEach(function (e) {
-            var t = document.createElement("span");
-            ((t.textContent = e === " " ? " " : e), (t.style.display = "inline-block"), s.appendChild(t));
-          }),
-          s);
-    }
-    function Z(e) {
-      var t = [];
-      return (
-        e.querySelectorAll(".inq-opt").forEach(function (e) {
-          var n = e.querySelector("input");
-          n && n.checked && t.push(e);
-        }),
-        e.querySelectorAll(".inq-preview > div").forEach(function (e) {
-          t.push(e);
-        }),
-        t
-      );
-    }
-    function J(e) {
-      return Array.from(e.querySelectorAll("input.inq-field, textarea.inq-field")).filter(function (e) {
-        return e.value && e.value.trim() && getComputedStyle(e).display !== "none";
-      });
-    }
-    function W(e) {
-      return Array.from(e.querySelectorAll(".inq-preview img")).filter(function (e) {
-        return getComputedStyle(e).display !== "none";
-      });
-    }
-    function X(e) {
-      if (!e)
-        return {
-          finished: Promise.resolve(),
-          restore: function () {},
-          reverseAndRestore: function () {
-            return Promise.resolve();
-          },
-        };
-      var t = 900,
-        s = Z(e).concat(J(e)).concat(W(e)),
-        n = [];
-      return (
-        s.forEach(function (e) {
-          if (getComputedStyle(e).display === "none") return;
-          ((e.style.transition =
-            "opacity " + t + "ms ease, transform " + t + "ms ease, filter " + t + "ms ease"),
-            n.push(e));
-        }),
-        void e.offsetWidth,
+
+      var target = document.getElementById("panel-" + section);
+      if (target) {
+        target.classList.add("active");
+        void target.offsetWidth;
         requestAnimationFrame(function () {
-          n.forEach(function (e) {
-            ((e.style.opacity = "0"), (e.style.transform = "scale(0.92)"), (e.style.filter = "blur(8px)"));
-          });
-        }),
-        {
-          finished: new Promise(function (e) {
-            setTimeout(e, t + 50);
-          }),
-          restore: function () {
-            n.forEach(function (e) {
-              ((e.style.transition = "none"),
-                (e.style.opacity = ""),
-                (e.style.transform = ""),
-                (e.style.filter = ""),
-                void e.offsetWidth,
-                (e.style.transition = ""));
-            });
-          },
-          reverseAndRestore: function () {
-            return new Promise(function (e) {
-              (n.forEach(function (e) {
-                ((e.style.opacity = ""), (e.style.transform = ""), (e.style.filter = ""));
-              }),
-                setTimeout(function () {
-                  (n.forEach(function (e) {
-                    e.style.transition = "";
-                  }),
-                    e());
-                }, t + 50));
-            });
-          },
-        }
-      );
-    }
-    function Y(e, t) {
-      var n,
-        s,
-        o,
-        i,
-        a,
-        r = {
-          finished: Promise.resolve(),
-          restore: function () {},
-          reverseAndRestore: function () {
-            return Promise.resolve();
-          },
-        };
-      if (!e || !t) return r;
-      if (typeof t.animate != "function") return X(e);
-      ((n = []), (s = []));
-      try {
-        return (
-          document.activeElement &&
-            typeof document.activeElement.blur == "function" &&
-            document.activeElement.blur(),
-          void e.offsetWidth,
-          (o = t.getBoundingClientRect()),
-          (i = o.left + o.width / 2),
-          (a = o.top + o.height / 2),
-          Z(e).forEach(function (e) {
-            if (getComputedStyle(e).display === "none") return;
-            var t,
-              r,
-              o = e.textContent;
-            if (!o || !o.trim()) return;
-            if (((t = Q(e, o)), !t)) return;
-            ((r = e.style.opacity),
-              (e.style.opacity = "0"),
-              Array.from(t.children).forEach(function (e) {
-                if (!e.textContent.trim()) return;
-                var t = e.getBoundingClientRect();
-                C(e, t.left + t.width / 2, t.top + t.height / 2, i, a, s);
-              }),
-              n.push(function () {
-                (t.remove(), (e.style.opacity = r));
-              }));
-          }),
-          J(e).forEach(function (e) {
-            var o,
-              r = e.value,
-              t = Q(e, r, { display: "flex", alignItems: "center" });
-            if (!t) return;
-            ((o = e.style.opacity),
-              (e.style.opacity = "0"),
-              Array.from(t.children).forEach(function (e) {
-                if (!e.textContent.trim()) return;
-                var t = e.getBoundingClientRect();
-                C(e, t.left + t.width / 2, t.top + t.height / 2, i, a, s);
-              }),
-              n.push(function () {
-                (t.remove(), (e.style.opacity = o));
-              }));
-          }),
-          W(e).forEach(function (e) {
-            var t,
-              r,
-              o = e.getBoundingClientRect();
-            if (o.width === 0 || o.height === 0) return;
-            ((t = e.cloneNode(!0)),
-              (t.style.position = "fixed"),
-              (t.style.left = o.left + "px"),
-              (t.style.top = o.top + "px"),
-              (t.style.width = o.width + "px"),
-              (t.style.height = o.height + "px"),
-              (t.style.margin = "0"),
-              (t.style.pointerEvents = "none"),
-              (t.style.zIndex = "9999"),
-              document.body.appendChild(t),
-              (r = e.style.opacity),
-              (e.style.opacity = "0"),
-              C(t, o.left + o.width / 2, o.top + o.height / 2, i, a, s),
-              n.push(function () {
-                (t.remove(), (e.style.opacity = r));
-              }));
-          }),
-          {
-            finished: Promise.all(
-              s.map(function (e) {
-                return e.finished.catch(function () {});
-              }),
-            ),
-            restore: function () {
-              n.forEach(function (e) {
-                e();
-              });
-            },
-            reverseAndRestore: function () {
-              return (
-                s.forEach(function (e) {
-                  try {
-                    e.reverse();
-                  } catch {}
-                }),
-                Promise.all(
-                  s.map(function (e) {
-                    return e.finished.catch(function () {});
-                  }),
-                ).then(function () {
-                  n.forEach(function (e) {
-                    e();
-                  });
-                })
-              );
-            },
-          }
-        );
-      } catch {
-        return (
-          n.forEach(function (e) {
-            try {
-              e();
-            } catch {}
-          }),
-          X(e)
-        );
-      }
-    }
-    function K(e) {
-      e.forEach(function (e) {
-        (e.classList.add("inq-submit-success"), (e.textContent = "Sent"));
-      });
-    }
-    function A(e, t) {
-      var n = e ? e.querySelector(".inq-error") : null;
-      n ? ((n.textContent = t), n.classList.remove("hidden")) : alert(t);
-    }
-    function B(e, t) {
-      e.forEach(function (e, n) {
-        (e.classList.remove("inq-submit-success"), (e.textContent = t[n]));
-      });
-    }
-    window.__inqSubmitConvergence = { run: Y, showSuccess: K, clearSuccess: B, showError: A };
-    function ae(n) {
-      var s,
-        o,
-        a,
-        d = Array.from(t),
-        c = e ? e.value.trim() : "",
-        l = d.map(function (e) {
-          var t = document.querySelector('.artworkChoice[data-id="' + e + '"]');
-          return t ? t.dataset.title : e;
-        });
-      return (
-        c && l.push(c + " (not listed)"),
-        (a = n.querySelector('input[name="artworkType"]:checked')),
-        (s = a ? a.value : ""),
-        (o = ""),
-        s === "license" && r && (o = r.value.trim()),
-        s === "other" && i && (o = i.value.trim()),
-        {
-          action: "purchase",
-          email: n.querySelector('[name="buyerEmail"]').value.trim(),
-          fullName: n.querySelector('[name="buyerName"]').value.trim(),
-          phone: n.querySelector('[name="buyerPhone"]').value.trim(),
-          city: n.querySelector('[name="buyerCity"]').value.trim(),
-          country: n.querySelector('[name="buyerCountry"]').value.trim(),
-          selectedArtwork: l.join(", "),
-          artworkFormat: s,
-          artworkFormatSpec: o,
-          extraInfo: n.querySelector('[name="purchaseComments"]').value.trim(),
-        }
-      );
-    }
-    function re(e) {
-      var n = {
-          canvas: "Physical painting",
-          digital: "Digital media, Tattoo, Print",
-          sculpture: "Sculpture, Object, Furniture, Mural",
-          clothing: "Clothing related",
-          brand: "Brand, Partnership or Event related",
-          other: "Other",
-        },
-        t = Array.from(e.querySelectorAll('input[name="commissionType[]"]:checked')),
-        s = t.map(function (e) {
-          return n[e.value] || e.value;
-        }),
-        o = t.some(function (e) {
-          return e.value === "other";
-        }),
-        i = o && d ? d.value.trim() : "";
-      return {
-        action: "commission",
-        email: e.querySelector('[name="commissionEmail"]').value.trim(),
-        fullName: e.querySelector('[name="commissionName"]').value.trim(),
-        phone: e.querySelector('[name="commissionPhone"]').value.trim(),
-        city: e.querySelector('[name="commissionCity"]').value.trim(),
-        country: e.querySelector('[name="commissionCountry"]').value.trim(),
-        comType: s.join(", "),
-        comTypeSpec: i,
-        concept: e.querySelector('[name="commissionConcept"]').value.trim(),
-        prefSize: e.querySelector('[name="commissionSize"]').value.trim(),
-        intendedSpace: e.querySelector('[name="commissionSpace"]').value.trim(),
-        budget: e.querySelector('[name="commissionBudget"]').value.trim(),
-        extraInfo: e.querySelector('[name="commissionComments"]').value.trim(),
-      };
-    }
-    document.addEventListener("submit", async function (n) {
-      n.preventDefault();
-      var r,
-        l,
-        d,
-        u,
-        h,
-        f,
-        p,
-        v,
-        b,
-        j,
-        _,
-        O,
-        x,
-        C,
-        E,
-        k,
-        S,
-        M,
-        F,
-        T,
-        z,
-        c = n.target,
-        i = c.id;
-      if (i !== "purchaseForm" && i !== "commissionForm") return;
-      ((E = i === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage"),
-        (k = i === "purchaseForm" ? "purchaseErrorMessage" : "commissionErrorMessage"),
-        (u = document.getElementById(E)),
-        (b = document.getElementById(k)),
-        (h = c.closest(".inq-panel")),
-        (l = document.querySelector('.inq-mobile-submit[data-target="' + i + '"]')),
-        (d = [s, l].filter(Boolean)),
-        (v = d.map(function (e) {
-          return e.textContent;
-        })),
-        u && u.classList.add("hidden"),
-        b && b.classList.add("hidden"));
-      function D() {
-        d.forEach(function (e) {
-          ((e.disabled = !0), (e.style.opacity = "0.5"), (e.textContent = "Sending…"));
+          target.classList.add("revealed");
         });
       }
-      function m() {
-        d.forEach(function (e, t) {
-          ((e.disabled = !1), (e.style.opacity = ""), (e.textContent = v[t]));
-        });
-      }
-      (D(),
-        (p = !1),
-        (T = setTimeout(function () {
-          if (p) return;
-          m();
-        }, 15e3)));
-      function y() {
-        ((p = !0), clearTimeout(T));
-      }
-      if (i === "purchaseForm") {
-        r = null;
-        try {
-          r = o && o.value ? JSON.parse(o.value) : null;
-        } catch {}
-        if (!r || (Array.isArray(r.selected) && r.selected.length === 0 && !r.custom)) {
-          (y(), m(), A(h, "Please select at least one artwork before submitting."));
-          return;
-        }
-      }
-      ((O = l && l.offsetParent !== null ? l : s && s.offsetParent !== null ? s : l || s),
-        (f =
-          h && O
-            ? Y(h, O)
-            : {
-                finished: Promise.resolve(),
-                restore: function () {},
-                reverseAndRestore: function () {
-                  return Promise.resolve();
-                },
-              }));
-      async function g(e) {
-        (await f.reverseAndRestore(), y(), m(), A(h, e));
-      }
-      try {
-        if (((C = await window.checkHuman()), !C.human)) {
-          await g("Verification failed. Please try again.");
-          return;
-        }
-        ((x = C.token),
-          x && ((_ = c.querySelector(".recaptcha-token-field")), _ && (_.value = x)),
-          (S = i === "purchaseForm" ? ae(c) : re(c)),
-          (M = window.laPost(window.APP_CONFIG.googleScriptUrl, {
-            method: "POST",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify(S),
-          }).then(function (e) {
-            return e.text().then(function (t) {
-              return { ok: e.ok, text: t };
-            });
-          })),
-          (F = await Promise.all([M, f.finished])),
-          (j = F[0]),
-          (z = String(j.text).trim()),
-          j.ok && z === "OK"
-            ? (K(d),
-              setTimeout(function () {
-                (f.restore(),
-                  c.reset(),
-                  V(),
-                  H(),
-                  R(),
-                  u && u.classList.remove("hidden"),
-                  i === "purchaseForm" &&
-                    (a && (a.innerHTML = ""),
-                    o && (o.value = ""),
-                    localStorage.removeItem("selectedArtworks"),
-                    localStorage.removeItem("notListedCustom"),
-                    t.clear(),
-                    w(),
-                    e && (e.value = "")),
-                  B(d, v),
-                  y(),
-                  m());
-              }, 1800))
-            : await g(
-                "Something went wrong sending your request. Please check your information and try again.",
-              ));
-      } catch {
-        await g("Something went wrong. Please check your information and try again.");
+    } else {
+      switchPanel(section);
+    }
+  }
+
+  function renderSideNav(active) {
+    if (!sideNav) return;
+    sideNav.innerHTML = "";
+    ["purchase", "commission", "contact"].forEach(function(s) {
+      var btn = document.createElement("button");
+      btn.className = "inq-side-item " + (s === active ? "active" : "inactive");
+      btn.textContent = SECTIONS[s].label;
+      btn.dataset.section = s;
+      if (s !== active) btn.addEventListener("click", function() { showSection(s); });
+      sideNav.appendChild(btn);
+    });
+  }
+
+  document.querySelectorAll(".inq-door-opt").forEach(function(b) {
+    b.addEventListener("click", function() { showSection(b.dataset.section); });
+  });
+  mobTabs.forEach(function(t) {
+    t.addEventListener("click", function() { showSection(t.dataset.section); });
+  });
+  if (sideSubmit) {
+    sideSubmit.addEventListener("click", function() {
+      if (!currentSection) return;
+      if (currentSection === "contact") {
+        var cf = document.querySelector("#panel-contact form");
+        if (cf) cf.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      } else {
+        var form = document.getElementById(currentSection + "Form");
+        form.requestSubmit();
       }
     });
-  }),
-    document.querySelectorAll(".inq-mobile-submit").forEach(function (e) {
-      e.addEventListener("click", function () {
-        var n = e.dataset.target,
-          t = document.getElementById(n);
-        if (!t) return;
-        t.requestSubmit();
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  var addId  = params.get("add");
+  if (addId) {
+    showSection("purchase");
+    window.history.replaceState({}, document.title, window.location.pathname);
+  } else {
+    var saved = sessionStorage.getItem("inquiry_section");
+    if (saved && SECTIONS[saved]) showSection(saved);
+  }
+
+  function initOptions() {
+    document.querySelectorAll(".inq-opt").forEach(function(label) {
+      var input = label.querySelector("input");
+      if (!input) return;
+      if (input.checked) label.classList.add("is-checked");
+      input.addEventListener("change", function() {
+        if (input.type === "radio") {
+          document.querySelectorAll('input[name="' + input.name + '"]').forEach(function(r) {
+            var l = r.closest(".inq-opt");
+            if (l) l.classList.toggle("is-checked", r.checked);
+          });
+          handleFormatReveal();
+        } else {
+          label.classList.toggle("is-checked", input.checked);
+        }
       });
-    }));
+    });
+  }
+  initOptions();
+
+  var otherRadio   = document.getElementById("artworkOtherRadio");
+  var otherInput   = document.getElementById("artworkOtherInput");
+  var licenseRadio = document.getElementById("artworkLicenseRadio");
+  var licenseInput = document.getElementById("artworkLicenseInput");
+  function handleFormatReveal() {
+    if (otherInput)   { var c = otherRadio && otherRadio.checked;      otherInput.classList.toggle("hidden", !c);   otherInput.required = !!c;   if (!c) otherInput.value = ""; }
+    if (licenseInput) { var c2 = licenseRadio && licenseRadio.checked; licenseInput.classList.toggle("hidden", !c2); licenseInput.required = !!c2; if (!c2) licenseInput.value = ""; }
+  }
+
+  var commissionOtherCheckbox = document.getElementById("commissionOtherCheckbox");
+  var commissionOtherInput    = document.getElementById("commissionOtherInput");
+  function handleCommissionOtherReveal() {
+    if (!commissionOtherInput) return;
+    var checked = commissionOtherCheckbox && commissionOtherCheckbox.checked;
+    commissionOtherInput.classList.toggle("hidden", !checked);
+    if (!checked) commissionOtherInput.value = "";
+  }
+  commissionOtherCheckbox && commissionOtherCheckbox.addEventListener("change", handleCommissionOtherReveal);
+
+  var modal          = document.getElementById("artworkSelectorModal");
+  var openBtn        = document.getElementById("openArtworkSelector");
+  var closeBtn       = document.getElementById("closeArtworkSelector");
+  var selConfirmBtn  = document.getElementById("selConfirmText");
+  var selDeselectAll = document.getElementById("selDeselectAll");
+  var preview        = document.getElementById("selectedArtworksPreview");
+  var selectedTA     = document.getElementById("selectedArtworkIDs");
+  var notListedInput = document.getElementById("notListedInput");
+  var selected       = new Set(JSON.parse(localStorage.getItem("selectedArtworks") || "[]"));
+  var artItems       = Array.from(document.getElementsByClassName("artworkChoice"));
+
+  if (addId) { selected.add(addId); localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected))); }
+  var savedCustom = localStorage.getItem("notListedCustom");
+  if (notListedInput && savedCustom) notListedInput.value = savedCustom;
+
+  function updateConfirmVis() {
+    var hasAny = selected.size > 0 || (notListedInput && notListedInput.value.trim().length > 0);
+    var hasSel = selected.size > 0;
+    if (selConfirmBtn)  selConfirmBtn.classList.toggle("hidden", !hasAny);
+    if (selDeselectAll) selDeselectAll.classList.toggle("hidden", !hasSel);
+  }
+
+  function rebuildPreview() {
+    if (!preview) return;
+    preview.innerHTML = "";
+    var ids = Array.from(selected);
+    var custom = notListedInput ? notListedInput.value.trim() : "";
+    if (selectedTA) {
+      selectedTA.value = (ids.length === 0 && !custom)
+        ? "Please select artworks above"
+        : JSON.stringify({ selected: ids, custom: custom || null });
+    }
+    ids.forEach(function(id) {
+      var item = document.querySelector('.artworkChoice[data-id="' + id + '"]');
+      if (!item) return;
+      var img = document.createElement("img"); img.src = item.dataset.image;
+      preview.appendChild(img);
+    });
+    if (custom) { var tag = document.createElement("div"); tag.textContent = custom; preview.appendChild(tag); }
+    updateConfirmVis();
+  }
+
+  function syncSel() {
+    artItems.forEach(function(item) {
+      var id = item.dataset.id;
+      var chk = item.querySelector(".checkmark-overlay");
+      if (selected.has(id)) { item.classList.add("selected"); if (chk) chk.classList.remove("hidden"); }
+      else { item.classList.remove("selected"); if (chk) chk.classList.add("hidden"); }
+    });
+    updateConfirmVis();
+  }
+  syncSel(); rebuildPreview();
+
+  function closeAndConfirm() { rebuildPreview(); if (modal) modal.classList.remove("open"); }
+
+  openBtn && openBtn.addEventListener("click", function() {
+    modal.classList.add("open");
+    updateConfirmVis();
+    requestAnimationFrame(function() { requestAnimationFrame(layoutSelectorGrid); });
+  });
+  closeBtn      && closeBtn.addEventListener("click", closeAndConfirm);
+  selConfirmBtn && selConfirmBtn.addEventListener("click", closeAndConfirm);
+  modal && modal.addEventListener("click", function(e) { if (e.target === modal) closeAndConfirm(); });
+  document.getElementById("confirmArtworkSelection") &&
+    document.getElementById("confirmArtworkSelection").addEventListener("click", closeAndConfirm);
+
+  selDeselectAll && selDeselectAll.addEventListener("click", function() {
+    selected.clear();
+    localStorage.setItem("selectedArtworks", "[]");
+    syncSel(); rebuildPreview();
+  });
+
+  artItems.forEach(function(item) {
+    item.addEventListener("click", function() {
+      var id = item.dataset.id;
+      if (selected.has(id)) { selected.delete(id); } else { selected.add(id); }
+      localStorage.setItem("selectedArtworks", JSON.stringify(Array.from(selected)));
+      syncSel(); rebuildPreview();
+    });
+  });
+
+  notListedInput && notListedInput.addEventListener("input", function() {
+    rebuildPreview(); localStorage.setItem("notListedCustom", notListedInput.value);
+    updateConfirmVis();
+  });
+  notListedInput && notListedInput.addEventListener("click", function(e) { e.stopPropagation(); });
+
+  /* ── MASONRY LAYOUT (same algorithm as homepage gallery) ── */
+  var SEL_GAP_H = 40, SEL_GAP_V = 90, SEL_TEXT = 38;
+  var SEL_HEIGHTS = [340, 400, 280, 360, 310, 420, 290];
+  var SEL_SCALES  = [0.82, 0.92, 0.76, 0.88, 0.84, 0.95, 0.79];
+  var SEL_ANCHORS = ['left', 'right', 'center', 'left', 'right', 'left', 'center'];
+  var SEL_STAGGERS = {
+    1: [[0]],
+    2: [[0, 90], [90, 0], [0, 60], [60, 0], [40, 0], [0, 40]],
+    3: [[0, 80, 30], [60, 0, 90], [30, 90, 0], [80, 20, 60], [0, 50, 80], [70, 30, 0]]
+  };
+  var SEL_HEIGHT_MULTS = [0.93, 0.97, 1.05, 0.91, 1.08, 0.95, 1.03, 0.89, 1.06, 0.92];
+
+  function layoutSelectorGrid() {
+    var grid = document.getElementById("inqSelGrid");
+    if (!grid || !modal.classList.contains("open")) return;
+    if (window.innerWidth <= 700) {
+      artItems.forEach(function(el) { el.style.left = ""; el.style.top = ""; el.style.width = ""; });
+      grid.style.height = ""; return;
+    }
+    var W = grid.offsetWidth;
+    if (W <= 0) return;
+    var data = artItems.map(function(el, i) {
+      var img = el.querySelector("img");
+      var ar  = (img && img.naturalWidth && img.naturalHeight) ? img.naturalWidth / img.naturalHeight : 0;
+      return { el: el, ar: ar, mult: SEL_HEIGHT_MULTS[i % SEL_HEIGHT_MULTS.length] };
+    });
+    var loaded = data.filter(function(d) { return d.ar > 0; }).length;
+    if (loaded < data.length * 0.5 && data.length > 2) { setTimeout(layoutSelectorGrid, 250); return; }
+    data.forEach(function(d) { if (d.ar === 0) d.ar = 0.75; });
+    var rows = [], i = 0, ri = 0;
+    while (i < data.length) {
+      var targetH = SEL_HEIGHTS[ri % SEL_HEIGHTS.length];
+      var landscape = data[i] && data[i].ar > 1.05;
+      var solo = (ri % 8 === 5) && landscape;
+      var maxItems = solo ? 2 : 3;
+      var row = [], rowRawW = 0;
+      while (i < data.length && row.length < maxItems) {
+        var d = data[i], itemW = targetH * d.mult * d.ar, gapsW = row.length * SEL_GAP_H;
+        if (row.length > 0 && rowRawW + gapsW + itemW > W * 1.1) break;
+        row.push(d); rowRawW += itemW; i++;
+      }
+      rows.push({ items: row, targetH: targetH, solo: solo }); ri++;
+    }
+    var y = 0, gi = 0;
+    rows.forEach(function(row, rIdx) {
+      var rowItems = row.items, targetH = row.targetH, solo = row.solo;
+      var isLast = rIdx === rows.length - 1;
+      var count = rowItems.length;
+      var rawTotal = rowItems.reduce(function(s, d) { return s + targetH * d.mult * d.ar; }, 0);
+      var gaps = SEL_GAP_H * (count - 1);
+      var scale = solo ? (W * 0.78) / rawTotal : (isLast && rawTotal + gaps < W * 0.5) ? 1 : (W - gaps) / rawTotal;
+      var patterns = SEL_STAGGERS[count] || [[0]];
+      var stagger = patterns[rIdx % patterns.length];
+      var x = 0, maxBottom = 0;
+      rowItems.forEach(function(d, idx) {
+        var slotW = targetH * d.mult * d.ar * scale;
+        if (solo && d.ar > 1.15) slotW *= 1.18;
+        var sc = SEL_SCALES[gi % SEL_SCALES.length];
+        var anchor = SEL_ANCHORS[gi % SEL_ANCHORS.length];
+        var imgW = slotW * sc;
+        var slack = slotW - imgW;
+        var shiftX = anchor === 'left' ? 0 : anchor === 'right' ? slack : slack / 2;
+        d.el.style.position = 'absolute';
+        d.el.style.left = (x + shiftX) + 'px';
+        d.el.style.top = (y + stagger[idx]) + 'px';
+        d.el.style.width = imgW + 'px';
+        var imgH = imgW / d.ar;
+        var bottom = stagger[idx] + imgH + SEL_TEXT;
+        maxBottom = Math.max(maxBottom, bottom);
+        x += slotW + SEL_GAP_H; gi++;
+      });
+      y += maxBottom + SEL_GAP_V;
+    });
+    grid.style.height = y + 'px';
+  }
+
+  artItems.forEach(function(item) {
+    var img = item.querySelector("img");
+    if (img && !img.complete) {
+      img.addEventListener("load",  function() { if (modal.classList.contains("open")) layoutSelectorGrid(); }, { once: true });
+      img.addEventListener("error", function() { if (modal.classList.contains("open")) layoutSelectorGrid(); }, { once: true });
+    }
+  });
+  var selRt;
+  window.addEventListener("resize", function() {
+    clearTimeout(selRt);
+    selRt = setTimeout(function() { if (modal.classList.contains("open")) layoutSelectorGrid(); }, 150);
+  });
+
+  /* ══════════════════════════════════════════════════════
+     SUBMIT CONVERGENCE ANIMATION
+     Every character of the panel's visible text, every typed value in
+     every field, and every image gets its own independent flight
+     toward the submit button — varied speed, varied curve, varied
+     delay, like debris pulled into a black hole — then the button
+     turns green to confirm.
+
+     Non-destructive by design: no real form element's markup is ever
+     rewritten. Text sources get temporarily `visibility:hidden` while
+     a floating character-by-character clone (positioned exactly over
+     the original) does the animating; the original element — and any
+     listeners bound to it — are untouched. Images animate in place
+     directly, since they carry no such risk.
+     ══════════════════════════════════════════════════════ */
+  function animateCharToward(el, originX, originY, targetX, targetY, bucket) {
+    var dx = targetX - originX;
+    var dy = targetY - originY;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+
+    // A perpendicular offset partway along the path gives each piece its
+    // own curve — bigger swings for pieces that start farther away, so
+    // distant content takes a longer, more gravitational route while
+    // nearby content goes almost straight in. Sign is randomized so not
+    // everything bends the same direction.
+    var curviness = (Math.random() * 2 - 1) * Math.min(dist * 0.35, 160);
+    var nx = dist ? -dy / dist : 0;
+    var ny = dist ? dx / dist : 0;
+    var midX = dx * 0.5 + nx * curviness;
+    var midY = dy * 0.5 + ny * curviness;
+
+    // Randomized per-element speed and start delay — averages out to
+    // roughly a ~2s total effect, but no two pieces move identically.
+    var duration = 1100 + Math.random() * 900;
+    var delay = Math.min(dist / 2400, 0.4) * 1000 + Math.random() * 150;
+
+    var anim = el.animate([
+      { transform: "translate(0px, 0px) scale(1)", opacity: 1,    filter: "blur(0px)", offset: 0 },
+      { transform: "translate(" + midX + "px," + midY + "px) scale(0.7)", opacity: 0.6, filter: "blur(2px)", offset: 0.55 },
+      { transform: "translate(" + dx + "px," + dy + "px) scale(0.05)", opacity: 0, filter: "blur(9px)", offset: 1 }
+    ], {
+      duration: duration,
+      delay: delay,
+      easing: "cubic-bezier(0.55, 0.06, 0.68, 0.19)", // slow to start, accelerating hard at the end — gravity, not a constant glide
+      fill: "forwards"
+    });
+
+    bucket.push(anim);
+  }
+
+  function buildCharOverlay(sourceEl, text, extraStyle) {
+    var rect = sourceEl.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) return null;
+    var cs = getComputedStyle(sourceEl);
+
+    var overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.left = rect.left + "px";
+    overlay.style.top = rect.top + "px";
+    overlay.style.width = rect.width + "px";
+    overlay.style.height = rect.height + "px";
+    overlay.style.font = cs.font;
+    overlay.style.color = cs.color;
+    overlay.style.lineHeight = cs.lineHeight;
+    overlay.style.letterSpacing = cs.letterSpacing;
+    overlay.style.whiteSpace = "pre-wrap";
+    overlay.style.pointerEvents = "none";
+    overlay.style.zIndex = "9999";
+    if (extraStyle) { Object.assign(overlay.style, extraStyle); }
+    document.body.appendChild(overlay);
+
+    Array.from(text).forEach(function (ch) {
+      var span = document.createElement("span");
+      span.textContent = ch === " " ? "\u00A0" : ch;
+      span.style.display = "inline-block";
+      overlay.appendChild(span);
+    });
+
+    return overlay;
+  }
+
+  /* ── FALLBACK: simple fade ──
+     Used automatically if the browser doesn't support the Web
+     Animations API, or if anything in the per-character convergence
+     throws for any reason. No positions, no per-character motion —
+     just the same fade/scale/blur morph used everywhere else on the
+     site, applied to the panel's visible content as a group, until
+     the form reads as blank. */
+  /* ── Shared: collect only what the user actually provided ──
+     Typed values in real fields, the text of any CHECKED radio/checkbox
+     option, and the purchase panel's artwork preview (selected thumbnail
+     images + the free-text "not listed" tag) — nothing static like
+     headings, descriptions, or unchecked option labels. */
+  function collectUserProvidedTextEls(panelEl) {
+    var els = [];
+    panelEl.querySelectorAll(".inq-opt").forEach(function (label) {
+      var input = label.querySelector("input");
+      if (input && input.checked) els.push(label);
+    });
+    panelEl.querySelectorAll(".inq-preview > div").forEach(function (tag) {
+      els.push(tag); // the custom "not listed" text tag, if present
+    });
+    return els;
+  }
+  function collectUserProvidedFieldEls(panelEl) {
+    return Array.from(panelEl.querySelectorAll("input.inq-field, textarea.inq-field"))
+      .filter(function (f) { return f.value && f.value.trim() && getComputedStyle(f).display !== "none"; });
+  }
+  function collectUserProvidedImgEls(panelEl) {
+    return Array.from(panelEl.querySelectorAll(".inq-preview img"))
+      .filter(function (img) { return getComputedStyle(img).display !== "none"; });
+  }
+
+  function runSimpleFadeFallback(panelEl) {
+    if (!panelEl) return { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
+    var FADE_MS = 900;
+    var els = collectUserProvidedTextEls(panelEl)
+      .concat(collectUserProvidedFieldEls(panelEl))
+      .concat(collectUserProvidedImgEls(panelEl));
+    var touched = [];
+    els.forEach(function (el) {
+      if (getComputedStyle(el).display === "none") return;
+      el.style.transition = "opacity " + FADE_MS + "ms ease, transform " + FADE_MS + "ms ease, filter " + FADE_MS + "ms ease";
+      touched.push(el);
+    });
+    void panelEl.offsetWidth; // force reflow so the transition actually triggers
+    requestAnimationFrame(function () {
+      touched.forEach(function (el) {
+        el.style.opacity = "0";
+        el.style.transform = "scale(0.92)";
+        el.style.filter = "blur(8px)";
+      });
+    });
+    return {
+      finished: new Promise(function (resolve) { setTimeout(resolve, FADE_MS + 50); }),
+      // Used on success — data is about to be cleared anyway, so an
+      // instant, non-animated reset back to normal is fine.
+      restore: function () {
+        touched.forEach(function (el) {
+          el.style.transition = "none";
+          el.style.opacity = "";
+          el.style.transform = "";
+          el.style.filter = "";
+          void el.offsetWidth;
+          el.style.transition = "";
+        });
+      },
+      // Used on error — fades everything visibly back in (same
+      // transition, just reversed), preserving the user's data.
+      reverseAndRestore: function () {
+        return new Promise(function (resolve) {
+          touched.forEach(function (el) {
+            el.style.opacity = "";
+            el.style.transform = "";
+            el.style.filter = "";
+          });
+          setTimeout(function () {
+            touched.forEach(function (el) { el.style.transition = ""; });
+            resolve();
+          }, FADE_MS + 50);
+        });
+      }
+    };
+  }
+
+  function runSubmitConvergence(panelEl, triggerBtn) {
+    var noop = { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
+    if (!panelEl || !triggerBtn) return noop;
+
+    // Feature check: no Web Animations API support → go straight to the
+    // simple fade rather than attempting per-character motion at all.
+    if (typeof triggerBtn.animate !== "function") {
+      return runSimpleFadeFallback(panelEl);
+    }
+
+    var restoreFnsSoFar = [];
+    var animations = [];
+    try {
+      // On mobile, tapping submit usually dismisses the on-screen keyboard,
+      // which reflows the layout a moment later. Force that to happen
+      // first (blur whatever's focused) so every rect we measure below
+      // reflects the SETTLED layout, not a stale pre-reflow position.
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
+      void panelEl.offsetWidth; // force a synchronous reflow right now
+
+      var targetRect = triggerBtn.getBoundingClientRect();
+      var targetX = targetRect.left + targetRect.width / 2;
+      var targetY = targetRect.top + targetRect.height / 2;
+
+      // ── Only checked option labels — text the user actually chose.
+      //    Unchecked options are left completely alone. ──
+      collectUserProvidedTextEls(panelEl).forEach(function (el) {
+        if (getComputedStyle(el).display === "none") return;
+        var text = el.textContent;
+        if (!text || !text.trim()) return;
+
+        var overlay = buildCharOverlay(el, text);
+        if (!overlay) return;
+        var prevOpacity = el.style.opacity;
+        el.style.opacity = "0";
+
+        Array.from(overlay.children).forEach(function (span) {
+          if (!span.textContent.trim()) return; // skip bare spaces
+          var r = span.getBoundingClientRect();
+          animateCharToward(span, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+        });
+
+        restoreFnsSoFar.push(function () {
+          overlay.remove();
+          el.style.opacity = prevOpacity;
+        });
+      });
+
+      // ── Only fields the user actually typed something into. Empty
+      //    fields (and their placeholders) are left completely alone. ──
+      collectUserProvidedFieldEls(panelEl).forEach(function (field) {
+        var val = field.value;
+        var fieldOverlay = buildCharOverlay(field, val, { display: "flex", alignItems: "center" });
+        if (!fieldOverlay) return;
+        var prevOpacity = field.style.opacity;
+        field.style.opacity = "0";
+
+        Array.from(fieldOverlay.children).forEach(function (span) {
+          if (!span.textContent.trim()) return;
+          var r = span.getBoundingClientRect();
+          animateCharToward(span, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+        });
+
+        restoreFnsSoFar.push(function () {
+          fieldOverlay.remove();
+          field.style.opacity = prevOpacity;
+        });
+      });
+
+      // ── Selected artwork thumbnails: animate a CLONE, never the real
+      //    <img> itself, so the actual thumbnail can never end up stuck
+      //    scaled-to-zero if cleanup doesn't run for some reason ──
+      collectUserProvidedImgEls(panelEl).forEach(function (img) {
+        var r = img.getBoundingClientRect();
+        if (r.width === 0 || r.height === 0) return;
+
+        var clone = img.cloneNode(true);
+        clone.style.position = "fixed";
+        clone.style.left = r.left + "px";
+        clone.style.top = r.top + "px";
+        clone.style.width = r.width + "px";
+        clone.style.height = r.height + "px";
+        clone.style.margin = "0";
+        clone.style.pointerEvents = "none";
+        clone.style.zIndex = "9999";
+        document.body.appendChild(clone);
+
+        var prevOpacity = img.style.opacity;
+        img.style.opacity = "0";
+
+        animateCharToward(clone, r.left + r.width / 2, r.top + r.height / 2, targetX, targetY, animations);
+
+        restoreFnsSoFar.push(function () {
+          clone.remove();
+          img.style.opacity = prevOpacity;
+        });
+      });
+
+      return {
+        finished: Promise.all(animations.map(function (a) { return a.finished.catch(function () {}); })),
+        // Used on success — form is about to be reset/cleared anyway.
+        restore: function () { restoreFnsSoFar.forEach(function (fn) { fn(); }); },
+        // Used on error — plays every character's flight in reverse
+        // (native WAAPI .reverse(), same path, same timing, backwards)
+        // back to its original spot, THEN un-hides the real elements —
+        // so nothing is lost and the user can fix and retry.
+        reverseAndRestore: function () {
+          animations.forEach(function (a) { try { a.reverse(); } catch (e) {} });
+          return Promise.all(animations.map(function (a) { return a.finished.catch(function () {}); }))
+            .then(function () { restoreFnsSoFar.forEach(function (fn) { fn(); }); });
+        }
+      };
+    } catch (err) {
+      // Something about the complex animation failed (unexpected layout,
+      // an unsupported keyframe value, etc.) — undo any overlays already
+      // created, then fall back to the simple fade instead of leaving
+      // the form in a broken half-animated state.
+      restoreFnsSoFar.forEach(function (fn) { try { fn(); } catch (e2) {} });
+      return runSimpleFadeFallback(panelEl);
+    }
+  }
+
+  function showSubmitSuccess(triggerButtons) {
+    triggerButtons.forEach(function (b) {
+      b.classList.add("inq-submit-success");
+      b.textContent = "Sent";
+    });
+  }
+
+  function showFormError(panelEl, message) {
+    var errEl = panelEl ? panelEl.querySelector(".inq-error") : null;
+    if (errEl) {
+      errEl.textContent = message;
+      errEl.classList.remove("hidden");
+    } else {
+      // No inline error element available in this panel — fall back to
+      // an alert so the failure is never silently swallowed.
+      alert(message);
+    }
+  }
+
+  function clearSubmitSuccess(triggerButtons, originalLabels) {
+    triggerButtons.forEach(function (b, i) {
+      b.classList.remove("inq-submit-success");
+      b.textContent = originalLabels[i];
+    });
+  }
+
+  // Exposed so contact-form.html (a separate partial with its own
+  // independent submission script) can reuse the exact same convergence
+  // behavior without duplicating it — this executes on DOMContentLoaded,
+  // well before any form can actually be submitted, so the timing is safe
+  // regardless of which partial's <script> tag happens to run first.
+  window.__inqSubmitConvergence = {
+    run: runSubmitConvergence,
+    showSuccess: showSubmitSuccess,
+    clearSuccess: clearSubmitSuccess,
+    showError: showFormError
+  };
+
+  /* ── PAYLOAD BUILDERS ── */
+  function buildPurchasePayload(form) {
+    var ids = Array.from(selected);
+    var custom = notListedInput ? notListedInput.value.trim() : "";
+    var titles = ids.map(function(id) {
+      var item = document.querySelector('.artworkChoice[data-id="' + id + '"]');
+      return item ? item.dataset.title : id;
+    });
+    if (custom) titles.push(custom + " (not listed)");
+
+    var checkedRadio = form.querySelector('input[name="artworkType"]:checked');
+    var artworkType  = checkedRadio ? checkedRadio.value : "";
+    var formatSpec   = "";
+    if (artworkType === "license" && licenseInput) formatSpec = licenseInput.value.trim();
+    if (artworkType === "other"   && otherInput)   formatSpec = otherInput.value.trim();
+
+    return {
+      action: "purchase",
+      email: form.querySelector('[name="buyerEmail"]').value.trim(),
+      fullName: form.querySelector('[name="buyerName"]').value.trim(),
+      phone: form.querySelector('[name="buyerPhone"]').value.trim(),
+      city: form.querySelector('[name="buyerCity"]').value.trim(),
+      country: form.querySelector('[name="buyerCountry"]').value.trim(),
+      selectedArtwork: titles.join(", "),
+      artworkFormat: artworkType,
+      artworkFormatSpec: formatSpec,
+      extraInfo: form.querySelector('[name="purchaseComments"]').value.trim()
+    };
+  }
+
+  function buildCommissionPayload(form) {
+    var typeLabels = {
+      canvas: "Physical painting",
+      digital: "Digital media, Tattoo, Print",
+      sculpture: "Sculpture, Object, Furniture, Mural",
+      clothing: "Clothing related",
+      brand: "Brand, Partnership or Event related",
+      other: "Other"
+    };
+    var checkedBoxes  = Array.from(form.querySelectorAll('input[name="commissionType[]"]:checked'));
+    var checkedLabels = checkedBoxes.map(function(cb) { return typeLabels[cb.value] || cb.value; });
+    var hasOther = checkedBoxes.some(function(cb) { return cb.value === "other"; });
+    var otherSpec = hasOther && commissionOtherInput ? commissionOtherInput.value.trim() : "";
+
+    return {
+      action: "commission",
+      email: form.querySelector('[name="commissionEmail"]').value.trim(),
+      fullName: form.querySelector('[name="commissionName"]').value.trim(),
+      phone: form.querySelector('[name="commissionPhone"]').value.trim(),
+      city: form.querySelector('[name="commissionCity"]').value.trim(),
+      country: form.querySelector('[name="commissionCountry"]').value.trim(),
+      comType: checkedLabels.join(", "),
+      comTypeSpec: otherSpec,
+      concept: form.querySelector('[name="commissionConcept"]').value.trim(),
+      prefSize: form.querySelector('[name="commissionSize"]').value.trim(),
+      intendedSpace: form.querySelector('[name="commissionSpace"]').value.trim(),
+      budget: form.querySelector('[name="commissionBudget"]').value.trim(),
+      extraInfo: form.querySelector('[name="commissionComments"]').value.trim()
+    };
+  }
+
+  /* ── FORM SUBMISSION ── */
+  document.addEventListener("submit", async function(e) {
+    e.preventDefault();
+    var form = e.target, fid = form.id;
+    if (fid !== "purchaseForm" && fid !== "commissionForm") return;
+    var sid = fid === "purchaseForm" ? "purchaseSuccessMessage" : "commissionSuccessMessage";
+    var eid = fid === "purchaseForm" ? "purchaseErrorMessage"   : "commissionErrorMessage";
+    var sEl = document.getElementById(sid);
+    var eEl = document.getElementById(eid);
+    var panelEl = form.closest(".inq-panel");
+
+    var mobileBtn = document.querySelector('.inq-mobile-submit[data-target="' + fid + '"]');
+    var triggerButtons = [sideSubmit, mobileBtn].filter(Boolean);
+    var originalLabels = triggerButtons.map(function(b){ return b.textContent; });
+
+    // Hide any leftover message from a previous attempt before this one starts.
+    sEl && sEl.classList.add("hidden");
+    eEl && eEl.classList.add("hidden");
+
+    function setBusy() {
+      triggerButtons.forEach(function(b){ b.disabled = true; b.style.opacity = "0.5"; b.textContent = "Sending…"; });
+    }
+    function setIdle() {
+      triggerButtons.forEach(function(b, i){ b.disabled = false; b.style.opacity = ""; b.textContent = originalLabels[i]; });
+    }
+
+    setBusy();
+
+    // Absolute last-resort safety net: whatever else happens, this
+    // guarantees the buttons are never permanently stuck disabled.
+    // Cleared the moment any real completion path runs.
+    var watchdogCleared = false;
+    var watchdog = setTimeout(function () {
+      if (watchdogCleared) return;
+      setIdle();
+    }, 15000);
+    function clearWatchdog() { watchdogCleared = true; clearTimeout(watchdog); }
+
+    // Purchase-only synchronous check — nothing to animate yet if this fails.
+    if (fid === "purchaseForm") {
+      var parsed = null;
+      try { parsed = selectedTA && selectedTA.value ? JSON.parse(selectedTA.value) : null; } catch(x) {}
+      if (!parsed || (Array.isArray(parsed.selected) && parsed.selected.length === 0 && !parsed.custom)) {
+        clearWatchdog();
+        setIdle();
+        showFormError(panelEl, "Please select at least one artwork before submitting.");
+        return;
+      }
+    }
+
+    // Convergence starts right here — immediately on click, before
+    // recaptcha or the network request — so there's no perceived delay.
+    var convergenceTarget = (mobileBtn && mobileBtn.offsetParent !== null) ? mobileBtn : (sideSubmit && sideSubmit.offsetParent !== null ? sideSubmit : mobileBtn || sideSubmit);
+    var convergence = panelEl && convergenceTarget
+      ? runSubmitConvergence(panelEl, convergenceTarget)
+      : { finished: Promise.resolve(), restore: function () {}, reverseAndRestore: function () { return Promise.resolve(); } };
+
+    async function failAndRestore(message) {
+      await convergence.reverseAndRestore();
+      clearWatchdog();
+      setIdle();
+      showFormError(panelEl, message);
+    }
+
+    try {
+      // Only a real bot verdict from Google stops a submission; a broken or
+      // blocked check never does (see window.checkHuman in baseof.html).
+      var check = await window.checkHuman();
+      if (!check.human) {
+        await failAndRestore("Verification failed. Please try again.");
+        return;
+      }
+      var token = check.token;
+      if (token) { var tf = form.querySelector(".recaptcha-token-field"); if (tf) tf.value = token; }
+
+      var payload = fid === "purchaseForm" ? buildPurchasePayload(form) : buildCommissionPayload(form);
+
+      var fetchPromise = fetch(window.APP_CONFIG.googleScriptUrl, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload)
+      }).then(function (r) {
+        return r.text().then(function (t) { return { ok: r.ok, text: t }; });
+      });
+
+      // Wait for BOTH the network response and the full character
+      // convergence to finish — whichever takes longer — so the button
+      // never turns green mid-animation, and the animation never ends
+      // before the submission is actually confirmed.
+      var combined = await Promise.all([fetchPromise, convergence.finished]);
+      var fetchResult = combined[0];
+      var result = String(fetchResult.text).trim();
+
+      if (fetchResult.ok && result === "OK") {
+        showSubmitSuccess(triggerButtons);
+
+        setTimeout(function () {
+          convergence.restore();
+          form.reset(); initOptions();
+          handleFormatReveal();
+          handleCommissionOtherReveal();
+          sEl && sEl.classList.remove("hidden");
+          if (fid === "purchaseForm") {
+            if (preview) preview.innerHTML = "";
+            if (selectedTA) selectedTA.value = "";
+            localStorage.removeItem("selectedArtworks"); localStorage.removeItem("notListedCustom");
+            selected.clear(); syncSel();
+            if (notListedInput) notListedInput.value = "";
+          }
+          clearSubmitSuccess(triggerButtons, originalLabels);
+          clearWatchdog();
+          setIdle();
+        }, 1800);
+      } else {
+        await failAndRestore("Something went wrong sending your request. Please check your information and try again.");
+      }
+    } catch (err) {
+      await failAndRestore("Something went wrong. Please check your information and try again.");
+    }
+  });
+
+}); /* end DOMContentLoaded */
+document.querySelectorAll(".inq-mobile-submit").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    var targetId = btn.dataset.target;
+    var form = document.getElementById(targetId);
+    if (!form) return;
+
+    form.requestSubmit(); // correct modern API
+  });
+});
 </script>
 
 {{ end }}

@@ -1,0 +1,972 @@
+{
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery1.jpeg": [
+719,
+719,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA0ElEQVR42gXBPU/CUBQG4Pec2zYVRPlo1QbQGr5CMHFgkITEaIw7g3/C2d/oxMCqi0GgOlCQVA2S9t7j81CvfVvM8fPLDgZswwgBAKDOgsb5keUf8C6T78SwRcwQAQOyTeUvo2HXDXzLGOgfUQx+6FurRN91ZLFMH+/dSoGeRrb+FRpc3Iz69iLO6mVECYeeiuI074KvW/j4MidFnsba29Ovn6Za4vGbVvn908sqog3VfGe20mFZ5huq+Q5fNZ15oo4PZRbrVuBM1xR6MnnP/gGKYVEr+XiTIAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery2.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AXFmX7a8zTc1JkNDPfXv7N7b3gQHAwUH+PXo6vK4v84MBf3e3t4C1t3eAQT6EhQRERANBfjx8+7oBB4dHSctMAsLCtDP0L+/wSMcEwQpJB/G09zNztHq6unx9Pfk6/QCCRMZ7Orq8PDu/Pz9AwQC9PX2Aw8MDDs6OCclJO/s6uvt7xAMCgL49/b+/fsKCQoTFBUAAP8FBQLtEUsieBJJ7gAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery3.jpeg": [
+1000,
+1241,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AaKkpTM0MhwcHgoHBeHh4gcGBgIZDgbPwMO0oJ3/AQP/AQD3+voCMRLuKBLvLRLXy8Sl9vn6CQoCBPDz7Rcb/+G12vX18QIAHOrW0wM0HSvr3OLt0+MrNw7P1fz97+MDXSAJ88PG0/EGtMbfl6K3CRAaBB4LAuYOEw35+BgWLFFD9TAxKAG7ra8gC/UaGRP9Gifn5+oDBQbWykXFn8sq8AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery4.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AYuWkTMnKf0AAhoZGAIA/wIDBQTw8fH3+/v06OIMBAANGB7//PkDLS8pCQ4P8NHI7cu0EQ8F/w0aA0MjItPh4O3k5AwH9O3SyREvRQQaEhbv9Ozh/wAB2e8PCvwA18wDJigkBAQBHBwWDhD+EBwN+AQEBBUcFwoMCwUEBfILCyomBujvAgQMDg4FBQX4+fj//gXb3wHl6NsVQzr8Kji0SAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery5.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AXZRQRYOCC4+Qsrn+uHi4zc2NgTS2+nz3toDBRLoBxK3t7hRUVAESl5f6+XoGC0sB/376+3uExERAt7n5gAP/hYbDRIA9S4vNvT09AMKCADX0r8iHyXl5OkNCwcD/vsBk498/Pnv4uny9Pb4FP4E9gEHBA0QIvr6+g/25Pfy4ub4+PLy6QTEwLv7+vn6+/z8+/v7+vr7+/3VXVVQNfjydQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery6.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAoElEQVR42gXBuw6CMBQA0NvbVuTVJuAD0WB0MC58AJ/gjzu7qFEkKEQxDg5ijJSAnkNW0ZIAAAAiReTTRcgcaepdblhC9CYKOpVq8Neqc3F7P+8/kLN56PUF6lq3pRZwW30/xeXg9ofMFCIa+wM/cEdBfIyzZMtepSLYmGWVpussv+53MUrbIJQ9yroBjTDh6YQ6OkpeZ8dNcso9Vw4E/wMjlDXRwhqKbgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography//photography4.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAc0lEQVR42gXBuw2AIBQF0MevwBg6OmqWcy/mcAe3QAI0fAKJ13MIwFqr9w4AACei1loIIcb4fR8nouM4nue575sxRgBqrc6567oAcAA5Z2OMEKL3zmutAM7z1FrPOfneO6WUc37fV0rJSylKKe+9tXaM8QN15UwkMy0BmQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography1.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAe0lEQVR42iXJuwnFIBQA0HvzYidKwDYLuIIruINLOoIbWNim90MKBSHEm+Kd9iAREREApJQ459tai4gQ8TiO67rg/2OM932J6Ke1fp7Hey+EUEqBc04pZa3tva+1NillKaW1lnNGxL3WCgCIGGOcc+7GGMbYeZ4hhPu+P23ORS9HVED9AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography10.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAfUlEQVR42gXBsQqAIBAAUOxyalScXDIaBP/Byf9uqg8QWry1JRBcDgJRe48hIgBorVtr13XNKaXeuxBiWRYimnPO+74fx/F9n/d+CiE8z3Pft7VWKcUQsda6bRtjDBEnIlrXlXP+vq+UEgAg5+ycO8/TGDM554goxlhKGWP8UQVBcoBAlzsAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography11.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgElEQVR42gXBsQqFIBQAUF6KIDgVl3JxUggD/3/1AxqkNULBQFChVRffOb/rupxzSimtdc55Os/TWqu1DiE45/C+77VWxlgphVKKjDGllJTS930AgAHgOA4hxPu+McZpnudt26SUCCHOOb7vu7W2LIv3vveOCSHP8xBC1nUdY/wBrSY7QeuxdxMAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography12.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgUlEQVR42gXBwQmAIBQA0PKHl29gNz0pHcNL0B7t4y7t0B4O0ARhCP8mgSLRe/1xHDHGfd9TSl3XASKe5zlNU62ViIZ5nq21rTUp5fd9DBGJCACu6yqlDOu6AsCyLOM4Ps/Tv++bcw4h3PeNiMAY894TEed82zYmhHDOGWOUUlrrH9i0NROnGY/cAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography13.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAg0lEQVR42gXBsQ2AIBAAwIdoAzsIvY1bMIur0NJauAADsABUJjYmVgyAkC8pCME7YoyJMWqt7/vOOU+9933fW2shhFIKGWMAgLX2eZ5t2ygAXNf1fV9KSUpJc87e+3VdEZExRs/zlFK+71trFUJMy7LM83wcR621tUYQERGdc5xzpdQPgK1JKQHdD90AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography14.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAe0lEQVR42gXBMQqFMAwA0JB+UtEx4gF6ac8jTqFbF4ds7eQkYociav57kHM2M1UVkfd9kYgAYNs2EUFE7Lru+76+72OMKSVclgUAnHPXdXnvMYRQSqm1MvM0TXgcxzAM4zg+z3Pf929d133fieg8z9aam+dZVYnIzJj5D6CCQbIeznuPAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography15.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgElEQVR42gXBMQqAIBQAUL+kuwhOXcA7NHQPr+kRgiAa3NzCwSH+kNCgJIq9B733WisiAoAQYiKEjDGu6/Lea63p930xRgAIIaSUpvu+z/PknLfWpJQTY+w4jtbatm1KKTrP87qu1tqcs3OOEkKWZTHGvO+LiDDGKKUg4r7vz/P8+2ZKcLS556YAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography16.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAd0lEQVR42k3FsQ3DIBAF0Iv4EhaVLRoG8CTu2IAJqNiDFdx7lluCjg3oLMEhUqTJa95nrUV/8CvnXGuNMdIYQ0S890T0PA8AEBEApZRzDszcWuu9b9t2HAfu+2Zma60xZt93AHjfN6VUShERnOd5XVcIQWs95/wCb2Ethi18AdEAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography17.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAhUlEQVR42gXBsQ2FIBAA0CPfMMXFGCqCtVO4jhuwiBNcRSxxAHsKCgsLE0uaSy4G+e+p932ZmZnP83TOda21lNJxHCGEZVlAROZ5BoBhGPZ9BxFZ13UcRyJqrXVKKURExBijtba7rouIcs7f9z3P8zPGeO+naSqlAIDatq3WqrW+77vv+z/n3EXbCYIaDQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography18.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAeklEQVR42gXBsQqAIBAA0E6CW4wgm1zcXPxtv8UfaOjaHG5pkKDlUAl7D3rvz/OUUowx27YBEbXWELH3rrVWiDjGcM5Za6dpUiISY7zvm4iYGY7jYGYAyDmHEOZ1Xb333/eJSK1Vve+bUgIAETnPc76ui4j2fUfEZVl+Ql5D8scqg4AAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography19.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgElEQVR42gXBIQ6FMAwA0I6PGIaJJahRxVVquMhuxxWYR5LgSGZIJYotE03/e6a1xszv+zrnELFT1ed5cs6llFqrYWZjzPd9qhpC+CHiPM/bth3HQUT9dV3neVprp2kCgG4Yhn3fU0oiIiJ9KeW+b+/9OI4A0C/Lsq5rjJGIROQPV+hB7IcJuvYAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography2.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAfUlEQVR42jXBsQnFIBAA0LvwS0MgvdwE4gBmACdxFduMY5E6ExwWtmJnExDSean+e/A8T+9d/uC+b2OM9761JiIQQgCAbduu6xIRYOZ9351zYwwRWUop7/siIiLOORelFBFZa2OMOedfrXWMsa7reZ5EhCmlWutxHMystf4ACVFFaiIWN2EAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography20.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgElEQVR42gXBQQqAIBAAwM1iXTwIvqB7IEF46x39rRf4j7r5iHAh9NpNWIhopnvfN6WEiCEEABhEJOd8HMc4jojY5ZyZ2Tl3nue6roqZY4zzPPd9X0pR931f1wUA1lpmVt/3ee9rrcuytNaU1lprve+7iBDRYIyZpul5HiLatu0HX+M5sgZ7q3wAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography21.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAfUlEQVR42gXBsQ2AIBAAQDVQuIEs8P2vwFLORWHjDoSC4FdQWBqpMS/mvRuO42itMbP3vvc+7fv+PE9rbdu2cRwnY0wI4X1frfX3fQMR5ZzXdbXW9t7VdV0iYoxhZuecKqWc54mI8zzHGJWIpJTu+661AoACABEhIkRcluUHl6NQglaUYB0AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography22.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAc0lEQVR42gXBvQqAIBQGUH/QBBfx9XsscWkKHMThBiFBodevcyQzM7Mx5r7v8zwVMxMRACFErVUCWGu972utzTnLOafWuvc+xlBKKQAAnHPXdW3bJgHUWokohOC91yGEfd9jjKWU4zjU8zxElFJqrX3f9wMeolIZ+9FDogAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography23.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgUlEQVR42gXBMQqAIBQA0G84uRmCQ65NTh2iM3oKB0GvIAR/9wKCEAotIRJR75Hv+wAAAFJKOWdaSpnnOcY4xti2bULE4zicc9d1SSnpsizW2hACY2xd16n3boyptSLi8zxUKfW+733f+75rreE8T0IIAJRSWmtUCOG9b61xzscYPzanRKH5yb+YAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography24.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgElEQVR42gXBMQqAIBQAUK1wCf7SouAxPERLu/dyy/M4uAU5fhADJ0EHl2zqPXqepxBi3/eUUs55Zoxt26aUuq7r+76Jc+6cQ0RCSK11NsZ473POY4wQwiSE6L0/z7Ouq9Z6oZQiYowRAKSUSykFERljANBao+/7WmsB4DiO+75/8O1AAspNt+oAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography25.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAbklEQVR42k3LoQ4EEBgAYEa3+QMbSRDYzKPI3tSTiCaaZDNBceEu3Nc//N5Df0iMsZTSe7fWEkJQSgkhpLU+57z3KOdcCKGUGmNgjOnee85pjGmt3XuJc67Wyhhba621fv8r50xDCAAgpQQA7/0HVc4rvsgrf28AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography3.jpeg": [
+1000,
+1666,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgElEQVR42jXBsQnEIAAAwH8jljqAkAHsUlm5gbilkxirkEbQMo2dYCERjELwq7/79N7f951/sLVGCJlzaq2dc9/nebz3+76f54kQWjjn1tpt24QQAAB4XZf3njF2HEeMEdZajTHrupZSxhjgvu+cc0ophFBrXZRSGGMpJYSQUvoDeNpNxYl6trgAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography5.jpeg": [
+1000,
+1668,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAg0lEQVR42gXBsQmFMBAA0LtPbK5NSksnSOEYVi6QqbJJGgsLr5KAcEOIjaQz4BH576GqnueJiNd1retqRMQYw8y11ud5fqpKROM4btvmvYd936dpCiGklL7vM6WUvu+ttQDQWsNSCgDknEVknmd83zfGuCzLMAxd1+FxHETknLvvm5n/8GdDgz6urhAAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography6.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAfklEQVR42gXBoQ2AMBAFUO5ymp/QKhQ3Ab66Q3SGbsIY+GpQBMkArIAnpLLJhfeolLKua4wRgJkxEc3znFJi5lqriMjzPNd1TdMEQN73dc4tywJAVVlEAOScAXzfx33fj+PonAshDMNAZrZt23Ec+76rKrXW7vs+z7PrOu/9D2ZKLvhAicY5AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography7.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAd0lEQVR42gXBMQ5FERAAQH+zDZ2GAziAE7uDG2hUeoVSJyQaUayQ92d+RISIe+9zDmMMzznvPSLKOZdS8L0HAPfelBIAAOdcCBFj9N7POTGEUGu990opxxhYSnHOaa2JCABwjNF777231jjn+H2fMUYptday1v4BqvFK7EEE+wIAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography8.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAhElEQVR42gXBMQqGIBgAUP7fPtQGQ3DKufAADQ4u0ugJvJtexbELOLQHeYVQSHrvF0J43xdjLKXc9x09z7Ntm/eeUsoY+2OMCSGtNSFE7x0xxs7zXNeVcz6O4+CcM8YIIVJKWmuklDqOAwCWZQEANE1Tzvm+7xgjAAzzPFtra62llOu6PnrbLT/rlmsqAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography9.jpeg": [
+1000,
+1667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgklEQVR42gXBsQ2FIBAAUPx3SAgxgdIVGAHWcAYK92EOKyewchEaCogJyYEx+e+x53lyztd1EVGMEYwx7/uu67osy3Ecv1IKEVlr53m+7xu89601REREzjlIKc/zVEqllPZ9h2maxhghBMaYMYYJIZxzpZRaa84Ze+/btmmtv+8DgD9iZzltOSHe1wAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo1.jpeg": [
+1000,
+1500,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAi0lEQVR42gGAAH//AA0MEV1LRggGBgAAAAAAAAExMzoJ+vLn7/EuJyjzAAICJCUr4u70Rj9ET1RZBAUIAhIRFiwvODJDTMzU2ezq6wGaobAJBwru8+++uL03Ni8ECwsVBQX3KBQaFVRQBQMAAvLu55iRka2rsBsdG+TFzQMmJy4HAwQJCQru7u726ez7Py1QkCBzyQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo10.jpeg": [
+1000,
+1778,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/AQMGCwEBAgEBAQD//wQFBgj/AQEHBwcGBgQEBAcHEA4JBwUFAvz2AykZEndfVC8eCtPY2gQqKSQrKCf29QYNwMkBOTs9GRYS7vH1z87KBO/y9PL2+P79/Pf19QP29/kJCAfs6+r19PVWeSjSNpal/AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo11.jpeg": [
+1000,
+1229,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAICAIAAAC6ZnJRAAAAsUlEQVR42gXB2wqCMBgAYLf9brSpy6hwUBTUAxQRXfQO3USvXkFXQQejAx00nbPZ9yEVhS4A54IQUllcmvLxfAJ1Ged82OsTggmAY6vL9QaeJ4CCrawUAcK4NKWUdRCetE6F3Fqkupk2qtXc7jawXKwoY980WW83s/Go/T7+uh3gvNYIw7MxKlKf9wvThvQFxPFJ5ylBeNDrJGlyuN/TZI/m04kf+JRRnessy4tCU+b+AcPmRTA6xg4NAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo12.jpeg": [
+1000,
+1500,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAd0lEQVR42gXBSwrCMBAA0MwnM01RQZTQu3kFF95XFxXciO6E1FBnxvfgcj4NIpKzuX2eL2ZIwqTCbmBjYWXKhEJAWVMZUJg1bJ4ffellEITwLbSNkkVkzZgi3itOUz3sdx6Aq3ny5BYWYAE0Frne7q3/aj225fsHbrsyfw2OMBkAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo13.jpeg": [
+1000,
+1500,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAgklEQVR42gXBsQmFMBAAUOKXwFUBiYQrUrmHG2RLN0h5A1jZWqY5okUKCZFUwv33VIxRRBBx27Za61BKUUrVWt/3ned5fJ7nPM+c8/d9zPzz3u/7fhwHIlprh9badV1aawCYpmkEgHVdl2XpvYuIIiJjDDPf901EKoTQWkspAYBz7g8rMUPMhkNcDAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo14.jpeg": [
+1000,
+1500,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAi0lEQVR42gGAAH//ATs7SPPv6DIuMBAPDgMEBgP28Orx7+ksLi8hJSYGBwUC9vj1EA8TJyoyHxwgDQsNAC8wNwAAA66wvO7z/c7M1QQwMTUJBgUA8+z7+/oYHh8C397fIScrGB0h8+/wBAcJBD9ET+/s4/gFDdja3um4vAHW2ebAwMShm54BAvIiGyTzKjTFTBPwywAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo15.jpeg": [
+1000,
+1326,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/ASkkGfn29xQSFi4xOjgjDdTLzgL6+vr2+Pvw8/UFBgbu7er9+fME9fj89Pf5BAX4DAoHCAQF6OzxAh8dIPX6/fz//xcPBu/x9vLs8gL46ekD/f8D/gEhAe0L9urx+/wEWmJj6d7d/PvtKFFbCb6yE9nhAhUaE+/08igsLu3n5pmvv2tbPwE9IQ0YFhDyBxbn3+Xs6+yGclcre1OOIZp6bgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo16.jpeg": [
+1000,
+1326,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/Aci5qyAiIo6Okf8CBDczMO/y9gLw7fATFhb6+Pf59fHm5OIUEw4DPTQwFRkY19fZwMHBuL7E/vv5AygeELjB0fDv9+Hh3ert8vDx8gL5/gQF8etBJhVEQkIIBwYEBQUD+fgA8vUA1+HpAwQB4+bo/f78Auro7AECAxsbGf7/Au/z9O/y9QNVTk7b3eD+/v/5+vkFBwPx8vOjHFWIdka32AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo17.jpeg": [
+1000,
+1320,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AXVzcEpNTMKwrNzJvg4FAgP6/ALV1dXt6+r19fL25OkJ5u787O0CDQoLBgYGGxkWIigjAvz6EwgABBgaF6KhofLq6Pj4+y8BBxIC/AQDBQbCw8UQCggPDQ0VJBQI+/cE0crEEQkBFRIQBgYEGElRBAAAAxYQCObq8gIEBez1/NXf5jg9PARCMCD27u3T3OIUEhfu7Nfh39v+80GXqQacfAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo18.jpeg": [
+1000,
+1321,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AdLMyeXZ05eYmQkkLyYfGAfv3wQHBwja3uDp+wNgFfU2558B+PsC8O7t4+roMikePhwIERMf9O35AwL6+Pz++vv49CRSa/YGFuXT0gLS1dUODAkBBAgPERMB5djV6vgDTFdXCwUEEvv46/P61s3G+d/UBEI8OPDa0sLOzefj8QAPFuADKQMiCwXR1NXr+wETJCUTEhMIDQ4bIkoR1xMn1AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo19.jpeg": [
+1000,
+1328,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/ARELBISLhVMq5czS5s3iGwgLBgTz9vwBAgQLFRj2++rv8fMF/QwDCAcGMTMw+QAQ0+wSBBkrxsPEAyclIfD0AiAXDhMMASYvQtbOyAM5NjcGBQT5AQX98ej41MXj5ecEDQ0NDxIRBQoVusff38i3DA4PBAbx6vwLCeno6AP16BESEAEDBAQB7+Hn7Onm9gE0Kyf2FRTl49/91T70O+CIPAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo2.jpeg": [
+1000,
+667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAiElEQVR42gF9AIL/ARQTFezt61JEQxkbHfP6/goHB/8AAvb4+AQKCgwD8O7a6vQoNCMVCwz9AAPw7vURAwEEBvv7IhMYHiIeMDspHRkSFBETrL3St8PIBCcpL97j3c3My+3t7wcaFCI2Kdzi49zs3QQACwzq9fkBAQLa2NoG+PLQ++oC+vwMBgqTtTcot1s0GwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo20.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/A2FTR/8AAuns7gwLCSIdGRkVEQQQERINC+kBAQH3+PoPDw0CAQEC/wEC+Pn3BAMB/f399vb3/f8ABPr6+wb8+jYiGvQGDf37997i5QQAAgE9ODD09PQtPUPp6Oqnq7ADNC4qEA8J9P0BBAcLCwsM/Pr6AgwNC/r6+/L0+O3v8/f4+fDx8QP++vbs7/IIAQLi4ODj5ubq6edEdEymzl9zZQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo21.jpeg": [
+1000,
+1332,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/A4FUVVM5OpWhoRojJAcGB5KQjwHRz8wLCwsUFw7l4+vV1+EUExIDIBvqGyExx5+D9e301OX01dHSAxoWAygpNvLuBPwHCvLu6CwsJgI8OBr++d3pCt4PHxX/9t7eu6kB09HH4OPjtb2y0MbW7ubjPjU6AvLz+hMRFUxCVOLj7AEIEBcmIgTRzMQDAwLb3eAhHhYyLin79fOIp0gcY6ntTQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo3.jpeg": [
+1000,
+1250,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AaCPkx8hGgAKDt3f5ODl4gP//QQSCvXa4NsIDA8mJSHW1MvV1dcDDAwV2eXvJh0YCgoGt7S47PD0A/oAB+7t7QMEDMvS1a6xsRYXHARAOjwCBQILCwr3+PQyNTksKyoC/v7//fz9FxcX+Pz70dHOCQkLAvT29AEBAv8AAf/+APn49gD//gL5+fv5+vv+/gMJCgwRExjm7gL6CUkHuG+7cwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo4.jpeg": [
+1000,
+750,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AQIFDVZHPPT4+wMNDhYeIP38/gMEAvz7+QIyODjs7+/69vEDBgkdHR0IBf4A//zz+PgCNDYw7vwE/wQHOD1DOkJRNjtIFRIVCgcFBNnX4efn6+T59kkFBxEWGxAUGh0nNNHKwAICBgr9/v0EBgfz9vf59/b+AgEIDxEWISsBhJu0+/fy//z1O0BG/vv9z8O8/wwN7uzqidREvVvkoUYAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo5.jpeg": [
+1000,
+750,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AZ2psevo4Qb//v8IFfwIBQP55ravthIIAALu6+ft7O3m6utAPTkkGBrp1d4cISjFz9wDHhwV//347vL3DhQawraz/eThDSAgAwYIBAcICPf5+ruyuLiwsREWE0cqJxUODC0uLgT39/b6/QAoLCYYFBEB/wH7HR3j6Ob5+/0DHyUlBgcJHR8aJSYh8PX5+/b47e3uAAQCNlNHZMPIw7kAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo6.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/A2d0djk7OtvY2hIUE/7+/gICAgIQGRfk6vD18vIVEBAFBwf5+PgCLykY6+XiFxcWDQMBEBAPTFJYAxkjOzYwGjI7OtPV1xwdHkZQWQITExQpFhES9O0cGRMC/vvOw7gEBAH53/H/9P0DAAQIAf35FhYSBBwfJA7z8/EMFTUPG9zX0u3v7wIiEPoa9dsE/wITFhcbHR7t7/DcNjp/jnphUgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo7.jpeg": [
+1000,
+1500,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAf0lEQVR42gXBMQqAIBQAUKQ//CGEhgZpSByiE0iDF/DWLg2dITedxMHtg4b23mStRURr7bZtAAAppe/71nUlIkSchBC9d+dcrVUpBcdxzPP8vu/zPN57IKLWGiLu+845h+u6QghjjJxzKQXO85RSxhjv+16WBYhojMEYM8ZorX8pzju/7B02yAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo8.jpeg": [
+1000,
+750,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AYKMkvXw6fTx7ebi4uHm7dfY3f/+/QIBAAL29PUtLTIA/gbSysoF9/AMCgkTDgn9+/oDOj49/goTDQ8SKCkmJykxDAUB4eLeHyQkAhckJiwqAy8vCBMZEBkoJfcDBuzx+jI1MwMPGSEBBgb79voB6OrM6ujPztQbKCJFQkcDBQwQ1drj4AT44wr7xtvU9Pzy+RIKJhQf42ZDB1ErdeYAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo9.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AYmKiuvu8BgUDxIB8yMH8O8RLsvd7wD+/AIoKSgTFRT1/AIlEAIRFR/y+P8HBwMKDQgC9+7k+OzmAvz1v9jj0ujyCAgHAgP/AwMBAuPi2tXCveXMyM3g+SM3Rv3/A+nn5+3s7QL9BhAKERbV4upVPy/77OLv2cX39vb4+PkDBwoVvMnVBwoJIREF/vLq9/r/3+31+fj3dXJQ1IEytHoAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio1.jpeg": [
+1000,
+1500,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAiElEQVR42gXBMQ7CIBQAUOCjNNWYxtHBoZujk26ewQvo4IGNq5utJA6GCAot7efje3xVzQFEP+JpP8XEpBvSTHHjwuZwxgxSpOj9SIz9QvTuA8dt6TqClO3zrpsW6gW/7JbrSl0fLmEv60qUogiFmCgbMctvpJt+6XdSLFtk0nQ5E7WG7MCR2B/Ii0iQ141NkAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio10.jpeg": [
+1000,
+1326,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAlklEQVR42gXB3Q6CIBgA0I/PnzUtsjbX+1SP2LrotWzropu2JBmBpoJZhHQOOR0PiEQIKYXc7vaD0QiEdFqzipMols3L2i/2umPVE+OErnOpGvCAXduMgzHGTM4R8KqWoVKKZvncR5zzD00D+IXOWvFgowWarQj4krHAO1sU5/J6qe+3bJG0/ZsgwCad0WwZTi5OqfH4B8WQVcEMTEAtAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio11.jpeg": [
+1000,
+1331,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAoUlEQVR42gXBywqCQBQA0PHOmM4rVALb1aIMoujxP61a9p1BkRQtbRMRhAQVlA/U0ekcY7NeEYwr1QgpHMdbzJdYUjvLCy5YrdE3yaeTMVSqZrT1+ry3+6PF+e8ZgwGImPgRx9ElOoWHfjAEQvAuPAsmu77vua7FBJRFaRJTyvYoCKjNmrqG6+3ucoqQBgCtmyTN8CwYpErblkUAV6XqdeQfh987EhGcuD8AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio12.jpeg": [
+1000,
+1319,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/Aa+tpseanAbp2xAOE//i7DM0FQT5+vgOFRIH+xUQDQ4LFRQHIBkDExEOFxcTAQsDAhELChQM+wkFBPDu7rnZ205RTxMXFxEQEggICAPu4+Pv5+Xx9fn2+wDm5+olKSsEFxMO7e/w4uPh3OPl29zcBwcFAubu8fHy+lQ7Kjw7OAAAABUTEgN4bVcGDxTz8PEc8vQG/gQvPjmRCj5Ijn+l2AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio13.jpeg": [
+1000,
+1326,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/Aci5qyAiIo6Okf8CBDczMO/y9gLw7fATFhb6+Pf59fHm5OIUEw4DPTQwFRkY19fZwMHBuL7E/vv5AygeELjB0fDv9+Hh3ert8vDx8gL5/gQF8etBJhVEQkIIBwYEBQUD+fgA8vUA1+HpAwQB4+bo/f78Auro7AECAxsbGf7/Au/z9O/y9QNVTk7b3eD+/v/5+vkFBwPx8vOjHFWIdka32AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio14.jpeg": [
+1000,
+1324,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAn0lEQVR42gXBPQ6CMBgA0H6FxFIQNSIMHoAYB72YcfOETpzARIkDKAKtQRD5aSm+B8fDCQGilFCDcMaE6DVCJo9n0ndiMbebtnVdB+sYguB8Cy9SSlCyKgrs+xsAiOPolWVpkqRxhFeOZ1r2OI51VX4KLhDSu189s8xvXSkpSpbfw6tm6ijnTCp4c+65ztC3sN/umkGtl1NnbhNqKDX+AaLwUl5dJrptAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio15.jpeg": [
+1000,
+1768,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAi0lEQVR42gGAAH//AbGQhO3n7BgPCy9JQaOcrQE3IB8PCQomFhMOJSDu4egEHzYzA/z95eXm39fd9+3wA+zo5wEAACMxLu7x89zY1AP9+/ry9PYhICANCQcG7ecEJAkJFRYRBOrk8/P19fn9BAsGBiMUDdXY2uj1+hQTEATpAP725e718vgHAP8iHRvdij2oRCRdTQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio16.jpeg": [
+1000,
+1778,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/Acm8rNfT3TY+Pb3DzwL19Pn5/f3i4uT9/vkDExYby9LW09fb9PX1BPb08e/y8QIB8tTV0wQNCQj04+H7+vv/CQoEEQsGC/38+QMBKi0nAx4I//P5/hsSCCYaDAIXEhQLCP/8+vTy8fE4WTqPrMka7AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio17.jpeg": [
+1000,
+1778,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/AW9iWPf09AMFBPDz8wQgIiUCAf7i5ejBytEE2eDkBgP+GRse/PwDAxYVE87P0SQgHPHt7AICAP/09fbMztHq7+8C5OTl9fX1CP79CwMBBDQrJiATD/fx8DYuJgMOAf4MBAEcHRkXFxGmKy/Fegv4pQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio18.jpeg": [
+1000,
+1778,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/AZCCcvz+/wIIC9fi7gQ9RELx7uz2+v+7zN8C7b3K9djgDgMGAAIGAx7u8+HN0vUDBs7V4AQCOygaEg/EydHn2t0EzsnQ/Pn54fH15/b3BAgF/QkLCPv//RkXDQT/9/DM3fT8BQo3GBnp3jlTHI82sgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio19.jpeg": [
+1000,
+1778,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/AZuVkPPv7xYXFO3y9wQiHx3j/vsbGBT4+u0EEcu0BNbNF9sA9gAYAyT1A/HO4d7V7eb5CQTn9/sC9f0C/P7x3+wCEEtAvhQLsxEKsffzA/33+vrz7RUOBjE6OwQSCAUOHB3////37+1JIzbQkizKGgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio2.jpeg": [
+1000,
+750,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AV04HgUEBP//APL2+/X5/f4CAurw9P0KFAT6+f3+/QD4+/4IBQD9/P4JEBD5AAIFBwcEDAb5Cgb/+f76LD1M/fr3/O7QNTUw3OL2BBkWBAQFAvvu+f/69yE0Q9bF5hETGy4cHwMvGwv8/gL7+v/t5OUwRlYnPFTw9P/+BQcDKBUK+/sBCwwK8/Hw+P4HLTo/BQL6AAMGfdJIdM2Xgp8AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio20.jpeg": [
+1000,
+1250,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AZqYlaanqBsaGQsLCjAuKgEA/wLx8/rd3uQfICDr7fDGyMwMDg8ECwIAKyomT01GDAsH+Pj7+fkCBAcF+uTj4sbHyvr6+vn39sfIxwQPEQ3+/frLzND+AP8P/f3w9/cCDA4TODc13t/gFhIRJi8sKSYlAb63rOnq7fv8/eXk48zHydbY3QTOy8rd3eAOCAjr6eoD/PoH//0W0lHNdk3YkgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio21.jpeg": [
+1000,
+1793,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/AcO7rQIC//z+/AcHBwGANzQBAf/yAwIfNzQE69fZ+vf38v/9/PwKBOQDAecFA+j8/iv58gLdAwLdAf/m/v8ICAAE9/798vX6BAAAEREQBFJFQvf9/RwZFxETDwQcJR0RCwjv8O/j1NJQnzDeKnPAjgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio22.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AY6OmdXb8A8L/xIL+CYpHQAHDQTe3Oqiqb0MCAP9++xIOSxZZVkCBwQMCw4aCQ0W+fz/9PYD9fT6BPj+9/4EHP0D8wD/+/H09LOwqwQPDQD/+uT+++z59uwTCPsUDg8EAgMD8+ja/Q4KAgEFCwkBFw8IBBQQ/1tRLxoXDQ8LNe3m4r3EyAMWDQQrGgkgDv0J/vTy9vkK+vmNSEPBppI6IAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio3.jpeg": [
+1000,
+750,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAn0lEQVR42gXB3QqCMBgAUDc/m9PclpKKRdAfSd32AD1Lzxn0DF0HRT90U2TKJqUTOwdtN4vT+WE3tU9QnPD5evUyJ42/BCkVbX6JsDyKhADOWFHTxnUBwIziIIwc1rUs0mkxQRhhQmGcpv0eC6cT/a1szk0ljQzrFkAZVBCvxEE0Gw1jUWV5fsuu2jDvZSQcZANWpTxeisNur9/Pjzv4Ay1MNAruijyjAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio4.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AYeFhRoeG3l3ff///f/28VFSUgTM0tUu/f0JCgnu7vH29PgTERAC7eXj/fPxDg0OCQcH+v4ACQ0QBBcNCRQPCxETFf7+AA4E/RkVEgI9SEUgLCwMCgn8/P0JCAYOEBAD6eblBggI4uXo5eHfBP79S1JTAwkEAgcGBgUB/goGBhAGCE9YWAL+AP7ExMbx7OoB+/kCBwYMEhVYaDvzEEuccAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio5.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/Aa2lgxcTBTUyM/b4/Lq4vuLm6gQEDBTa6uAAzbfS0+7d3O/3+PoEERk17e743LO69OLv6/4DFBgRAhopMxERKTrKz1nz0xMQCxAWGAQD6uYJ9+7uGREBBQoFDBLp7PQDSzk1/f7w6vkC3gka8w8N//n5BNrg1wkC/v4EBuH1++bg6AsOCAMoIRD3/gHc7fPBzdfn5+kRCwMvbU1jUZhhRAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio6.jpeg": [
+1000,
+1333,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AUxNNiUfGwLw/eHi3+7w9RwcHgITDAwgERoNEgsZFhZBODP99/IDEAUI8O3oCwMEOz08Bv/vCggKAuHs78DR3wwKDxsID/766xMXEwMmJCUSERLg3OQ3EQ8FFyni5+sCCggH8vLyJi8r/Ckl5vDqQVFYBCQXEj8oKEVMQ+7v6D9LTyo4RQQeB/ArLjj5/v8qNDsjLjn6+vlozDloJC31twAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio7.jpeg": [
+1000,
+1336,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAn0lEQVR42gXBwQqCMBgA4Km/c1tmHsqiU5fuHjvlNYqI7r1JLxoIpiAUBjPmdCNX9n3W9XLK8vKWv4Aa4i8Oxy1IqbTqzbePohXxyGjCQDQyLR+78/4HQVWmDtg25zVgHMexMbptxc8YJ/SgqDgXTXHPxgEj1LbmjLw7jRCiFCfJxveUYw1ovZzOQvasZadVw4WNMSgEhDBnQBZyxcf9A+w9Q59jyednAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio8.jpeg": [
+1000,
+1326,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/ASkkGfn29xQSFi4xOjgjDdTLzgL6+vr2+Pvw8/UFBgbu7er9+fME9fj89Pf5BAX4DAoHCAQF6OzxAh8dIPX6/fz//xcPBu/x9vLs8gL46ekD/f8D/gEhAe0L9urx+/wEWmJj6d7d/PvtKFFbCb6yE9nhAhUaE+/08igsLu3n5pmvv2tbPwE9IQ0YFhDyBxbn3+Xs6+yGclcre1OOIZp6bgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio9.jpeg": [
+1000,
+1309,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAnklEQVR42gXB3QqCMBgAUOc+1xJmmYYheVNP0X3P0AN3HXQZGFmU4d+CLe3Htaxz0Gq5oO7EGftAUFlkzMYm66HR0Aun0Wwe6VZ5vgdVzlnYsYGz3ax3u7iuCjMrpVKtFGWtO8yCZJ8AZfRxF/mVHOL0ckoDQICR0QiuPq1Mz2/BO7ePiaFl87wJaVNwLPTTGl5KH3nBqEksS38NMNEfKn9KWJgw/jkAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o10.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAnElEQVR42gXBPQ6CMBgA0P5CwETSRR24gIkDs4tsXMDFw7J7ASO7ERDBtH61lFSp7+EyFo014SELMgFyjphhkf+m3pnROiUXViu/ITCCRzMfJAmY5kumO5oXedIP5tlXH0IbM4uIFishd1szvFDd/iwENyB2tK3Sj0SF+zCmOAFg9HRcY34t3+n9gqRXhDBzPsvJ8apztccYTwj/AdloUk2XcWLoAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o11.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/Ab6AjyH37eW9wvUB+en78ELk9gMsCwfTCv3rCv/p6eLY+vwL+vwCzf//+PPl5urg2Pn3Kv0FxRMeA+v9EOzu/SMZDyf78gkWDvMO/wMOGB0FB+3vOD/tHxvfCfsE9esDKykYHQ4H/fTzD/z8Dejk7Or3BBT85/fzD/v/AQrm3wcYHAMD+AT+///2+wEA8/f3/PoYJi8V8vCqj1YnBW3eRgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o12.jpeg": [
+1600,
+2271,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AXZ5fiwrKwT54REVEBIeQMOzswM1Gf0LBgfu4cEPDQntyey4kokEJi0jDv/JMCsGAPvY2uHvHgYDAiEP6SckAwIC3RoBztsT/vZDRQLs8vrt+SsI8+oGCRf+Hjzk8/UECv7d/OIIy8cjCjk04//vGw0GBPT/JeTtC9YiSMjuDTIF5icgGQMH8Azs5/QyIxc9KRkJDQr36ujOLkFNxYljyQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o13.jpeg": [
+1600,
+2306,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAi0lEQVR42gXBSw6CMBAA0LYzUIoVUMCYGC/l/bcu0EQFCvRDp77HH5dWurBWR6NkLNXz9wXZnuh2/XA+gphW29QV1F1LKe1EAjFHpLjDPYcCACkaY5gAO0+CsmxzXkO+ElvG0bhdSEq9dfO2nJVKjBdSQu896UNkzFvnOe+0RmwaKMrXewgpRYAhhD/Pn0XMiYif8AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o14.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AXhzbTAtLaiqqwMFBjk3NNfe5QMqIBwICwoDAgEGBQTk5+sTFhgEERUWCAYGMDAv8vLx1tre+vf3BOvx8wPn6BX6EgQEA/j5++ro4wIQCAb58/Lc29zs7fEtLS4KCwoDEA4NGRgXAwYI09jb3uDjMDIzBAsIBcfN0fP2+C0vLgUHCubi4QT9BAj8/vQYFhbc3d8BAQIBAQHR+z4t383XmQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o15.jpeg": [
+1600,
+2409,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAh0lEQVR42gXBMQ7CIBQAUPgfCLGkDQ2JUQdP4Ghi4gk9lydwcHRwamM6oJRaEIrv0evlJBDGp+Mtr4xkuRsH91ZN/Rk85AmPBKxLd5sffRC1QbGStz4lbNfb/U5NKHnl53Aw2hUW44uete4oSESevxuFkFMWZSFlYb8yxsIaAnQOgdIEaH36A5JYO60ST8eYAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o16.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/ATgyK/zx8Q39+iYhHAkSEujn6QMG/PoNBgUWHR0JDg7t7e3W6e4CBgIBEBAQJC0q/BEU+gEF9vX3BPn9/gwSESovK/wBA7Dh4QH9/QL7/QAACAr/AgP6+fgTDAry+PkCCwICLy8tHiAi5t7k3d7i9fz+BPn6+uXb3NIJB/Tm5tzi5gUEBQMPCQX5/f79+fnFys74+vkJCAWiDEkLiH0/QQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o17.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAjUlEQVR42gXBvQ6CMBAA4N5dC0UFonFy0bgwGCff/1WMI4qJKaCkd/3x+6A77JuyyM9BEEZExwFRAXrGVaVJWwkRQENh+vm7bpvgphuhz4CKcJzm0669XLs7B/4ttF1XPsiSwOtik5WwYGTWhMe2tsPbfJywEKdYEp1DCv1LGXrEBLbA2miblGdJKTuAP/x9RX8qDcN5AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o18.jpeg": [
+1600,
+2409,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAh0lEQVR42gXBywqCQBQAUOd55xFOhpUU9HGtWvSxkSIhtaoWgk5SplIz2Tlov9tOQ1Pb2n8G9/Nks14JKfREIRSMiNLFMp4nyeicBMalwUPfF8UlCMbDMc9PZ1yWFXBo351SummeJJ5FxkTX291aS0FTIVSWZgx4175ChwgAePfljFOMH7b6A1YrNfECtZ27AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o6.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAlklEQVR42gXB3QqCMBgAUPf1zW0tUbD/JJIglG56h+56714j6Ea6yTDMTee2ziHX27nI2uISfB4Di7hxSDmRtsVauaoWrzv5VrBcWIszY30SSrLLcy6Rwai0kxKEADA9iSWsUzsJxuKgqGq8VVHsy31/nHdIiefONG8aCeM7jbUCBtn0h8S7VRq22m4zZA7jhD4rvTkNf2LcP7VXWcWnAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o7.jpeg": [
+1600,
+1145,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAl0lEQVR42gXBSQ6CMAAAwNLNhkWxYCLGmwcTb0ZeoP+/+wAlwWIplKUgUGecW/oAFpBJLgAgfpmdgLvLwZf4nqBCisr8lmA9MUGoajuSNTV+18WnVIyOVYNB1554u9/SZBdD2ct+GeLQemOWi3ZyzHElzv4TXblrO/PVQ0SRde0rn5WESkcojViJSTjD0RhfDxsALfEmzf6XPEu1KveG6wAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o8.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AX14XAD7AuDk6QkWFv74CCgUCQTRzuLv7fD97e3kBhn3+gj7NyAEPCMFxM3jFhkYHvby7Aj1IQwEBPr41B84DB/08uPa8NkD//sy8QTf4fvn7fb5+QXtBgYBBv30+QQCDA0BBP0C7OwA1goO/gIF/fT3AgII/z8uByT+/TYT+Bf89wcCBAQDAgXW3wAPBv8bH//6AgULFQOShUZwgoGbGQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-o9.jpeg": [
+1600,
+2331,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAi0lEQVR42gGAAH//A6OekSclIyknJObm6CYkIQQ/PjnZ2t3p6uxZV0/6+vsD19jcvb/DPDozEREQ6OnsBP38+zMxLQICAby+wufo7AIwLijb3N/S1NkXFhUGBQUD+vn78vP0Yl5V2NndDQ4NA1BNRgcGBsDCyM3Q1Tk1LwQFBQQNDAtdWVH39vcXFRSgnDrwfUiC+QAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-s1.jpeg": [
+1600,
+1066,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAiElEQVR42gF9AIL/AXBiZQsFB94C/fvR0xUkJRYgHiqsrRcoKgQmDgsfExgGB/457/H1FhfZBwMdLCoNISQDLA0MEA4P6/HvKf8D9Obm3Q0J7hER1xIPAzsQD/zh4u0PDDwECPUQDhvj5T+doSUSFgP++vrf7+/4ERDu1NbZAf8MODUCIiD1KyqUlS96qaLBMQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-s2.jpeg": [
+1600,
+1066,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAiElEQVR42gF9AIL/AygYEiMbFvv7/Pn6+zkqICAZFeTs8f///wITHSVBKxkBAwIEBwkcJzAUGR7+/f0CAgEEJCclCR0dI9bt+vz9Qz03zcnHNiIU8ff+AQ4NDAMEBDklJCEkJKy7uA0ECj8wHs/d5wTy8/QAAAD+EhMSGRQJBAcMFBEKGiUh/wozKSovuDf9QwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-s3.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAlUlEQVR42gXBOwrCQBAA0J2ZDdlPYlqJFgqmsbSKvZVnF4scQBAsJCohP2Gzs8b34LBbIaIPPHkmIhCAIBKjpbbm/Wnydb5I7TCMMxK7KTOx1NqUxyLLUse8xLB5PMfz6XKtZN911hZt29f1a0iTRun5dveTh3K//ToXSSJC9hxI/pxLtJJGxQQCAYSYI6VECGANAvwBRFk51Rc02b0AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-s4.jpeg": [
+1600,
+1066,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAiElEQVR42gF9AIL/ATw7N/T1/CclIQ4LBtfY2Q7y5hcMCtD3BwNDQTsA/gQB/wEUExEQDQYv/OEgBv3c/AsEDgoJ9g7+Li8zBAL459fmCgcB/Q8bKR0hBPr+/uzu7Pn49iw0Ld/QyiMhIBQ9VxgAEQMJDA7Z2t0WFxTv8fC+wsoHGSkJHyja3NvumTLSa44FcgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2024-s5.jpeg": [
+1600,
+1066,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAiElEQVR42gF9AIL/ASEiH0UJDPgBA9MKCRYF/A76+RECA93+BQIrGBNXCxJjFxr++PgkKi4yCAAc+PIfDQgEFRUXAOj0DhMRTDQoCPv7EAkKCBMWHTo+BCI1Ofm+yR9JRj0eFvbh4uvZ0jtbYvonKQMHCQrF8PHzGBbFyMbS2N/o7vQPMDLO1NSQXS8DE43/jgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo4.jpeg": [
+1600,
+2371,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAhUlEQVR42gXB2w6CIBgAYOTwA0HSYXOisx6gtV6ml2/dNNtseWFHbIlB35cYqWYgOhQs4x+M8ZzxEoRgfDM12v+oXa9QjPvd9lKfYfRkAeAFvA/Hh5bROSwZK7K8dq+qzIcwEi31kCSe0u7+bK4tzgo7fr1J0yoSpSZkCVxzcWobgsKt7/9WLy7uxa++2wAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.1.jpeg": [
+1600,
+1188,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AXAwHSchFq3Q5wQFA/j+BuLy/CsYDWBDJAPo+AAWCQUWCwbR6fQjFQwwGgoJ//8FCAcDVzEd6PD3MhkJxej10uny5PP8EgcEEgD7AycTDhQFA/D1+BESDdzu9+3z+Nzu+vD5AwMBBAXu9v0eEwkwIBLm7/vy+/r09Pzq9wQCKQoC7Pn73Oz5CggEQCYTFQkK/gD8/f36iq1FWtzjiZYAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.10.jpeg": [
+1600,
+1197,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAjElEQVR42gXBSw6CQAwA0Gk7M5QR+SSGjSsT3agb42W8tLdw5wokKFBa34N7tXv2mKUmBJ4UgyfK2JP6lMB1Iwon1vGjMbHTH5D4Ei2PzmAQkYBW5LROyjb4fR2Lfm5qCiZvlWWBuir1u9JxwynS49aWaofc5ahomqL5y2l7jezA3c5NyzjO8OokFvAHZTg1DMsfPGoAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.11.jpeg": [
+1600,
+1204,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AatdJ8bV8QcHA0o/GuPs+sW44ykRDRAUCwNRJhD9/AH8+/0RBP/s6PcMCwTy6vjx/PwDQBULBQEBCwwD/Pv97fP6Hh4MA/sC2u74AycDBAkLBf8GA/v5/RUSB+ry/QYRCfr4AAMfCwf/9/4REwf2+v72+v7z9/0QCwcxLxIDFwoHBQEBBQoH8vr/4u75Ix8O/QQD6/n76S9Dzk9d9wAAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.12.jpeg": [
+1600,
+1184,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAi0lEQVR42gXBwQqCQBAA0NmZ3ZZApUyDDLpEXSIIuvf/XyEd82ZRos7sTO+56/40i7ZDVuX+TN0t8OOy66ZEM6xHkYnVGYUw1g4O0T/fXzIqEW0WVSVAyTPasBzvDQFuhQezoOZYtWryQsUACbDUxAZgYImH5cobW//qCRc1UgTyzhIif34M6Osi/gGBwUQAR7DgHwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.13.jpeg": [
+1600,
+1193,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAdklEQVR42gXB0QnCQBAE0JndTfDOH4NBQdAm7L8ZS1CD5JLb8T3CZrNq5TSUyY8z2vLg63ldnQrAIer3FS3XT+nv8Tw6WWFuoOUiRu4tgi3NwUIBjEQahwNbN1eaA0ECCmljbiE16DbtARqsAE5UenRAud4v9Q8STS5GCNfJhQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.14.jpeg": [
+1600,
+1192,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAjklEQVR42gXBwQ7BQBAA0N3ZKQ3VFiURPyBx9Be+3dmRi0gkpA3bVbM7M96zx+3ysK72u2m2GplXmm0KA84O1rHLMpbcalNhTMwqv5ZiSPhkVgf+G32gzqeG1Pd4vjwQwVpNZTnueiHSWxuuH6GQEJgxKbEFAWfM6e4VXCGCNRgmfkcVNTJobmCRuXo++QMo+0/3KSq8vgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.15.jpeg": [
+1290,
+955,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAmElEQVR42gXBSw6CMBQAQGpf+YghxgVqxJUrt97Hq3kYj2FIaqqJBpRvGyzto86Qy/nYVnaXLX7aIXrZJpYeZIft7HVrbKkI0WXdg49hQh6iU4WiJ8b26dzAZBwxUVA2yJ8DIIJB11r3FmO6DvK845X5DB4vOrBspomre3PNZT2RezvGEQ2XAKuEia8WjebSKGB0GqlE7cd/q5RWl3YH3y4AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.16.jpeg": [
+1600,
+1198,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAi0lEQVR42gXB2Q6CMBAAwO52CwooYsQ3E3/UL5UnEhVi5Ihg79YZuF1Ppsqa8fccVS7IB+YJz2mCkkNnQsZAKeM3KL3nzk9SUZuL+2PeMwSAut71ZtaOaRD0QXgrO0hXCmz7ZbUw4VaIgjNIkxi1DQvnx0vVr+xrCCmhbpAxUAwFGn+o8uaF1gWp3R9NZksvNaVhAgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.17.jpeg": [
+1600,
+1204,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAkElEQVR42gXBSw6CMBAAUDoMLR8xMSYkrty6Nh6B+1/BRINGUIza0ilTWt8Tx6Zum+rU7nyV2jN1F6LvLKXESfPqIItaeGbNfnhPiw9RAIbZF3XmiFElC8bHhwTAU1vcb0ulgEx0Pfe/ECWwDb7Msdnk2gRlEhrj+PKz5RyQM4BUgsM0CLjeXXczC0e5Vt1o/kQRUaVV6zsKAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.18.jpeg": [
+1600,
+1196,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAgklEQVR42gXByw3CMAwAUNsxcZMUIVXqAD3DAuw/DUJCHBr6iR3zHpY8DzmXMkq+MWLcPx7a80FsKNbJPIBjc7ySlWTxuwcMybuDdzc9zCeu93nPb2XTA8Nl27amPlBNWdOreTUGisgDoBtQ76v8jrZqdWUOTrqyFGSJeC6TjgJywh/Jm0MW/hKavQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.2.jpeg": [
+1600,
+1187,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AWs3KL3c7GQ2HQ4DANbv/ZDI8g0OCzEeCwTz+vwMCAQF/P3a8fq53fIA/fz//Qjd6+8CBvz7JhIH+wP/1O314O/2AAH9+fz0BQX/BCAPCg0OCAcJAt3x+/f6/AABAQUA+jkZEwLI5/QKBwLt8fr1+fwAAQEDBQI1HQ8vDwYEBgQACAH/8fr/+/z9AP/8KRUSTykTEg0IeoZD+VRfbecAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.3.jpeg": [
+1600,
+1196,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/ATQcGIpVIQQGAsfM7foCAwMPBxYNB/vu9wL7+/wGAP/n4vLV5fT+BQG71O3e7PkQCgIEMRoL/f3+3eX10vT5+er0yOD08PwDITQSBEApE/j0/c3e8tzx+Obz/Pv9Aufz++Tn9QQQCgL4+P/2BAT39v73/vwGCwgoCP0H9PoCBwUD3+/5AAsF/v8D/f//LBYHOhsMAQcD/flRVRQjymoAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.4.jpeg": [
+1600,
+1188,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AbNgOcLh95nN8gECAxQF9lAhEBHw8xsFAgMRAQbB4/Hn9vcrEf4wFgcSBgMUBgAfIBMBIhUU9QMENxkMB/f5Ng0FCxMLNSsZFRoOBC4aDTckFR8MBPHw9Pnq9BIMBQ4SD9TW7wRbLhPp6vcVCwsJEAjk+P4JAwS2r9HT6fQDMREIEw4MBwAB6+z18P4A1Njp//n/+A4Lz5E3Ls6jk3sAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.5.jpeg": [
+1600,
+1189,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AZ9UMS0tF8jZ7oa73hUODHVLJyslEPsABQTu8fbk4O7l4e0RAf4yGAkWEgLz8/jc4u0E2uTyGhYJ7u3zIwgCLR0IBfz7y9PtvtbtAuXy9/P2+/f7/jotFR0UB9/Y6sXH4PkCBAMXBQMXEwkYDAcQDwjw4fHU0uj1BAseIB0E/fz//Pv+Dw4I7/T54tvuEhQNHycd8wEBqbNJM9DK0NMAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.6.jpeg": [
+1600,
+1198,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAnUlEQVR42gXBPQ7CIBgAUOjXUFBJ6k+HNiY6ujs4eAQHb+hNXD2CiZOJfzFaSwq2CCj4Ht6s59uTPL7UKucUcBnTXQtl1cC1cffmd3i+c85SgoXU04yqUsBNfh6tt856QEXG8x6AQ8H5qM/IgEOEfhdt9soCpSH4ThRgMeSjcVobi70/1xYcmtDYaAPLblIwQlgitBPqW9kwSxMt2z/MiUyl5wF3ZwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.7.jpeg": [
+1600,
+1193,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAnklEQVR42gXBTQuCMBgAYLd36GJatkkEkZRUlz6gP9Df6N6P7dwhuheJhwzCr81yW8+DjhMuO4tdsoz5pcK3AiLQp/0YYp/1tNGqS+b97TpkqnlkRdso0o2GTlPLV62/chNHpmTcQfm7hsNMnLPCIzBAmPkUA14lwigHdsK/5uWPECM1BTwVHmMuDwNYREGay2fVDgN6Tz8WAfWQxfYPzMM9vTvJvY4AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.8.jpeg": [
+1600,
+1196,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAn0lEQVR42gXBOwuCQAAA4Htp5yvpAWGBUIlDU1NDi/XzG5wia6wkCLM0lUuv6+z7YEDV5WK0WY/juDzs7jNv4AV+wRTSM6hEgHMRnVJn2l1tJ2F4xoaO544JW4AhzFnju1Z6KxkiddWQvkUxBMmDmVTJXjUHuJIyvxZYvBtnaHwqoWsd2bYlQPsoAZwjz+3mT2baqmqTrwDHSwbFT0PoD59SQ9zwuT9qAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.9.jpeg": [
+1600,
+1181,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAlUlEQVR42gXBMQ7CIBQAUD58ChRrog4ODl7Ae3hEr+RqYuqgcVKjiWlta2iF8vE92G03VT2MwJraid9ojQqRZssp3tr+e//Mp8Z3AxX2inkDKbUjlqfXeqJZhhepyufgFQKA5BG9D65YnEPav/vOZbkho7m2CimTR0+HR+V6nkC4ELlgklCsrC5dajsGgACMJYoMKLE/oIdI/d32XagAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-mo6.jpeg": [
+1600,
+2405,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAiUlEQVR42gXB3QoBQRQA4HNmzpwZFLE3SktKKVfyIF7DO7rkIVworiS1W/7Wjtkzw/fhepGjNsU75gONv6heX+lAXI6dazEFpNAIJBpxEmCLTMOuzfpcPOrj9b4rSW1PpLxMe/BBjZYR9GSepc1KIZF3htgkdlA16XJ+HmohtjBrh5s3+7KpRP8BrOwx2wdf44wAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o1.jpeg": [
+1600,
+1514,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA00lEQVR42gHIADf/AX18fOfn6SIgHhUTDPL1/evt8dTQy+7s6gMZFx3t7/Lt7ewODg/9/f8FBQT4+vrd2tgDIB4d7u7rJCIf8vL0/v77KCgmMC4rHiAiAzk3OAsIBvj5+xcXFuTl5/b08yEiIwYICATo6uwWFxb5+PYXGBgSExK4uLz/AQMICgwDGhgW6Ovw+vr+JiQg7OrpBwoM+vr88/P1Ay8xNisoJQcHBggHA7u9wVpaWgQDA/b08QGcnJ4GBAIgIB/8+/f49vYPEhfp6ef++/hPy2EJw7NW/QAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o10.jpeg": [
+1600,
+3224,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAaElEQVR42gXBwQqCUBAF0HtnXu8lJq00K4iQ2oiLXLhV6P9/xwfB6HQOp/Fzqevb/ZrzT22ztm0ADn1PDXoIgeB3mVGVJQAA5+ok3fMRVEm+X52Y7RQBYJvLumZ3jzEWx6RCcTiBIqY/ko0X5DPDNf0AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o2.jpeg": [
+1600,
+2340,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAi0lEQVR42gGAAH//AY5ZStzs6+n4BC4eBhcNAgLT9AL8/xArCfbj6/vxCSYCBPv69wT5z/Tp7/cB7vDuBAf68Pf9+QsEGBkL8eni+gLk9QcHDwQODwDq+Pfq6/wCFxD5DvXzIgPmDQcLHSMVAvz36wIPD97yCPwABxUJ7AQJ+wMK8fP79wEF/QME5+ZNHD5eeBYfEAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o3.jpeg": [
+1600,
+2308,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAi0lEQVR42gXBywqCQBQA0LmPeWiTphAKURBI2z6+f+hHWhYtpHByHrdzoG/alOU6+em4ud2fRQCzSBIYOjfsrLP0i4kVIimZl/gJihBTTEgI/dZeDlpT6TwrAD7tq5hKCJJzBCXeGdJsmErNhUFqi695JUKsDIydXmJh48Kq+Dy2jTeP9/oNyehgEP4uIDetNoWVIwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o5.jpeg": [
+1600,
+2283,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AdrRxbi4u52iqn15cDQ0L+rn6AMNCwu9wMX3+vz09PXLzdE2NTEC4OLk+vz+IR8c4OHktLe+6urrA0pGQ/Dy8y0sKAQDAQUGBe/t7gIWFRD9/fzw8PAA//wJBwUXFRQDEQ8QBwoK7+7wBAUFEQ8O8O/xAwYFBQsLDfr4+ePm6ePl5+zu7wL6+vrp6egFBQP//v0FAwLu8PFvCFBVwMmqhQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o7.jpeg": [
+1600,
+1911,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAICAIAAAC6ZnJRAAAAr0lEQVR42gXByw2CMAAA0P4BEVMcgEC8GOMQnhjRxIvT6M3oAmqJBkhQD/xpa8X34H63JZQACLI8X0Th9SaUHEjVNDeRSCUPh+N6tYzCUA4DOZ0vfd8hBDFGzoTdE/Ep3oRg7E1dZtE43nDORwPqqkaObQMAy6pxXff5SIUQM2+KtFLmayxGtVQQgDAI0ixHRfH6/cyc+1+ltTZd23JvQvq+sxiuyxKjcTRg7s8cRv/CRVZA4C8pnQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o8.jpeg": [
+1600,
+2126,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAl0lEQVR42gXBYQ6CIBgA0ADFQf1RqNkxvIZHzJNkXSPnytnsn27QqCmfKaz3UHkuEUJd9zoVhTEGwJI8z713QsSxSIa+b5pHsDrHGCuvF4A5yzK5P2DO2K2qtHrX9V1rfUxTAjC3z3b5LdsdX723k8VRFGFEQkppSL/mY+2EA4I559M4Algpk2HosfOeYCSFVEqhDRJC/gHGKE2QwvGneAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2025-o9.jpeg": [
+1600,
+2396,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAZUlEQVR42gXBMRLCMAwEwDvJE4OhouBX/P8D6WgxQ6xIxy6flz6N99Gv7msdFkSThlQRdaZlcQgvqlbMXzSDSOyVNygAf2xOaGbOU99E61Uf6V2K0iy5CAMOoIQl+NisQBAOGvkHBhc9ESVVa1AAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.19.jpeg": [
+1600,
+1198,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AdKDGcjOChIK9+TtCc/mAfkDAB4C+dD1AwLr6/0cDPbl6gGpzwALBAQzDvjn9P0J+v4E6fcBtMMC7vkCEQkCRBDv5gIFKBYGFgf5BMzCBef3+icdBSAO+Bwc/xMH//XQ9hEa/wT/CgVeIPogG/vz8v8JDv8L7fv1//8M7gABxW4a/QL9/AH+/egC+/H+CxQC7eX9+vj/2YNLgczpaigAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.20.jpeg": [
+1600,
+1193,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/ARsICyQKAT0NBEQUB/YEApjf+dHz/PIBCQNDHgpUEQcZ/QEUBgDF+fz6+wA5BwIY/v0Bo0AZIgkA6+z8D/8B6gD/BQkDDQsDBfj9BCYIAe/w/RUaBOrW+/sVAvP5//X//vz+AQTl8/ze7f8HBv/f9f7h9wDt8/gB/QDw/QoEvev/+QEB2Nb82e72EwwI8/8L8ff8/AUFKphJgxKUX70AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.21.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAm0lEQVR42gXBuwrCMBQA0Nzc1DysGFpRROyiIAguDoouLk6CX+x3COLgJjgIYtuhsUmu50BqishpxMsvsxMjBLnbzx4HJcy1EUrWhG8nVSIYeQ8KkXDXxdMClyl/1NSE1nsXACVFPOS6yKDgcdVn45bWQ8ajrxHxFfX9A1MtNpZnSWc/g23OVN9gw2wV+NXxNrBKJpcnUYRzL/wBF/44iFvTby4AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.22.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AVkjF+wJCzn96+8XEZPFDlEd6wUTEarS/wPj+Q3X7QLm+P/z8wbi9wX0+/zk8vzz+wQBBgka//8D/wAFAwEC/f8A/QD7BQL5CgcGBAgE/fj6/AsKAQIGAPj3/fr59yURBzwXAAQVAfgKDQIuEAAGCALp/P/h6P9nHv4sIfwEShH/BwcAGgv+HQgA6wT8uuf7C/4AptsFhNdCssPS6CEAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.23.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAiUlEQVR42gXBvQ3CMBgE0Dv7s5MCYRpKCiQKRMsMiElYhp3oaRgCCVFQUPCXRLF9vMf9PPXitPXb6DYru390vOSnNXZ6N4T5n52tLseyS654Dbn6YEnVKP8dw63LQymHdXh0o6dLgkQ6WmS9vvpJ62fmGJqFBFEEIBBdhDKjQQIIOKEAIPwAEu4PCtM3pdgSCOQAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.24.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAbUlEQVR42gXB0Q2CUBBE0Tu7zyAK0dCAjdh/ERbhh4mBIG/Hc3QeHxWz++E2i9Dp5lqf95cyFuJCzhwfcgJTmyOaNeCOOwibviLUlsA7Chlc+IekGLy/U3HFdn2hpAYlDGqQxIBSQJvoGzkS+QeClyzHY3yiOQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.25.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAmklEQVR42gXBMQ6CMBQA0P/bggWRREmQGEw4gzdwcfAI3sMTujg5OetgNDFxMBIobT+/vieLoj6ueNvMTr6pJ/Fhrn5JafRa9GSvbzYfP5W+JyzdsGAabCdVnL+cS0a4UToEbcE/IOtY4Kaq8ojuRj5bjYLiSHlixCANhb32qwwvrVBCAEqEEdirr8MzwQ5MysImy4AKAmOU/gGWNkOY5fBnzgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-mo6.26.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAoUlEQVR42gGWAGn/AYYSCOzz/O4MBB0MAScK/fwAAdj9A9ICEATg8fwaFQMSEQUA8Pzq7QHb/AQL//7pBgIEGCADIRQEtvEGy+7++gYHHwD8bfz59wX2Agn5A9Tc/tHs/eYEE+T7CysC/NoKCb/8BQT//QD9DwM0+fvp+gP7/QHI/QXz/wQU/vkC7wj/1foCKQv+RQjv/QD+5v8F6PoFBgb/LWFJvAVAZ9YAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o10.jpeg": [
+1600,
+2376,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAhklEQVR42gXBSw6CMBAAUJjpVEXcGKJulKWJK+LehCt4dl14ARKCaWwKhZZ+8L30eb3FEHZFEWYvvh1s1hknvooL+Hg6X9g4DT8honPamByP+KiqQ1l2bXuva2QExs3GWp8sn9d7MhZ6qbJtzoh6KadBY4EomgYYjUpz4riPiZIyRQYJAqM/f7w93i5x1q4AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o11.jpeg": [
+1600,
+1596,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAz0lEQVR42gXB207CMBgA4G5/SyvroOzKIQhhywIKEsj0BUz0wQkJARKv0CuOlwzGRsahgaZ+n9F765iAw7A3GAxd91FKeTxmH+994HleLNhgmq1mIErigbHJ9EcpBQDw+tKc/f5ppBFC3OL7ONZKAaO5+JDUa1Xfa6xXm0qlbJjGYrEGgnGWZZ7fOJ3PBOP5cjUaTx1HAKNUI2TxvFMS2yjilnWV8na7AyGEUfr99ZkmqdY67Hefym6SpIZt826nHfieEHb9uaruahvtLpfrP+XXTx7U3Ok+AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o12.jpeg": [
+1600,
+2192,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAf0lEQVR42gXB0QqCQBAF0HtnRmPFDSJXwxeDqP//Lt80El92pnNoZiQjQlWH231+zAbA3VNKBGq4uwvJWuvn9Z7GKdytaVRESB7H7zzPZXm27cUiAsC+fxuznPO27aqqAEj2+dqlTkRNKDVqBLrUDUOJcMl9dvexlHIv67oC/AOqHzGUOAu7PgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o13.jpeg": [
+1290,
+941,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAABWGlDQ1BJQ0MgUHJvZmlsZQAAeJx9kLFLw1AQxr9WpaB1EB0cHDKJQ5SSCro4tBVEcQhVweqUvqapkMZHkiIFN/+Bgv+BCs5uFoc6OjgIopPo5uSk4KLleS+JpCJ6j+N+fO+74zggOW5wbvcDqDu+W1zKK5ulLSX1jAS9IAzm8Zyur0r+rj/j/T703k7LWb///43Biukxqp+UGcZdH0ioxPqezyXvE4+5tBRxS7IV8onkcsjngWe9WCC+JlZYzagQvxCr5R7d6uG63WDRDnL7tOlsrMk5lBNYxA48cNgw0IQCHdk//LOBv4BdcjfhUp+FGnzqyZEiJ5jEy3DAMAOVWEOGUpN3ju53F91PjbWDJ2ChI4S4iLWVDnA2Rydrx9rUPDAyBFy1ueEagdRHmaxWgddTYLgEjN5Qz7ZXzWrh9uk8MPAoxNskkDoEui0hPo6E6B5T8wNw6XwBA6diE8HYWhMAAACASURBVHjaBcGxDcIwFATQu287LhCQCEWUrMAIzMlkdJR0QITAiR37eI/X86nfuWkpMNuQ4yG4wNs92fvTKlBnxMo5NZBdtT0CL8N4NLKtWSpVQ7TY+VeW/5X2bGoty8FD36RHchXOR6JCoCQuUB+4hTrBvNEZViBDWZwKorlq9gdXvT8HSlQjBgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o14.jpeg": [
+1600,
+2615,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAZklEQVR42gXBMRLCMAwEwDvJsiFpqGDy/9/RMENjCJaOXe7bRr+cn9m9eYNBeOzHHSFd57nM3fB+3uobSKKMQLkPYtQE2QrM+ZJWIE1mK39dCZCSuzWkEraIglYVe4QyR2tnZo/4A/aCMWOM4EK9AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o15.jpeg": [
+1600,
+2240,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAfElEQVR42gXBMRKCQAxA0Z9kGREB5QK2tp7D+5cWFlaio1KIOLuJ78lxu3tFGWCM+EIFac65w1swkTZiUbF90lNhKd6rHLI/THUV3IWzMjjXUrBkfVWNeIM0or8oImJ1skvEOuiIG4howkM1Jpg8njB7WK22CBvkA28w1T+JxjVpGPwqaQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o16.jpeg": [
+1600,
+1048,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAbUlEQVR42gXBywoCMRAEwO7JsLuyssQHgif//6e86VFUjIrJpK3iYV5FRCNBrN3H5I9QHsw3UDObqJ90TFygi2GXYDPo5CLLKZ1Ge7UYelw/zd8kW9yAnAy1l4gnFF2+d1JWoXv0c9F2Qvmqgn+XSzNQN6I3LQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o17.jpeg": [
+1600,
+1200,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAAj0lEQVR42gXBSwqDMBAAUJPJaIsSSreC4KLSpYve/zClPxWTxjFGTVL6Hru17aWuHp8+FcLQzAGuTaO+BmQhY/SHLBuV2r0HwBADEfEUAQG6YVDaFPmxrkozGa0VF5y5dcsQzydpZ7utTivNGQNE5EkyW/vqBu/DqPX9+XbLIkII/agmIrfvssiJ6Bejdcsfoe9VhSMbMpIAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o18.jpeg": [
+1600,
+2667,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAY0lEQVR42gXBQQ7CMAwEwLW9RCqX8gz6/5dRqiYojpcZ27bnWsvd3MPdHBAZJKUiGZKO9/Ha9895VhVba6PfM5Me4zd8zllSv/v3uiREuOfMlZmZkOwRBBARACQREsyqShKAPwOBPTs5ZVOBAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o19.jpeg": [
+1600,
+1048,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAfklEQVR42gXBSwrCMBAA0MwkTqqUFBVdiQdw59G8rBvBTYtg1YDShHyGju/B6XxR8WXibYTjGh6OMqFyEkwqfEjDLt6bRQnaOfEGlsHukeOzDT1wnVTLClMm+r7TxIh58IA/kVnSxJi59LTxYkwTR6gfxXFbr522HYcV2Rn1H0boQHKE6r7ZAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o20.jpeg": [
+1600,
+2728,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAi0lEQVR42gGAAH//Aw8QER8eHj8/PRAQEfz9/gAuLi+pqKDKxrufnZUZGhoCGBgUCQgH5+jq5OTlR0ZBA/Pz9RYWFAoJCA0NDObn6QL//wAYFxbIyc0GBga/v8MDCwwLyMnNDg0L6Ojr/wAAAm1qZFtXUcPFyREQDomDegQsKCYODgwiHx0SEQ/d3d/s5y9sqXK1pAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o21.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAZ0lEQVR42iXHMRLBUBhG0fv97wVJpbMR67H/ikFhEpN3FU53cluWjx6rHodmy0zrARwOz5u9sk7pL0b0OXwML1VPt1xPB4d3feMEe5K5V9cVtmEjQgt8dTcQINDFHf4RhV4JqAoFkB8KCTp/m/O4PAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o22.jpeg": [
+1600,
+775,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAAb0lEQVR42gFkAJv/ATYBAD4lJSQjJtXd3A8QEDlDRfTw8gH9/AQ2GRk1MDHU1dPg4d8G5wTk3dnw9PcXExUCRUtMFh0f9uHnIxQZEvz/5u3wCBMUISclBPcNCPcD/hg8N93h4R4lNTwlJxEcGwHp6xUSKTgfTQcWAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o23.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAfElEQVR42gXBSw6CQBAFwNcfEKOzISYs3Hv/i7g08Q7qRiHoMN3PKtmXi/VnWlGhbjdKcbMe+WCuwJys4oNrN2aSsYUcwRWteeBETdrI7xWptJ11wwQh2wv1LgIyHKLCWeINK5Ae7amMT8YPPkE65ALA3A8CQy7gTES2+gcuZkHkmb4orAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o24.jpeg": [
+1600,
+2321,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/ASIfG/Dz9fj4+SQfFycgFwQEBQL8/v4A///8/v49MiNHOyny9vkCCgoI+fr7CAYE/wEB1d7pBgUDBPLy9P7//Q8LDPL2+gP3+9re5gMICggCAQEBAADq7vP4+fvb4ukDDQsJHRoU9/j6Af/+ZFZAHBYPAZJ/X/7/ALnG1kg8KyYeE/f2+AMhGxTy9foAAQIZEgnU2eLg4+yjC0iTg+Pt2wAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o25.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AYh0WOPn7u7z91xIK8rX6sHP5ATh6PIHBwYM/QD7/gILCQTx8/UE8/b55+v0BAME7PD17/Hz4OPqAyghGPP3+woKBMbO3QICBA4LBgTp7vTz9foqIhL49vYsIxMVEAoE+fr99/j5BwMBLSIULCAQKBoMBAMCABYSDSIXCyIZC+bt9AoGBQT5+fscGwwA/gHV3O0CBAXD3+rAF0cBV1qL8gAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o26.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA00lEQVR42gHIADf/AZJ1JCQWAPP9+9rgA9Dg/9vxBVs/+QMEAQMiJBzL5Bbz+Pvc7PsWFfseFQHV3g0KDf4DDRIfFBH8CAT2Oij38/QKEw8Bzt8J7fQCBCwh9+LsDksr+L/SD7/UCxYY/v4CAOfp+gT+AAQdE/mdwRv4+foMEAcCA/MUDPPi9gkDDBMsEA31wtQQBQb1Cgn55+z8+fcAEAsCAiMW6unxAhEM8AwL9QL/9gYA+vT0AQb++wMdHAzi7Qf7/gT08/38/PsCAAcIBP/9A/1+q1voFaPk8AAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o27.jpeg": [
+1532,
+1530,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAyklEQVR42gXBvVLCMAAA4DRJbUpDlYLFEV2YdfJ1HR298w28EycXmLiTAoY7rNjTJNDm3++LFg+3QqiU+H7umyXarsH7JuxthCMYihwo6dkcPD7JD6bv7gdlBvBxC95e3Vdtd9zMPn/LITlIVVUGJZo8zzi5hDgPVxdxGsGf2gyLDJUJvZkko0F8WLdaBX401+PeknE8nWT4zPu/TgibUcSEkhaMzglmq1NwjjcnnaKKt32ECIRt5/C37Oq208ZSi5RzBY2nNH1hzT+6j2vTbUBcxAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o28.jpeg": [
+1600,
+2240,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/A5pDJPwEDWYvFgUCCBcDBzcUCQTY7QDW8vjf1/T+AwXs+frrBQUD+gIJBgr/BwoF6fX8/gID+v0AAw0NBiAbDfz/AjQoDDsuEfPx/wI1IxVUQg/5/Pns7/vi6Pnh6/YEDhAJssb08vL79PUACQf9CgQCAwAICAH8BfDz/BcNB/76/v4BAQL99v5CIwYmEgb47/cb/AA2D/7dE0M+0d1svwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o29.jpeg": [
+1600,
+2302,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAoElEQVR42gXBzwqCMBwAYH/7o7mkGhV66FBQdOjWNQh6nt6rF+khioI6FUqbhkpTN13fB6fjQUpYjav7teMWMmbIU6vzTdCAcpf2c73fBNiQ0ftTFmUrkt8jKaOQICFyD1lO8W7LLbOZ7hAfoMVyeIlT1ah1xKYTD89nobEOAi0LK5X1HYoAIEsVBZdQnHyr+FWTtmt91iPGIT5QrzZV8wdF10gnTHn6lQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o3.jpeg": [
+1600,
+2126,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AWZdVwkHBgUFBBQRD/Hz9RYSDgT29vf7+vrU1dgGBgX39/kqJyIE9PX11dbaBAMCAPUA7u/xEA8OA/j09fb29iMhHiAgHPHw8To3MQQqKCQeHBrp6+zT09gsKST//v4D+vj58fHz7e7wAQIBIB4c3N/jAgQEBO7w8ejq6hwaF/P09f///gQVFBP3+PgQDw0hHhr9/f4HBwejA0seHxhoqwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o30.jpeg": [
+1600,
+2188,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AcZXR/v8/K7d5zY0EOgA697p/AQC8/f/5u4BBP+v0vLV7wAZCgcDFx8WBPD11fv6xOnzRTYYDv//Avz09w74/ggA/hQSB+Tm8gYC/QInCQEQHA3f8Pn//f/o6PREJxYDCgMFFBwNxPH2+f3/+Pz9FAoHAzsuGd7v+9nx+AT9/u/2/fMABQImIBjd9v8V/wEJ/gEKBgYhFwqk304wONl/ggAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o31.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAsUlEQVR42gXBPW7CQBAG0O+bHRv/AEoU0aRJm0ukSgeH4HpcAYkDIA5AkyKdCxSQQCher9kZ3uP87Ts9jH4maxGF1EKURVT4peDDPAIifoVVEtRNtPCbBKvbMqVehMB/nzJRKiy1Tb1eNp8fY590s837410ZBUQcktv40+niNa++OG0n2UIodEr63y3sDsP5Xp0u/O1iGo0vs3d3OCQIg5bZYDYSWUlIUEIc7pbdMuAEn2CBU9U4ctO2AAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o32.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA00lEQVR42gHIADf/AciLK7ay8vDpBPn5/Dk6ECIgCQcSA/oE/QNXOBIQDQXV4fP08v3w6v/l3/oPDQv7+P4DJQwJt7juMisR/QAC8/790tzt7vT3Bf0GA2hVHPHq/8rM7/74+zgrF/cFAP4DAer0/ANCNRolGgkuHg78BAQA/v8qHA729f3R5/ME+v0BBfgA7u38/Pb+1fTz09nx7Pf59gQHBAby+tDO+d7p8+Hw9wAFAv8AAv3+/wgIAwLu7Pz4EALqBQD0AQD2+v/+AQP7BAP5/f0Gom5eyD8ciwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o33.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAkklEQVR42gXBSwrCMBAA0EwybQ0G+xH83cG1Z/A63lLwAoo7BTcWTS3VNDMZ34PDful/MWlze9LxEnfbSl97TLYomvxB0w+j74JReXl/SZ7B6SxJaDNHVCL1hBonzmqcCRhAibHt2GawXmgj8B2iqSvng+oDqmTeQwJinUBckVqvRDgENZLgqtSGFTP1o66ROPIfEVJNUruRQ68AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o34.jpeg": [
+1813,
+2277,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAABWGlDQ1BJQ0MgUHJvZmlsZQAAeJx9kLFLw1AQxr9WpaB1EB0cHDKJQ5SSCro4tBVEcQhVweqUvqapkMZHkiIFN/+Bgv+BCs5uFoc6OjgIopPo5uSk4KLleS+JpCJ6j+N+fO+74zggOW5wbvcDqDu+W1zKK5ulLSX1jAS9IAzm8Zyur0r+rj/j/T703k7LWb///43Biukxqp+UGcZdH0ioxPqezyXvE4+5tBRxS7IV8onkcsjngWe9WCC+JlZYzagQvxCr5R7d6uG63WDRDnL7tOlsrMk5lBNYxA48cNgw0IQCHdk//LOBv4BdcjfhUp+FGnzqyZEiJ5jEy3DAMAOVWEOGUpN3ju53F91PjbWDJ2ChI4S4iLWVDnA2Rydrx9rUPDAyBFy1ueEagdRHmaxWgddTYLgEjN5Qz7ZXzWrh9uk8MPAoxNskkDoEui0hPo6E6B5T8wNw6XwBA6diE8HYWhMAAACXSURBVHjaBcHdCoIwGABQ22fOmYJbBkIiXURXXQb1yN70QIFvUOrW5jd/W+dsrqcCKD3s0zhOuEjrV+0fyyKIk9Filuf3x83awWd0G0WhRdsjVtVTft6k6VTTyVZqLtJ5dcYgWZZVddIies4JngQ08Fup/DC8nEtwSwAQMUY89wOATHBjp3FeCBAQOzYNiF9ltJ6nodfmD9ktSwHC/c6rAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o35.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAsElEQVR42gXBS27CMBAA0Pl4TGhxADVI9AYVJ6hAIA4OGw6CxJ4uKE5iJ3iG93C9/gYAEWHiMPWVONDS5cGN44uIcopI1PXiHbPjlEenqm3bHg/7lLL3slzUp/MFiQkMUuo3m5/mq1k1q9329z92iEAGBmAigkzPNj4eT7NiZuxlUrTM6xoR7ve/YUjX642I8PMjzKZeSxnUwiyEimOXY//iia/MAIkMyVTHouKoqL0B4lZXS4kFDnAAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o36.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAuElEQVR42iXMTUoDQRAG0KqvJjM9PYQsdOEy6A3iJhh35qoieIAIHiMhQpCAd0js6emfKhe+Azy+vbmrtQrAzBC03QzAFFNTSiHiy/Wac1ZT7/uh93FKDRGF8bJ92T7cL+fz4Xj82n18dq0DgJTi82a9ely5zm2e1rlMxAQzI6Jadb8/vL69hxCIyNSknTk1FWlPp++c8xjj+fwDaXjwCzIK4y8gECk5OderKg9+YaqM/9MEqKpm9gdJTlu0qoTgOAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o37.jpeg": [
+1600,
+2000,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAoUlEQVR42gXBWwvBUAAA4HPrTHZhNnvzqtXIk3iRlN/h/3pVkkiaXQw7M+3MrOPwfXC19NJCOLZd1xwiqjcxsUxtvJgZhl4WGYD0uFmjoqySW9I1Lbc/AEA+8xehipKyaxgF2/3ucDp3KEC8FJ47vMSBH8WYEEoVBBBhGbs/EsfS59OJqmoIYwIRttu6lMQPQ8ZyPOq1YMVRzRu/j3hn8iv+depFkC5uNTgAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o38.jpeg": [
+1600,
+2000,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAmklEQVR42gXB3QqCMBgAULd93waF/YhiRA8QiTcRFETvX9ATFJSRWGl40ZbQ3FznkNl0Yk3reY4SAgDWeXQ46BlrGWAQhlxwwYHFUZCmySKZr1dL/dNZdgdEvttumqY5nS/F82WtgbKspFS+398fjkp9nfOYQKjedV48rrdc65YxSuJw/JGqcx0gMkKE4GBsFwUjRMY5R6BlLf+C9EGr4kr84gAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o39.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAs0lEQVR42gXBvU4CURAG0Pm76wpuNMGEwko6fAE7CwsbC5/YR6CmsBNcwyYkRkhYuTPzeQ4/381V1MNFCwiIBLKYWbFyKVyE/urZHSBQc5HMFkge/T7QtcbKu5o9y1HFPIIiX1+Ws9l03x/eV19DQJQtIs4ZH+vd0DWfm5/hOB4Sp8YkEyS4avR71T9cd2+Pi6zVM/lpfjshulGqo6upKu2TfiPNhMfE1rOdtg6OiFLUUP8BStNkZuFN8hcAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o4.jpeg": [
+1600,
+2118,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAkElEQVR42gXB0QrCIBQA0Hu9bmA9mLaNUVZPRVT//z9REM3I1EGuDewc3G3Xx8Peh+DcZ2MMMsa/KaU0uLd7PDulVB8jmwvR1FUGQMzTNBEnMmbVx+hDEGLGiZARg5x9iEVROuevt3vOQHW1bNtWLzVAHlL6jSM1TU3EtVZlUUq5iDHQ5XxCBNtZa19SSkD8Ax1pPn8RiB9lAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o40.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAkklEQVR42gXBwRGCMBAF0L/ZJAriQcfx7s1CLMAGbMKTRdmPdxWdEQ6CQCAhi+/x9bK619v9bnU6ZOejfVYbfXvY/OOskXWWhn7Ki16/vmqRRGtiXvqy4s55dliSkmRuhhBmWt5FZAWqm/BrY9OOnQNkYkUEwiToXAgjCFAiokhpwyD03rth1MwExElgDaXWGk1/ce9GUzTMi3QAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o41.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAvUlEQVR42gXBwU7CQBAA0JnZ2V1LSTCxMaYHICEcuHiRX/AP/AA/11/wYLhAGoKC0nS32zI7vofvr+ub4dPh9/snxBFTpiHzpCyNF7WYt8u7OGCvAIQE4r2j41/aPLn5A1uCt2f/svB9llOb+Bql0H7XpCaMdVUEVQVIopRu0LTj/RQKT/tzFmIgIEJTOhaydeU+dqFN2Kn9OiYly9ZxNTWf+9DH4XDRThQAiAyu6sdZ6booSjyqyQpgrCr+A2dPW9t4OJsfAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o42.jpeg": [
+1600,
+2000,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AU8FDhobEFpKHuXzAH6x1CD6+wIfDgdpYBgiJwD97vkkDQrlAPwELS8O7eH2+uf+lsLiMiMP7fj2BBocBK7X8SMO+/UNABkKBAcDAQMk+wXV9f0J/QELAAH18vnW7vQCzeL0GwsHFPkB//v+6v788vz9Auz3+vft+P4HAgUKBN3w9/b+/QTn/f0U/fwFCAAL+v0XCwMUCQ46bEl0ic+OKQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o43.jpeg": [
+1600,
+3046,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAICAIAAABRUclSAAAAc0lEQVR42gFoAJf/ATkpH/cLIvoABxL43gT/Dh4mQ18HCQTWtqIC8/gDPCPyXDPvFgr6AhoP9ycT78/e/vX5/AIPB/YICQQNCgL+/PsC6fYK7PgM9wEG9f0FBAADCAUIDuL1Cfb/CQEqIR8aHBbu9wT17OdzQyrz658IzAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o44.jpeg": [
+1600,
+2000,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AaiMSPr27wgMDBAOBxYUBtHY7wISCPbt5ejh1+H98OgTC/0QCPsCAfrv1N/04NbeEQH5//Xt/fTxBPX6A+bu/RIABPj5+Pv0AAD9+wLn7f/e6PsHA//d6gXw8f78+fwC3uj85O/+AQgJ/QUG5vcO3+wCAyMcDgAFFDE0LfTz6R4lKvP6BgQKBP1EMgwSCPD9BBD28vLx6+nGjlSMj37TFQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o45.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAxElEQVR42gXBwW6CQBAAUHYWTSigWwSMibVS482EfoQHL/6/PdhUokFKWlwKsyDs2PfYfret6jr0J65je97483har1dB8AyMsfd4o4lGY/G6XL4s5gZAVd+BiFZvEXBQTZtluWU/ATfD0AfS+nYrOHDbsaJoEceba5YbDMxO94zBNAyatv1KLqSpKOTh48jFyKUH9Zryn18pS0SFSg2HAy6EYIYh/7Asq77XE89LzmmafvPZ1EdEa0BNg+29q0qJCh+d+geHnmXVvUKaeQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o46.jpeg": [
+1600,
+2240,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AWVfYfr6+wABADUzLyEhIOfm5gLW2tvT19YWFxX8/f0VFREHCQcC4+XkISEeAwQC8PLwAgL+DgsIA/b29wEBAQcHBxcVEx4cGPv6+gIsKykTEhLZ293+/v4BAQEMCwgEMC0sLS0qy8zQFRMU8vL0EAwLAy8tK+Xl5+Hi4yomI9bX2vv8/AQOCQjo7O33+Pbj5OP19fcKCAg6SUI52XE5AQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o47.jpeg": [
+1600,
+2240,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAo0lEQVR42gGYAGf/AWM0HzEj+yci+eHpBOjrBvQQFwISCv07L/YUHgfu/BAC6/Yd8+4CBQX5/gcPx+Ac4fYdGAb+JA31AzcbAwEHEbLPEdTg6A4dJ/735wIUJCTz7fDn1dIRGhsFEh3g7AAC1OUJIRsWEAHvDQoRFAoHAwMBAxH5+g4IChQU/Oz+G//5+evr1QIZDQDd6/8DER3x8Oj08esIDAiX9j+mZNFaYQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o48.jpeg": [
+1600,
+2411,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAeUlEQVR42gXBTQrCQAwG0HxJZmprEboodCHizk29hvc/ghtBERTBQp2fxPdwGYd7qo9cBHKIws9smWjuN8I0NEEgysDUxKW6kGsyX6wezT7V3tmY3OZOO7g7rQactu0u6tdZAHHiXvX6s0D+SmUfwedWlXBbUwCK2R/vYzQ3wcim7QAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o49.jpeg": [
+1600,
+2240,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAoElEQVR42gXBXQqCMAAAYPejjiR6SSEhaeeoDOy5EDqb3UeoXg3LEzSUIELRyVbN9X3gmCSuO6WUEmJrrZFWKAjmXdtBaFC6+Co9fDiEEDHGfH/WdX1R3A0Ased5FgaOM07TNMuuk0OMNuFKCHk6X8qyFEKoYcDPquqFrJtGCtlyvo0imOc3E5vEth+MWZY5IhaI9zvO+59S4Xr5etemkn+Ke05m7KkCKQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o5.jpeg": [
+1600,
+835,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAIAAAA8r+mnAAAATUlEQVR42j3MOwoAIQwFwHx4oL7C+x9UDMSgxcI2U46SBDDGiIhzDsmq2ns7ABFZa1UVAFU1szmnttYigiTJzMxMM7v3mruLyG/v/aseTTkkkrxl780AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o50.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAnElEQVR42gXBXQ+BYBQA4Pc9p+nDwj/QympMlzYXmH9vLlyYG2xmLjS6SKUc9abjeaRt28AcTnzD6m62O9QQVF1bpr5ezZeLGXPLbYvMwh8Ns3dxOl9KqoqiBMHseY7jOvvDcdDvNb8fAoKhd8aBS/QVUjyeMYKED1Ga5uE0uN7uSfJCBADEkqooitMsb5pGE1Kahk5ESimlFIv2DyVSTcKqcTukAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o51.jpeg": [
+1600,
+1889,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAICAIAAAC6ZnJRAAAAp0lEQVR42gXBuw6CMBQAULm3QHmGgPwAOrkoq4txdzHx8xXCQCSY4KAt1L48x6l326brKfWU1gSAOGBWFqpN5dOAz0IqhQQJwSiK8Ha9eDS21nDGqOcBgAMOMVox9t3XB86Zlj+tdRomWBbZvemNNW3bZGkipfR9imkcC6UJ4jS9fZcoKQ0gPJoOAYu8iIJwWcSHzUWew/l0HIbnOL7Kci2EcBGSkP4BtfBNRIbMvGMAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o52.jpeg": [
+1600,
+2133,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAkElEQVR42gXBQRKCIBQAUIH/1YQixaYD5K5F0/1Po9bYZAubSRAQ6T1yv13nWVvni12ujU4RIUlIludC8FOttFnGz8gQadNclKqm6dv1vXeexhiP8uCtBYR1XbctgBA8S/HxHAghjNIYAgjOh9e7bTvnHKa4Lwp2rktjFmutlDKEgIxRYEz/ZlWVhBAA8H79AwuiQqj//EXmAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o53.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAy0lEQVR42gXBz0vCUBwA8O37fXsP7bmRkJuJIDhBAu/r1NU/XAQvdgipmE0PpeYh2dxb79dWn487jUezh6mxdrFcCVExRudPydfxTAI/SB4TBHhPs/y6iwdRPJnYP8Qo7L1sXo2xaZoWpRj0Q63t2zYjAJjt95R6eSkY9T4Pp/t+1GKUnL7Pge8rbQAQoOGcd7u3vN0GqdQN50i8um60sa6L6+dN9augwzmlbPuRaW1s3eTFFQkWpUCltFKSEM9xHCll2Lsbj4Y/l8s/e/1fqLqskt0AAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o54.jpeg": [
+6018,
+6018,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAArUlEQVR42gXBuU7DQBQF0Fnu8xhNIjkyDiESJQUF//8bFBT0IBCiyuZ48jbOieNmeH15fnv/2O+2N+an/a4xP0z3iCmKGYDD8dR13eF08eDMjHWtn18/fV9uzNm0FLorZVVrJsLxfDZ3N08pqer3758IQ1QJMDNVNTM160sh6jIRHrdTa0yAqKgYkKN7JuC6tBjCNG6uS2PhcRgu85xTTCE4iwrLelXNHDnPy/IPBR5kxYjy/lUAAAAASUVORK5CYII="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o55.jpeg": [
+3729,
+2191,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAFCAIAAAD38zoCAAAAaklEQVR42gXBSw4AEQwAUO20Eis7sbGUuP+dHECEiu+8ByGE3ru11hgjIt77nHOMEZVSay1jTEqJmZ1zzExEn9Z6jAEAvffWWmttzikixMyIuPeec9ZaRYSZzzkfIiLivbeUQkRrrfceAPxfVDnLxRMyXAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o6.jpeg": [
+1600,
+1600,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAtUlEQVR42gXBS07DMBAAUI/HyTjKx00XlVhUXACEQKXq/S8A4hLAAnUReyaxxjHvwcPpNE1j4xy17ZLYoRNhLcV574mo63zRknNmZRYZhtERtTHGve5zCIhYTe37PnJEa2Hd8nE+fP/8xiWxsLWoqu52fWeRj8+vv/v9ECYRaZwDY/B2vRznudY9MXuicRiMAVlXa4yJMb08PV/eXgFg23IppfPeWgCiZknp8XwOYZJVVBXR/gPaglhJ3pb64gAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o7.jpeg": [
+1600,
+2150,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAcklEQVR42k3LOwLCIBAEUGYXU2BoYuLn/kfEJLIsjIWNr39YcvJBAO59u6/vUqR5f7yeorGT8TJJnOQ0L2U/a7Xmeb6atfAv51lVICoCGWOQJAlAt9uSUhLgV1REAezHoTG25iQFiNu69M5Prc2sWmMIX6t6QLMVbZ+aAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o8.jpeg": [
+1600,
+2142,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAiklEQVR42gXB3Q6CIBQA4HOg+BO7KC5sq/d/LVetuZZFpXBElL4PjdnaqkJEomktUNt6I4VQSjdNk/PStpfX23NrjbW76+0eiZzbxxAZAp5PRwTousf3N6acOcIqhSqlOHegibz/sDGkEKLSOhJJIQGAIwJjjHOOjKU5DcPIEWDOi9E6ROqffQH4A5DeQo3Z6klWAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-o9.jpeg": [
+1600,
+2135,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAh0lEQVR42gXB2wqCQBAA0J3L7o6hRYjRs+BjH9D//0pQDxFd1sQxZzqHzsMwTWW3kUNM7uHU9xzmWZARWYOpmRPxoxQ180UJkRDADd19ca+r6th1OSUg4poZ23abUsy5Erlcb/hWFQAHvL8+4ziZO6YQnqVYpJ+Zrksjmfc5w/htHJRIOK5mf2SwQEY0Zw+FAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-sb1.jpeg": [
+1600,
+1593,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA00lEQVR42gHIADf/Af/zywABAAAEBOnk7dXZ4wkHAxgXFQQDAwTl4+n6+vsIDAjDxdensMYdGREdGhgKCQcBT0lD5ejrGxYNOTo8QkZJBgT/zs7V9/j3AgMCAgUCAwoHCfv7/PX1+fz9APj59hgXGAICAf0DAv/1+fnZ2tvNzs75+fbr6OP39vEC8vb55+zv29rgJCMhDQsF/v38IR8fAP34AcK2mfPy9QYD/xYeK/H5DPTy7gP//v779gH/988AAgEAAQD68/vx8/z8+/kBAP8DAwH/32c6yl6SVAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/LA2026-sb2.jpeg": [
+1600,
+1591,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAA00lEQVR42gHIADf/AfTmwPz8/QMFBOTj6uPl7SEhHff2+gAB/wP17/Z/hZqjqLQA/wbb3ejs7fH7/AXm6OwE4OXo0tndEw8LAQQGCRAK9PX32Nra//32BCUlHTPnJxgUEBEPDgQJEAL+9vf4/CIgJALy7/X49/ru8fTs7O8JAQAdFxYZFBIRCwwE3OLm3OLnGhIMCgkJ/f78BQYGAvf5/v/9BC0qIwAA/hUQDevq6wMFDiYMEuXb4wYICAH87sf//v8CBAPg3+b+/wYWFxLu7u4HBgWZP2T6xhzmfwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/artworks/inprogress.jpeg": [
+1600,
+1198,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAIAAABxZ0isAAAARUlEQVR42m1NMRLAMAgS7egL/P8bzaR0sJdkKAsHHICIkD88Q929LVX9AgDuTtLMqmqtJSJ6N0iSPFMkM3M0AADnY3ZvvLcRG0ogd4pwAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/combustion/cover.jpg": [
+900,
+1353,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAALklEQVR42n2MIQ4AMBDCCrj7/4MnTrBMrK6hAf4EkJRk3YDtmbHdTFL321/6tBwURwBO9SaAowAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/dunes-of-silk/cover.jpg": [
+900,
+1353,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAALklEQVR42n2LIRYAIBTCBiTuf2GD4avBtT0G/Alg2/Z2A0naJplM0uynv+i6wQIVKABRQz+KmQAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/enough/cover.jpg": [
+900,
+1353,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAKklEQVR42mNgIAowMzNDGEwMDAyMjIycnJyMjIwIeTiHCY2PDhjhJkEAAA+OAD94dPLaAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/jera-ansuz/cover.jpg": [
+1241,
+1754,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAVElEQVR42k2MMQ4AIQzDHKiomOD/P2UouYHlMkVxZAAgIsYYQGY2QNJaa+8tCQhJvfeqqqrWGtBsv/+c07btAKrqnAPYlhRPf+99E/88d2bGa3/wAS45HskJAlNvAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/tessera/cover.jpg": [
+900,
+1353,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAKklEQVR42mNgIAowMzNDGEwMDAyMjIycnJyMjIwIeTiHCY2PDhjhJkEAAA+OAD94dPLaAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/the-finished-web/cover.jpg": [
+900,
+1353,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAANElEQVR42n2MQQoAIAzD0pXB/v/fgYchiII9NaEU/hEQEZKA7jaQmVU1vGfSlLj4+bN9igXJCAY1MLz9OgAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/the-unfinished-web/cover.jpg": [
+900,
+1350,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAMUlEQVR42oWKMQ4AIAjE7uwA/38vJA7ExUE7tUmlN5YETHQ3tjMzIoCqOps9sq7+sQHM3wY6Vtr/nwAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/the-unmeasured-six-tellings/cover.jpg": [
+1275,
+1650,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAH0lEQVR42mNgoAzw8vLy8vJC2Mxw0b9///79+5cSgwGUIQZAyhOlRAAAAABJRU5ErkJggg=="
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/vibration-five-tellings/cover.jpg": [
+1275,
+1650,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAICAIAAABVpBlvAAAAJElEQVR42mNgoAxwcnJycnJC2CwQ6s+fP+iqGBkZGRkZSTEYAN2+AzWh/dmrAAAAAElFTkSuQmCC"
+],
+"https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/what-the-wise-keep/cover.jpg": [
+900,
+1350,
+"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAICAIAAAC+k6JsAAAAMElEQVR42oWKMQrAQBCEdALz/wfvwhUhTYrESkH4RiCJCuzupbZtm2Rmnk1vyav/OMltBi6GfUGZAAAAAElFTkSuQmCC"
+]
+}

@@ -1,0 +1,345 @@
+<script>
+// Reusable book-viewer engine — mounts onto any root element that contains
+// a .book-viewport > .book-visual (plus optionally .book-page-indicator /
+// .book-page-toggle somewhere inside it). Used both by the standalone
+// /oeuvre/<slug>/ page and by the Oeuvre grid's popup modal, so a book can
+// be viewed either way without duplicating this logic.
+window.mountBookViewer = function (root) {
+  const viewport = root.querySelector('.book-viewport');
+  const visual = viewport ? viewport.querySelector('.book-visual') : null;
+  const toggle = root.querySelector('.book-page-toggle');
+  const indicator = root.querySelector('.book-page-indicator');
+  if (!visual || !viewport) return;
+
+  // Re-mounting the same viewport (the modal being reused for a different
+  // book) must not stack up duplicate listeners from the previous mount.
+  if (viewport._bookViewerCleanup) viewport._bookViewerCleanup();
+
+  const pageMode = viewport.dataset.pageMode || 'spread'; // 'spread' (physical book) | 'single' (PDF/manuscript)
+  const defaultPageView = viewport.dataset.defaultPageView || 'two'; // 'two' | 'one' — from the book's frontmatter
+  const pageCount = parseInt(viewport.dataset.pageCount, 10) || 0;
+  const framesPerFlip = parseInt(viewport.dataset.framesPerFlip, 10) || 6;
+  const framesPerOpenClose = parseInt(viewport.dataset.framesPerOpenClose, 10) || 8;
+  const fps = parseInt(viewport.dataset.fps, 10) || 12;
+  const base = viewport.dataset.imageBase + '/';
+  // Set only on the fullscreen viewport (see book-fullscreen.html) — the
+  // inline preview never rotates, it just hands off to fullscreen on click.
+  const allowRotate = viewport.dataset.allowRotate === 'true';
+
+  const spreads = Math.ceil((pageCount + 2) / 2);
+
+  // A single linear position counter drives everything, regardless of mode:
+  //   spread mode:  0 = closed, 1..spreads = spreads, spreads+1 = ended (closed)
+  //   single mode:  1..pageCount = individual pages, no cover/open/close bookend
+  const minPos = pageMode === 'single' ? 1 : 0;
+  const maxPos = pageMode === 'single' ? pageCount : spreads + 1;
+  let position = minPos;
+  let animating = false;
+  // A narrow, portrait phone always starts single-page (two-up is too small
+  // to read there) regardless of the book's setting — UNLESS this mount can
+  // rotate (the fullscreen viewport), in which case narrow-portrait is
+  // exactly what rotation exists to handle, so the book's own default gets
+  // to stand. Anything wider, or a phone turned to landscape, is "full
+  // screen enough" to honor the book's own default either way — set once
+  // at mount; rotating afterward re-fits the stage but never yanks the
+  // reader out of a mode they picked by hand.
+  const isLandscape = window.matchMedia('(orientation: landscape)').matches;
+  const isNarrowPortrait = window.innerWidth <= 900 && !isLandscape;
+  let singlePage = pageMode === 'spread' && ((isNarrowPortrait && !allowRotate) || defaultPageView === 'one');
+  // Fullscreen-only side-by-side view for single-page-mode books (PDF
+  // manuscripts): pages (1,2), (3,4)... shown static, no flip animation.
+  let pairView = false;
+  viewport.querySelectorAll('.book-visual2').forEach((n) => n.remove());
+  let visual2 = null;
+  if (allowRotate && pageMode === 'single') {
+    visual2 = document.createElement('div');
+    visual2.className = 'book-visual book-visual2';
+    viewport.appendChild(visual2);
+  }
+  let showRight = false; // spread mode only: which half of the current spread is visible in single-page crop
+  let showingCover = pageMode === 'spread'; // spread mode only: cover isn't split into two pages
+  let spreadAR = 10 / 7;
+
+  function staticFor(p) {
+    if (pageMode === 'single') return { src: base + 'page-' + String(p).padStart(2, '0') + '.jpg', isCover: false };
+    if (p === 0 || p === spreads + 1) return { src: base + 'cover.jpg', isCover: true };
+    return { src: base + 'spread-' + String(p).padStart(2, '0') + '.jpg', isCover: false };
+  }
+
+  function transitionFor(p) {
+    // the transition connecting position p and p+1
+    if (pageMode === 'single') return { src: base + 'transition-' + String(p).padStart(2, '0') + '.jpg', frames: framesPerFlip };
+    if (p === 0) return { src: base + 'transition-open.jpg', frames: framesPerOpenClose };
+    if (p === spreads) return { src: base + 'transition-close.jpg', frames: framesPerOpenClose };
+    return { src: base + 'transition-' + String(p).padStart(2, '0') + '.jpg', frames: framesPerFlip };
+  }
+
+  // .book-viewport has no intrinsic content of its own (it's an empty div
+  // painted via background-image), so its box is sized explicitly here —
+  // the largest rectangle at the book's real aspect ratio that fits inside
+  // its wrapping element — rather than relying on CSS aspect-ratio
+  // auto-sizing against a flex parent, which doesn't resolve reliably in
+  // every browser.
+  function fitViewport() {
+    const wrap = viewport.parentElement;
+    const maxW = wrap.clientWidth;
+    const maxH = wrap.clientHeight;
+    if (!maxW || !maxH) return;
+    const ar = pairView ? spreadAR * 2 : ((singlePage && !showingCover) ? (spreadAR / 2) : spreadAR);
+    // Rotate a two-page spread on narrow, portrait (fullscreen) screens:
+    // fit it into the width/height-swapped box, then a 90deg CSS rotate
+    // (below) turns that box on its side so it lands back within maxW×maxH.
+    const liveLandscape = window.matchMedia('(orientation: landscape)').matches;
+    const twoUp = pageMode === 'spread' ? !singlePage : pairView;
+    const rotated = allowRotate && twoUp && window.innerWidth <= 900 && !liveLandscape;
+    const boxW = rotated ? maxH : maxW;
+    const boxH = rotated ? maxW : maxH;
+    let w = boxW, h = w / ar;
+    if (h > boxH) { h = boxH; w = h * ar; }
+    viewport.style.width = w + 'px';
+    viewport.style.height = h + 'px';
+    viewport.classList.toggle('is-rotated', rotated);
+  }
+
+  function setSinglePageMode(on) {
+    singlePage = on;
+    viewport.classList.toggle('single-page', on);
+    syncLabel();
+    fitViewport();
+  }
+  function syncLabel() {
+    if (!toggle) return;
+    const oneUp = pageMode === 'single' ? !pairView : singlePage;
+    toggle.textContent = oneUp ? 'Two-page' : 'Single page';
+  }
+  function setPairView(on) {
+    pairView = on;
+    viewport.classList.toggle('pair-view', on);
+    if (on && position % 2 === 0) position -= 1;
+    if (position < 1) position = 1;
+    syncLabel();
+    fitViewport();
+    showStatic(staticFor(position).src, false);
+    updateIndicator();
+  }
+  if (toggle) {
+    setSinglePageMode(singlePage);
+  }
+
+  // Size the stage immediately using the fallback aspect ratio, rather
+  // than leaving it at 0×0 until the cover image's real dimensions come
+  // back — a freshly-opened modal would otherwise briefly have nothing
+  // clickable to look at (or click).
+  fitViewport();
+
+  const onResize = fitViewport;
+  window.addEventListener('resize', onResize);
+
+  const probe = new Image();
+  probe.onload = function () {
+    if (probe.naturalWidth && probe.naturalHeight) {
+      spreadAR = probe.naturalWidth / probe.naturalHeight;
+      fitViewport();
+    }
+  };
+  probe.src = staticFor(minPos).src;
+
+  // CSS animations run on wall-clock time regardless of whether the image
+  // they're painting has actually arrived — on localhost that's invisible
+  // (everything loads instantly), but over a real network the sprite sheet
+  // can take a moment to download, so setting background-image and
+  // starting the animation in the same breath would leave the book blank
+  // for however long the download took. Every image is preloaded — with
+  // the previous frame left on screen the whole time — before it's ever
+  // assigned as a background or animated.
+  const preloaded = new Set();
+  function preload(src) {
+    if (preloaded.has(src)) return Promise.resolve();
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => { preloaded.add(src); resolve(); };
+      img.onerror = () => resolve();
+      img.src = src;
+    });
+  }
+
+  // Once landed on a page, quietly fetch the transitions on either side of
+  // it, so the *next* click (the likely next action) rarely has to wait at
+  // all — only the very first click on a fresh mount pays the cost.
+  function prefetchAdjacent() {
+    if (position < maxPos) preload(transitionFor(position).src);
+    if (position > minPos) preload(transitionFor(position - 1).src);
+  }
+
+  function showStatic(src, isCover) {
+    preload(src).then(() => {
+      visual.style.animation = 'none';
+      visual.style.backgroundSize = '100% 100%';
+      visual.style.backgroundPositionX = '0%';
+      visual.style.backgroundImage = 'url(' + src + ')';
+      if (visual2) {
+        const has2 = pairView && position + 1 <= pageCount;
+        visual2.style.backgroundSize = '100% 100%';
+        visual2.style.backgroundImage = has2 ? 'url(' + staticFor(position + 1).src + ')' : 'none';
+      }
+      showingCover = !!isCover;
+      viewport.classList.toggle('showing-cover', showingCover);
+      visual.classList.toggle('show-right', showRight);
+      fitViewport();
+      prefetchAdjacent();
+    });
+  }
+
+  function playSprite(src, frameCount, forward, onDone) {
+    animating = true;
+    preload(src).then(() => {
+      const duration = frameCount / fps;
+      const dir = forward ? 'normal' : 'reverse';
+      visual.style.animation = 'none';
+      visual.style.backgroundSize = (frameCount * 100) + '% 100%';
+      visual.style.backgroundPositionX = forward ? '0%' : '100%';
+      visual.style.backgroundImage = 'url(' + src + ')';
+      void visual.offsetWidth;
+      visual.style.animation = 'book-sprite-play ' + duration + 's steps(' + Math.max(1, frameCount - 1) + ') ' + dir + ' 1 forwards';
+
+      const onEnd = () => {
+        visual.removeEventListener('animationend', onEnd);
+        animating = false;
+        onDone();
+      };
+      visual.addEventListener('animationend', onEnd);
+    });
+  }
+
+  function updateIndicator() {
+    if (!indicator) return;
+    if (pageMode === 'single') {
+      indicator.textContent = pairView
+        ? 'Pages ' + position + (position + 1 <= pageCount ? '-' + (position + 1) : '') + ' / ' + pageCount
+        : 'Page ' + position + ' / ' + pageCount;
+      return;
+    }
+    if (position === 0) indicator.textContent = 'Closed';
+    else if (position === spreads + 1) indicator.textContent = 'The End';
+    else {
+      const half = singlePage ? (showRight ? ' (right)' : ' (left)') : '';
+      indicator.textContent = 'Spread ' + position + ' / ' + spreads + half;
+    }
+  }
+
+  function isSpreadInterior(p) {
+    return pageMode === 'spread' && p >= 1 && p <= spreads;
+  }
+
+  function land(newPos, arrivedForward) {
+    position = newPos;
+    const s = staticFor(position);
+    showRight = isSpreadInterior(position) && singlePage ? !arrivedForward : false;
+    showStatic(s.src, s.isCover);
+    updateIndicator();
+  }
+
+  function stepForward() {
+    if (animating) return;
+    if (pairView) { if (position + 2 <= pageCount) land(position + 2, true); return; }
+    if (isSpreadInterior(position) && singlePage && !showRight) {
+      showRight = true;
+      visual.classList.add('show-right');
+      updateIndicator();
+      return;
+    }
+    if (position >= maxPos) return;
+    const { src, frames } = transitionFor(position);
+    const target = position + 1;
+    playSprite(src, frames, true, () => land(target, true));
+  }
+
+  function stepBack() {
+    if (animating) return;
+    if (pairView) { if (position - 2 >= 1) land(position - 2, false); return; }
+    if (isSpreadInterior(position) && singlePage && showRight) {
+      showRight = false;
+      visual.classList.remove('show-right');
+      updateIndicator();
+      return;
+    }
+    if (position <= minPos) return;
+    const target = position - 1;
+    const { src, frames } = transitionFor(target);
+    playSprite(src, frames, false, () => land(target, false));
+  }
+
+  const onToggleClick = (e) => {
+    e.stopPropagation();
+    if (pageMode === 'single') setPairView(!pairView); else setSinglePageMode(!singlePage);
+  };
+  if (toggle) toggle.addEventListener('click', onToggleClick);
+
+  // Jump straight to a page (single-page books) or spread (physical books).
+  const jumpForm = root.querySelector('.book-jump');
+  const jumpInput = jumpForm ? jumpForm.querySelector('.book-jump-input') : null;
+  const jumpMax = pageMode === 'single' ? pageCount : spreads;
+  function goTo(n) {
+    if (animating || !isFinite(n)) return;
+    n = Math.max(1, Math.min(jumpMax, Math.round(n)));
+    if (pairView && n % 2 === 0) n -= 1;
+    if (n === position && !(isSpreadInterior(n) && singlePage && showRight)) return;
+    land(n, n >= position);
+  }
+  const onJump = (e) => {
+    e.preventDefault(); e.stopPropagation();
+    const n = parseInt(jumpInput.value, 10);
+    if (!isNaN(n)) goTo(n);
+    jumpInput.value = '';
+    jumpInput.blur();
+  };
+  if (jumpForm && jumpInput) {
+    jumpInput.max = jumpMax;
+    jumpInput.placeholder = '1-' + jumpMax;
+    const lbl = jumpForm.querySelector('.book-jump-label');
+    if (lbl) lbl.textContent = pageMode === 'single' ? 'Go to page' : 'Go to spread';
+    jumpForm.addEventListener('submit', onJump);
+  }
+
+  const onViewportClick = (e) => {
+    // Preview viewports (the Oeuvre popup, the standalone book page) hand
+    // off to the fullscreen viewer instead of flipping pages themselves —
+    // only the fullscreen viewport (mounted without this flag) turns pages
+    // on click. The book's own authored default travels with it — not the
+    // preview's *current* singlePage — because a narrow-phone preview is
+    // always forced single (see isNarrowPortrait above) for lack of any
+    // way to show two-up there; fullscreen has that way (rotation), so it
+    // should honor what the book actually asked for, not the preview's
+    // compromise.
+    if (viewport.dataset.opensFullscreen === 'true') {
+      if (window.openBookFullscreen) {
+        window.openBookFullscreen({
+          pageMode, pageCount, framesPerFlip, framesPerOpenClose, fps,
+          imageBase: viewport.dataset.imageBase,
+          defaultPageView,
+        });
+      }
+      return;
+    }
+    const rect = viewport.getBoundingClientRect();
+    // A rotated (turned-sideways) spread has its "forward" edge visually
+    // at the bottom, not the right — a 90deg clockwise turn swaps them.
+    const rotated = viewport.classList.contains('is-rotated');
+    const forward = rotated
+      ? (e.clientY - rect.top) >= rect.height / 2
+      : (e.clientX - rect.left) >= rect.width / 2;
+    if (forward) stepForward(); else stepBack();
+  };
+  viewport.addEventListener('click', onViewportClick);
+
+  viewport._bookViewerCleanup = function () {
+    window.removeEventListener('resize', onResize);
+    viewport.removeEventListener('click', onViewportClick);
+    if (toggle) toggle.removeEventListener('click', onToggleClick);
+    if (jumpForm) jumpForm.removeEventListener('submit', onJump);
+  };
+
+  showStatic(staticFor(minPos).src, staticFor(minPos).isCover);
+  updateIndicator();
+};
+</script>

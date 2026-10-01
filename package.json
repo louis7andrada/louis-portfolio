@@ -5,10 +5,14 @@
   "scripts": {
     "dev": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./static/css/output.css --watch",
     "hugo": "hugo server -D",
+    "test": "node tests/smoke-test.mjs",
+    "test:live": "node tests/live-test.mjs",
     "rev": "concurrently \"npm run dev\" \"npm run hugo\"",
+    "rev:test": "concurrently \"npm run dev\" \"npm run hugo\" \"node tests/live-test.mjs --always-pass\"",
     "build": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./static/css/output.css --minify && hugo --gc --minify",
-    "deploy": "powershell -Command \"$changes = $(git status --porcelain); if ($changes) { git add .; git commit -m 'website updates'; git push; if ($LASTEXITCODE -ne 0) { Write-Output 'GitHub push FAILED - fix it (git pull, then npm run deploy again). Nothing was deployed.'; exit 1 }; Remove-Item -Recurse -Force .\\public; Remove-Item -Force .\\.hugo_build.lock; npm run build; netlify deploy --prod --dir=public } else { Write-Output 'No changes to commit. Production deploy skipped.' }\"",
-    "deploy-draft": "powershell -Command \"Remove-Item -Recurse -Force .\\public; Remove-Item -Force .\\.hugo_build.lock; npm run build; netlify deploy --dir=public\""
+    "notify-search-engines": "node scripts/ping-indexnow.mjs",
+    "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy.ps1",
+    "deploy-draft": "powershell -Command \"if (Test-Path .\\public) { Remove-Item -Recurse -Force .\\public }; if (Test-Path .\\.hugo_build.lock) { Remove-Item -Force .\\.hugo_build.lock }; npm run build; if ($LASTEXITCODE -eq 0) { netlify deploy --dir=public }\""
   },
   "devDependencies": {
     "autoprefixer": "^10.4.27",

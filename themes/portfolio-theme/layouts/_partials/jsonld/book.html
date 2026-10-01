@@ -1,5 +1,12 @@
-{{- /* schema.org Book for one Oeuvre page. Reconstructed from the live site. */ -}}
-{{- $cover := printf "%s/%s/cover.jpg" site.Params.books_image_base .Params.id -}}
+{{/* One book. Like the artwork schema, author points at the site-wide
+     "…#person" node so the books and the paintings accumulate onto the same
+     identity rather than looking like work by different people.
+
+     isAccessibleForFree is true and stated plainly: these are readable in full
+     on the site, and the full text is published as text (see the "Read as
+     text" section on the page, plus /oeuvre/<slug>.txt), so there is nothing
+     here that a crawler is being invited to guess at. */}}
+{{ $person := printf "%s#person" site.BaseURL }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -7,29 +14,51 @@
   "@id": "{{ .Permalink }}#book",
   "name": "{{ .Title }}",
   "url": "{{ .Permalink }}",
-  "license": "{{ "license/" | absURL }}",
-  "alternativeHeadline": "{{ .Params.description }}",
-  "description": "{{ .Title }} — {{ .Params.description }}. An illustrated book by Louis Andrada (Han’drada).",
-  "author": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-  "copyrightHolder": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-  "publisher": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-  "image": {
-    "@type": "ImageObject",
-    "contentUrl": "{{ $cover }}",
-    "creditText": "Louis Andrada (Han’drada)",
-    "copyrightNotice": "© Louis Andrada",
-    "creator": { "@type": "Person", "@id": "{{ "/" | absURL }}#person", "name": "Louis Andrada" },
-    "license": "{{ "license/" | absURL }}",
-    "acquireLicensePage": "{{ "inquiry/" | absURL }}"
+  "license": "{{ "/license/" | absURL }}",
+  {{ with .Params.description }}"alternativeHeadline": "{{ . }}",
+  "description": "{{ $.Title }} — {{ . }}. An illustrated book by {{ site.Params.artist }} ({{ site.Params.artist_alt }}).",
+  {{ end }}"author": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
   },
-  "datePublished": "{{ .Params.year }}",
-  "numberOfPages": {{ .Params.pageCount }},
-  "bookFormat": "https://schema.org/EBook",
+  "copyrightHolder": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  {{ with .Params.imageBase }}"image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ . }}/cover.jpg",
+    "creditText": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+    "copyrightNotice": "© {{ site.Params.artist }}",
+    "creator": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ site.Params.artist }}"
+    },
+    "license": "{{ "/license/" | absURL }}",
+    "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
+  },
+  {{ end }}{{ with .Params.year }}"datePublished": "{{ . }}",
+  {{ end }}{{ with .Params.pageCount }}"numberOfPages": {{ . }},
+  {{ end }}"bookFormat": "https://schema.org/EBook",
   "inLanguage": "en",
   "isAccessibleForFree": true,
   "isFamilyFriendly": true,
   "genre": ["Philosophical fiction", "Existentialism", "Artist book"],
-  "encoding": { "@type": "MediaObject", "encodingFormat": "text/plain", "contentUrl": "{{ printf "oeuvre/%s.txt" .Params.id | absURL }}" },
-  "isPartOf": { "@id": "{{ "/" | absURL }}#website" }
+  "encoding": {
+    "@type": "MediaObject",
+    "encodingFormat": "text/plain",
+    "contentUrl": "{{ (printf "/oeuvre/%s.txt" .Params.slug) | absURL }}"
+  },
+  "isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  }
 }
 </script>
