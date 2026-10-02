@@ -17,7 +17,8 @@
 
 <section class="sp-section">
 
-  <a href="/oeuvre/" class="sp-back">
+  {{/* Back to the grid on han.andrada.one itself (address bar stays the bare subdomain), not han.andrada.one/oeuvre/ */}}
+  <a href="{{ partial "face-url.html" "han" }}#oeuvre" class="sp-back">
     {{ $leftArrow | safeHTML }}<span>Back to Oeuvre</span>
   </a>
 

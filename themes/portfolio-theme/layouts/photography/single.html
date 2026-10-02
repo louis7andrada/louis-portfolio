@@ -11,7 +11,8 @@
   <!--     AndradaMono Font by Louis Andrada       -->
   <!--       Codes by Louis Andrada                -->
 
-  <a href="/photography/" class="photo-back">
+  {{/* Back to the grid on odi.andrada.one itself (address bar stays the bare subdomain), not odi.andrada.one/photography/ */}}
+  <a href="{{ partial "face-url.html" "odi" }}#photography" class="photo-back">
     {{ $leftArrow | safeHTML }}
     <span>Back to Photography</span>
   </a>
