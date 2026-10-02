@@ -277,15 +277,18 @@ async function main() {
 
   // ── 3. Interactive UI ───────────────────────────────────────────────
   section("Interactive UI");
-  await check("Dark/light mode toggle works and persists", async () => {
+  // Oct 2026: the site is dark-only (params.light_mode = false). The light theme's code is kept, but no
+  // visitor can reach it: no toggle, and an old saved "light" choice is ignored.
+  await check("Dark mode only: no theme toggle, and dark even for a visitor who once picked light", async () => {
     const page = await browser.newPage();
     await page.goto(BASE_URL + "/");
-    const before = await page.evaluate("document.documentElement.classList.contains('dark')");
-    await page.evaluate(`document.getElementById('darkModeToggle')?.click()`);
-    await new Promise((r) => setTimeout(r, 300));
-    const after = await page.evaluate("document.documentElement.classList.contains('dark')");
+    await page.evaluate(`localStorage.setItem('theme', 'light')`);
+    await page.goto(BASE_URL + "/about/");
+    const r = await page.evaluate(`({ dark: document.documentElement.classList.contains('dark'), toggle: !!document.getElementById('darkModeToggle') })`);
+    await page.evaluate(`localStorage.removeItem('theme')`);
     await page.close();
-    if (before === after) throw new Error(`theme class didn't change (was ${before}, still ${after}) — toggle button id may have changed`);
+    if (!r.dark) throw new Error("a saved light choice still turned the site light");
+    if (r.toggle) throw new Error("the light/dark toggle is still on the page");
     return true;
   });
 
@@ -643,7 +646,7 @@ async function main() {
       { timeout: 10000 }
     );
     if (!built) { await page.close(); throw new Error("smudge/header layers never built"); }
-    const bad = await page.evaluate(`['siteHeader','logoMorphWrap','darkModeToggle','mobileMenuBtn','artworkGallery','arwModal'].filter(id => { const el = document.getElementById(id); return !el || el.closest('#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho'); })`);
+    const bad = await page.evaluate(`['siteHeader','logoMorphWrap','mobileMenuBtn','artworkGallery','arwModal'].filter(id => { const el = document.getElementById(id); return !el || el.closest('#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho'); })`);
     await page.close();
     if (bad.length) throw new Error(`ids resolving to a copy (or missing): ${bad.join(", ")}`);
     return true;
@@ -1357,32 +1360,34 @@ async function main() {
   }
 
   // Oct 2026: a popup's fog (its copy inside the blurred background) only got there by accident and was
-  // never cleared, so after closing the whole background stayed brighter. Now opening/closing rebuilds:
-  // the fog is there while the popup is open and gone (background back to how it was) once it closes.
+  // never cleared, so after closing the whole background stayed brighter; then re-copying the whole page on
+  // every open/close made the popups' own animations stutter. Now an open popup has its own fog layer
+  // (#siteMirrorPopup) that fades in and out with it: fog while open, gone after closing, no page re-copy.
   const POPUP_SEL = ".arw-modal, .sins-popup, .arch-popup, .book-modal, #bookFullscreen, .lightbox-overlay, .ml-popup, .artwork-filter-overlay";
   const IN_COPIES = `document.querySelectorAll(${JSON.stringify(["#siteMirror", "#headerBleed", "#footerBleed", "#headerMirrorEcho", "#footerMirrorEcho"].map(h => POPUP_SEL.split(", ").map(s => h + " " + s).join(", ")).join(", "))}).length`;
   for (const [path, open, close] of [
     ["/photography/", `document.querySelector('body > main .aw-item:not([style*="none"])').click()`, `document.getElementById('photoModalClose').click()`],
     ["/archive/", `document.querySelector('body > main .arch-item').click()`, `document.getElementById('archPopupX').click()`],
   ]) {
-    await check(`Popup fog (${path}): rises with the popup, and the background is back to normal after it closes`, async () => {
+    await check(`Popup fog (${path}): rises with the popup, clears after it closes, and never re-copies the page`, async () => {
       const page = await browser.newPage();
       await page.setViewport(1440, 900);
       await page.goto(BASE_URL + path);
       await waitForIntroDoorGone(page);
       await page.waitFor(`(document.getElementById('siteMirrorClone')?.children.length || 0) > 0`, { timeout: 8000 });
       await new Promise((r) => setTimeout(r, 5000)); // let load-time rebuilds settle
-      const before = { copies: await page.evaluate(IN_COPIES) };
+      const before = { copies: await page.evaluate(IN_COPIES), builds: await page.evaluate(`window.__mirrorBuilds`) };
       await page.evaluate(open);
       const opened = await page.waitFor(`${IN_COPIES} > 0`, { timeout: 4000 });
       await page.evaluate(close);
       const cleared = await page.waitFor(`${IN_COPIES} === 0`, { timeout: 4000 });
       await new Promise((r) => setTimeout(r, 1500));
-      const after = { copies: await page.evaluate(IN_COPIES) };
+      const after = { copies: await page.evaluate(IN_COPIES), builds: await page.evaluate(`window.__mirrorBuilds`) };
       await page.close();
       if (before.copies) throw new Error(`${before.copies} closed popup element(s) in the background copies`);
       if (!opened) throw new Error("the open popup's fog never reached the background");
       if (!cleared || after.copies) throw new Error("the popup's fog stayed in the background after it closed");
+      if (after.builds !== before.builds) throw new Error(`opening/closing re-copied the whole page (${before.builds} -> ${after.builds}); that stalls the popup animation`);
       return true;
     });
   }

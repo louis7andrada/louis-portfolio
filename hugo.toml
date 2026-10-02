@@ -28,6 +28,10 @@ disableKinds = ["taxonomy", "term"]
   section = ["HTML", "RSS"]
 
 [params]
+  # Dark mode only (Oct 2026). false = always dark, no toggle button for visitors.
+  # true brings back the light/dark toggle exactly as it was (the code is all kept).
+  light_mode = false
+
   recaptcha_site_key = "6LcOzL8sAAAAAAf811mO6GNulTWREGNzkzxTScVk"
   webhook_url = "https://script.google.com/macros/s/AKfycbxxnqf8ImE2r9tkV60_7cIQJC4TvdzyDrDc0MovRvk9m4cN_lEntF1LS1EFV5VHmd19/exec"
 

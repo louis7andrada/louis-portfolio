@@ -452,9 +452,11 @@
     top: calc(40px - var(--wy, 0px));
     height: var(--ph, 100%);
   }
-  #siteMirrorClone .fx-inner { transform: scaleY(-1); transform-origin: center; }
+  #siteMirrorClone .fx-inner, #siteMirrorPopup .fx-inner { transform: scaleY(-1); transform-origin: center; }
 
-  #siteMirrorClone {
+  /* #siteMirrorPopup: an open popup's own fog (built in baseof.html). Same recipe as the
+     page copy so it reads as part of it; it fades in and out with the popup. */
+  #siteMirrorClone, #siteMirrorPopup {
     position: absolute;
     left: 0; right: 0;
     top: calc(var(--wy, 0px) - 40px);
@@ -477,12 +479,13 @@
   #siteMirrorClone iframe,
   #siteMirrorClone embed,
   #siteMirrorClone object,
-  #siteMirrorClone .book-visual {
+  #siteMirrorClone .book-visual,
+  #siteMirrorPopup img {
     filter: invert(1) brightness(0.9) invert(1);
   }
 
   /* Links: previous, lighter setting looked better on this page. */
-  body.page-links #siteMirrorClone {
+  body.page-links #siteMirrorClone, body.page-links #siteMirrorPopup {
     filter: invert(1) blur(72px) saturate(0.35) brightness(0.66);
   }
 
@@ -490,7 +493,7 @@
      script) just to have anything opaque to invert at all, but that
      alone already pushes it much brighter than the rest of the site —
      this stays low specifically to counteract that, not to add glow. */
-  body.page-about #siteMirrorClone {
+  body.page-about #siteMirrorClone, body.page-about #siteMirrorPopup {
     filter: invert(1) blur(72px) saturate(0.35) brightness(0.2);
   }
 
@@ -498,7 +501,7 @@
      an otherwise bare page) — the same brightness that works for About
      washes the whole viewport in flat gray here, so this needs to stay
      much darker. */
-  body.page-inquiry #siteMirrorClone {
+  body.page-inquiry #siteMirrorClone, body.page-inquiry #siteMirrorPopup {
     filter: invert(1) blur(72px) saturate(0.35) brightness(0.25);
   }
 
@@ -680,6 +683,8 @@
     soft fade, instead of everything popping in together.
   ----------------------------------------- */
   #siteMirror > * { transition: opacity 0.9s ease; }
+  #siteMirror > #siteMirrorPopup { opacity: 0; transition: opacity 0.45s ease; }
+  #siteMirror.mirror-ready > #siteMirrorPopup.on { opacity: 1; }
   #siteMirror:not(.mirror-ready) > * { opacity: 0 !important; }
   /* the smudge layers fill in later than the back-most one (which is up at once) */
   #siteMirrorBleedDark:not(.layer-in), #siteMirrorBleed:not(.layer-in), #siteMirrorBleedCore:not(.layer-in) { opacity: 0 !important; }

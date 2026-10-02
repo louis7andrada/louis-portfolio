@@ -11,7 +11,7 @@
       <img src="/logoold.png" alt="Louis Andrada Logo" id="logoOld" class="logo-img logo-old active" data-logo="old">
       <img src="/lalogo.png" alt="Louis Andrada Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
       <img src="/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
-      <img src="/logo4.png" alt="Logo" id="logoFour" class="logo-img logo-four" data-logo="four">
+      <img src="/odilogo.png" alt="Odi Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
     </div>
   </a>
 
@@ -35,7 +35,7 @@
         } catch (e) {}
         return null;
       }
-      var persisted = sGet("headerLogoState"); // 'old' | 'new' | 'ha' | 'four'
+      var persisted = sGet("headerLogoState"); // 'old' | 'new' | 'ha' | 'odi'
       if (persisted) {
         wrap.classList.add("logo-no-anim", "logo-ready");
         if (persisted !== "old") {
@@ -82,7 +82,9 @@
     </nav>
     {{ end }}
 
-    <!-- Dark Mode Toggle -->
+    <!-- Dark Mode Toggle — only when params.light_mode is on (the site is dark-only for now;
+         main.ts's toggle code just finds no button) -->
+    {{ if site.Params.light_mode }}
     <button id="darkModeToggle" type="button" aria-label="Toggle dark mode" class="w-8 h-8 flex items-center justify-center">
       <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 md:w-5 md:h-5">
         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
@@ -91,6 +93,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
       </svg>
     </button>
+    {{ end }}
 
     <!-- Mobile Menu Toggle -->
     <button id="mobileMenuBtn" type="button" class="menu-toggle" aria-label="Menu" aria-controls="mobileMenu" aria-expanded="false">
@@ -125,7 +128,7 @@
          onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
     <img src="/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
     <img src="/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
-    <img src="/logo4.png" id="introLogoFour" class="intro-logo-img intro-logo-four" data-logo="four" alt="" />
+    <img src="/odilogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi" />
     <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
   </div>
 </div>
@@ -220,8 +223,8 @@
     width: 2rem;
   }
 
-  /* logo4 — tall signature mark, framed like lalogo; width follows its own proportions */
-  .logo-four {
+  /* odilogo (Odi) — tall signature mark, framed like lalogo; width follows its own proportions */
+  .logo-odi {
     height: 2rem;
     width: auto;
   }
@@ -259,7 +262,7 @@
     cursor: pointer;
   }
 
-  /* The logos step through in sequence (new → old → ha → four); JS toggles
+  /* The logos step through in sequence (new → old → ha → odi); JS toggles
      .active on whichever is current — same pattern as the header logo. */
   .intro-logo-img {
     position: absolute;
@@ -283,7 +286,7 @@
   }
 
   .intro-logo-new,
-  .intro-logo-four { height: 78%; } /* lalogo / logo4 — compact marks, centered within the wider wrap */
+  .intro-logo-odi { height: 78%; } /* lalogo / odilogo — compact marks, centered within the wider wrap */
   .intro-logo-old,
   .intro-logo-ha { height: 100%; } /* wide wordmark canvases — span the full wrap */
 
@@ -549,8 +552,8 @@ document.addEventListener("DOMContentLoaded", () => {
     logoSequenceStarted = true;
     if (!logoMorphWrap) return;
 
-    const STATE_KEY = "headerLogoState"; // 'old' | 'new' | 'ha' | 'four'
-    const CYCLE = ["old", "new", "ha", "four"];
+    const STATE_KEY = "headerLogoState"; // 'old' | 'new' | 'ha' | 'odi'
+    const CYCLE = ["old", "new", "ha", "odi"];
     const persisted  = storageGet(STATE_KEY);
     const isFirstRun = !persisted; // no page in this session has run the cycle yet
 
@@ -603,12 +606,12 @@ document.addEventListener("DOMContentLoaded", () => {
       door.style.display = "none";
       startHeaderLogoSequence();
     } else {
-      // Every logo/name steps through here (new → old → ha → four). The door
+      // Every logo/name steps through here (new → old → ha → odi). The door
       // always takes about the same time (LOGO_BUDGET for the logos, then the
       // dissolve), so each new logo makes every step a little quicker instead
       // of making the door longer. To add a logo: add its <img> above and its
       // name to INTRO_STEPS; the timings below rescale themselves.
-      const INTRO_STEPS         = ["new", "old", "ha", "four"];
+      const INTRO_STEPS         = ["new", "old", "ha", "odi"];
       // The 3-logo door's timings (1100 first hold, 900 morphs, 350 between,
       // 700 final hold = 3950ms) set the proportions and the budget.
       const LOGO_BUDGET         = 3950;
@@ -677,7 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, DISSOLVE_TRANSITION);
       }
 
-      // new → old → ha → four → dissolve, each step scheduled only after the
+      // new → old → ha → odi → dissolve, each step scheduled only after the
       // previous logo's transition has had time to finish.
       function advance() {
         step++;

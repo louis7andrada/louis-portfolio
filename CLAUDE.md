@@ -132,6 +132,12 @@ FOREVER (`getresource` maxAge -1, in `%LOCALAPPDATA%/hugo_cache/louis-portfolio/
 in that window silently falls back to the full-size originals (`img-url.html` returns the raw URL). Fix: delete the
 cache files that start with `HTTP/2.0 404` and rebuild; check the built page has no `src=https://raw.githubusercontent`.
 
+## Dark mode only
+
+Since Oct 2026 the site is dark-only: `params.light_mode = false` in `hugo.toml` makes `baseof.html` always add
+`html.dark` (ignoring any saved `theme: light`) and leaves the toggle button out of the header. All the light-theme
+CSS and the toggle code in `main.ts` are kept on purpose: set `light_mode = true` to bring the toggle back.
+
 ## Domain, discoverability, metadata
 
 `handrada.com` is the canonical domain (the artist also signs as Han’drada; `alternateName`

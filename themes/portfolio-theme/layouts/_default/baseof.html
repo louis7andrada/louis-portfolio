@@ -21,6 +21,10 @@
        dark behavior) so there's never a mismatch between this
        early check and the toggle script that runs later.
        ══════════════════════════════════════════════════════ -->
+  {{- if not site.Params.light_mode }}
+  <!-- Dark mode only (params.light_mode = false): always dark, whatever a visitor once chose. -->
+  <script>document.documentElement.classList.add("dark");</script>
+  {{- else }}
   <script>
     (function () {
       try {
@@ -37,6 +41,7 @@
       }
     })();
   </script>
+  {{- end }}
 
   <!-- ══════════════════════════════════════════════════════
        PAGE FOG-IN GATE — content is held invisible for the instant
@@ -467,14 +472,13 @@ document.addEventListener("DOMContentLoaded", () => {
   <script>
 (function () {
   var REVEAL_CLASSES = ["reveal-item", "reveal-item-no-filter", "reveal-item-no-transform", "reveal-item-opacity-only", "reveal-loading", "revealed"];
-  // Popups / fullscreen viewers. An OPEN one is part of the background fog (that is
-  // the fog that rises with it); the moment it opens or closes the copies are rebuilt
-  // (see the popup watcher at the end), so its fog comes in with it and leaves with it.
-  // Before Oct 2026 a popup only got into the copies by accident (its picture loading
-  // triggered a rebuild) and nothing rebuilt on close, so its fog stayed behind and the
-  // whole background was brighter after closing.
+  // Popups / fullscreen viewers. They never go into the page copies; an OPEN one gets
+  // its own fog layer instead (#siteMirrorPopup, see "Popup fog" at the end), which
+  // fades in as the popup opens and out as it closes. History: a popup used to get into
+  // the copies by accident (its picture loading triggered a rebuild) and nothing cleared
+  // it on close, so the background stayed brighter; rebuilding the whole page on every
+  // open/close fixed that but made the popups' own animations stutter.
   var FOG_POPUPS = ".arw-modal, #artworkModal, .sins-popup, .arch-popup, .book-modal, #bookFullscreen, .book-fullscreen-overlay, .lightbox-overlay, .ml-popup";
-  // Closed popups, the full-screen filter overlay and the zoom bar never belong in the copies.
   var POPUPS = FOG_POPUPS + ", #artworkSelectorModal, .artwork-filter-overlay, .zoom-bar";
   function isOpenPopup(n) { return n.matches(FOG_POPUPS) && (n.classList.contains("open") || n.classList.contains("active")); }
 
@@ -492,7 +496,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // real page in the DOM, so the duplicates are harmless.
     if (!keepIds) { el.removeAttribute("id"); el.querySelectorAll("[id]").forEach(function (n) { n.removeAttribute("id"); }); }
     el.querySelectorAll("script").forEach(function (n) { n.remove(); });
-    el.querySelectorAll(POPUPS).forEach(function (n) { if (!isOpenPopup(n)) n.remove(); });
+    el.querySelectorAll(POPUPS).forEach(function (n) { n.remove(); });
     // A book page carries its full text (thousands of words) so it can be read
     // and indexed. This copy gets cloned up to four more times for the fog
     // stack, so that text would land in the DOM five times over for something
@@ -952,7 +956,7 @@ document.addEventListener("DOMContentLoaded", () => {
     var n = e.target;
     if (!mirrorBuilt || !n || n.tagName !== "IMG") return;
     if (n.closest("#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho")) return;
-    if (n.closest(POPUPS)) return; // a popup's picture never moves the page (opening/closing rebuilds, below)
+    if (n.closest(POPUPS)) return; // a popup's picture never moves the page
     if (n.hasAttribute("data-lqip") && n.getAttribute("width")) return; // size already known: nothing shifts
     requestRebuild(1200);
   }, true);
@@ -967,14 +971,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   watchMirror();
 
-  // A popup opening or closing rebuilds the copies at once (not rate-limited like
-  // layout changes), so the fog rises with the popup and clears with it.
-  function popupRebuild() {
-    if (!mirrorBuilt || isLite()) return;
-    clearTimeout(mirrorTimer);
-    lastBuildAt = Date.now();
-    lastH = document.body.scrollHeight;
-    schedule(buildSiteMirror);
+  // ── Popup fog ── an open popup's own fog: a copy of just the popup in #siteMirrorPopup,
+  // which has the page copy's exact recipe (flip, invert, blur - see main.css) and sits
+  // right above it, so it reads as part of the background. The layer fades in with the
+  // popup and out with it; nothing else is rebuilt, so the popup's own animation stays
+  // smooth. Its text gets the pinned-UI smoke (.fog-pinned) while it is open.
+  var fogFor = null, fogTimer;
+  function syncPopupFog() {
+    var fogLayer = document.getElementById("siteMirrorPopup"); // the mirror markup comes after this script
+    var open = Array.prototype.filter.call(document.querySelectorAll(FOG_POPUPS), function (n) {
+      return isOpenPopup(n) && !n.closest("#siteMirror");
+    });
+    var top = open.length ? open[open.length - 1] : null; // a lightbox opened from a popup comes later in the page
+    document.querySelectorAll(FOG_POPUPS).forEach(function (n) {
+      if (!n.closest("#siteMirror")) n.classList.toggle("fog-pinned", open.indexOf(n) !== -1);
+    });
+    if (!fogLayer || top === fogFor) return;
+    fogFor = top;
+    clearTimeout(fogTimer);
+    if (!top || isLite()) {
+      fogLayer.classList.remove("on");
+      fogTimer = setTimeout(function () { if (!fogFor) fogLayer.textContent = ""; }, 700);
+      return;
+    }
+    var c = top.cloneNode(true);
+    c.classList.remove("fog-pinned");
+    c.querySelectorAll("script, .zoom-bar").forEach(function (n) { n.remove(); });
+    c.querySelectorAll("a, button, input, textarea, select").forEach(function (n) { n.setAttribute("tabindex", "-1"); });
+    fogLayer.textContent = "";
+    mount(fogLayer, c); // same .fx-inner frame as the page copy, so it lands where the popup did
+    requestAnimationFrame(function () { requestAnimationFrame(function () { fogLayer.classList.add("on"); }); });
   }
   if ("MutationObserver" in window) {
     new MutationObserver(function (muts) {
@@ -982,7 +1008,7 @@ document.addEventListener("DOMContentLoaded", () => {
         var t = muts[i].target;
         if (t.nodeType !== 1 || !t.matches(FOG_POPUPS) || t.closest("#siteMirror")) continue;
         var was = /(^|\s)(open|active)(\s|$)/.test(muts[i].oldValue || "");
-        if (was !== (t.classList.contains("open") || t.classList.contains("active"))) { popupRebuild(); return; }
+        if (was !== (t.classList.contains("open") || t.classList.contains("active"))) { syncPopupFog(); return; }
       }
     }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"], attributeOldValue: true });
   }
@@ -994,6 +1020,7 @@ document.addEventListener("DOMContentLoaded", () => {
        elements before the copies' duplicate ids. -->
   <div id="siteMirror" aria-hidden="true" inert>
     <div id="siteMirrorClone"></div>
+    <div id="siteMirrorPopup"></div>
     <div id="siteMirrorFrost"></div>
     <div id="siteMirrorBleedCore"></div>
     <div id="siteMirrorBleed"></div>

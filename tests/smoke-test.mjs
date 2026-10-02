@@ -331,7 +331,7 @@ section("Header logo cycle (halogo.png added alongside logoold/lalogo)");
   if (home === null) {
     fail("Home page exists for header-logo check");
   } else {
-    for (const [src, name] of [["/logoold.png", "old"], ["/lalogo.png", "new"], ["/halogo.png", "ha"], ["/logo4.png", "four"]]) {
+    for (const [src, name] of [["/logoold.png", "old"], ["/lalogo.png", "new"], ["/halogo.png", "ha"], ["/odilogo.png", "odi"]]) {
       assert(
         home.includes(`src=${src}`) && home.includes(`data-logo=${name}`),
         `Header logo includes ${src} (data-logo=${name})`
