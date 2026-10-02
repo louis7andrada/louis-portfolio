@@ -116,9 +116,13 @@ Deselect all) is kept for the session (`sessionStorage photo-collection`, applie
    there ships on deploy (Louis first dropped 209 MB of originals in `static/images/photography/`).
 2. `python scripts/ingest-photography.py private/photography-originals` (needs Pillow). Writes web copies to
    `photography-images/photoN.jpg` (upright, 1600px WIDE like the artworks, never enlarged, JPEG q80 — Louis's
-   spec; ALL metadata stripped: the iPhone originals carry GPS) and `content/photography/photoN.md`. Numbered by
+   spec — with full-resolution colour (4:4:4) and converted from the iPhone's Display P3 to sRGB: Hugo's WebP copies
+   drop colour profiles, which made every Lucid photo look washed out; ALL metadata stripped: the iPhone originals
+   carry GPS) and `content/photography/photoN.md`. Numbered by
    date taken, oldest = photo1; photos already on the site keep their number and collection. New photos: pure
    black-and-white = Ambiguous, else Lucid; override with `--ambiguous NAME` / `--lucid NAME`.
+   The site shows these JPEGs untouched in the popup, single page and fullscreen (`img-url.html` `"keep" true`: a
+   second lossy pass blotched the dark night shots); the grid uses 1200px WebP at q90.
 3. Upload `photography-images/*` to `photography/` in `louis7andrada/louis-andrada-images` (sparse clone is enough:
    `gh repo clone … -- --filter=blob:none --sparse --depth 1`, `git sparse-checkout set photography`).
 4. `python scripts/image-dims.py`, commit `data/imageDims.json`.
@@ -165,9 +169,12 @@ ranking signals. `hugo.toml` `baseURL` must stay in sync with that choice.
   (`book-fullscreen.html`): X-only close, page-flip by clicking left/right, single/two-page toggle
   (two-page turns sideways on narrow phones).
 - Testing gotcha: the site clones `<main>` into an inert `#siteMirror`; scope test selectors to `body > main`.
-- Popups/overlays (`POPUPS` in baseof.html) are removed from every background copy, and images loading inside them never
-  trigger a re-copy. Before Oct 2026 a copy taken with a popup open baked its frosted backdrop into the background, which
-  stayed brighter after closing. A new popup type must be added to `POPUPS` (test: "Background unchanged after a popup…").
+- Popup fog (baseof.html): an OPEN popup (`FOG_POPUPS`, open = class `open`/`active`) is part of the background copies, so
+  fog rises with it; a MutationObserver rebuilds the copies the moment one opens or closes. Closed popups, the filter
+  overlay and the zoom bar are never in the copies, and images loading inside popups never trigger a re-copy. History:
+  the fog used to get in only by accident (a popup's image load triggered a rebuild) and was never cleared, so the page
+  stayed brighter after closing; the first fix removed popups entirely and Louis missed the fog. A new popup type must
+  be added to `FOG_POPUPS` (test: "Popup fog (…)").
 - Set `sessionStorage['intro-seen']='1'` in automated browsers to skip the intro overlay.
 - Fog-in reveal (`baseof.html`): items normally reveal once they clear the bottom 3% of the window. Anything in
   the page's last strip (the footer) can never rise that far, so those items (`__atEnd`) observe the full

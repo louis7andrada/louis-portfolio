@@ -74,9 +74,10 @@
        data-year="{{ $page.Params.year }}"
        data-title="{{ $page.Title }}"
        data-collection="{{ lower ($page.Params.collection | default "") }}"
-       data-src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1600) }}"
-       data-full="{{ $page.Params.image }}">
-      <img src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 800) }}" alt="{{ $page.Title }}, photograph" class="aw-img" loading="lazy"{{ partial "imgdims.html" $page.Params.image }} />
+       data-src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1600 "keep" true) }}">
+      {{/* 1200px q90 (artworks use 800 q80): dark, grainy night photos show compression far more,
+           and a grid photo is ~1000 real pixels wide on a phone or a sharp laptop screen */}}
+      <img src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1200 "quality" 90) }}" alt="{{ $page.Title }}, photograph" class="aw-img" loading="lazy"{{ partial "imgdims.html" $page.Params.image }} />
     </a>
     {{ end }}
   </div>
@@ -517,7 +518,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!current) return;
     lbImg.classList.remove("is-rotated");
     lbImg.onload = updateRotateHint;
-    lbImg.src = current.dataset.full || current.dataset.src;
+    lbImg.src = current.dataset.src;
     lbImg.alt = modalImg.alt;
     lightbox.classList.add("active");
     updateRotateHint();

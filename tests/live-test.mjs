@@ -1356,31 +1356,33 @@ async function main() {
     });
   }
 
-  // Oct 2026: opening a photo popup loaded its picture, that load re-copied the whole page into the
-  // blurred background WITH the open popup's frosted backdrop in it, and after closing the background
-  // stayed visibly brighter. Popups must never be in the copies, and must not trigger a re-copy.
+  // Oct 2026: a popup's fog (its copy inside the blurred background) only got there by accident and was
+  // never cleared, so after closing the whole background stayed brighter. Now opening/closing rebuilds:
+  // the fog is there while the popup is open and gone (background back to how it was) once it closes.
   const POPUP_SEL = ".arw-modal, .sins-popup, .arch-popup, .book-modal, #bookFullscreen, .lightbox-overlay, .ml-popup, .artwork-filter-overlay";
+  const IN_COPIES = `document.querySelectorAll(${JSON.stringify(["#siteMirror", "#headerBleed", "#footerBleed", "#headerMirrorEcho", "#footerMirrorEcho"].map(h => POPUP_SEL.split(", ").map(s => h + " " + s).join(", ")).join(", "))}).length`;
   for (const [path, open, close] of [
     ["/photography/", `document.querySelector('body > main .aw-item:not([style*="none"])').click()`, `document.getElementById('photoModalClose').click()`],
     ["/archive/", `document.querySelector('body > main .arch-item').click()`, `document.getElementById('archPopupX').click()`],
   ]) {
-    await check(`Background unchanged after a popup opens and closes (${path}): no popup in the copies, no re-copy`, async () => {
+    await check(`Popup fog (${path}): rises with the popup, and the background is back to normal after it closes`, async () => {
       const page = await browser.newPage();
       await page.setViewport(1440, 900);
       await page.goto(BASE_URL + path);
       await waitForIntroDoorGone(page);
       await page.waitFor(`(document.getElementById('siteMirrorClone')?.children.length || 0) > 0`, { timeout: 8000 });
       await new Promise((r) => setTimeout(r, 5000)); // let load-time rebuilds settle
-      const before = await page.evaluate(`window.__mirrorBuilds`);
+      const before = { copies: await page.evaluate(IN_COPIES) };
       await page.evaluate(open);
-      await new Promise((r) => setTimeout(r, 2500)); // the popup's picture loads
+      const opened = await page.waitFor(`${IN_COPIES} > 0`, { timeout: 4000 });
       await page.evaluate(close);
-      await new Promise((r) => setTimeout(r, 3500)); // a triggered rebuild would land within this
-      const r = await page.evaluate(`({ builds: window.__mirrorBuilds,
-        inCopies: document.querySelectorAll(['#siteMirror', '#headerBleed', '#footerBleed', '#headerMirrorEcho', '#footerMirrorEcho'].map(h => ${JSON.stringify(POPUP_SEL)}.split(', ').map(s => h + ' ' + s).join(', ')).join(', ')).length })`);
+      const cleared = await page.waitFor(`${IN_COPIES} === 0`, { timeout: 4000 });
+      await new Promise((r) => setTimeout(r, 1500));
+      const after = { copies: await page.evaluate(IN_COPIES) };
       await page.close();
-      if (r.inCopies) throw new Error(`${r.inCopies} popup element(s) inside the background copies`);
-      if (r.builds !== before) throw new Error(`opening/closing the popup re-copied the page into the background (${before} -> ${r.builds} builds)`);
+      if (before.copies) throw new Error(`${before.copies} closed popup element(s) in the background copies`);
+      if (!opened) throw new Error("the open popup's fog never reached the background");
+      if (!cleared || after.copies) throw new Error("the popup's fog stayed in the background after it closed");
       return true;
     });
   }

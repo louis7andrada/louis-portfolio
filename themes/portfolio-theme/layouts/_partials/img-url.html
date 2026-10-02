@@ -5,6 +5,10 @@
 
   Usage: {{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}
   Optional "format": "webp" (default) or "jpg" (for link previews).
+  Optional "quality": 1-100 (default 80).
+  Optional "keep": true publishes the original file untouched (no re-encoding)
+  when it is no wider than "width" - for images that are already web-sized
+  JPEGs (Photography: 1600px q80), where a second lossy pass only adds blotches.
 
   If the image can't be fetched or processed for any reason, the original
   URL is returned unchanged, so a network hiccup never breaks the build.
@@ -12,6 +16,8 @@
 {{- $src := .src -}}
 {{- $width := .width | default 800 -}}
 {{- $format := .format | default "webp" -}}
+{{- $quality := .quality | default 80 -}}
+{{- $keep := .keep | default false -}}
 {{- $out := $src -}}
 {{- if and $src (strings.HasSuffix $src "/inprogress.jpeg") -}}
   {{- /* shared "in progress" placeholder: small already, keep as is */ -}}
@@ -24,8 +30,10 @@
       {{- with resources.Copy (printf "images/r/%s" (strings.TrimPrefix "https://" $src | replaceRE "^[^/]+/[^/]+/[^/]+/[^/]+/" "")) . -}}
       {{- if eq .MediaType.MainType "image" -}}
         {{- $img := . | images.Filter images.AutoOrient -}}
-        {{- $opts := printf "%s q80" $format -}}
-        {{- if gt $img.Width $width -}}
+        {{- $opts := printf "%s q%d" $format $quality -}}
+        {{- if and $keep (le .Width $width) -}}
+          {{- $out = .RelPermalink -}}
+        {{- else if gt $img.Width $width -}}
           {{- $opts = printf "%dx %s" $width $opts -}}
           {{- $out = ($img.Resize $opts).RelPermalink -}}
         {{- else -}}

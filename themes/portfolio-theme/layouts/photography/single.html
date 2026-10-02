@@ -20,11 +20,13 @@
 
     <div class="photo-img-wrap">
       {{ if .Params.image }}
+        {{/* the 1600px JPEG itself: re-encoding an already-compressed photo only adds blotches */}}
+        {{ $full := partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
         <img
-          src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}"
+          src="{{ $full }}"
           alt="{{ .Title | default "Photograph by Louis Andrada" }}"
           class="photo-img"
-          onclick="openLightbox('{{ .Params.image }}', '{{ .Title }}')"
+          onclick="openLightbox('{{ $full }}', '{{ .Title }}')"
         />
       {{ else }}
         <div class="photo-no-image">No image yet</div>

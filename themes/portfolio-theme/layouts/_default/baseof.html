@@ -467,10 +467,16 @@ document.addEventListener("DOMContentLoaded", () => {
   <script>
 (function () {
   var REVEAL_CLASSES = ["reveal-item", "reveal-item-no-filter", "reveal-item-no-transform", "reveal-item-opacity-only", "reveal-loading", "revealed"];
-  // Popups / fullscreen viewers / overlays. They are never part of the background:
-  // a copy taken while one was open baked its frosted backdrop into the blurred page,
-  // and after closing the whole background stayed brighter until the next rebuild.
-  var POPUPS = ".arw-modal, #artworkModal, .sins-popup, .arch-popup, .book-modal, #bookFullscreen, .book-fullscreen-overlay, .lightbox-overlay, .ml-popup, #artworkSelectorModal, .artwork-filter-overlay, .zoom-bar";
+  // Popups / fullscreen viewers. An OPEN one is part of the background fog (that is
+  // the fog that rises with it); the moment it opens or closes the copies are rebuilt
+  // (see the popup watcher at the end), so its fog comes in with it and leaves with it.
+  // Before Oct 2026 a popup only got into the copies by accident (its picture loading
+  // triggered a rebuild) and nothing rebuilt on close, so its fog stayed behind and the
+  // whole background was brighter after closing.
+  var FOG_POPUPS = ".arw-modal, #artworkModal, .sins-popup, .arch-popup, .book-modal, #bookFullscreen, .book-fullscreen-overlay, .lightbox-overlay, .ml-popup";
+  // Closed popups, the full-screen filter overlay and the zoom bar never belong in the copies.
+  var POPUPS = FOG_POPUPS + ", #artworkSelectorModal, .artwork-filter-overlay, .zoom-bar";
+  function isOpenPopup(n) { return n.matches(FOG_POPUPS) && (n.classList.contains("open") || n.classList.contains("active")); }
 
   // Strips anything in a clone that could collide with or be reachable
   // on the real page (duplicate ids, live scripts, focusable elements),
@@ -486,7 +492,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // real page in the DOM, so the duplicates are harmless.
     if (!keepIds) { el.removeAttribute("id"); el.querySelectorAll("[id]").forEach(function (n) { n.removeAttribute("id"); }); }
     el.querySelectorAll("script").forEach(function (n) { n.remove(); });
-    el.querySelectorAll(POPUPS).forEach(function (n) { n.remove(); });
+    el.querySelectorAll(POPUPS).forEach(function (n) { if (!isOpenPopup(n)) n.remove(); });
     // A book page carries its full text (thousands of words) so it can be read
     // and indexed. This copy gets cloned up to four more times for the fog
     // stack, so that text would land in the DOM five times over for something
@@ -775,7 +781,7 @@ document.addEventListener("DOMContentLoaded", () => {
           pinned.push(n);
           // Pinned UI that is actually on screen gets its smudge as a text-shadow
           // fog on the element itself, which follows it wherever it is pinned.
-          if (n !== root && root === main && !n.closest(POPUPS)) {
+          if (n !== root && root === main) {
             var r = n.getBoundingClientRect(), cs = getComputedStyle(n);
             if (r.width > 0 && r.height > 0 && parseFloat(cs.opacity) > 0.05 && cs.visibility !== "hidden") n.classList.add("fog-pinned");
           }
@@ -946,7 +952,7 @@ document.addEventListener("DOMContentLoaded", () => {
     var n = e.target;
     if (!mirrorBuilt || !n || n.tagName !== "IMG") return;
     if (n.closest("#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho")) return;
-    if (n.closest(POPUPS)) return; // a popup's picture never moves the page
+    if (n.closest(POPUPS)) return; // a popup's picture never moves the page (opening/closing rebuilds, below)
     if (n.hasAttribute("data-lqip") && n.getAttribute("width")) return; // size already known: nothing shifts
     requestRebuild(1200);
   }, true);
@@ -960,6 +966,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }).observe(document.body);
   }
   watchMirror();
+
+  // A popup opening or closing rebuilds the copies at once (not rate-limited like
+  // layout changes), so the fog rises with the popup and clears with it.
+  function popupRebuild() {
+    if (!mirrorBuilt || isLite()) return;
+    clearTimeout(mirrorTimer);
+    lastBuildAt = Date.now();
+    lastH = document.body.scrollHeight;
+    schedule(buildSiteMirror);
+  }
+  if ("MutationObserver" in window) {
+    new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        var t = muts[i].target;
+        if (t.nodeType !== 1 || !t.matches(FOG_POPUPS) || t.closest("#siteMirror")) continue;
+        var was = /(^|\s)(open|active)(\s|$)/.test(muts[i].oldValue || "");
+        if (was !== (t.classList.contains("open") || t.classList.contains("active"))) { popupRebuild(); return; }
+      }
+    }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["class"], attributeOldValue: true });
+  }
 })();
   </script>
 

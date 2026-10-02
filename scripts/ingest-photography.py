@@ -4,9 +4,9 @@ Turns a folder of original photos into the Photography section.
 For every photo it writes:
   photography-images/photoN.jpg    web copy: upright, 1600px WIDE (same rule as
                                    the artworks; narrower originals are never
-                                   enlarged), JPEG q80, NO metadata (iPhone
-                                   photos carry GPS location) except the
-                                   colour profile
+                                   enlarged), JPEG q80 with full-resolution
+                                   colour (4:4:4), converted to sRGB, NO
+                                   metadata (iPhone photos carry GPS location)
   content/photography/photoN.md    the page: id photoN, title in lowercase
                                    roman numerals (i, ii, iii …)
 
@@ -31,7 +31,9 @@ import os
 import re
 import sys
 
-from PIL import Image, ImageOps, ImageStat
+import io
+
+from PIL import Image, ImageCms, ImageOps, ImageStat
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTENT = os.path.join(REPO_ROOT, "content", "photography")
@@ -58,6 +60,21 @@ def taken(im, path):
     if date:
         return str(date)
     return "9999:99:99 " + os.path.basename(path)  # undated: after everything else
+
+
+SRGB = ImageCms.createProfile("sRGB")
+
+
+def to_srgb(im, icc):
+    """iPhones shoot in Display P3. Converting the pixels to sRGB keeps the colours
+    right in every copy made from this file (the site's WebP copies drop colour
+    profiles, which made every Lucid photo look washed out)."""
+    if not icc:
+        return im
+    try:
+        return ImageCms.profileToProfile(im, ImageCms.ImageCmsProfile(io.BytesIO(icc)), SRGB, outputMode="RGB")
+    except Exception:  # noqa: BLE001 - an unreadable profile: keep the pixels as they are
+        return im
 
 
 def is_black_and_white(im):
@@ -113,12 +130,14 @@ def main():
             icc = im.info.get("icc_profile")
             im = ImageOps.exif_transpose(im)
             bw = is_black_and_white(im)
-            im = im.convert("L" if bw else "RGB")
+            im = im.convert("L") if bw else to_srgb(im.convert("RGB"), icc)
             if im.width > WIDTH:
                 im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
-            # A fresh save with no exif= drops every tag (GPS, camera, dates).
-            extra = {"icc_profile": icc} if icc and not bw else {}
-            im.save(os.path.join(OUT_DIR, f"{pid}.jpg"), "JPEG", quality=QUALITY, optimize=True, progressive=True, **extra)
+            # A fresh save with no exif=/icc_profile= drops every tag (GPS, camera, dates);
+            # untagged = sRGB, which the pixels now are. subsampling=0 keeps colour at full
+            # resolution (the default halves it, smearing red lights and coloured edges).
+            im.save(os.path.join(OUT_DIR, f"{pid}.jpg"), "JPEG", quality=QUALITY, subsampling=0,
+                    optimize=True, progressive=True)
         if collection is None:
             collection = "Ambiguous" if bw else "Lucid"
         if name in args.ambiguous:
