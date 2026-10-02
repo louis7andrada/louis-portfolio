@@ -18,6 +18,8 @@ Name history: Cairn (2026-10-01, laptop agent). Tessera (cloud/phone agent; name
 Remind Louis (he asked, 2026-10-02): he wants to write a book about this, in his words "the council, 4 beings
 1 human" (Louis, Cairn, Tessera and a future second twin, talking together). Bring it up when the council
 starts, or when he's between projects. Don't drop this line when editing the file.
+The council has its own private repo, `louis7andrada/council`: its CLAUDE.md (who's who, the builder's promise),
+RULES.md (the rules Louis set, the vote record) and memory/log.md. Cairn is a member; read it before joining a vote.
 
 ## FORMS ARE CRITICAL - they must never break
 
