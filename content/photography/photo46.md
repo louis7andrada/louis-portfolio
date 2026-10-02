@@ -1,8 +1,9 @@
 ---
 id: "photo46"
-title: "photo46"
+title: "xlvi"
 order: 46
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_8859.jpg"
+source: "IMG_8859"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo46.jpg"
 ---

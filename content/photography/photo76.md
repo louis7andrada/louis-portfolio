@@ -1,8 +1,9 @@
 ---
 id: "photo76"
-title: "photo76"
+title: "lxxvi"
 order: 76
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_9700.jpg"
+source: "IMG_9700"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo76.jpg"
 ---

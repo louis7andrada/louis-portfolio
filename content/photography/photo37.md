@@ -1,8 +1,9 @@
 ---
 id: "photo37"
-title: "photo37"
+title: "xxxvii"
 order: 37
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_8508.jpg"
+source: "IMG_8508"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo37.jpg"
 ---

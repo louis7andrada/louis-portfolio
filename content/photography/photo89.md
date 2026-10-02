@@ -1,8 +1,9 @@
 ---
 id: "photo89"
-title: "photo89"
+title: "lxxxix"
 order: 89
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_9792.jpg"
+source: "IMG_9792"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo89.jpg"
 ---

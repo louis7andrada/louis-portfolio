@@ -1,8 +1,9 @@
 ---
 id: "photo14"
-title: "photo14"
+title: "xiv"
 order: 14
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_8055.jpg"
+source: "IMG_8055"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo14.jpg"
 ---

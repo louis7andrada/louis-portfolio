@@ -1,8 +1,9 @@
 ---
 id: "photo1"
-title: "photo1"
+title: "i"
 order: 1
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_7407.jpg"
+source: "IMG_7407"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo1.jpg"
 ---

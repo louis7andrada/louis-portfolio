@@ -1,8 +1,9 @@
 ---
 id: "photo104"
-title: "photo104"
+title: "civ"
 order: 104
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_9949.jpg"
+source: "IMG_9949"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo104.jpg"
 ---

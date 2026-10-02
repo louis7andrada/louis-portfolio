@@ -104,20 +104,29 @@ bar and scatter grid, and it deliberately keeps Oeuvre's ids/classes (`#books-se
 one photograph in a popup (prev/next, click the image for fullscreen + zoom). It is separate from the Archive's own
 "photography" category, which stays where it is.
 
-One `.md` per photo, `photoN.md`, whose `id` and `title` are both `photoN` (photo1 = oldest); Louis doesn't
-want to describe them. `collection` is `Ambiguous` (abstract, black and white) or `Lucid` (everything else).
+One `.md` per photo, `photoN.md`: `id` is `photoN` (also the image file name and the URL), the visible `title` is
+the same number in lowercase roman numerals (photo1 = `i`, photo4 = `iv`; photo1 = oldest). Louis doesn't want to
+describe them. `source` is the original file name (lets re-runs keep each photo's number and collection). `collection` is `Ambiguous` (abstract, black and white) or `Lucid` (everything else).
+The page opens filtered to Ambiguous on the first visit of each session; the visitor's later choice (Lucid, All,
+Deselect all) is kept for the session (`sessionStorage photo-collection`, applied by an inline script before first paint).
 
 ### Adding photos
 
 1. Originals go in `private/photography-originals/` (gitignored, never published). NOT in `static/`: everything
    there ships on deploy (Louis first dropped 209 MB of originals in `static/images/photography/`).
 2. `python scripts/ingest-photography.py private/photography-originals` (needs Pillow). Writes web copies to
-   `photography-images/` (upright, 2560px max, q85, ALL metadata stripped: the iPhone originals carry GPS) and
-   `content/photography/photoN.md`. Numbered by date taken, oldest = photo1; photos already on the site keep their
-   number. Pure black-and-white = Ambiguous, else Lucid; override with `--ambiguous NAME` / `--lucid NAME`.
+   `photography-images/photoN.jpg` (upright, 1600px WIDE like the artworks, never enlarged, JPEG q80 — Louis's
+   spec; ALL metadata stripped: the iPhone originals carry GPS) and `content/photography/photoN.md`. Numbered by
+   date taken, oldest = photo1; photos already on the site keep their number and collection. New photos: pure
+   black-and-white = Ambiguous, else Lucid; override with `--ambiguous NAME` / `--lucid NAME`.
 3. Upload `photography-images/*` to `photography/` in `louis7andrada/louis-andrada-images` (sparse clone is enough:
    `gh repo clone … -- --filter=blob:none --sparse --depth 1`, `git sparse-checkout set photography`).
 4. `python scripts/image-dims.py`, commit `data/imageDims.json`.
+
+Gotcha: GitHub's raw CDN can answer 404 for a minute or two after a push, and Hugo caches remote responses
+FOREVER (`getresource` maxAge -1, in `%LOCALAPPDATA%/hugo_cache/louis-portfolio/filecache/getresource`). A build
+in that window silently falls back to the full-size originals (`img-url.html` returns the raw URL). Fix: delete the
+cache files that start with `HTTP/2.0 404` and rebuild; check the built page has no `src=https://raw.githubusercontent`.
 
 ## Domain, discoverability, metadata
 
@@ -156,6 +165,9 @@ ranking signals. `hugo.toml` `baseURL` must stay in sync with that choice.
   (`book-fullscreen.html`): X-only close, page-flip by clicking left/right, single/two-page toggle
   (two-page turns sideways on narrow phones).
 - Testing gotcha: the site clones `<main>` into an inert `#siteMirror`; scope test selectors to `body > main`.
+- Popups/overlays (`POPUPS` in baseof.html) are removed from every background copy, and images loading inside them never
+  trigger a re-copy. Before Oct 2026 a copy taken with a popup open baked its frosted backdrop into the background, which
+  stayed brighter after closing. A new popup type must be added to `POPUPS` (test: "Background unchanged after a popup…").
 - Set `sessionStorage['intro-seen']='1'` in automated browsers to skip the intro overlay.
 - Fog-in reveal (`baseof.html`): items normally reveal once they clear the bottom 3% of the window. Anything in
   the page's last strip (the footer) can never rise that far, so those items (`__atEnd`) observe the full

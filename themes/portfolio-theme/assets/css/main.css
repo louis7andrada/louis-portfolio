@@ -270,7 +270,7 @@
     left: 0; right: 0; top: 0; bottom: -46px;
     z-index: -1;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.5);
+    background: var(--fog-light);
     -webkit-backdrop-filter: blur(20px) saturate(1.5);
     backdrop-filter: blur(20px) saturate(1.5);
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='110' viewBox='0 0 900 110' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='0.71' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/linearGradient%3E%3Cfilter id='w' filterUnits='userSpaceOnUse' x='-100' y='-90' width='1100' height='230'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.007 0.02' numOctaves='2' seed='5' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='44' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='5'/%3E%3C/filter%3E%3C/defs%3E%3Crect x='-100' y='-70' width='1100' height='180' fill='url(%23g)' filter='url(%23w)'/%3E%3C/svg%3E");
@@ -284,9 +284,16 @@
   }
   html.dark header#siteHeader:not(.edge-copy)::before {
     /* fine grain over the tint dithers away 8-bit banding in the soft tail */
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.028 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 160px 160px, var(--glass-header);
+    background: var(--fog-dark);
   }
   body[data-menu-open] header#siteHeader::before { opacity: 0; }
+
+  /* THE fog, one recipe for the header and every island below:
+     light = 50% white, dark = the header tint + fine grain; both with blur(20px) saturate(1.5). */
+  :root {
+    --fog-light: rgba(255, 255, 255, 0.5);
+    --fog-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0.028 0 0 0 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E") 0 0 / 160px 160px, var(--glass-header);
+  }
 
   /* Fog for pinned UI (Inquiry's three options, filter clusters): a
      text-shadow in the text's own color, tight to wide, dropping slightly. */
@@ -300,12 +307,14 @@
   .fog-pinned button, .fog-pinned input, .fog-pinned select, .fog-pinned textarea { text-shadow: inherit; }
 
   /* Cloud islands: every compact glass box that defines a control (filter
-     bars, search, dropdown panels, the Inquiry list header, the Oeuvre
-     title cluster) is a transparent box whose fog lives on an oversized
-     ::before shaped by a noise-displaced blob mask - no rectangle, no
-     border, an irregular island of vapour like the header's, and a
-     different shape on each because the mask stretches to the box. */
-  :root { --island-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='100' viewBox='0 0 300 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='b' filterUnits='userSpaceOnUse' x='-60' y='-60' width='420' height='220'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.018 0.05' numOctaves='2' seed='11' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='46' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='7'/%3E%3C/filter%3E%3C/defs%3E%3Crect x='14' y='10' width='272' height='80' rx='30' fill='%23fff' filter='url(%23b)'/%3E%3C/svg%3E"); }
+     bars, search, dropdown panels, the Inquiry list header, the Oeuvre /
+     Photography title cluster) is a transparent box whose fog lives on an
+     oversized ::before: exactly the header's fog (--fog-light / --fog-dark,
+     blur 20 + saturate 1.5), shaped like a small natural cloud - a few
+     overlapping billows that fade out softly, run through the same noise
+     displacement as the header's lower edge. The mask stretches to the box,
+     so each island gets its own proportions. */
+  :root { --island-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='100' viewBox='0 0 300 100' preserveAspectRatio='none'%3E%3Cdefs%3E%3CradialGradient id='p'%3E%3Cstop offset='0' stop-color='%23fff'/%3E%3Cstop offset='0.55' stop-color='%23fff'/%3E%3Cstop offset='1' stop-color='%23fff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cfilter id='w' filterUnits='userSpaceOnUse' x='-60' y='-60' width='420' height='220'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.021 0.06' numOctaves='2' seed='5' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='26' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='3'/%3E%3C/filter%3E%3C/defs%3E%3Cg fill='url(%23p)' filter='url(%23w)'%3E%3Cellipse cx='150' cy='52' rx='142' ry='40'/%3E%3Cellipse cx='84' cy='40' rx='70' ry='36'/%3E%3Cellipse cx='196' cy='36' rx='78' ry='34'/%3E%3Cellipse cx='120' cy='66' rx='88' ry='30'/%3E%3Cellipse cx='232' cy='62' rx='60' ry='30'/%3E%3Cellipse cx='44' cy='58' rx='40' ry='28'/%3E%3C/g%3E%3C/svg%3E"); }
   :where(.arch-filters-row, .sins-filters-row) { position: relative; }
   :is(.artwork-filter-bar, .arch-filters-row, .sins-filters-row, .inq-sel-head, .arch-f-drop, .sins-f-drop, .book-page-header, .book-search-wrap) {
     background: transparent !important;
@@ -318,12 +327,12 @@
   :is(.artwork-filter-bar, .arch-filters-row, .sins-filters-row, .inq-sel-head, .arch-f-drop, .sins-f-drop, .book-page-header, .book-search-wrap)::before {
     content: "";
     position: absolute;
-    inset: -22px -38px;
+    inset: -26px -46px;
     z-index: -1;
     pointer-events: none;
-    background: rgba(255, 255, 255, 0.66);
-    -webkit-backdrop-filter: blur(8px) saturate(1.5);
-    backdrop-filter: blur(8px) saturate(1.5);
+    background: var(--fog-light);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    backdrop-filter: blur(20px) saturate(1.5);
     -webkit-mask-image: var(--island-mask);
     mask-image: var(--island-mask);
     -webkit-mask-size: 100% 100%;
@@ -331,7 +340,7 @@
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
   }
-  html.dark :is(.artwork-filter-bar, .arch-filters-row, .sins-filters-row, .inq-sel-head, .arch-f-drop, .sins-f-drop, .book-page-header, .book-search-wrap)::before { background: var(--glass-bar); }
+  html.dark :is(.artwork-filter-bar, .arch-filters-row, .sins-filters-row, .inq-sel-head, .arch-f-drop, .sins-f-drop, .book-page-header, .book-search-wrap)::before { background: var(--fog-dark); }
   /* (the dropdowns and selector head use the same glass as the Filters button: one standard, no darker variants) */
   .artwork-filter-bar.filter-open::before { opacity: 0; }
 
@@ -357,12 +366,12 @@
       display: none; /* the filter row inside already carries the island; a second one doubled the darkness */
       content: "";
       position: absolute;
-      inset: -22px -38px;
+      inset: -26px -46px;
       z-index: -1;
       pointer-events: none;
-      background: rgba(255, 255, 255, 0.66);
-      -webkit-backdrop-filter: blur(8px) saturate(1.5);
-      backdrop-filter: blur(8px) saturate(1.5);
+      background: var(--fog-light);
+      -webkit-backdrop-filter: blur(20px) saturate(1.5);
+      backdrop-filter: blur(20px) saturate(1.5);
       -webkit-mask-image: var(--island-mask);
       mask-image: var(--island-mask);
       -webkit-mask-size: 100% 100%;
@@ -370,7 +379,7 @@
       -webkit-mask-repeat: no-repeat;
       mask-repeat: no-repeat;
     }
-    html.dark .arch-sidebar::before, html.dark .sins-sidebar::before { background: var(--glass-bar); }
+    html.dark .arch-sidebar::before, html.dark .sins-sidebar::before { background: var(--fog-dark); }
   }
 
   /* ----------------------------------------
@@ -635,13 +644,12 @@
 
 
   /* ----------------------------------------
-    OEUVRE: the title cluster and the search box are darker fog islands
-    (white text on black fog, no borders); the Filters button is white.
+    OEUVRE / PHOTOGRAPHY: the title cluster is one fog island (the header's
+    fog, white text in dark mode, no borders); the Filters button is white.
     The filter bar's own island is dropped inside the cluster so the two
     don't stack; the search box gets its own darker one.
   ----------------------------------------- */
   body.page-books .book-page-header .artwork-filter-bar::before { display: none; }
-  html.dark body.page-books .book-page-header::before { background: var(--glass-bar); }
   body.page-books .book-search-wrap::before { display: none; }
   body.page-books .book-search-input {
     background: transparent !important;

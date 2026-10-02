@@ -1,8 +1,9 @@
 ---
 id: "photo93"
-title: "photo93"
+title: "xciii"
 order: 93
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_9853.jpg"
+source: "IMG_9853"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo93.jpg"
 ---

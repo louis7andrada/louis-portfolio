@@ -1,8 +1,9 @@
 ---
 id: "photo32"
-title: "photo32"
+title: "xxxii"
 order: 32
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_8358.jpg"
+source: "IMG_8358"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo32.jpg"
 ---

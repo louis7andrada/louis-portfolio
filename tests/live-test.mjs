@@ -1356,6 +1356,35 @@ async function main() {
     });
   }
 
+  // Oct 2026: opening a photo popup loaded its picture, that load re-copied the whole page into the
+  // blurred background WITH the open popup's frosted backdrop in it, and after closing the background
+  // stayed visibly brighter. Popups must never be in the copies, and must not trigger a re-copy.
+  const POPUP_SEL = ".arw-modal, .sins-popup, .arch-popup, .book-modal, #bookFullscreen, .lightbox-overlay, .ml-popup, .artwork-filter-overlay";
+  for (const [path, open, close] of [
+    ["/photography/", `document.querySelector('body > main .aw-item:not([style*="none"])').click()`, `document.getElementById('photoModalClose').click()`],
+    ["/archive/", `document.querySelector('body > main .arch-item').click()`, `document.getElementById('archPopupX').click()`],
+  ]) {
+    await check(`Background unchanged after a popup opens and closes (${path}): no popup in the copies, no re-copy`, async () => {
+      const page = await browser.newPage();
+      await page.setViewport(1440, 900);
+      await page.goto(BASE_URL + path);
+      await waitForIntroDoorGone(page);
+      await page.waitFor(`(document.getElementById('siteMirrorClone')?.children.length || 0) > 0`, { timeout: 8000 });
+      await new Promise((r) => setTimeout(r, 5000)); // let load-time rebuilds settle
+      const before = await page.evaluate(`window.__mirrorBuilds`);
+      await page.evaluate(open);
+      await new Promise((r) => setTimeout(r, 2500)); // the popup's picture loads
+      await page.evaluate(close);
+      await new Promise((r) => setTimeout(r, 3500)); // a triggered rebuild would land within this
+      const r = await page.evaluate(`({ builds: window.__mirrorBuilds,
+        inCopies: document.querySelectorAll(['#siteMirror', '#headerBleed', '#footerBleed', '#headerMirrorEcho', '#footerMirrorEcho'].map(h => ${JSON.stringify(POPUP_SEL)}.split(', ').map(s => h + ' ' + s).join(', ')).join(', ')).length })`);
+      await page.close();
+      if (r.inCopies) throw new Error(`${r.inCopies} popup element(s) inside the background copies`);
+      if (r.builds !== before) throw new Error(`opening/closing the popup re-copied the page into the background (${before} -> ${r.builds} builds)`);
+      return true;
+    });
+  }
+
   // ── Small screens: the full fog stack, built only as far as the device can afford ──
   const FX_CLEAN = `(() => { try { localStorage.removeItem('fx-force'); localStorage.removeItem('fx-demote'); sessionStorage.removeItem('fx-run'); } catch (e) {} })()`;
   const FX_FILLED = `(() => { const f = (id) => (document.getElementById(id)?.children.length || 0) > 0; return {

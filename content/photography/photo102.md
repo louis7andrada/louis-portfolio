@@ -1,8 +1,9 @@
 ---
 id: "photo102"
-title: "photo102"
+title: "cii"
 order: 102
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_9937.jpg"
+source: "IMG_9937"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo102.jpg"
 ---

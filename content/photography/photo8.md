@@ -1,8 +1,9 @@
 ---
 id: "photo8"
-title: "photo8"
+title: "viii"
 order: 8
 year: 2026
 collection: "Lucid"
-image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/IMG_7882.jpg"
+source: "IMG_7882"
+image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/photography/photo8.jpg"
 ---

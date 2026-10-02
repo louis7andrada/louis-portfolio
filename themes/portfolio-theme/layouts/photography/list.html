@@ -6,7 +6,7 @@
      shared styling in main.css and the fog-mirror exclusions in baseof.html
      apply unchanged. Clicking a photo opens ONE photograph in a popup
      (prev/next arrows, click the image for fullscreen + zoom) instead of the
-     book viewer. Each photo's id is its title (photo1, photo2 …); `order`
+     book viewer. Titles are lowercase roman numerals (i, ii …), ids photo1, photo2 …; `order`
      is the number (higher shows first), `collection` is Ambiguous or Lucid. */}}
 {{ $photos := sort (where .Site.RegularPages "Section" "photography") "Params.order" "desc" }}
 {{ partial "jsonld/collection.html" (dict "page" . "items" $photos) }}
@@ -80,6 +80,22 @@
     </a>
     {{ end }}
   </div>
+
+  <script>
+  /* Collection filter: the first Photography visit of a session opens on
+     Ambiguous; after that the visitor's own choice (Lucid, All, Deselect all)
+     is kept for the rest of the session (sessionStorage "photo-collection").
+     Runs right here, before the first paint and before the fog copies of the
+     page are made, so the full grid never flashes up and collapses. */
+  (function () {
+    var c = "ambiguous";
+    try { var s = sessionStorage.getItem("photo-collection"); if (s === "all" || s === "ambiguous" || s === "lucid") c = s; } catch (e) {}
+    window.__photoCollection = c;
+    if (c === "all") return;
+    document.querySelectorAll('#bookFilterOverlay [data-filter="collection"]').forEach(function (b) { b.classList.toggle("active", b.getAttribute("data-value") === c); });
+    document.querySelectorAll('#bookGallery .aw-item').forEach(function (it) { if (it.getAttribute("data-collection") !== c) it.style.display = "none"; });
+  })();
+  </script>
 
   {{ if eq (len $photos) 0 }}
     <p class="books-empty">No photographs yet.</p>
@@ -365,10 +381,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const tagsEl       = document.getElementById("activeBookFilterTags");
   const items        = Array.from(document.querySelectorAll(".aw-item"));
 
-  let active = { year: "all", collection: "all" };
+  let active = { year: "all", collection: window.__photoCollection || "all" };
   let query = "";
   const LABELS = { year: "Year", collection: "Collection" };
   const cap = v => v.charAt(0).toUpperCase() + v.slice(1);
+  const rememberCollection = () => { try { sessionStorage.setItem("photo-collection", active.collection); } catch (e) {} };
 
   function applyFilters() {
     items.forEach(item => {
@@ -422,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(`#bookFilterOverlay [data-filter="${key}"]`).forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
       active[key] = btn.dataset.value;
+      if (key === "collection") rememberCollection();
       applyFilters();
       renderTags();
     });
@@ -429,10 +447,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resetBtn?.addEventListener("click", () => {
     active = { year: "all", collection: "all" };
+    rememberCollection();
     document.querySelectorAll("#bookFilterOverlay .artwork-filter-option").forEach(b => b.classList.toggle("active", b.dataset.value === "all"));
     applyFilters();
     renderTags();
   });
+
+  renderTags(); // shows "Collection: Ambiguous" next to Filters when the page opens filtered
 
   /* ── PHOTO POPUP — one photograph, with prev/next through whatever the
      filters currently show (same as the Archive popup). ── */
