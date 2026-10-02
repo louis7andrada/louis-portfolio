@@ -4,10 +4,11 @@
   <!--      AndradaMono Font by Louis Andrada       -->
   <!--        Codes by Louis Andrada                -->
 
-  <img src="/lalogo.png" alt="Louis Andrada Logo" class="footer-logo dark:invert" />
+  <img src="/lalogo.png" alt="ᛃᚨ" class="footer-logo dark:invert" />
 
   <span class="text-[13px] footer-copy">
-    Louis Andrada © {{ now.Format "2006" }} — All Rights Reserved
+    {{- /* The page's one name (its face, or ᛃᚨ Andrada); swapped in the browser on a face subdomain. The legal holder is on /license/. */}}
+    <span data-artist-name>{{ index site.Params.names (partial "page-name.html" .) }}</span> © {{ now.Format "2006" }} — All Rights Reserved
     <span class="footer-legal"><a href="/license/">License</a> · <a href="/privacy/">Privacy</a></span>
   </span>
 

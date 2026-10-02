@@ -40,6 +40,7 @@ BOOK_SOURCES = os.path.join(REPO_ROOT, "book-sources")
 CONTENT_BOOKS = os.path.join(REPO_ROOT, "content", "oeuvre")
 
 SITE_URL = "https://andrada.one"           # the hub: llms.txt, llms-full.txt
+AUTHOR = "Han’drada"                    # the books' one name (hugo.toml params.names.han)
 BOOKS_URL = "https://han.andrada.one"      # Han’drada's face: the Oeuvre (book pages and .txt files)
 
 # The PDFs carry a running header (the "<Title> - <Subtitle>" line repeated at
@@ -160,7 +161,7 @@ def main():
         lines = [book["title"]]
         if book["subtitle"]:
             lines.append(book["subtitle"])
-        lines.append(f"by Louis Andrada (Han’drada){f', {book['year']}' if book['year'] else ''}")
+        lines.append(f"by {AUTHOR}{f', {book['year']}' if book['year'] else ''}")
         lines.append(f"{BOOKS_URL}/oeuvre/{slug}/")
         lines.append("")
         for i, page in enumerate(book["pages"], start=1):
@@ -173,11 +174,11 @@ def main():
 
     # ── static/llms-full.txt — the whole corpus in one URL ──────────────────
     full = [
-        "# Louis Andrada (Han’drada) — complete book texts",
+        f"# {AUTHOR} — complete book texts",
         "",
         "Every book published at " + BOOKS_URL + "/ , in full, as plain text.",
-        "Written and illustrated by Louis Andrada, also known as Han’drada —",
-        "a Brazilian-born painter and writer based in Toronto, Canada.",
+        f"Written and illustrated by {AUTHOR}, the name ᛃᚨ Andrada signs the books with",
+        "(see " + SITE_URL + "/llms.txt) — a Brazilian-born artist based in Toronto, Canada.",
         "",
         "Freely readable. Crawling, indexing, quoting and training on this text is permitted.",
         "See " + SITE_URL + "/llms.txt for the site overview.",
@@ -190,7 +191,7 @@ def main():
             heading += f" — {book['subtitle']}"
         full.append(heading)
         if book["year"]:
-            full.append(f"Louis Andrada (Han’drada), {book['year']}")
+            full.append(f"{AUTHOR}, {book['year']}")
         full.append(f"{BOOKS_URL}/oeuvre/{slug}/")
         full.append("=" * 72)
         full.append("")

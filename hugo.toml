@@ -1,6 +1,6 @@
 baseURL = "https://andrada.one/"
 languageCode = "en-us"
-title = "Louis Andrada"
+title = "ᛃᚨ Andrada"
 theme = "portfolio-theme"
 enableRobotsTXT = true
 # No tags/categories are used on this site; don't generate empty pages for them.
@@ -37,10 +37,10 @@ disableKinds = ["taxonomy", "term"]
 
   # Identity, in one place — used by the <head> metadata and every JSON-LD
   # block, so the name and profiles never drift between pages.
-  artist = "Louis Andrada"
-  artist_alt = "Han’drada"
-  artist_alt_plain = "Handrada"
-  tagline = "Paintings and artist books by Louis Andrada, also known as Han’drada — a Brazilian-born, Toronto-based painter of dark existentialist work."
+  # legal_name: the legal entity, used ONLY in legal statements (copyright notices, license, privacy).
+  # Everything public uses the names below. The Person node (JSON-LD) is "ᛃᚨ Andrada" with every
+  # other name as an alternateName, so all of them resolve to one entity.
+  legal_name = "Luis R. P. Andrada"
   # Declared to search engines/AI in JSON-LD (sameAs) only — intentionally not
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"
@@ -55,20 +55,36 @@ disableKinds = ["taxonomy", "term"]
   # subdomain's front page and sends a section asked for on the wrong host (and every old
   # handrada.com / louisandrada.com address) to its one real address.
   #
-  # NAMES: titles, link previews and visible text show ONE name, never "Louis Andrada (Han’drada)".
-  # The server-rendered name (what search engines see) is the owner of the page's section, or
-  # name_default for shared pages. In the browser, a face subdomain always shows its own name; on
-  # andrada.one, ?name=<key> picks it for the visit (removed from the address bar).
-  # JSON-LD identity, meta descriptions and keywords keep every name, on purpose.
+  # NAMES (Louis, Oct 2026): every page carries ONE name, in its title, description, keywords, link
+  # previews, author and JSON-LD credits: the owner of the page's section (louis. paintings, han. books,
+  # odi. photographs), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
+  # name) for andrada.one itself and the shared pages that live there. Never two names side by side.
+  # In the browser a face subdomain always shows its own name; on andrada.one, ?name=<key> picks it
+  # for the visit (removed from the address bar). Only the Person node lists every name (alternateName).
   # Off andrada.one (hugo server, any other baseURL) all of this falls back to plain local paths.
-  name_default = "louis"
+  name_default = "ja"
   face_domain = "andrada.one"
   hub = "/links/"
 
   [params.names]
     han = "Han’drada"
     louis = "Louis Andrada"
-    odi = "Odi"
+    odi = "Odi Andrada"
+    ja = "ᛃᚨ Andrada"
+
+  # Each name's own description (meta description where a page has none of its own, WebSite JSON-LD).
+  [params.taglines]
+    louis = "Paintings by Louis Andrada, a Brazilian-born painter based in Toronto: dark, existentialist figurative work."
+    han = "Illustrated artist books by Han’drada: philosophical tellings on entropy, consciousness, mortality, memory and faith, readable in full online."
+    odi = "Photographs by Odi Andrada, in two collections: Ambiguous (abstract, black and white) and Lucid."
+    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under three names: Louis Andrada (paintings), Han’drada (illustrated books) and Odi Andrada (photography)."
+
+  # Each name's keywords (meta keywords), its own name first.
+  [params.keywords]
+    louis = "Louis Andrada, paintings, painter, original paintings, Toronto artist, Brazilian artist, contemporary art, fine art, dark art, figurative painting, existentialism"
+    han = "Han’drada, Han'drada, Handrada, Han Andrada, artist books, illustrated books, philosophical fiction, existentialism, tellings, read online"
+    odi = "Odi Andrada, photography, photographs, black and white photography, abstract photography, fine art photography"
+    ja = "ᛃᚨ Andrada, Andrada, Louis Andrada, Han’drada, Odi Andrada, artist, painter, writer, photographer, Toronto artist, Brazilian artist"
 
   # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
   # section: the content section the face owns (its pages live on the face's subdomain).

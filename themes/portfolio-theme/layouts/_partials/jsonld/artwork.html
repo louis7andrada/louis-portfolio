@@ -9,6 +9,8 @@
      size ("18 x 24 in") is split into real width/height quantities where it
      parses — schema.org expects measurements, not a display string. */}}
 {{ $person := printf "%s#person" site.BaseURL }}
+{{/* Credited to the page's one name (Louis Andrada / Han’drada / Odi Andrada / ᛃᚨ Andrada); copyright to the legal entity. */}}
+{{ $who := index site.Params.names (partial "page-name.html" .) }}
 {{ $sizeClean := replace (default "" .Params.size) " in" "" }}
 {{ $dims := split $sizeClean " x " }}
 {{ $hasDims := false }}
@@ -30,12 +32,12 @@
   "creator": {
     "@type": "Person",
     "@id": "{{ $person }}",
-    "name": "{{ site.Params.artist }}"
+    "name": "{{ $who }}"
   },
   "copyrightHolder": {
     "@type": "Person",
     "@id": "{{ $person }}",
-    "name": "{{ site.Params.artist }}"
+    "name": "{{ site.Params.legal_name }}"
   },
   "artform": "Painting",
   {{ with .Params.medium }}"artMedium": "{{ . }}",
@@ -53,12 +55,12 @@
   {{ end }}{{ with .Params.image }}"image": {
     "@type": "ImageObject",
     "contentUrl": "{{ . }}",
-    "creditText": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
-    "copyrightNotice": "© {{ site.Params.artist }}",
+    "creditText": "{{ $who }}",
+    "copyrightNotice": "© {{ site.Params.legal_name }}",
     "creator": {
       "@type": "Person",
       "@id": "{{ $person }}",
-      "name": "{{ site.Params.artist }}"
+      "name": "{{ $who }}"
     },
     "license": "{{ "/license/" | absURL }}",
     "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
@@ -75,7 +77,7 @@
     "seller": {
       "@type": "Person",
       "@id": "{{ $person }}",
-      "name": "{{ site.Params.artist }}"
+      "name": "{{ $who }}"
     }
   }{{ end }}
 }

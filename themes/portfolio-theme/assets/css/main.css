@@ -647,23 +647,23 @@
 
 
   /* ----------------------------------------
-    OEUVRE / PHOTOGRAPHY: the title cluster is one fog island (the header's
+    OEUVRE / PHOTOGRAPHY / ARTWORKS (home): the title cluster is one fog island (the header's
     fog, white text in dark mode, no borders); the Filters button is white.
     The filter bar's own island is dropped inside the cluster so the two
     don't stack; the search box gets its own darker one.
   ----------------------------------------- */
-  body.page-books .book-page-header .artwork-filter-bar::before { display: none; }
-  body.page-books .book-search-wrap::before { display: none; }
-  body.page-books .book-search-input {
+  :is(body.page-books, body.page-home) .book-page-header .artwork-filter-bar::before { display: none; }
+  :is(body.page-books, body.page-home) .book-search-wrap::before { display: none; }
+  :is(body.page-books, body.page-home) .book-search-input {
     background: transparent !important;
     border: 0 !important;
     outline: none;
     color: #fff;
     opacity: 0.9;
   }
-  html:not(.dark) body.page-books .book-search-input { color: inherit; }
-  html.dark body.page-books .artwork-filter-toggle:not(.filter-spacer) { color: #fff; opacity: 0.92; }
-  html.dark body.page-books .book-page-header h1 { color: #fff; }
+  html:not(.dark) :is(body.page-books, body.page-home) .book-search-input { color: inherit; }
+  html.dark :is(body.page-books, body.page-home) .artwork-filter-toggle:not(.filter-spacer) { color: #fff; opacity: 0.92; }
+  html.dark :is(body.page-books, body.page-home) .book-page-header h1 { color: #fff; }
   /* while the (now truly full-screen) filter overlay is open, keep the
      cluster above it so the Filters toggle stays reachable */
   body.filter-lock .book-page-header { z-index: 120; }

@@ -15,7 +15,7 @@
   "@type": "CollectionPage",
   "@id": "{{ partial "canonical.html" $page }}#collection",
   "url": "{{ partial "canonical.html" $page }}",
-  "name": "{{ $page.Title }} — {{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+  "name": "{{ $page.Title }} — {{ index site.Params.names (partial "page-name.html" $page) }}",
   "isPartOf": {
     "@id": "{{ site.BaseURL }}#website"
   },

@@ -25,7 +25,7 @@
         {{ $full := partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
         <img
           src="{{ $full }}"
-          alt="{{ .Title | default "Photograph by Louis Andrada" }}"
+          alt="{{ .Title | default (printf "Photograph by %s" site.Params.names.odi) }}"
           class="photo-img"
           onclick="openLightbox('{{ $full }}', '{{ .Title }}')"
         />

@@ -5,20 +5,29 @@
   <!--     AndradaMono Font by Louis Andrada       -->
   <!--       Codes by Louis Andrada                -->
 
-  <!-- Left: Logo — always visible -->
+  <!-- Left: Logo — always visible. Every page load shows the page's OWN logo first (louis. → Louis
+       Andrada "old", han. → Han Andrada "ha", odi. → Odi Andrada "odi", andrada.one → Andrada "andrada"),
+       then it turns into Jera Ansuz ("new", lalogo.png) — see startHeaderLogoSequence below. -->
+  {{- /* The logo owner as rendered: the face that owns this page's section or front page, "hub" on the
+         Links page. In the browser a face subdomain (window.__face) wins, as it does for the name. */ -}}
+  {{ $logoOwner := "" }}
+  {{ range $k, $f := site.Params.faces }}{{ if or (eq $.RelPermalink $f.page) (and $f.section (eq $.Section $f.section)) }}{{ $logoOwner = $k }}{{ end }}{{ end }}
+  {{ if eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}{{ $logoOwner = "hub" }}{{ end }}
   <a href="/" id="headerLogo" class="flex items-center">
     <div id="logoMorphWrap" class="logo-morph-wrap" data-active="old">
       <img src="/logoold.png" alt="Louis Andrada Logo" id="logoOld" class="logo-img logo-old active" data-logo="old">
-      <img src="/lalogo.png" alt="Louis Andrada Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
+      <img src="/lalogo.png" alt="ᛃᚨ Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
       <img src="/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
-      <img src="/odilogo.png" alt="Odi Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
+      <img src="/odiandradalogo.png" alt="Odi Andrada Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
+      <img src="/andradalogo.png" alt="Andrada Logo" id="logoAndrada" class="logo-img logo-andrada" data-logo="andrada">
     </div>
   </a>
 
   <!-- Runs synchronously as the parser reaches it — not deferred to
-       DOMContentLoaded — so a continuing-session logo state is restored
-       before the browser ever paints the (default-hidden) wrap. Only
-       the main script below handles the true first-run entrance. -->
+       DOMContentLoaded — so the page's own logo is in place before the
+       browser ever paints the (default-hidden) wrap. After the first page
+       of the visit it is also shown at once; on the first page the main
+       script below plays the entrance once the intro door has closed. -->
   <script>
   (function () {
     try {
@@ -35,20 +44,21 @@
         } catch (e) {}
         return null;
       }
-      var persisted = sGet("headerLogoState"); // 'old' | 'new' | 'ha' | 'odi'
-      if (persisted) {
-        wrap.classList.add("logo-no-anim", "logo-ready");
-        if (persisted !== "old") {
-          wrap.setAttribute("data-active", persisted);
-          var imgs = wrap.querySelectorAll(".logo-img");
-          for (var i = 0; i < imgs.length; i++) imgs[i].classList.remove("active");
-          var target = wrap.querySelector('[data-logo="' + persisted + '"]');
-          if (target) target.classList.add("active");
-        }
-      }
-      // No persisted state yet (first run this session) — leave the
-      // wrap hidden; the main script reveals it with the entrance
-      // animation once the intro door has closed.
+      // Set once the entrance has played this visit (any face: the cookie covers andrada.one).
+      if (sGet("headerLogoState")) wrap.classList.add("logo-no-anim", "logo-ready");
+      // Not set yet (first page of the visit) — leave the wrap hidden; the
+      // main script reveals it with the entrance animation once the intro
+      // door has closed.
+
+      // The page's own logo: the face subdomain, else the page's owner as rendered, else the name the
+      // visitor came in with (?name=, baseof.html), else the hub's Andrada.
+      var LOGOS = { louis: "old", han: "ha", odi: "odi", ja: "andrada", hub: "andrada" };
+      var who = window.__face || {{ $logoOwner }} || window.__nameKey || "hub";
+      var pageLogo = LOGOS[who] || "andrada";
+      wrap.setAttribute("data-page-logo", pageLogo);
+      wrap.setAttribute("data-active", pageLogo);
+      var all = wrap.querySelectorAll(".logo-img");
+      for (var j = 0; j < all.length; j++) all[j].classList.toggle("active", all[j].getAttribute("data-logo") === pageLogo);
     } catch (e) {}
   })();
   </script>
@@ -124,11 +134,12 @@
      ══════════════════════════════════════════════════════ -->
 <div id="intro-door">
   <div id="introLogoWrap" class="intro-logo-wrap">
-    <img src="/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new active" data-logo="new" alt="Louis Andrada"
+    <img src="/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new active" data-logo="new" alt="ᛃᚨ"
          onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
+    <img src="/andradalogo.png" id="introLogoAndrada" class="intro-logo-img intro-logo-andrada" data-logo="andrada" alt="Andrada" />
     <img src="/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
     <img src="/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
-    <img src="/odilogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi" />
+    <img src="/odiandradalogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi Andrada" />
     <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
   </div>
 </div>
@@ -223,15 +234,16 @@
     width: 2rem;
   }
 
-  /* odilogo (Odi) — tall signature mark, framed like lalogo; width follows its own proportions */
-  .logo-odi {
-    height: 2rem;
-    width: auto;
-  }
+  /* Odi Andrada / Andrada — drawn on the same 3240x1440 canvas, side-trimmed by scripts/make-logo.py
+     (2686 and 2231 px wide): drawn at halogo's scale, so the box is halogo's width times that share. */
+  .logo-odi     { height: 2.5rem; width: calc(7rem * 0.8290); }
+  .logo-andrada { height: 2.5rem; width: calc(7rem * 0.6886); }
 
   @media (max-width: 767px) {
     .logo-old, .logo-ha { height: 2rem; width: 5.5rem; }
     .logo-new { height: 2rem; width: 2rem; }
+    .logo-odi     { height: 2rem; width: calc(5.5rem * 0.8290); }
+    .logo-andrada { height: 2rem; width: calc(5.5rem * 0.6886); }
   }
 
   /* ── DARK MODE (header logo) ── */
@@ -262,7 +274,7 @@
     cursor: pointer;
   }
 
-  /* The logos step through in sequence (new → old → ha → odi); JS toggles
+  /* The logos step through in sequence (new → andrada → old → ha → odi); JS toggles
      .active on whichever is current — same pattern as the header logo. */
   .intro-logo-img {
     position: absolute;
@@ -285,10 +297,11 @@
     filter: var(--logo-invert, ) blur(0px) var(--fog-on);
   }
 
-  .intro-logo-new,
-  .intro-logo-odi { height: 78%; } /* lalogo / odilogo — compact marks, centered within the wider wrap */
+  .intro-logo-new { height: 78%; } /* lalogo — compact mark, centered within the wider wrap */
   .intro-logo-old,
-  .intro-logo-ha { height: 100%; } /* wide wordmark canvases — span the full wrap */
+  .intro-logo-ha,
+  .intro-logo-odi,
+  .intro-logo-andrada { height: 100%; } /* signatures on the 1440px-tall canvas — span the full wrap */
 
   /* Final stage: whichever logo is active morphs away (bigger blur/scale,
      slower) as the door dissolves underneath it, instead of a flat fade */
@@ -558,39 +571,34 @@ document.addEventListener("DOMContentLoaded", () => {
     logoSequenceStarted = true;
     if (!logoMorphWrap) return;
 
-    const STATE_KEY = "headerLogoState"; // 'old' | 'new' | 'ha' | 'odi'
-    const CYCLE = ["old", "new", "ha", "odi"];
-    const persisted  = storageGet(STATE_KEY);
-    const isFirstRun = !persisted; // no page in this session has run the cycle yet
+    // Every page load: the page's own logo (put in place before paint by the inline script next to the
+    // logo: Louis / Han / Odi Andrada / Andrada), then it turns into Jera Ansuz and stays.
+    const STATE_KEY = "headerLogoState"; // set once the entrance has played this visit
+    const JERA = "new";                  // lalogo.png
+    const isFirstRun = !storageGet(STATE_KEY);
 
-    const MATERIALIZE_DURATION       = 900;  // must match .logo-morph-wrap's transition duration
-    const HOLD_BEFORE_TOGGLE_FIRST   = 3200; // first-run: time the logo sits still after materializing, before flipping
+    const MATERIALIZE_DURATION = 900;  // must match .logo-morph-wrap's transition duration
+    const HOLD_BEFORE_JERA     = 3200; // how long the page's own logo shows before turning into Jera Ansuz
 
-    function advance() {
-      const current = logoMorphWrap.getAttribute("data-active") || "old";
-      const next = CYCLE[(CYCLE.indexOf(current) + 1) % CYCLE.length];
-      logoMorphWrap.setAttribute("data-active", next);
-      logoMorphWrap.querySelectorAll(".logo-img").forEach((img) => img.classList.remove("active"));
-      const target = logoMorphWrap.querySelector('[data-logo="' + next + '"]');
-      if (target) target.classList.add("active");
-      storageSet(STATE_KEY, next);
+    function toJera() {
+      logoMorphWrap.setAttribute("data-active", JERA);
+      logoMorphWrap.querySelectorAll(".logo-img").forEach((img) => img.classList.toggle("active", img.getAttribute("data-logo") === JERA));
     }
 
+    storageSet(STATE_KEY, "1");
     if (isFirstRun) {
-      // Nothing was restored by the inline pre-script, so the wrap is
-      // still in its default hidden state — reveal it now, with the
-      // transition playing out as the actual entrance animation.
+      // The wrap is still in its default hidden state — reveal it now, with
+      // the transition playing out as the actual entrance animation.
       requestAnimationFrame(() => {
         logoMorphWrap.classList.add("logo-ready");
       });
-      setTimeout(advance, MATERIALIZE_DURATION + HOLD_BEFORE_TOGGLE_FIRST);
+      setTimeout(toJera, MATERIALIZE_DURATION + HOLD_BEFORE_JERA);
     } else {
-      // Already instantly restored by the inline pre-script — re-enable
-      // transitions, then advance on the very next frame so it reads as
-      // starting right when the page opens, not a beat after.
+      // Already shown instantly by the inline script — re-enable transitions
+      // so the turn into Jera Ansuz morphs like the first time.
       requestAnimationFrame(() => {
         logoMorphWrap.classList.remove("logo-no-anim");
-        requestAnimationFrame(advance);
+        setTimeout(toJera, HOLD_BEFORE_JERA);
       });
     }
   }
@@ -612,12 +620,12 @@ document.addEventListener("DOMContentLoaded", () => {
       door.style.display = "none";
       startHeaderLogoSequence();
     } else {
-      // Every logo/name steps through here (new → old → ha → odi). The door
+      // Every logo/name steps through here (Jera Ansuz → Andrada → Louis → Han → Odi). The door
       // always takes about the same time (LOGO_BUDGET for the logos, then the
       // dissolve), so each new logo makes every step a little quicker instead
       // of making the door longer. To add a logo: add its <img> above and its
       // name to INTRO_STEPS; the timings below rescale themselves.
-      const INTRO_STEPS         = ["new", "old", "ha", "odi"];
+      const INTRO_STEPS         = ["new", "andrada", "old", "ha", "odi"];
       // The 3-logo door's timings (1100 first hold, 900 morphs, 350 between,
       // 700 final hold = 3950ms) set the proportions and the budget.
       const LOGO_BUDGET         = 3950;
@@ -686,7 +694,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, DISSOLVE_TRANSITION);
       }
 
-      // new → old → ha → odi → dissolve, each step scheduled only after the
+      // new → andrada → old → ha → odi → dissolve, each step scheduled only after the
       // previous logo's transition has had time to finish.
       function advance() {
         step++;

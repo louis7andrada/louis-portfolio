@@ -49,17 +49,43 @@
 
 </section>
 
-<section id="artworks-section" class="w-full px-4 py-12">
-  <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Artworks</h1>
+<section id="artworks-section" class="w-full px-4 py-12 relative">
 
-  <div class="artwork-filter-bar" id="artworkFilterBar">
-    <button id="filterToggle" class="artwork-filter-toggle">
-      <span class="filter-label">Filters</span>
-      <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
-    </button>
-    <div id="activeFilterTags" class="artwork-active-tags"></div>
+  {{/* Title + search + filters: the same pinned cluster as Oeuvre and Photography (.book-page-header,
+       fixed on the left; main.css styles it for body.page-home too). Hidden while the hero is on
+       screen (html.hero-in-view, script below), as on han./odi.andrada.one. */}}
+  <div class="book-page-header">
+    <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Artworks</h1>
+
+    <div class="artwork-filter-bar" id="artworkFilterBar">
+      <div class="book-search-wrap">
+        <svg class="book-search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="artworksSearchInput" class="book-search-input" placeholder="..." aria-label="Search artworks">
+      </div>
+      <button id="filterToggle" class="artwork-filter-toggle">
+        <span class="filter-label">Filters</span>
+        <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
+      </button>
+      <div id="activeFilterTags" class="artwork-active-tags"></div>
+    </div>
   </div>
+  <script>
+    // Like the faces' front pages (faces.html): the pinned title + filters wait while the hero shows.
+    (function () {
+      var html = document.documentElement;
+      if (location.hash !== "#artworks-section") html.classList.add("hero-in-view");
+      document.addEventListener("DOMContentLoaded", function () {
+        var hero = document.getElementById("home-section");
+        if (!hero || !("IntersectionObserver" in window)) { html.classList.remove("hero-in-view"); return; }
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { html.classList.toggle("hero-in-view", en.intersectionRatio > 0.1); });
+        }, { threshold: [0, 0.1] }).observe(hero);
+      });
+    })();
+  </script>
 
+  <!-- Outside .book-page-header on purpose: that header has a transform, which
+       would make this position:fixed overlay relative to it instead of the screen. -->
   <div id="filterOverlay" class="artwork-filter-overlay">
     <div class="artwork-filter-inner">
       <div class="artwork-filter-left-col">
@@ -269,7 +295,8 @@
   overflow: visible;
   padding: 0 clamp(4rem, 7vw, 9rem);
   box-sizing: border-box;
-  margin-top: -20vh;
+  /* No -20vh pull-up any more: the title + filters left the flow for the pinned cluster below,
+     which already lifts the grid by about as much (and Oeuvre/Photography have none either). */
 }
 .aw-item {
   position: absolute;
@@ -298,8 +325,7 @@
 .aw-lbl-a { bottom: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
 
 @media (max-width: 700px) {
-  .aw-grid { padding: 0 1.5rem; 
-  margin-top: -10vh;}
+  .aw-grid { padding: 0 1.5rem; }
   
   .aw-lbl {
   position: absolute;
@@ -320,6 +346,45 @@
 .end-message2 { display: block; width: 100%; text-align: right !important; box-sizing: border-box; padding-right: 1.5rem; }
 
 /* ── FILTER BAR ── */
+/* ── HEADER CLUSTER (title + search + filters) — pinned on the left exactly like Oeuvre and
+   Photography (copied from photography/list.html: Hugo doesn't share a page's inline <style>);
+   the grid keeps room for it with padding-left. Hidden while the hero is on screen. ── */
+#artworks-section { padding-left: 230px; box-sizing: border-box; }
+@media (max-width: 1100px) { #artworks-section { padding-left: 190px; } }
+@media (max-width: 800px) { #artworks-section { padding-left: 0; padding-top: 72px; } }
+.book-page-header {
+  position: fixed;
+  left: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  width: fit-content;
+  max-width: min(40vw, 420px);
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+@media (max-width: 1100px) { .book-page-header { left: 16px; } }
+@media (max-width: 800px) {
+  .book-page-header { position: fixed; top: 60px; left: 20px; transform: none; max-width: calc(100vw - 40px); }
+}
+.book-page-header .artwork-filter-bar { position: static; top: auto; }
+html.hero-in-view .book-page-header { opacity: 0; visibility: hidden; pointer-events: none; }
+.book-search-wrap { position: relative; display: inline-flex; align-items: center; }
+.book-search-icon { position: absolute; left: 0; opacity: 0.35; pointer-events: none; }
+.book-search-input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.55;
+  padding: 0.1rem 0.1rem 0.1rem 1.5rem;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: inherit;
+  outline: none;
+  width: 90px;
+}
+.book-search-input:focus { opacity: 1; }
+.book-search-input::placeholder { opacity: 0.6; letter-spacing: 0.15em; }
+
 .artwork-filter-bar { position: sticky; top: 100px; z-index: 110; display: inline-flex; align-items: flex-start; gap: 1.2rem; width: fit-content; max-width: min(90vw, 900px); margin-bottom: 1rem; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.65); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); transition: background 0.2s ease; }
 html.dark .artwork-filter-bar { background: var(--glass-bar); }
 .artwork-filter-bar.filter-open { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
@@ -486,6 +551,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const items     = gallery ? Array.from(gallery.querySelectorAll(".artwork-item")) : [];
   const active    = { year: "all", availability: "all", collection: "all" };
   const filterLabels = { year: "Years", availability: "Availability", collection: "Collection" };
+  const searchInput = document.getElementById("artworksSearchInput");
+  let query = ""; // the search box, as on Oeuvre and Photography: matches title, medium, size, year, collection
 
   function openOverlay()  { toggle.classList.add("open"); filterBar.classList.add("filter-open"); overlay.classList.add("open"); document.body.classList.add("filter-lock"); }
   function closeOverlay() { overlay.classList.remove("open"); toggle.classList.remove("open"); filterBar.classList.remove("filter-open"); document.body.classList.remove("filter-lock"); }
@@ -497,6 +564,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const treeView    = document.getElementById("treeCollectionView");
     treeView.style.display = 'none'; galleryView.style.display = '';
     applyFilters(); renderTags();
+  });
+
+  searchInput?.addEventListener("input", () => {
+    query = searchInput.value.trim().toLowerCase();
+    // The Tree, The Snake, The Fruit has its own view instead of the grid: searching goes back to the grid.
+    const treeView = document.getElementById("treeCollectionView");
+    if (query && treeView && treeView.style.display === "block") {
+      active.collection = "all";
+      document.querySelectorAll('[data-filter="collection"]').forEach(b => b.classList.toggle("active", b.dataset.value === "all"));
+      treeView.style.display = "none"; gallery.style.display = "";
+      renderTags();
+    }
+    applyFilters();
   });
 
   toggle.addEventListener("click", () => !overlay.classList.contains("open") ? openOverlay() : closeOverlay());
@@ -529,7 +609,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const matchYear  = active.year === "all" || year === String(active.year);
       const matchAvail = active.availability === "all" || avail === active.availability.toLowerCase();
       const matchCol   = active.collection === "all" || col.split(",").map(s => s.trim()).includes(active.collection);
-      item.style.display = (matchYear && matchAvail && matchCol) ? "" : "none";
+      const text       = [item.dataset.title, item.dataset.medium, item.dataset.size, year, col].join(" ").toLowerCase();
+      const matchQuery = !query || text.includes(query);
+      item.style.display = (matchYear && matchAvail && matchCol && matchQuery) ? "" : "none";
     });
     window._artworkLayout?.();
   }
@@ -551,6 +633,9 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       const headerH = document.getElementById("siteHeader")?.offsetHeight || 0;
       window.scrollTo(0, target.getBoundingClientRect().top + window.scrollY - headerH);
+      // The hash only says "open at the grid": drop it so the address bar reads louis.andrada.one/
+      // (as han./odi. do in faces.html). The query (?collection=…) stays.
+      history.replaceState(history.state, "", location.pathname + location.search);
       requestAnimationFrame(() => {
         document.documentElement.style.transition = 'opacity 0.2s ease';
         document.documentElement.style.opacity = '1';

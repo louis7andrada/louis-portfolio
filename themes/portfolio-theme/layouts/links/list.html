@@ -1,4 +1,6 @@
 {{ define "main" }}
+{{/* andrada.one's front page: Google reads the site name (ᛃᚨ Andrada) and the person from here. */}}
+{{ partial "jsonld/identity.html" . }}
 <!--  All Rights Reserved - Louis Andrada - 2026 -->
 <!--   Webdesign by Jinah Park & Louis Andrada   -->
 <!--     AndradaMono Font by Louis Andrada       -->
@@ -10,10 +12,10 @@
     <!-- One person, three names: each steps in from the one above (the About page's staircase),
          a little lighter, with the links' ink trailing off the last letters. Each name opens its
          own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography). -->
-    <div class="name-stack" aria-label="Louis Andrada, also Han and Odi">
+    <div class="name-stack" aria-label="Louis Andrada, Han’drada and Odi Andrada">
       <a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1">Louis Andrada</a>
-      <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2">Ha<span class="ink i2">n</span></a>
-      <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3">Od<span class="ink i4">i</span></a>
+      <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
+      <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
     </div>
     <div class="flex gap-6 md:gap-10">
       <span>Polymath</span>

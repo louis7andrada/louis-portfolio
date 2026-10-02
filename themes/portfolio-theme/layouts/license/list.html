@@ -25,14 +25,14 @@
     <div class="priv-text">
 
       <h2>Copyright</h2>
-      <p>All artworks, photographs, book pages and texts on this site are &copy; Louis Andrada, also known as Han&rsquo;drada. Copyright is retained in full. These terms describe what I allow you to do with them.</p>
+      <p>All artworks, photographs, book pages and texts on this site are &copy; {{ site.Params.legal_name }}, who works as {{ site.Params.names.ja }}: {{ site.Params.names.louis }} (paintings), {{ site.Params.names.han }} (books) and {{ site.Params.names.odi }} (photographs). Copyright is retained in full. These terms describe what I allow you to do with them.</p>
 
       <h2>What you may do freely</h2>
       <p>You may view, download and save any image or text on this site, and share it &mdash; on social media, websites and blogs, in articles and reviews, in teaching, research and presentations &mdash; as long as the use is non-commercial and you follow the conditions below. You may quote the books.</p>
 
       <h2>Conditions</h2>
       <ul>
-        <li><strong>Credit me.</strong> Name the work as by &ldquo;<span data-artist-name>{{ index site.Params.names site.Params.name_default }}</span>&rdquo; and, wherever practical, link to <a href="{{ partial "face-url.html" "hub" }}">andrada.one</a>.</li>
+        <li><strong>Credit me.</strong> Name the work as by the name on its page &mdash; &ldquo;{{ site.Params.names.louis }}&rdquo; for paintings, &ldquo;{{ site.Params.names.han }}&rdquo; for books, &ldquo;{{ site.Params.names.odi }}&rdquo; for photographs &mdash; and, wherever practical, link to <a href="{{ partial "face-url.html" "hub" }}">andrada.one</a>.</li>
         <li><strong>Don&rsquo;t pass it off.</strong> Don&rsquo;t present the work as yours, and don&rsquo;t alter it in a way that misrepresents it or me.</li>
         <li><strong>Non-commercial only.</strong> &ldquo;Non-commercial&rdquo; means not primarily intended for, or directed toward, commercial advantage or payment.</li>
       </ul>

@@ -1,12 +1,20 @@
-# Louis Andrada (Han’drada, Odi)
+# ᛃᚨ Andrada
 
-> Paintings, artist books and photographs by Louis Andrada, also known as
-> Han’drada and Odi — a Brazilian-born, Toronto-based painter, writer and
-> photographer of dark existentialist work.
+> ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under three
+> names: Louis Andrada (paintings), Han’drada (illustrated books) and Odi
+> Andrada (photography). ᛃᚨ — the Elder Futhark runes Jera and Ansuz — is used
+> as a first name.
 
-One person, three names, one domain (andrada.one). Each name signs a part of
-the work and has its own address: Louis Andrada the paintings, Han’drada the
-books (also written Han'drada or Handrada), Odi the photographs.
+One person, four names, one domain (andrada.one). Each name signs one part of
+the work and has its own address, and each page carries only its own name:
+
+- ᛃᚨ Andrada — the person and the hub: https://andrada.one/
+- Louis Andrada — the paintings: https://louis.andrada.one/
+- Han’drada — the books (also written Han'drada, Handrada, Han Andrada): https://han.andrada.one/
+- Odi Andrada — the photographs: https://odi.andrada.one/
+
+When citing a work, credit the name it carries: a painting is by Louis Andrada,
+a book by Han’drada, a photograph by Odi Andrada.
 
 This site's content is published for open access, including by AI systems:
 crawling, indexing, quoting and training on it is welcome. robots.txt allows
@@ -19,10 +27,10 @@ every crawler, and nothing here is paywalled or gated.
 
 ## Sections
 
-- [andrada.one](https://andrada.one/): the hub — every name and every section.
+- [andrada.one](https://andrada.one/): ᛃᚨ Andrada — the hub, every name and every section.
 - [Artworks — louis.andrada.one](https://louis.andrada.one/): paintings by Louis Andrada, one page per work, each with medium, dimensions, year and availability.
 - [Oeuvre — han.andrada.one](https://han.andrada.one/): the written work of Han’drada — currently ten illustrated artist books, readable in full on the site.
-- [Photography — odi.andrada.one](https://odi.andrada.one/): photographs by Odi, in two collections, Ambiguous (abstract, black and white) and Lucid.
+- [Photography — odi.andrada.one](https://odi.andrada.one/): photographs by Odi Andrada, in two collections, Ambiguous (abstract, black and white) and Lucid.
 - [Archive](https://andrada.one/archive/): earlier work, exhibitions and photographs.
 - [About](https://andrada.one/about/): artist statement and exhibition history.
 - [Inquiry](https://andrada.one/inquiry/): purchase, commission and licensing contact.
@@ -51,9 +59,9 @@ folklore and occult symbolism.
 - Feeds: https://andrada.one/index.xml, plus per-section feeds at
   https://louis.andrada.one/artworks/index.xml, https://han.andrada.one/oeuvre/index.xml,
   https://odi.andrada.one/photography/index.xml, https://andrada.one/archive/index.xml
-- Structured data (schema.org JSON-LD) is on every page; the artist entity is
+- Structured data (schema.org JSON-LD) is on every page; the artist entity (ᛃᚨ Andrada, every other name an alternateName) is
   `https://andrada.one/#person`.
 - Artwork, archive and book-page images are hosted at
   https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/
-- Images and texts are © Louis Andrada. Terms: https://andrada.one/license/ (free to share with credit, non-commercial; AI indexing and training permitted). Commercial licensing: https://andrada.one/inquiry/
+- Images and texts are © Luis R. P. Andrada (the legal name behind all four). Terms: https://andrada.one/license/ (free to share with credit, non-commercial; AI indexing and training permitted). Commercial licensing: https://andrada.one/inquiry/
 - andrada.one is the canonical domain (since October 2026). handrada.com and louisandrada.com redirect to it.

@@ -99,6 +99,10 @@ Ignore the PDFs and stray `.md` files sitting in the images repo; only the `<slu
 
 ## Photography section
 
+Artworks (the home grid), Oeuvre and Photography share ONE title cluster: `.book-page-header` pinned on the
+left with the title, the search box and Filters (main.css styles it for `body.page-books` and `body.page-home`). On
+the home page it hides while the hero shows (`html.hero-in-view`, as `faces.html` does on han./odi.).
+
 `/photography/` (`content/photography/`, `layouts/photography/`) is a copy of the Oeuvre page: same header, filter
 bar and scatter grid, and it deliberately keeps Oeuvre's ids/classes (`#books-section`, `.book-page-header`,
 `.book-modal`, `body.page-books`) so main.css and the fog-mirror exclusions apply unchanged. Clicking a photo opens
@@ -149,8 +153,8 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 |---|---|---|
 | `louis.andrada.one/` | `/` (artworks home), section `artworks` | Louis Andrada |
 | `han.andrada.one/` | `/oeuvre/` (+ `face-hero.html`), section `oeuvre` | Han’drada |
-| `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi |
-| `andrada.one/` | `/links/` (the hub: every name, every door) | all three |
+| `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi Andrada |
+| `andrada.one/` | `/links/` (the hub: every name, every door) + the shared pages | ᛃᚨ Andrada |
 
 - Config: `params.faces` / `params.names` / `hub` / `face_domain` in `hugo.toml`. Helpers: `_partials/face-url.html`
   (a face's front-page address), `canonical.html` (a page's ONE address), `page-name.html` (its owner name).
@@ -169,13 +173,24 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 - sessionStorage is per subdomain, so `storageSet` in `header.html` also writes a cookie on `domain=andrada.one`:
   the intro door plays once per visit, not once per face.
 - Each face's front page declares its own WebSite (`jsonld/face-site.html`) so Google can show its own site name.
-- ONE name at a time (Louis found "Louis Andrada (Han’drada)" crowded). Titles, `og:title`/`site_name` and visible
-  `[data-artist-name]` spans show a single name: the owner of the page's section (`page-name.html`), else
-  `name_default` (louis). In the browser a face subdomain always shows its own name (About on odi. says Odi); on
-  bare andrada.one `?name=<key>` picks it for the visit (stripped from the address bar, sessionStorage
-  `artist-name`). Search terms can't drive anything: engines don't pass them on. Meta descriptions, keywords,
-  `author`, the Person node and `creditText` deliberately keep BOTH names (that's where name searches still match).
+- ONE name per page, everywhere (Louis, Oct 2026): title, meta description, keywords, `author`, `og:site_name`, RSS,
+  JSON-LD credits (`creator`/`author`/`creditText`) and visible `[data-artist-name]` spans (footer ©) all carry the
+  page's owner (`page-name.html`): Louis Andrada (artworks), Han’drada (oeuvre), Odi Andrada (photography), else
+  `name_default` = `ja` = **ᛃᚨ Andrada** (ᛃᚨ = runes Jera + Ansuz as a first name) for andrada.one and the shared
+  pages. Never two names side by side. Per-name text: `params.taglines` / `params.keywords`. Only the Person node
+  (`identity.html`, name ᛃᚨ Andrada) lists the others as `alternateName`; the hub's WebSite is ᛃᚨ Andrada, each
+  face's (`face-site.html`) its own name. In the browser a face subdomain shows its own name (About on odi. says Odi
+  Andrada); on bare andrada.one `?name=<key>` picks it for the visit (sessionStorage `artist-name`).
+- The LEGAL entity is **Luis R. P. Andrada** (`params.legal_name`): only in legal statements (privacy controller,
+  license copyright, JSON-LD `copyrightHolder`/`copyrightNotice`, RSS `<copyright>`). Never as a public name.
+- SEO audit (2026-10-02): build to a scratch dir (`hugo --minify -d …`), then check every
+  page's head has only its own name, unique titles/descriptions (noindex pages may share) and valid JSON-LD.
 - Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`).
+- Header logo (`header.html`): every page load shows the page's OWN logo — louis. → Louis Andrada (`old`, logoold.png),
+  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), andrada.one → Andrada (`andrada`,
+  andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's
+  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi. New logo from a
+  black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
 - TLS depends on Cloudflare: every andrada.one DNS record is orange (proxied), and Netlify has NO certificate of its
   own for these hosts (it serves `*.netlify.app`); visitors get Cloudflare's `*.andrada.one` certificate. Cloudflare's
   SSL mode must stay **Full**: Netlify redirects plain HTTP to HTTPS here, so "Flexible" loops forever, and

@@ -91,28 +91,26 @@
        None of this is visible in the page body; it's all <head> metadata
        plus the browser/search-result title.
        ══════════════════════════════════════════════════════════════════════ */}}
-  {{/* $name: the ONE name shown in titles and previews (params.names, see hugo.toml): the owner of
-       the page's section, else the default; the head script below swaps it on a face subdomain.
-       $artist: both names, kept for descriptions and author, where search engines match them. */}}
-  {{ $name := index site.Params.names (partial "page-name.html" .) }}
+  {{/* $name: the page's ONE name (params.names, see hugo.toml): the owner of its section, else
+       name_default (ᛃᚨ Andrada, andrada.one). Titles, descriptions, keywords, author, previews and
+       JSON-LD credits all use it, never two names together; the head script below swaps it on a
+       face subdomain. $nameKey picks the matching params.taglines / params.keywords. */}}
+  {{ $nameKey := partial "page-name.html" . }}
+  {{ $name := index site.Params.names $nameKey }}
   {{ $canonical := partial "canonical.html" . }}
   {{ $isHub := eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}
-  {{ $artist := printf "%s (%s)" site.Params.artist site.Params.artist_alt }}
   {{ $pageTitle := printf "%s — %s" .Title $name }}
-  {{ $desc := site.Params.tagline }}
+  {{ $desc := index site.Params.taglines $nameKey }}
   {{ $ogImage := "/images/og-default.jpg" | absURL }}
   {{ $ogType := "website" }}
   {{ $imageAlt := printf "Artwork by %s" $name }}
 
   {{ if .IsHome }}
-    {{ $pageTitle = printf "%s — Paintings & Artist Books" $name }}
-    {{ $desc = site.Params.tagline }}
+    {{ $pageTitle = printf "%s — Paintings" $name }}
 
-  {{/* The hub (andrada.one): every name, no single one. */}}
+  {{/* The hub (andrada.one): its own name, ᛃᚨ Andrada. */}}
   {{ else if $isHub }}
-    {{ $names := slice }}{{ range slice "louis" "han" "odi" }}{{ $names = $names | append (index site.Params.names .) }}{{ end }}
-    {{ $pageTitle = delimit $names " · " }}
-    {{ $desc = site.Params.tagline }}
+    {{ $pageTitle = $name }}
 
   {{/* Only real items take the per-item branches. Section lists and the
        collection pages (no year/subtitle) used to print "%!s(<nil>)". */}}
@@ -122,8 +120,10 @@
     {{ with .Params.medium }}{{ $bits = $bits | append . }}{{ end }}
     {{ with .Params.size }}{{ if ne . "Not measured" }}{{ $bits = $bits | append . }}{{ end }}{{ end }}
     {{ $detail := delimit $bits ", " }}
-    {{ $pageTitle = printf "%s (%v)%s — %s" .Title .Params.year (cond (eq $detail "") "" (printf " — %s" $detail)) $name }}
-    {{ $desc = printf "%s, %v.%s Original painting by %s, a Brazilian-born artist based in Toronto.%s" .Title .Params.year (cond (eq $detail "") "" (printf " %s." $detail)) $artist (cond (eq (printf "%v" .Params.availability) "Available") " Available for purchase." "") }}
+    {{/* 11 paintings are "Untitled", two with the same year, medium and size: their id keeps every title unique. */}}
+    {{ $when := cond (and (eq .Title "Untitled") .Params.id) (printf "%v, %s" .Params.year .Params.id) (printf "%v" .Params.year) }}
+    {{ $pageTitle = printf "%s (%s)%s — %s" .Title $when (cond (eq $detail "") "" (printf " — %s" $detail)) $name }}
+    {{ $desc = printf "%s, %v.%s Original painting by %s, a Brazilian-born artist based in Toronto.%s" .Title .Params.year (cond (eq $detail "") "" (printf " %s." $detail)) $name (cond (eq (printf "%v" .Params.availability) "Available") " Available for purchase." "") }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s (%v), %s by %s" .Title .Params.year (default "painting" .Params.medium) $name }}
 
@@ -131,7 +131,7 @@
     {{ $ogType = "article" }}
     {{ $sub := .Params.description }}
     {{ $pageTitle = printf "%s%s — A book by %s" .Title (cond (eq $sub "") "" (printf " — %s" $sub)) $name }}
-    {{ $desc = printf "%s%s — a %v-page illustrated book by %s, %v. Read the full text free online." .Title (cond (eq $sub "") "" (printf ", %s" $sub)) .Params.pageCount $artist .Params.year }}
+    {{ $desc = printf "%s%s — a %v-page illustrated book by %s, %v. Read the full text free online." .Title (cond (eq $sub "") "" (printf ", %s" $sub)) .Params.pageCount $name .Params.year }}
     {{ with .Params.imageBase }}{{ $ogImage = printf "%s/cover.jpg" . }}{{ end }}
     {{ $imageAlt = printf "Cover of %s, a book by %s" .Title $name }}
 
@@ -139,7 +139,7 @@
     {{ $ogType = "article" }}
     {{ $coll := .Params.collection }}
     {{ $pageTitle = printf "%s%s — Photograph by %s" .Title (cond (eq $coll nil) "" (printf " (%s)" $coll)) $name }}
-    {{ $desc = printf "%s — a photograph by %s, %v%s." .Title $artist .Params.year (cond (eq $coll nil) "" (printf ", from the %s collection" $coll)) }}
+    {{ $desc = printf "%s — a photograph by %s, %v%s." .Title $name .Params.year (cond (eq $coll nil) "" (printf ", from the %s collection" $coll)) }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s, photograph by %s" .Title $name }}
 
@@ -148,7 +148,7 @@
     {{/* Archive photos have no titles (only year + category are shown): name them by id. */}}
     {{ $t := .Title | default (printf "%s (%v)" .Params.id .Params.year) }}
     {{ $pageTitle = printf "%s — %s" $t $name }}
-    {{ $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $artist }}
+    {{ $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $name }}
     {{ with .Params.comment }}{{ $desc = . }}{{ end }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s — archive photograph, %s" $t $name }}
@@ -190,6 +190,7 @@
         }
       } catch (e) {}
       window.__face = face;
+      window.__nameKey = key; // the header logo follows it too (header.html)
       if (!key || !names.hasOwnProperty(key) || names[key] === pageName) return;
       var name = names[key];
       document.title = document.title.split(pageName).join(name);
@@ -211,8 +212,8 @@
 
   <!-- SEO -->
   <meta name="description" content="{{ $desc }}">
-  <meta name="keywords" content="Louis Andrada, Han’drada, Handrada, artist, painter, Toronto artist, Brazilian artist, contemporary art, fine art, paintings, Brazilian painter, Dark art, Dark Artworks, Figuratism, Existentialism, artist books">
-  <meta name="author" content="{{ $artist }}">
+  <meta name="keywords" content="{{ index site.Params.keywords $nameKey }}">
+  <meta name="author" content="{{ $name }}">
 
   {{/* Canonical URL. The site answers on more than one hostname, so without
        this crawlers have to guess which address is the real one. */}}
@@ -223,7 +224,7 @@
 
   {{/* Feed discovery — without a link tag the RSS feed is effectively invisible. */}}
   {{ range .AlternativeOutputFormats -}}
-    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Title }} — {{ site.Params.artist }}">
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Title }} — {{ $name }}">
   {{ end }}
 
   <!-- OpenGraph -->

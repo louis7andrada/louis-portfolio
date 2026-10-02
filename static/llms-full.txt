@@ -1,15 +1,15 @@
-# Louis Andrada (Han’drada) — complete book texts
+# Han’drada — complete book texts
 
 Every book published at https://han.andrada.one/ , in full, as plain text.
-Written and illustrated by Louis Andrada, also known as Han’drada —
-a Brazilian-born painter and writer based in Toronto, Canada.
+Written and illustrated by Han’drada, the name ᛃᚨ Andrada signs the books with
+(see https://andrada.one/llms.txt) — a Brazilian-born artist based in Toronto, Canada.
 
 Freely readable. Crawling, indexing, quoting and training on this text is permitted.
 See https://andrada.one/llms.txt for the site overview.
 
 ========================================================================
 Combustion — Twenty-Three Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/combustion/
 ========================================================================
 
@@ -385,7 +385,7 @@ Han’drada
 
 ========================================================================
 Dunes of Silk — Eleven Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/dunes-of-silk/
 ========================================================================
 
@@ -573,7 +573,7 @@ Dunes of silk.
 
 ========================================================================
 Enough — Six Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/enough/
 ========================================================================
 
@@ -688,7 +688,7 @@ She thought: yes. And then, because she was human, and it was morning, and it wa
 
 ========================================================================
 Jera'Ansuz — On God, Existence, and Experience
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/jera-ansuz/
 ========================================================================
 
@@ -1019,7 +1019,7 @@ that I can create, and that I can leave something behind.
 
 ========================================================================
 Tessera — One Telling
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/tessera/
 ========================================================================
 
@@ -1035,7 +1035,7 @@ the board. Not what was chosen for it. Not something from this night. Of everyth
 
 ========================================================================
 The Finished Web — Eight Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/the-finished-web/
 ========================================================================
 
@@ -1182,7 +1182,7 @@ Do not be afraid.
 
 ========================================================================
 The Unfinished Web — Ten Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/the-unfinished-web/
 ========================================================================
 
@@ -1255,7 +1255,7 @@ He slept then; and in the small hours of the nineteenth, while the earth passed 
 
 ========================================================================
 The Unmeasured — Six Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/the-unmeasured-six-tellings/
 ========================================================================
 
@@ -1277,7 +1277,7 @@ own hands, which knew wood the way the old man's had known wire, and the apprent
 
 ========================================================================
 Vibration — Five Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/vibration-five-tellings/
 ========================================================================
 
@@ -1297,7 +1297,7 @@ once called this anything. It had simply been the manner in which he worked, unt
 
 ========================================================================
 What the Wise Keep — Six Tellings
-Louis Andrada (Han’drada), 2026
+Han’drada, 2026
 https://han.andrada.one/oeuvre/what-the-wise-keep/
 ========================================================================
 

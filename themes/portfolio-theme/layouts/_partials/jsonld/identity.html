@@ -8,9 +8,11 @@
      with a body of work attached to it — which is what search engines and AI
      systems need in order to recognise, and correctly attribute, an artist.
 
-     alternateName carries all three spellings of the working name, so
-     Han’drada (as the books are signed), Han'drada (as it gets typed) and
-     Handrada (the domain) all resolve to the same person.
+     The person is ᛃᚨ Andrada (ᛃᚨ = the runes Jera + Ansuz, used as a first
+     name; andrada.one). alternateName carries every other name and spelling —
+     Louis Andrada (paintings), Han’drada / Han'drada / Handrada / Han Andrada
+     (books), Odi Andrada (photographs) — so all of them resolve to this one
+     person, while each page credits only its own name (hugo.toml NAMES).
 
      sameAs lists authoritative external profiles. These are declared to
      machines only — deliberately not rendered as visible links anywhere. */}}
@@ -21,14 +23,17 @@
     {
       "@type": "Person",
       "@id": "{{ site.BaseURL }}#person",
-      "name": "{{ site.Params.artist }}",
+      "name": "{{ site.Params.names.ja }}",
       "alternateName": [
-        "{{ site.Params.artist_alt }}",
+        "{{ site.Params.names.louis }}",
+        "{{ site.Params.names.han }}",
         "Han'drada",
-        "{{ site.Params.artist_alt_plain }}",
+        "Handrada",
+        "Han Andrada",
         "{{ site.Params.names.odi }}"
       ],
-      "description": "{{ site.Params.tagline }}",
+      "familyName": "Andrada",
+      "description": "{{ site.Params.taglines.ja }}",
       "jobTitle": "Visual Artist",
       "knowsAbout": [
         "Painting",
@@ -59,12 +64,10 @@
       "@type": "WebSite",
       "@id": "{{ site.BaseURL }}#website",
       "url": "{{ site.BaseURL }}",
-      {{- /* The site's name is the one name it shows (params.names); the others are alternates. */}}
-      {{- $name := index site.Params.names site.Params.name_default }}
-      {{- $alts := slice }}{{ range slice site.Params.artist site.Params.artist_alt site.Params.names.odi site.Params.artist_alt_plain }}{{ if ne . $name }}{{ $alts = $alts | append . }}{{ end }}{{ end }}
-      "name": "{{ $name }}",
-      "alternateName": {{ $alts }},
-      "description": "{{ site.Params.tagline }}",
+      {{- /* andrada.one's site name is ᛃᚨ Andrada; the faces declare their own (face-site.html). */}}
+      "name": "{{ site.Params.names.ja }}",
+      "alternateName": ["Andrada", "andrada.one"],
+      "description": "{{ site.Params.taglines.ja }}",
       "inLanguage": "en",
       "author": {
         "@id": "{{ site.BaseURL }}#person"

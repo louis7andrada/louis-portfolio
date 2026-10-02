@@ -292,33 +292,65 @@ async function main() {
     return true;
   });
 
-  await check("Header logo advances through its old/new/ha cycle across navigations", async () => {
+  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / Andrada), then turns into Jera Ansuz", async () => {
+    const page = await browser.newPage();
+    const active = `document.getElementById('logoMorphWrap')?.getAttribute('data-active')`;
+    // Locally there are no subdomains, so the page's section decides (Artworks home = Louis "old",
+    // Oeuvre = Han "ha", Photography = Odi Andrada "odi", Links and shared pages = Andrada "andrada").
+    // The first stop can include the intro door (~4s) + entrance (900ms) + hold (3200ms): poll.
+    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
+      await page.goto(BASE_URL + path);
+      const shown = await page.evaluate(active);
+      if (shown !== logo) throw new Error(`${path} opened on "${shown}", not its own logo "${logo}"`);
+      if (!(await page.waitFor(`${active} === 'new'`, { timeout: wait }))) {
+        throw new Error(`${path} never turned into Jera Ansuz ("new"); still "${await page.evaluate(active)}"`);
+      }
+    }
+    await page.close();
+    return true;
+  });
+
+  // Artworks, Oeuvre and Photography share one layout: the title, the search box and Filters pinned
+  // in .book-page-header; on the Artworks home it waits while the hero is on screen.
+  await check("Artworks uses the Oeuvre/Photography cluster: pinned title + search + Filters, hidden on the hero, search filters the grid", async () => {
     const page = await browser.newPage();
     await page.goto(BASE_URL + "/");
-    // First-run entrance chains two waits before the first advance: the
-    // intro door's own new->old->ha sequence (~3.5s) THEN, once it calls
-    // startHeaderLogoSequence(), the header's own materialize+hold
-    // (900ms + 3200ms) — around 7.6s total. Poll rather than guess it.
-    const settled = await page.waitFor(
-      `document.getElementById('logoMorphWrap')?.getAttribute('data-active') !== 'old'`,
-      { timeout: 15000 } // door ~4s to dissolve + header materialize/hold ~4.1s, plus load time
-    );
-    const first = await page.evaluate(`document.getElementById('logoMorphWrap')?.getAttribute('data-active')`);
-    if (!settled) throw new Error(`logo never advanced off its initial "old" state within 15s (still: "${first}")`);
-    await page.goto(BASE_URL + "/about/");
-    // Poll: the advance runs a couple of animation frames after load, which
-    // can be delayed while the page's background mirror is being built.
-    await page.waitFor(
-      `document.getElementById('logoMorphWrap')?.getAttribute('data-active') !== ${JSON.stringify(first)}`,
-      { timeout: 5000 }
-    );
-    const second = await page.evaluate(`document.getElementById('logoMorphWrap')?.getAttribute('data-active')`);
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1')`);
+    await page.goto(BASE_URL + "/");
+    await new Promise((r) => setTimeout(r, 1500));
+    const cluster = `document.querySelector('body > main #artworks-section .book-page-header')`;
+    const top = await page.evaluate(`(function(){ var c = ${cluster}; return c && { pos: getComputedStyle(c).position, vis: getComputedStyle(c).visibility,
+      parts: !!(c.querySelector('h1') && c.querySelector('#artworksSearchInput') && c.querySelector('#filterToggle')) }; })()`);
+    if (!top) throw new Error("no .book-page-header in the Artworks section");
+    if (!top.parts) throw new Error("the cluster lacks the title, the search box or Filters");
+    if (top.pos !== "fixed") throw new Error(`cluster is position:${top.pos}, not pinned like Oeuvre/Photography`);
+    if (top.vis !== "hidden") throw new Error("cluster shows over the hero");
+    await page.evaluate(`document.getElementById('artworks-section').scrollIntoView()`);
+    const shown = await page.waitFor(`getComputedStyle(${cluster}).visibility === 'visible'`, { timeout: 4000 });
+    if (!shown) throw new Error("cluster never appeared at the grid");
+    const counts = await page.evaluate(`(function(){ var vis = function(){ return Array.from(document.querySelectorAll('body > main #artworkGallery .artwork-item')).filter(function(e){ return e.style.display !== 'none'; }).length; };
+      var before = vis(), i = document.querySelector('body > main #artworksSearchInput'); i.value = 'untitled'; i.dispatchEvent(new Event('input'));
+      var after = vis(); i.value = ''; i.dispatchEvent(new Event('input')); return { before: before, after: after, reset: vis() }; })()`);
     await page.close();
-    if (!first || !second) throw new Error(`data-active missing (first=${first}, second=${second})`);
-    if (!["old", "new", "ha"].includes(first) || !["old", "new", "ha"].includes(second)) {
-      throw new Error(`unexpected data-active value(s): ${first}, ${second}`);
+    if (!(counts.after > 0 && counts.after < counts.before)) throw new Error(`search didn't filter the grid (${counts.before} -> ${counts.after})`);
+    if (counts.reset !== counts.before) throw new Error(`clearing the search didn't bring every artwork back (${counts.reset}/${counts.before})`);
+    return true;
+  });
+
+  // The menus open each face at its grid with a hash (louis.andrada.one/#artworks-section, han./#oeuvre,
+  // odi./#photography). The page must scroll to the grid and drop the hash: the address bar shows the bare face.
+  await check("Menu links that open a face at its grid scroll there and leave no #hash in the address bar", async () => {
+    const page = await browser.newPage();
+    const problems = [];
+    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography"]) {
+      await page.goto(BASE_URL + path);
+      await page.waitFor(`!location.hash && scrollY > 200`, { timeout: 5000 });
+      const r = await page.evaluate(`({ hash: location.hash, y: Math.round(scrollY) })`);
+      if (r.hash) problems.push(`${path}: hash still in the address bar ("${r.hash}")`);
+      if (r.y <= 200) problems.push(`${path}: didn't scroll to the grid (scrollY ${r.y})`);
     }
-    if (first === second) throw new Error(`logo didn't advance between page loads (stayed on "${first}")`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
     return true;
   });
 

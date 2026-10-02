@@ -1,0 +1,49 @@
+{{- /* RSS for the home page and each section (Hugo's built-in feed, adapted for andrada.one): every link
+       is the page's one real address (_partials/canonical.html, like the sitemap), never an andrada.one
+       URL that 301s to a face; titles carry the page's ONE name (hugo.toml NAMES), never "on ᛃᚨ Andrada". */ -}}
+{{- $pctx := . }}
+{{- if .IsHome }}{{ $pctx = .Site }}{{ end }}
+{{- $pages := slice }}
+{{- if or $.IsHome $.IsSection }}
+{{- $pages = $pctx.RegularPages }}
+{{- else }}
+{{- $pages = $pctx.Pages }}
+{{- end }}
+{{- $pages = where $pages "Params.noindex" "!=" true }}
+{{- $limit := .Site.Config.Services.RSS.Limit }}
+{{- if ge $limit 1 }}
+{{- $pages = $pages | first $limit }}
+{{- end }}
+{{- /* The home feed (andrada.one/index.xml) carries every face's work: it is ᛃᚨ Andrada's, at the hub.
+       A face's section feed links to the face's front page (louis. for /artworks/, which only forwards there). */}}
+{{- $key := cond .IsHome site.Params.name_default (partial "page-name.html" .) }}
+{{- $name := index site.Params.names $key }}
+{{- $title := cond .IsHome $name (printf "%s — %s" .Title $name) }}
+{{- $link := partial "canonical.html" . }}
+{{- if .IsHome }}{{ $link = partial "face-url.html" "hub" }}{{ end }}
+{{- range $k, $f := site.Params.faces }}{{ if and $.IsSection (eq $.Section $f.section) }}{{ $link = partial "face-url.html" $k }}{{ end }}{{ end }}
+{{- printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ $title }}</title>
+    <link>{{ $link }}</link>
+    <description>{{ if .IsHome }}{{ index site.Params.taglines $key }}{{ else }}{{ .Params.description | default (index site.Params.taglines $key) }}{{ end }}</description>
+    <generator>Hugo</generator>
+    <language>{{ site.Language.LanguageCode }}</language>
+    <copyright>© {{ site.Params.legal_name }}</copyright>{{ if not .Lastmod.IsZero }}
+    <lastBuildDate>{{ .Lastmod.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</lastBuildDate>{{ end }}
+    {{- with .OutputFormats.Get "RSS" }}
+    {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
+    {{- end }}
+    {{- range $pages }}
+    {{- $u := partial "canonical.html" . }}
+    <item>
+      <title>{{ .Title | default (printf "%s (%v)" .Params.id .Params.year) }} — {{ index site.Params.names (partial "page-name.html" .) }}</title>
+      <link>{{ $u }}</link>
+      <pubDate>{{ .PublishDate.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
+      <guid>{{ $u }}</guid>
+      <description>{{ .Summary | transform.XMLEscape | safeHTML }}</description>
+    </item>
+    {{- end }}
+  </channel>
+</rss>

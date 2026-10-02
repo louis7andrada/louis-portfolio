@@ -324,14 +324,14 @@ section('Nav — "Oeuvre" added alongside "Artworks"');
   }
 }
 
-// ── 8. Header logo — three-way cycle (old / new / ha) ────────────────────
-section("Header logo cycle (halogo.png added alongside logoold/lalogo)");
+// ── 8. Header logo — page logos (old / ha / odi / andrada) + Jera Ansuz (new) ──
+section("Header logos (each face's logo, then Jera Ansuz)");
 {
   const home = readHtml("index.html");
   if (home === null) {
     fail("Home page exists for header-logo check");
   } else {
-    for (const [src, name] of [["/logoold.png", "old"], ["/lalogo.png", "new"], ["/halogo.png", "ha"], ["/odilogo.png", "odi"]]) {
+    for (const [src, name] of [["/logoold.png", "old"], ["/lalogo.png", "new"], ["/halogo.png", "ha"], ["/odiandradalogo.png", "odi"], ["/andradalogo.png", "andrada"]]) {
       assert(
         home.includes(`src=${src}`) && home.includes(`data-logo=${name}`),
         `Header logo includes ${src} (data-logo=${name})`

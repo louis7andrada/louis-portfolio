@@ -7,6 +7,8 @@
      text" section on the page, plus /oeuvre/<slug>.txt), so there is nothing
      here that a crawler is being invited to guess at. */}}
 {{ $person := printf "%s#person" site.BaseURL }}
+{{/* Credited to the page's one name (Louis Andrada / Han’drada / Odi Andrada / ᛃᚨ Andrada); copyright to the legal entity. */}}
+{{ $who := index site.Params.names (partial "page-name.html" .) }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -16,31 +18,31 @@
   "url": "{{ partial "canonical.html" . }}",
   "license": "{{ "/license/" | absURL }}",
   {{ with .Params.description }}"alternativeHeadline": "{{ . }}",
-  "description": "{{ $.Title }} — {{ . }}. An illustrated book by {{ site.Params.artist }} ({{ site.Params.artist_alt }}).",
+  "description": "{{ $.Title }} — {{ . }}. An illustrated book by {{ $who }}.",
   {{ end }}"author": {
     "@type": "Person",
     "@id": "{{ $person }}",
-    "name": "{{ site.Params.artist }}"
+    "name": "{{ $who }}"
   },
   "copyrightHolder": {
     "@type": "Person",
     "@id": "{{ $person }}",
-    "name": "{{ site.Params.artist }}"
+    "name": "{{ site.Params.legal_name }}"
   },
   "publisher": {
     "@type": "Person",
     "@id": "{{ $person }}",
-    "name": "{{ site.Params.artist }}"
+    "name": "{{ $who }}"
   },
   {{ with .Params.imageBase }}"image": {
     "@type": "ImageObject",
     "contentUrl": "{{ . }}/cover.jpg",
-    "creditText": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
-    "copyrightNotice": "© {{ site.Params.artist }}",
+    "creditText": "{{ $who }}",
+    "copyrightNotice": "© {{ site.Params.legal_name }}",
     "creator": {
       "@type": "Person",
       "@id": "{{ $person }}",
-      "name": "{{ site.Params.artist }}"
+      "name": "{{ $who }}"
     },
     "license": "{{ "/license/" | absURL }}",
     "acquireLicensePage": "{{ "/inquiry/" | absURL }}"

@@ -1,15 +1,15 @@
 {{/* Each face is its own site in Google's eyes (a subdomain has its own site name), so its front
-     page declares it: odi.andrada.one is "Odi", han.andrada.one "Han’drada", louis.andrada.one
-     "Louis Andrada" — all by the one …/#person and part of andrada.one. Only on andrada.one.
+     page declares it: odi.andrada.one is "Odi Andrada", han.andrada.one "Han’drada", louis.andrada.one
+     "Louis Andrada" — ONE name each (the address is the only alternate), all by the one …/#person and
+     part of andrada.one (ᛃᚨ Andrada). Only on andrada.one.
      Usage: partial "jsonld/face-site.html" "odi" */}}
 {{ $key := . }}
 {{ $dom := site.Params.face_domain }}
 {{ if and $dom (eq (urls.Parse site.BaseURL).Host $dom) }}
 {{ $url := printf "https://%s.%s/" $key $dom }}
 {{ $name := index site.Params.names $key }}
-{{ $alts := slice }}{{ range $k, $v := site.Params.names }}{{ if ne $k $key }}{{ $alts = $alts | append $v }}{{ end }}{{ end }}
-{{ $person := dict "@type" "Person" "@id" (printf "%s#person" site.BaseURL) "name" site.Params.artist }}
+{{ $person := dict "@type" "Person" "@id" (printf "%s#person" site.BaseURL) "name" $name }}
 <script type="application/ld+json">
-{{ dict "@context" "https://schema.org" "@type" "WebSite" "@id" (printf "%s#website" $url) "url" $url "name" $name "alternateName" $alts "inLanguage" "en" "author" $person "publisher" $person "isPartOf" (dict "@id" (printf "%s#website" site.BaseURL)) | jsonify | safeJS }}
+{{ dict "@context" "https://schema.org" "@type" "WebSite" "@id" (printf "%s#website" $url) "url" $url "name" $name "alternateName" (slice (printf "%s.%s" $key $dom)) "description" (index site.Params.taglines $key) "inLanguage" "en" "author" $person "publisher" $person "isPartOf" (dict "@id" (printf "%s#website" site.BaseURL)) | jsonify | safeJS }}
 </script>
 {{ end }}
