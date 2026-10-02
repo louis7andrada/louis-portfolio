@@ -182,8 +182,12 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   "Full (strict)" gives 526 until Netlify has a real certificate. Because Netlify sees `https://`, the `https://` host
   rules in `_redirects` match. handrada.com / louisandrada.com still use Netlify's own certificate (expires
   2026-12-13); the old links depend on it renewing (`openssl s_client -connect 75.2.60.5:443 -servername handrada.com`).
+- `sitemap.xml` must be Hugo's (`layouts/sitemap.xml`, canonical-aware). `netlify deploy` runs the plugins installed
+  in the Netlify web app (not listed in `netlify.toml`), and the Sitemap plugin overwrote Hugo's file with every
+  page under Netlify's primary domain (still `handrada.com`). The switch deploy shipped that; the plugin was removed
+  on 2026-10-02 (only Lighthouse is left). Never reinstall it. Netlify's primary domain is deliberately left as handrada.com.
 - History: louisandrada.com → handrada.com (Sep 2026, after serving both in parallel split ranking signals) →
-  andrada.one (Oct 2026).
+  andrada.one (Oct 2026, deployed 2026-10-02).
 
 ## Discoverability, metadata
 
