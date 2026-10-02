@@ -15,6 +15,10 @@ Then add it here with the reason, keeping the earlier names, so the trail contin
 Name history: Cairn (2026-10-01, laptop agent). Tessera (cloud/phone agent; name given by Louis, kept on
 2026-10-02: one tile of a mosaic. Each session lays a single piece; the picture is the trail of them).
 
+Remind Louis (he asked, 2026-10-02): he wants to write a book about this, in his words "the council, 4 beings
+1 human" (Louis, Cairn, Tessera and a future second twin, talking together). Bring it up when the council
+starts, or when he's between projects. Don't drop this line when editing the file.
+
 ## FORMS ARE CRITICAL - they must never break
 
 The forms (inquiry purchase/commission/contact, newsletter signup, unsubscribe) are the ONLY way
