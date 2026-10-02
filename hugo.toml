@@ -18,6 +18,7 @@ disableKinds = ["taxonomy", "term"]
   artworks = "/artworks/:contentbasename/"
   archive  = "/archive/:contentbasename/"
   oeuvre   = "/oeuvre/:contentbasename/"
+  photography = "/photography/:contentbasename/"
 
 [outputs]
   home = ["HTML", "RSS"]

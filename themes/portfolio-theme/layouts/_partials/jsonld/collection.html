@@ -32,7 +32,7 @@
         "@type": "ListItem",
         "position": {{ add $i 1 }},
         "url": "{{ $item.Permalink }}",
-        "name": "{{ $item.Title | default (printf "Untitled photograph (%v)" $item.Params.year) }}"
+        "name": "{{ $item.Title | default (printf "%s (%v)" $item.Params.id $item.Params.year) }}"
       }{{ end }}
     ]
   }

@@ -118,10 +118,18 @@
     {{ with .Params.imageBase }}{{ $ogImage = printf "%s/cover.jpg" . }}{{ end }}
     {{ $imageAlt = printf "Cover of %s, a book by %s" .Title $artist }}
 
+  {{ else if and (eq .Type "photography") .IsPage }}
+    {{ $ogType = "article" }}
+    {{ $coll := .Params.collection }}
+    {{ $pageTitle = printf "%s%s — Photograph by %s" .Title (cond (eq $coll nil) "" (printf " (%s)" $coll)) $artist }}
+    {{ $desc = printf "%s — a photograph by %s, %v%s." .Title $artist .Params.year (cond (eq $coll nil) "" (printf ", from the %s collection" $coll)) }}
+    {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
+    {{ $imageAlt = printf "%s, photograph by %s" .Title $artist }}
+
   {{ else if and (eq .Type "archive") .IsPage }}
     {{ $ogType = "article" }}
-    {{/* Untitled photos get a real name instead of an empty title. */}}
-    {{ $t := .Title | default (printf "Untitled photograph (%v)" .Params.year) }}
+    {{/* Archive photos have no titles (only year + category are shown): name them by id. */}}
+    {{ $t := .Title | default (printf "%s (%v)" .Params.id .Params.year) }}
     {{ $pageTitle = printf "%s — %s" $t $artist }}
     {{ $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $artist }}
     {{ with .Params.comment }}{{ $desc = . }}{{ end }}
@@ -243,7 +251,7 @@
 
 </head>
 
-<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if eq .Type "oeuvre" }}page-books{{ end }}">
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") }}page-books{{ end }}">
 
   <!-- ══════════════════════════════════════════════════════
        SITE MIRROR — a vertically-flipped, color-inverted,

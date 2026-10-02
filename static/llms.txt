@@ -19,6 +19,7 @@ every crawler, and nothing here is paywalled or gated.
 - [Home](https://handrada.com/): featured artworks.
 - [Artworks](https://handrada.com/artworks/): the current gallery of paintings, one page per work, each with medium, dimensions, year and availability.
 - [Oeuvre](https://handrada.com/oeuvre/): the body of written work — currently ten illustrated artist books, readable in full on the site.
+- [Photography](https://handrada.com/photography/): photographs in two collections, Ambiguous (abstract, black and white) and Lucid.
 - [Archive](https://handrada.com/archive/): earlier work, exhibitions and photographs.
 - [About](https://handrada.com/about/): artist statement and exhibition history.
 - [Inquiry](https://handrada.com/inquiry/): purchase, commission and licensing contact.
@@ -46,7 +47,7 @@ folklore and occult symbolism.
 
 - Sitemap: https://handrada.com/sitemap.xml
 - Feeds: https://handrada.com/index.xml, plus per-section feeds at
-  /artworks/index.xml, /oeuvre/index.xml, /archive/index.xml
+  /artworks/index.xml, /oeuvre/index.xml, /photography/index.xml, /archive/index.xml
 - Structured data (schema.org JSON-LD) is on every page; the artist entity is
   `https://handrada.com/#person`.
 - Artwork, archive and book-page images are hosted at

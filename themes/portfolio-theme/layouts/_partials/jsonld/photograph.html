@@ -1,0 +1,44 @@
+{{/* A photograph from the Photography section (/photography/<slug>/).
+
+     Same shape as archive-item.html, typed as Photograph, with the collection
+     (Ambiguous / Lucid) as its genre. Credited to the same …/#person entity as
+     everything else on the site. */}}
+{{ $person := printf "%s#person" site.BaseURL }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Photograph",
+  "@id": "{{ .Permalink }}#work",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "license": "{{ "/license/" | absURL }}",
+  {{ with .Params.year }}"dateCreated": "{{ . }}",
+  {{ end }}{{ with .Params.collection }}"genre": "{{ . }}",
+  {{ end }}"creator": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  "copyrightHolder": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.artist }}"
+  },
+  {{ with .Params.image }}"image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ . }}",
+    "creditText": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+    "copyrightNotice": "© {{ site.Params.artist }}",
+    "creator": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ site.Params.artist }}"
+    },
+    "license": "{{ "/license/" | absURL }}",
+    "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
+  },
+  {{ end }}"isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  }
+}
+</script>

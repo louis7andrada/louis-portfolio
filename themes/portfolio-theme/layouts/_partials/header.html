@@ -11,6 +11,7 @@
       <img src="/logoold.png" alt="Louis Andrada Logo" id="logoOld" class="logo-img logo-old active" data-logo="old">
       <img src="/lalogo.png" alt="Louis Andrada Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
       <img src="/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
+      <img src="/logo4.png" alt="Logo" id="logoFour" class="logo-img logo-four" data-logo="four">
     </div>
   </a>
 
@@ -34,7 +35,7 @@
         } catch (e) {}
         return null;
       }
-      var persisted = sGet("headerLogoState"); // 'old' | 'new' | 'ha'
+      var persisted = sGet("headerLogoState"); // 'old' | 'new' | 'ha' | 'four'
       if (persisted) {
         wrap.classList.add("logo-no-anim", "logo-ready");
         if (persisted !== "old") {
@@ -60,6 +61,7 @@
     <nav id="desktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
       <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Artworks</a>
       <a href="/oeuvre/" id="navOeuvreLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
+      <a href="/photography/" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -72,6 +74,7 @@
     <nav id="homeDesktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
       <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkHome" class="dark:text-gray-300 dark:hover:text-white nav-link-active">Artworks</a>
       <a href="/oeuvre/" id="navOeuvreLinkHome" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
+      <a href="/photography/" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -103,6 +106,7 @@
 <nav id="mobileMenu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
   <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkMobile" class="block">Artworks</a>
   <a href="/oeuvre/" id="navOeuvreLinkMobile" class="block">Oeuvre</a>
+  <a href="/photography/" id="navPhotographyLinkMobile" class="block">Photography</a>
   <a href="/about" class="block">About</a>
   <a href="/inquiry/" class="block">Inquiry</a>
   <a href="/archive" class="block">Archive</a>
@@ -121,6 +125,7 @@
          onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
     <img src="/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
     <img src="/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
+    <img src="/logo4.png" id="introLogoFour" class="intro-logo-img intro-logo-four" data-logo="four" alt="" />
     <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
   </div>
 </div>
@@ -182,7 +187,7 @@
     }
   }
 
-  /* Three logos stack in the same box; JS toggles which one carries
+  /* The logos stack in the same box; JS toggles which one carries
      .active (see data-logo on each <img> and data-active on the wrap) —
      everything else about them (position/size/dark-mode) is shared. */
   .logo-img {
@@ -213,6 +218,12 @@
   .logo-new {
     height: 2rem;
     width: 2rem;
+  }
+
+  /* logo4 — tall signature mark, framed like lalogo; width follows its own proportions */
+  .logo-four {
+    height: 2rem;
+    width: auto;
   }
 
   @media (max-width: 767px) {
@@ -248,7 +259,7 @@
     cursor: pointer;
   }
 
-  /* Three logos step through in sequence (new → old → ha); JS toggles
+  /* The logos step through in sequence (new → old → ha → four); JS toggles
      .active on whichever is current — same pattern as the header logo. */
   .intro-logo-img {
     position: absolute;
@@ -257,7 +268,8 @@
     width: auto;
     object-fit: contain;
     transform-origin: center center;
-    transition: opacity calc(0.9s / var(--ds, 1)) ease, transform calc(0.9s / var(--ds, 1)) ease, filter calc(0.9s / var(--ds, 1)) ease;
+    /* --morph is set by the door script from MORPH_TRANSITION (shorter as more logos are added) */
+    transition: opacity calc(var(--morph, 0.9s) / var(--ds, 1)) ease, transform calc(var(--morph, 0.9s) / var(--ds, 1)) ease, filter calc(var(--morph, 0.9s) / var(--ds, 1)) ease;
     will-change: opacity, transform, filter;
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.94);
@@ -270,7 +282,8 @@
     filter: var(--logo-invert, ) blur(0px) var(--fog-on);
   }
 
-  .intro-logo-new { height: 78%; } /* lalogo — compact mark, centered within the wider wrap */
+  .intro-logo-new,
+  .intro-logo-four { height: 78%; } /* lalogo / logo4 — compact marks, centered within the wider wrap */
   .intro-logo-old,
   .intro-logo-ha { height: 100%; } /* wide wordmark canvases — span the full wrap */
 
@@ -536,8 +549,8 @@ document.addEventListener("DOMContentLoaded", () => {
     logoSequenceStarted = true;
     if (!logoMorphWrap) return;
 
-    const STATE_KEY = "headerLogoState"; // 'old' | 'new' | 'ha'
-    const CYCLE = ["old", "new", "ha"];
+    const STATE_KEY = "headerLogoState"; // 'old' | 'new' | 'ha' | 'four'
+    const CYCLE = ["old", "new", "ha", "four"];
     const persisted  = storageGet(STATE_KEY);
     const isFirstRun = !persisted; // no page in this session has run the cycle yet
 
@@ -590,19 +603,24 @@ document.addEventListener("DOMContentLoaded", () => {
       door.style.display = "none";
       startHeaderLogoSequence();
     } else {
-      // Three logos now step through here (new → old → ha) instead of two,
-      // so each individual hold/transition is shorter than before — that
-      // keeps the whole sequence landing on the page in about the same
-      // total time it always has, rather than growing by half again just
-      // because there's an extra logo to show.
-      const INTRO_STEPS         = ["new", "old", "ha"];
-      const FIRST_HOLD          = 1100; // first logo shows on its own before anything starts morphing
-      const MORPH_TRANSITION    = 900;  // matches .intro-logo-img's 0.9s transition, so a logo has fully arrived before the next step
-      const HOLD_BETWEEN        = 350;  // middle logo sits visible before morphing again
-      const HOLD_AFTER_FINAL    = 700;  // final logo sits visible before the door dissolves
+      // Every logo/name steps through here (new → old → ha → four). The door
+      // always takes about the same time (LOGO_BUDGET for the logos, then the
+      // dissolve), so each new logo makes every step a little quicker instead
+      // of making the door longer. To add a logo: add its <img> above and its
+      // name to INTRO_STEPS; the timings below rescale themselves.
+      const INTRO_STEPS         = ["new", "old", "ha", "four"];
+      // The 3-logo door's timings (1100 first hold, 900 morphs, 350 between,
+      // 700 final hold = 3950ms) set the proportions and the budget.
+      const LOGO_BUDGET         = 3950;
+      const pace = LOGO_BUDGET / (1100 + (INTRO_STEPS.length - 1) * 900 + (INTRO_STEPS.length - 2) * 350 + 700);
+      const FIRST_HOLD          = Math.round(1100 * pace); // first logo shows on its own before anything starts morphing
+      const MORPH_TRANSITION    = Math.round(900 * pace);  // also drives .intro-logo-img's transition (--morph), so a logo has fully arrived before the next step
+      const HOLD_BETWEEN        = Math.round(350 * pace);  // each middle logo sits visible before morphing again
+      const HOLD_AFTER_FINAL    = Math.round(700 * pace);  // final logo sits visible before the door dissolves
       const DISSOLVE_TRANSITION = 1300; // matches #intro-door's opacity transition & the dissolving-stage logo transition
+      door.style.setProperty("--morph", MORPH_TRANSITION + "ms");
       // Whole default run, used to judge how early a click came.
-      const DEFAULT_TOTAL = FIRST_HOLD + (MORPH_TRANSITION + HOLD_BETWEEN) + (MORPH_TRANSITION + HOLD_AFTER_FINAL) + DISSOLVE_TRANSITION;
+      const DEFAULT_TOTAL = FIRST_HOLD + (INTRO_STEPS.length - 1) * MORPH_TRANSITION + (INTRO_STEPS.length - 2) * HOLD_BETWEEN + HOLD_AFTER_FINAL + DISSOLVE_TRANSITION;
 
       let step      = 0; // index into INTRO_STEPS of whichever logo is currently shown
       let dissolved = false;
@@ -659,7 +677,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }, DISSOLVE_TRANSITION);
       }
 
-      // new → old → ha → dissolve, each step scheduled only after the
+      // new → old → ha → four → dissolve, each step scheduled only after the
       // previous logo's transition has had time to finish.
       function advance() {
         step++;

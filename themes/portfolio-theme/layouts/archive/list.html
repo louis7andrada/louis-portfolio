@@ -11,6 +11,9 @@
 {{ end }}
 {{ $sorted := sort $clean "rand" "asc" }}
 {{ $sorted = sort $sorted "year" "desc" }}
+{{/* Archive photos carry no text: only year and category are shown (Louis's choice,
+     Oct 2026 — same spirit as Photography). Labels match CAT_LABELS in the script below. */}}
+{{ $catLabels := dict "photos" "Louis" "photography" "Photography" "studios" "Studios" "galleries" "Galleries & Exhibitions" }}
 
 {{ partial "jsonld/collection.html" (dict "page" . "items" $raw) }}
 
@@ -67,10 +70,8 @@
          data-idx="{{ $i }}"
          data-year="{{ $it.year }}"
          data-cat="{{ $it.page.Params.category }}"
-         data-title="{{ $it.page.Title }}"
-         data-comment="{{ $it.page.Params.comment }}"
          data-img="{{ $it.page.Params.image }}">
-      <img class="arch-img" src="{{ partial "img-url.html" (dict "src" $it.page.Params.image "width" 800) }}" alt="{{ $it.page.Title | default "Photograph by Louis Andrada" }}" loading="lazy"{{ partial "imgdims.html" $it.page.Params.image }}>
+      <img class="arch-img" src="{{ partial "img-url.html" (dict "src" $it.page.Params.image "width" 800) }}" alt="Archive photograph, {{ index $catLabels $it.page.Params.category | default $it.page.Params.category }}, {{ $it.year }}" loading="lazy"{{ partial "imgdims.html" $it.page.Params.image }}>
     </div>
     {{ end }}
   </div>
@@ -91,12 +92,9 @@
       <img class="arch-popup-img" id="archPopupImg" src="" alt="">
     </div>
     <div class="arch-popup-text-col">
-      <span class="arch-popup-year"    id="archPopupYear"></span>
       <h2   class="arch-popup-title"   id="archPopupTitle"></h2>
-      <p    class="arch-popup-comment" id="archPopupComment"></p>
-      <span class="arch-popup-catline" id="archPopupCatLine"></span>
+      <span class="arch-popup-year"    id="archPopupYear"></span>
     </div>
-    <span class="arch-popup-vert" id="archPopupVert"></span>
   </div>
   <!-- Arrows are siblings of the pane so the pane's scale transform never affects their fixed position -->
   <a class="arch-arrow arch-arrow-prev" id="archPrevBtn" aria-label="Previous"></a>
@@ -282,13 +280,10 @@ html.dark .arch-f-drop {
 .arch-img { display: block; width: 100%; height: auto; pointer-events: none; }
 
 /* ── TEXT LABELS ──
-   RULE — each text type has a fixed position role:
-     year    → right or left vertical (seeded)
-     category → OPPOSITE vertical side (can never overlap year)
-     title   → below (horizontal)
-     comment → above (horizontal, very rare)
-   Same-image labels therefore NEVER overlap.
-   Cross-image overlap is handled by V_GAP.
+   Only two, on fixed sides so they never overlap:
+     year     → right or left vertical (seeded)
+     category → the OPPOSITE vertical side
+   (.arch-lbl-b / -a, below/above, are unused since titles and comments were removed.)
 ── */
 .arch-lbl {
   position: absolute;
@@ -406,20 +401,6 @@ html.dark .arch-popup-bg {
   font-size: 1.05rem; font-weight: 600;
   line-height: 1.35; letter-spacing: 0.02em; margin: 0;
 }
-.arch-popup-comment {
-  font-size: 0.78rem; line-height: 1.7; opacity: 0.7; margin: 0;
-}
-.arch-popup-catline {
-  font-size: 0.65rem; letter-spacing: 0.1em;
-  text-transform: uppercase; opacity: 0.35;
-}
-.arch-popup-vert {
-  position: absolute; right: 18px; top: 50%;
-  transform: translateY(-50%);
-  writing-mode: vertical-lr;
-  font-size: 0.6rem; letter-spacing: 0.14em;
-  text-transform: uppercase; opacity: 0.22;
-}
 
 /* ── POPUP ARROWS ── */
 .arch-arrow {
@@ -508,7 +489,6 @@ html.dark .arch-popup-bg {
   }
   .arch-popup-img { max-width: 88vw; max-height: 52vh; }
   .arch-popup-text-col { max-width: none; }
-  .arch-popup-vert { display: none; }
   /* Anchor arrows to bottom corners on mobile */
   .arch-arrow { top: auto !important; bottom: 28px; transform: none !important; }
 }
@@ -575,9 +555,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const pImg  = document.getElementById('archPopupImg');
   const pTitle = document.getElementById('archPopupTitle');
   const pYear  = document.getElementById('archPopupYear');
-  const pCom   = document.getElementById('archPopupComment');
-  const pCat   = document.getElementById('archPopupCatLine');
-  const pVert  = document.getElementById('archPopupVert');
   const pX     = document.getElementById('archPopupX');
   const desBt  = document.getElementById('archDeselect');
   const yearSelEl = document.getElementById('archYearSelected');
@@ -585,17 +562,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeF = { year: 'all', category: 'all' };
 
   /* ═══════════════════════════════════════════════════════
-     TEXT LABELS — deterministic positions per text type
-     so same-image labels CAN NEVER overlap each other:
-
+     TEXT LABELS — only year and category (no titles/comments):
        year     → one vertical side  (r or l, seeded)
-       category → OPPOSITE vertical side
-       title    → below (b)
-       comment  → above (a) — very rare
-
-     Cross-image overlap prevented by V_GAP minimum.
+       category → the OPPOSITE vertical side, so they never overlap
      ═══════════════════════════════════════════════════════ */
-  const MAX_H = 42;   /* max chars for horizontal labels (b/a) */
   const MAX_V = 36;   /* max chars for vertical labels (r/l) */
 
   function addLabels(item, imgW, imgH) {
@@ -603,65 +573,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const idx = parseInt(item.dataset.idx, 10) || 0;
     const r   = mkRng(idx * 7919 + 31);
+    const yearRight = r() < 0.5;
 
-    const year    = (item.dataset.year    || '').trim();
-    const cat     = fmtCat(item.dataset.cat || '').trim();
-    const title   = (item.dataset.title   || '').trim();
-    const comment = (item.dataset.comment || '').trim();
+    const year = (item.dataset.year || '').trim();
+    const cat  = fmtCat(item.dataset.cat || '').trim();
+    const cut  = t => t.length > MAX_V ? t.slice(0, MAX_V - 1) + '…' : t;
 
-    /* Seeded side preference — year goes right or left, category goes opposite */
-    const yearRight   = r() < 0.5;
-    const showCat     = cat     && r() < 0.92;
-    const showTitle   = title   && r() < 0.82;
-    const showComment = comment && r() < 0.18;
-
-    const lbDefs = [];
-
-    if (year) {
-      lbDefs.push({
-        text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
-        pos: yearRight ? 'r' : 'l',
-        maxH: Math.round(imgH * 0.70),
-        maxW: null
-      });
-    }
-
-    if (showCat) {
-      const catText = cat.length > MAX_V ? cat.slice(0, MAX_V - 1) + '…' : cat;
-      lbDefs.push({
-        text: catText,
-        pos: yearRight ? 'l' : 'r',  /* always OPPOSITE of year */
-        maxH: Math.round(imgH * 0.70),
-        maxW: null
-      });
-    }
-
-    if (showTitle) {
-      const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
-      lbDefs.push({
-        text: t,
-        pos: 'b',
-        maxH: Math.round(1.5 * 0.86 * 16 * 2.2), /* ~2 lines max */
-        maxW: Math.round(imgW * 0.88)
-      });
-    }
-
-    if (showComment) {
-      const c = comment.length > MAX_H ? comment.slice(0, MAX_H - 1) + '…' : comment;
-      lbDefs.push({
-        text: c,
-        pos: 'a',
-        maxH: Math.round(1.5 * 0.86 * 16 * 1.2), /* ~1 line max */
-        maxW: Math.round(imgW * 0.88)
-      });
-    }
-
-    lbDefs.forEach(({ text, pos, maxH, maxW }) => {
+    [[year, yearRight ? 'r' : 'l'], [cat, yearRight ? 'l' : 'r']].forEach(([text, pos]) => {
+      if (!text) return;
       const el = document.createElement('div');
       el.className   = `arch-lbl arch-lbl-${pos}`;
-      el.textContent = text;
-      if (maxH) el.style.maxHeight = maxH + 'px';
-      if (maxW) el.style.maxWidth  = maxW + 'px';
+      el.textContent = cut(text);
+      el.style.maxHeight = Math.round(imgH * 0.70) + 'px';
       item.appendChild(el);
     });
   }
@@ -838,15 +761,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function populatePopup(item) {
-    pImg.src           = item.dataset.img || '';
-    pImg.alt           = item.dataset.title;
-    pTitle.textContent = item.dataset.title || '';
-    pYear.textContent  = item.dataset.year  || '';
-    pCom.textContent   = item.dataset.comment || '';
-    pCom.style.display = item.dataset.comment ? 'block' : 'none';
     const cat = fmtCat(item.dataset.cat || '');
-    pCat.textContent  = [cat, item.dataset.year].filter(Boolean).join(' · ');
-    pVert.textContent = cat;
+    pImg.src           = item.dataset.img || '';
+    pImg.alt           = ['Archive photograph', cat, item.dataset.year].filter(Boolean).join(', ');
+    pTitle.textContent = cat;
+    pYear.textContent  = item.dataset.year || '';
     updateNavArrows();
   }
 

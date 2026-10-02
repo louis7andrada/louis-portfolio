@@ -169,6 +169,7 @@ async function main() {
     ["/about/", "About"],
     ["/archive/", "Archive"],
     ["/oeuvre/", "Books/Oeuvre"],
+    ["/photography/", "Photography"],
     ["/inquiry/", "Inquiry"],
     ["/links/", "Links"],
     ["/unsubscribe/", "Unsubscribe"],

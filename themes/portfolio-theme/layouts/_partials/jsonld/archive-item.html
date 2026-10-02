@@ -14,11 +14,10 @@
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   "@id": "{{ .Permalink }}#work",
-  "name": "{{ .Title | default (printf "Untitled photograph (%v)" .Params.year) }}",
+  "name": "{{ .Title | default (printf "%s (%v)" .Params.id .Params.year) }}",
   "url": "{{ .Permalink }}",
   "license": "{{ "/license/" | absURL }}",
-  {{ with .Params.comment }}"description": "{{ . }}",
-  {{ end }}{{ with .Params.year }}"dateCreated": "{{ . }}",
+{{ with .Params.year }}"dateCreated": "{{ . }}",
   {{ end }}{{ with .Params.category }}"genre": "{{ . }}",
   {{ end }}"creator": {
     "@type": "Person",
