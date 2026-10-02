@@ -175,6 +175,13 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   bare andrada.one `?name=<key>` picks it for the visit (stripped from the address bar, sessionStorage
   `artist-name`). Search terms can't drive anything: engines don't pass them on. Meta descriptions, keywords,
   `author`, the Person node and `creditText` deliberately keep BOTH names (that's where name searches still match).
+- Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`).
+- TLS depends on Cloudflare: every andrada.one DNS record is orange (proxied), and Netlify has NO certificate of its
+  own for these hosts (it serves `*.netlify.app`); visitors get Cloudflare's `*.andrada.one` certificate. Cloudflare's
+  SSL mode must stay **Full**: Netlify redirects plain HTTP to HTTPS here, so "Flexible" loops forever, and
+  "Full (strict)" gives 526 until Netlify has a real certificate. Because Netlify sees `https://`, the `https://` host
+  rules in `_redirects` match. handrada.com / louisandrada.com still use Netlify's own certificate (expires
+  2026-12-13); the old links depend on it renewing (`openssl s_client -connect 75.2.60.5:443 -servername handrada.com`).
 - History: louisandrada.com → handrada.com (Sep 2026, after serving both in parallel split ranking signals) →
   andrada.one (Oct 2026).
 

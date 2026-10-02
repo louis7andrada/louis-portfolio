@@ -84,4 +84,4 @@ disableKinds = ["taxonomy", "term"]
   [params.faces.odi]
     page = "/photography/"
     section = "photography"
-    hero = ""
+    hero = "photo106"   # cvi (Ambiguous), chosen by Louis 2026-10-02
