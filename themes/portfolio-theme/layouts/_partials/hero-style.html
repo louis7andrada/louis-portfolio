@@ -1,0 +1,38 @@
+{{/* The home page's hero (one image on the left, the staggered menu on the right). Shared by the
+     home page and the faces' landing heroes (_partials/face-hero.html), so they always match. */}}
+<style>
+  .homepage-wrapper { min-height: calc(100vh - 80px); }
+  .homepage-layout { display: flex; align-items: stretch; padding: 3rem 1rem 2rem 8rem; gap: 10rem; min-height: calc(100vh - 80px); }
+  .hp-left { flex: 0 0 auto; width: clamp(420px, 62vw, 900px); display: flex; flex-direction: column; }
+  .hp-title { font-size: 0.9rem; letter-spacing: 0.02em; margin: 0 0 0.6rem 0; }
+  .hp-image-link { display: block; }
+  .hp-image { width: 60%; height: auto; display: block; margin-left: auto; margin-right: auto; transform: translateX(40px); transition: opacity 0.3s ease; }
+  .hp-image-link:hover .hp-image { opacity: 0.82; }
+  .hp-year { font-size: 0.9rem; letter-spacing: 0.05em; align-self: flex-end; margin-top: 0.5rem; }
+  .hp-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; min-width: 0; }
+  .hp-nav-inner { display: flex; flex-direction: column; justify-content: space-between; height: 60%; }
+  .hp-nav-link { font-size: 1.1rem; text-decoration: none; color: inherit; letter-spacing: 0.04em; display: inline-block; padding: 0.3rem 0; transition: font-weight 0.1s ease; white-space: nowrap; }
+  .hp-nav-link:hover { text-decoration: none; }
+  .hp-nav--artworks { margin-left: 0%; } .hp-nav--oeuvre { margin-left: 10%; } .hp-nav--photography { margin-left: 33%; } .hp-nav--acquisition { margin-left: 40%; }
+  .hp-nav--archive { margin-left: 20%; } .hp-nav--about { margin-left: 25%; } .hp-nav--links { margin-left: 60%; }
+
+  @media (max-width: 1200px) {
+    .hp-image { width: 85%; height: auto; display: block; margin-left: auto; margin-right: auto; transform: translateX(0px); transition: opacity 0.3s ease; }
+    .homepage-layout { flex-direction: column; padding: 2rem 2.5rem; gap: 3rem; align-items: center; }
+    .hp-left { width: 100%; max-width: 680px; }
+    .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
+    .hp-nav-inner { height: auto; gap: 1rem; width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .hp-nav-link { font-size: 1.3rem; }
+    .hp-nav--artworks { margin-left: -20%; } .hp-nav--oeuvre { margin-left: -10%; } .hp-nav--photography { margin-left: 30%; } .hp-nav--acquisition { margin-left: 45%; }
+    .hp-nav--archive { margin-left: -5%; } .hp-nav--about { margin-left: 15%; } .hp-nav--links { margin-left: 40%; }
+  }
+  @media (max-width: 699px) {
+    .homepage-layout { flex-direction: column; padding: 1.5rem 1.2rem; gap: 2.5rem; align-items: center; }
+    .hp-left { width: 100%; max-width: 100%; }
+    .hp-nav { width: 100%; justify-content: flex-start; align-items: center; }
+    .hp-nav-inner { height: auto; gap: 0.9rem; display: flex; flex-direction: column; align-items: center; width: 100%; }
+    .hp-nav-link { font-size: 1.1rem; }
+    .hp-nav--artworks { margin-left: -20%; } .hp-nav--oeuvre { margin-left: -10%; } .hp-nav--photography { margin-left: 30%; } .hp-nav--acquisition { margin-left: 45%; }
+    .hp-nav--archive { margin-left: -5%; } .hp-nav--about { margin-left: 15%; } .hp-nav--links { margin-left: 40%; }
+  }
+</style>

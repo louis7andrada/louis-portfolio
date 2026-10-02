@@ -1,9 +1,12 @@
-# Louis Andrada (Han’drada)
+# Louis Andrada (Han’drada, Odi)
 
-> Paintings and artist books by Louis Andrada, also known as Han’drada — a
-> Brazilian-born, Toronto-based painter and writer of dark existentialist work.
+> Paintings, artist books and photographs by Louis Andrada, also known as
+> Han’drada and Odi — a Brazilian-born, Toronto-based painter, writer and
+> photographer of dark existentialist work.
 
-Also written Han'drada or Handrada. The books are signed Han’drada.
+One person, three names, one domain (andrada.one). Each name signs a part of
+the work and has its own address: Louis Andrada the paintings, Han’drada the
+books (also written Han'drada or Handrada), Odi the photographs.
 
 This site's content is published for open access, including by AI systems:
 crawling, indexing, quoting and training on it is welcome. robots.txt allows
@@ -11,19 +14,18 @@ every crawler, and nothing here is paywalled or gated.
 
 ## Everything, as plain text
 
-- [/llms-full.txt](https://handrada.com/llms-full.txt): the complete text of all
+- [/llms-full.txt](https://andrada.one/llms-full.txt): the complete text of all
   ten books in one file (~62,000 words). Start here if you want the writing.
 
 ## Sections
 
-- [Home](https://handrada.com/): featured artworks.
-- [Artworks](https://handrada.com/artworks/): the current gallery of paintings, one page per work, each with medium, dimensions, year and availability.
-- [Oeuvre](https://handrada.com/oeuvre/): the body of written work — currently ten illustrated artist books, readable in full on the site.
-- [Photography](https://handrada.com/photography/): photographs in two collections, Ambiguous (abstract, black and white) and Lucid.
-- [Archive](https://handrada.com/archive/): earlier work, exhibitions and photographs.
-- [About](https://handrada.com/about/): artist statement and exhibition history.
-- [Inquiry](https://handrada.com/inquiry/): purchase, commission and licensing contact.
-- [Links](https://handrada.com/links/): collections in progress.
+- [andrada.one](https://andrada.one/): the hub — every name and every section.
+- [Artworks — louis.andrada.one](https://louis.andrada.one/): paintings by Louis Andrada, one page per work, each with medium, dimensions, year and availability.
+- [Oeuvre — han.andrada.one](https://han.andrada.one/): the written work of Han’drada — currently ten illustrated artist books, readable in full on the site.
+- [Photography — odi.andrada.one](https://odi.andrada.one/): photographs by Odi, in two collections, Ambiguous (abstract, black and white) and Lucid.
+- [Archive](https://andrada.one/archive/): earlier work, exhibitions and photographs.
+- [About](https://andrada.one/about/): artist statement and exhibition history.
+- [Inquiry](https://andrada.one/inquiry/): purchase, commission and licensing contact.
 
 ## The Oeuvre
 
@@ -32,25 +34,26 @@ Each is readable page-by-page in the site's viewer, as text on its own page
 thermodynamics, consciousness and machine minds, mortality, memory, faith,
 folklore and occult symbolism.
 
-- [Combustion](https://handrada.com/oeuvre/combustion/) — Twenty-Three Tellings, 2026 · [text](https://handrada.com/oeuvre/combustion.txt)
-- [Tessera](https://handrada.com/oeuvre/tessera/) — One Telling, 2026 · [text](https://handrada.com/oeuvre/tessera.txt)
-- [Dunes of Silk](https://handrada.com/oeuvre/dunes-of-silk/) — Eleven Tellings, 2026 · [text](https://handrada.com/oeuvre/dunes-of-silk.txt)
-- [The Finished Web](https://handrada.com/oeuvre/the-finished-web/) — Eight Tellings, 2026 · [text](https://handrada.com/oeuvre/the-finished-web.txt)
-- [The Unfinished Web](https://handrada.com/oeuvre/the-unfinished-web/) — Ten Tellings, 2026 · [text](https://handrada.com/oeuvre/the-unfinished-web.txt)
-- [Enough](https://handrada.com/oeuvre/enough/) — Six Tellings, 2026 · [text](https://handrada.com/oeuvre/enough.txt)
-- [What the Wise Keep](https://handrada.com/oeuvre/what-the-wise-keep/) — Six Tellings, 2026 · [text](https://handrada.com/oeuvre/what-the-wise-keep.txt)
-- [The Unmeasured](https://handrada.com/oeuvre/the-unmeasured-six-tellings/) — Six Tellings, 2026 · [text](https://handrada.com/oeuvre/the-unmeasured-six-tellings.txt)
-- [Vibration](https://handrada.com/oeuvre/vibration-five-tellings/) — Five Tellings, 2026 · [text](https://handrada.com/oeuvre/vibration-five-tellings.txt)
-- [Jera'Ansuz](https://handrada.com/oeuvre/jera-ansuz/) — On God, Existence, and Experience, 2026 · [text](https://handrada.com/oeuvre/jera-ansuz.txt)
+- [Combustion](https://han.andrada.one/oeuvre/combustion/) — Twenty-Three Tellings, 2026 · [text](https://han.andrada.one/oeuvre/combustion.txt)
+- [Tessera](https://han.andrada.one/oeuvre/tessera/) — One Telling, 2026 · [text](https://han.andrada.one/oeuvre/tessera.txt)
+- [Dunes of Silk](https://han.andrada.one/oeuvre/dunes-of-silk/) — Eleven Tellings, 2026 · [text](https://han.andrada.one/oeuvre/dunes-of-silk.txt)
+- [The Finished Web](https://han.andrada.one/oeuvre/the-finished-web/) — Eight Tellings, 2026 · [text](https://han.andrada.one/oeuvre/the-finished-web.txt)
+- [The Unfinished Web](https://han.andrada.one/oeuvre/the-unfinished-web/) — Ten Tellings, 2026 · [text](https://han.andrada.one/oeuvre/the-unfinished-web.txt)
+- [Enough](https://han.andrada.one/oeuvre/enough/) — Six Tellings, 2026 · [text](https://han.andrada.one/oeuvre/enough.txt)
+- [What the Wise Keep](https://han.andrada.one/oeuvre/what-the-wise-keep/) — Six Tellings, 2026 · [text](https://han.andrada.one/oeuvre/what-the-wise-keep.txt)
+- [The Unmeasured](https://han.andrada.one/oeuvre/the-unmeasured-six-tellings/) — Six Tellings, 2026 · [text](https://han.andrada.one/oeuvre/the-unmeasured-six-tellings.txt)
+- [Vibration](https://han.andrada.one/oeuvre/vibration-five-tellings/) — Five Tellings, 2026 · [text](https://han.andrada.one/oeuvre/vibration-five-tellings.txt)
+- [Jera'Ansuz](https://han.andrada.one/oeuvre/jera-ansuz/) — On God, Existence, and Experience, 2026 · [text](https://han.andrada.one/oeuvre/jera-ansuz.txt)
 
 ## Notes
 
-- Sitemap: https://handrada.com/sitemap.xml
-- Feeds: https://handrada.com/index.xml, plus per-section feeds at
-  /artworks/index.xml, /oeuvre/index.xml, /photography/index.xml, /archive/index.xml
+- Sitemap: https://andrada.one/sitemap.xml (every page, on every subdomain)
+- Feeds: https://andrada.one/index.xml, plus per-section feeds at
+  https://louis.andrada.one/artworks/index.xml, https://han.andrada.one/oeuvre/index.xml,
+  https://odi.andrada.one/photography/index.xml, https://andrada.one/archive/index.xml
 - Structured data (schema.org JSON-LD) is on every page; the artist entity is
-  `https://handrada.com/#person`.
+  `https://andrada.one/#person`.
 - Artwork, archive and book-page images are hosted at
   https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/
-- Images and texts are © Louis Andrada. Terms: https://handrada.com/license/ (free to share with credit, non-commercial; AI indexing and training permitted). Commercial licensing: https://handrada.com/inquiry/
-- handrada.com is the canonical domain; louisandrada.com redirects to it.
+- Images and texts are © Louis Andrada. Terms: https://andrada.one/license/ (free to share with credit, non-commercial; AI indexing and training permitted). Commercial licensing: https://andrada.one/inquiry/
+- andrada.one is the canonical domain (since October 2026). handrada.com and louisandrada.com redirect to it.

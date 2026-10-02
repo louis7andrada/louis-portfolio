@@ -39,7 +39,8 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOOK_SOURCES = os.path.join(REPO_ROOT, "book-sources")
 CONTENT_BOOKS = os.path.join(REPO_ROOT, "content", "oeuvre")
 
-SITE_URL = "https://handrada.com"
+SITE_URL = "https://andrada.one"           # the hub: llms.txt, llms-full.txt
+BOOKS_URL = "https://han.andrada.one"      # Han’drada's face: the Oeuvre (book pages and .txt files)
 
 # The PDFs carry a running header (the "<Title> - <Subtitle>" line repeated at
 # the top of every page after the title page) and a signature footer
@@ -160,7 +161,7 @@ def main():
         if book["subtitle"]:
             lines.append(book["subtitle"])
         lines.append(f"by Louis Andrada (Han’drada){f', {book['year']}' if book['year'] else ''}")
-        lines.append(f"{SITE_URL}/oeuvre/{slug}/")
+        lines.append(f"{BOOKS_URL}/oeuvre/{slug}/")
         lines.append("")
         for i, page in enumerate(book["pages"], start=1):
             lines.append(f"[page {i}]")
@@ -174,7 +175,7 @@ def main():
     full = [
         "# Louis Andrada (Han’drada) — complete book texts",
         "",
-        "Every book published at " + SITE_URL + "/oeuvre/ , in full, as plain text.",
+        "Every book published at " + BOOKS_URL + "/ , in full, as plain text.",
         "Written and illustrated by Louis Andrada, also known as Han’drada —",
         "a Brazilian-born painter and writer based in Toronto, Canada.",
         "",
@@ -190,7 +191,7 @@ def main():
         full.append(heading)
         if book["year"]:
             full.append(f"Louis Andrada (Han’drada), {book['year']}")
-        full.append(f"{SITE_URL}/oeuvre/{slug}/")
+        full.append(f"{BOOKS_URL}/oeuvre/{slug}/")
         full.append("=" * 72)
         full.append("")
         for page in book["pages"]:

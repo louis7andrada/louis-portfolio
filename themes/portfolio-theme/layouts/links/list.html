@@ -8,11 +8,12 @@
 
   <div class="name-band w-full flex justify-between items-start mt-2">
     <!-- One person, three names: each steps in from the one above (the About page's staircase),
-         a little lighter, with the links' ink trailing off the last letters. -->
+         a little lighter, with the links' ink trailing off the last letters. Each name opens its
+         own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography). -->
     <div class="name-stack" aria-label="Louis Andrada, also Han and Odi">
-      <span class="ns ns-1">Louis Andrada</span>
-      <span class="ns ns-2">Ha<span class="ink i2">n</span></span>
-      <span class="ns ns-3">Od<span class="ink i4">i</span></span>
+      <a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1">Louis Andrada</a>
+      <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2">Ha<span class="ink i2">n</span></a>
+      <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3">Od<span class="ink i4">i</span></a>
     </div>
     <div class="flex gap-6 md:gap-10">
       <span>Polymath</span>
@@ -28,18 +29,18 @@
 
       <nav class="flex flex-col items-end text-right">
         <div class="tw-header links-header">Links</div>
-        <a href="https://handrada.com" target="_blank" rel="noopener noreferrer" class="tw-link">Po<span class="ink i0">rt</span><span class="ink i1">fo</span><span class="ink i3">l</span><span class="ink i4">i</span><span class="ink i4">o</span></a>
-        <a href="https://handrada.com/#artworks-section" target="_blank" rel="noopener noreferrer" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
-        <a href="https://handrada.com/oeuvre/" target="_blank" rel="noopener noreferrer" class="tw-link">Oe<span class="ink i0">u</span><span class="ink i1">v</span><span class="ink i3">r</span><span class="ink i4">e</span></a>
-        <a href="https://handrada.com/photography/" target="_blank" rel="noopener noreferrer" class="tw-link">Ph<span class="ink i0">ot</span><span class="ink i1">o</span><span class="ink i2">gr</span><span class="ink i3">ap</span><span class="ink i4">hy</span></a>
-        <a href="https://handrada.com/inquiry" target="_blank" rel="noopener noreferrer" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
-        <a href="https://handrada.com/archive/" target="_blank" rel="noopener noreferrer" class="tw-link">Ar<span class="ink i0">c</span><span class="ink i1">h</span><span class="ink i2">i</span><span class="ink i3">v</span><span class="ink i4">e</span></a>
-        <a href="https://handrada.com/about" target="_blank" rel="noopener noreferrer" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
+        <a href="{{ partial "face-url.html" "louis" }}" class="tw-link">Po<span class="ink i0">rt</span><span class="ink i1">fo</span><span class="ink i3">l</span><span class="ink i4">i</span><span class="ink i4">o</span></a>
+        <a href="{{ partial "face-url.html" "louis" }}#artworks-section" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
+        <a href="{{ partial "face-url.html" "han" }}#oeuvre" class="tw-link">Oe<span class="ink i0">u</span><span class="ink i1">v</span><span class="ink i3">r</span><span class="ink i4">e</span></a>
+        <a href="{{ partial "face-url.html" "odi" }}#photography" class="tw-link">Ph<span class="ink i0">ot</span><span class="ink i1">o</span><span class="ink i2">gr</span><span class="ink i3">ap</span><span class="ink i4">hy</span></a>
+        <a href="/inquiry/" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
+        <a href="/archive/" class="tw-link">Ar<span class="ink i0">c</span><span class="ink i1">h</span><span class="ink i2">i</span><span class="ink i3">v</span><span class="ink i4">e</span></a>
+        <a href="/about/" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
         <a><br></a>
         <div class="tw-header">In Progress</div>
         <div class="tw-headermini">Collections</div>
-        <a href="https://handrada.com/artworks/collection-sins/" target="_blank" rel="noopener noreferrer" class="tw-link">The Hu<span class="ink i0">ndr</span><span class="ink i1">ed</span><span class="ink i2"> Si</span><span class="ink i3">n</span><span class="ink i4">s</span></a>
-        <a href="https://handrada.com/artworks/collection-the_tree_the_snake_the_fruit/" target="_blank" rel="noopener noreferrer" class="tw-link">T. <span class="ink i1">S. </span><span class="ink i3">F.</span></a>
+        <a href="{{ with site.GetPage "artworks/collection-sins" }}{{ partial "canonical.html" . }}{{ end }}" class="tw-link">The Hu<span class="ink i0">ndr</span><span class="ink i1">ed</span><span class="ink i2"> Si</span><span class="ink i3">n</span><span class="ink i4">s</span></a>
+        <a href="{{ with site.GetPage "artworks/collection-the_tree_the_snake_the_fruit" }}{{ partial "canonical.html" . }}{{ end }}" class="tw-link">T. <span class="ink i1">S. </span><span class="ink i3">F.</span></a>
         <div class="tw-headermini2">Exhibitions</div>
         <a href="https://maps.app.goo.gl/zhQhJNUrLyGq258z6" target="_blank" rel="noopener noreferrer" class="tw-link">Carbon</span><span class="ink i0">ic C</span><span class="ink i1">o</span><span class="ink i2">f</span><span class="ink i3">f<span class="ink i4">ee</span></span></a>
       </nav>
@@ -95,6 +96,10 @@
   /* Louis Andrada / Han / Odi: a staircase, each name a step in and a shade lighter */
   .name-stack { display: flex; flex-direction: column; line-height: 1.18; }
   .name-stack .ns { white-space: nowrap; }
+  /* the names are links to the three faces, but read as the names they were
+     (main.css colours every .links-page link blue with !important) */
+  html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover { color: inherit !important; text-decoration: none; }
+  html .links-page .name-stack a.ns:hover { text-decoration: underline; text-underline-offset: 3px; }
   .name-stack .ns-2 { padding-left: 2.6ch; opacity: 0.78; }
   .name-stack .ns-3 { padding-left: 5.2ch; opacity: 0.58; }
   .name-stack .ink { font-weight: inherit; color: inherit; }

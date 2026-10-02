@@ -23,9 +23,9 @@
 {
   "@context": "https://schema.org",
   "@type": "VisualArtwork",
-  "@id": "{{ .Permalink }}#artwork",
+  "@id": "{{ partial "canonical.html" . }}#artwork",
   "name": "{{ .Title }}",
-  "url": "{{ .Permalink }}",
+  "url": "{{ partial "canonical.html" . }}",
   "license": "{{ "/license/" | absURL }}",
   "creator": {
     "@type": "Person",
@@ -70,7 +70,7 @@
     "@type": "Offer",
     "price": "{{ .Params.price }}",
     "priceCurrency": "USD",
-    "url": "{{ .Permalink }}",
+    "url": "{{ partial "canonical.html" . }}",
     "availability": "https://schema.org/{{ if eq .Params.availability "Available" }}InStock{{ else }}OutOfStock{{ end }}",
     "seller": {
       "@type": "Person",

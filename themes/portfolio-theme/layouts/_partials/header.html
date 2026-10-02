@@ -59,26 +59,26 @@
     <!-- Desktop Navigation — non-home pages -->
     {{ if not .IsHome }}
     <nav id="desktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
-      <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Artworks</a>
-      <a href="/oeuvre/" id="navOeuvreLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
-      <a href="/photography/" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
+      <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Artworks</a>
+      <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
+      <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
-      <a href="/links" class="dark:text-gray-300 dark:hover:text-white">Links</a>
+      <a href="{{ partial "face-url.html" "hub" }}" class="dark:text-gray-300 dark:hover:text-white">Links</a>
     </nav>
     {{ end }}
 
     <!-- HOME desktop nav — hidden while home section is visible -->
     {{ if .IsHome }}
     <nav id="homeDesktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
-      <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkHome" class="dark:text-gray-300 dark:hover:text-white nav-link-active">Artworks</a>
-      <a href="/oeuvre/" id="navOeuvreLinkHome" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
-      <a href="/photography/" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
+      <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkHome" class="dark:text-gray-300 dark:hover:text-white nav-link-active">Artworks</a>
+      <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkHome" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
+      <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
-      <a href="/links" class="dark:text-gray-300 dark:hover:text-white">Links</a>
+      <a href="{{ partial "face-url.html" "hub" }}" class="dark:text-gray-300 dark:hover:text-white">Links</a>
     </nav>
     {{ end }}
 
@@ -107,13 +107,13 @@
 
 <!-- FULLSCREEN MOBILE MENU — outside header to avoid backdrop-filter stacking context conflict -->
 <nav id="mobileMenu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
-  <a href="/#artworks-section" data-scroll="artworks" id="navArtworksLinkMobile" class="block">Artworks</a>
-  <a href="/oeuvre/" id="navOeuvreLinkMobile" class="block">Oeuvre</a>
-  <a href="/photography/" id="navPhotographyLinkMobile" class="block">Photography</a>
+  <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkMobile" class="block">Artworks</a>
+  <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkMobile" class="block">Oeuvre</a>
+  <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkMobile" class="block">Photography</a>
   <a href="/about" class="block">About</a>
   <a href="/inquiry/" class="block">Inquiry</a>
   <a href="/archive" class="block">Archive</a>
-  <a href="/links" class="block">Links</a>
+  <a href="{{ partial "face-url.html" "hub" }}" class="block">Links</a>
 </nav>
 
 <!-- ══════════════════════════════════════════════════════
@@ -511,7 +511,13 @@ document.addEventListener("DOMContentLoaded", () => {
       // Mirrored to a session cookie (no expiry = cleared when the
       // browser closes) so the "only once" behavior still holds even
       // if sessionStorage specifically is the thing that's blocked.
-      document.cookie = key + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax";
+      // On andrada.one the cookie covers every subdomain: sessionStorage is
+      // per address, so without it the intro door would play again the first
+      // time a visitor crosses from one face to another (odi. → louis.).
+      const dom = {{ site.Params.face_domain | default "" }};
+      const h = location.hostname;
+      const shared = dom && (h === dom || h.endsWith("." + dom)) ? "; domain=" + dom : "";
+      document.cookie = key + "=" + encodeURIComponent(value) + "; path=/; SameSite=Lax" + shared;
     } catch (e) {}
   }
 
@@ -747,8 +753,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 60);
       }, 60);
     } else {
-      sessionStorage.setItem("scrollTarget", "artworks-section");
-      window.location.href = "/";
+      // Not on the artworks page: follow the link (louis.andrada.one/#artworks-section, or
+      // /#artworks-section locally); the page scrolls to the grid on arrival, across subdomains too.
+      window.location.href = e.currentTarget.href;
     }
   }
 
@@ -775,7 +782,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ── ACTIVE LINK STATE ── */
   const pathname = window.location.pathname;
-  const isHome   = pathname === "/" || homeSection !== null;
+  // The artworks home is recognised by its section, not by "/": on han./odi.andrada.one "/" is Oeuvre/Photography.
+  const isHome   = homeSection !== null;
 
   if (!homeSection) {
     let activePage = "";
@@ -783,7 +791,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (pathname.includes("/about")) activePage = "about";
     else if (pathname.includes("/archive")) activePage = "archive";
     else if (pathname.includes("/links")) activePage = "links";
-    else if (pathname.includes("/artworks") || pathname === "/") activePage = "artworks";
+    else if (pathname.includes("/artworks")) activePage = "artworks";
 
     document.querySelectorAll("nav:not(#mobileMenu) a").forEach(link => {
       const href = link.getAttribute("href") || "";
@@ -807,7 +815,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (pathname.includes("/about") && href.includes("about")) match = true;
         else if (pathname.includes("/archive") && href.includes("archive")) match = true;
         else if (pathname.includes("/links") && href.includes("links")) match = true;
-        else if ((pathname.includes("/artworks") || pathname === "/") && (href.includes("artworks") || href.includes("#artworks"))) match = true;
+        else if (pathname.includes("/artworks") && (href.includes("artworks") || href.includes("#artworks"))) match = true;
       }
       if (match) link.classList.add("nav-link-active");
     });

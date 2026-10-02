@@ -13,9 +13,9 @@
 {
   "@context": "https://schema.org",
   "@type": "CreativeWork",
-  "@id": "{{ .Permalink }}#work",
+  "@id": "{{ partial "canonical.html" . }}#work",
   "name": "{{ .Title | default (printf "%s (%v)" .Params.id .Params.year) }}",
-  "url": "{{ .Permalink }}",
+  "url": "{{ partial "canonical.html" . }}",
   "license": "{{ "/license/" | absURL }}",
 {{ with .Params.year }}"dateCreated": "{{ . }}",
   {{ end }}{{ with .Params.category }}"genre": "{{ . }}",

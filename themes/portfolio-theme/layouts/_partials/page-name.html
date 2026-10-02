@@ -1,0 +1,9 @@
+{{/* The key (params.names) of the name a page carries when rendered: the face that owns its section
+     or front page, else params.name_default. In the browser a face subdomain swaps it for its own.
+     Usage: index site.Params.names (partial "page-name.html" $page) */}}
+{{ $p := . }}
+{{ $key := site.Params.name_default }}
+{{ range $k, $f := site.Params.faces }}
+  {{ if or (eq $p.RelPermalink $f.page) (and $f.section (eq $p.Section $f.section)) }}{{ $key = $k }}{{ end }}
+{{ end }}
+{{ return $key }}

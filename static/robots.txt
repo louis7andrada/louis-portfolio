@@ -89,4 +89,4 @@ Allow: /
 User-agent: YouBot
 Allow: /
 
-Sitemap: https://handrada.com/sitemap.xml
+Sitemap: https://andrada.one/sitemap.xml

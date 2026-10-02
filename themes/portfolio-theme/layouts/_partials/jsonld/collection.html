@@ -13,8 +13,8 @@
 {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  "@id": "{{ $page.Permalink }}#collection",
-  "url": "{{ $page.Permalink }}",
+  "@id": "{{ partial "canonical.html" $page }}#collection",
+  "url": "{{ partial "canonical.html" $page }}",
   "name": "{{ $page.Title }} — {{ site.Params.artist }} ({{ site.Params.artist_alt }})",
   "isPartOf": {
     "@id": "{{ site.BaseURL }}#website"
@@ -31,7 +31,7 @@
       {
         "@type": "ListItem",
         "position": {{ add $i 1 }},
-        "url": "{{ $item.Permalink }}",
+        "url": "{{ partial "canonical.html" $item }}",
         "name": "{{ $item.Title | default (printf "%s (%v)" $item.Params.id $item.Params.year) }}"
       }{{ end }}
     ]

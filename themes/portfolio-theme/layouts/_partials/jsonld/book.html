@@ -11,9 +11,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Book",
-  "@id": "{{ .Permalink }}#book",
+  "@id": "{{ partial "canonical.html" . }}#book",
   "name": "{{ .Title }}",
-  "url": "{{ .Permalink }}",
+  "url": "{{ partial "canonical.html" . }}",
   "license": "{{ "/license/" | absURL }}",
   {{ with .Params.description }}"alternativeHeadline": "{{ . }}",
   "description": "{{ $.Title }} — {{ . }}. An illustrated book by {{ site.Params.artist }} ({{ site.Params.artist_alt }}).",

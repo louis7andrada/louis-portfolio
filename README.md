@@ -1,6 +1,6 @@
 # Louis Andrada – Portfolio Website
 
-This repository contains the source code for handrada.com (louisandrada.com redirects there), a static portfolio website built using Hugo and TailwindCSS, deployed on Netlify.
+This repository contains the source code for andrada.one — the hub at andrada.one, Artworks at louis.andrada.one, Oeuvre at han.andrada.one, Photography at odi.andrada.one (handrada.com and louisandrada.com redirect there), a static portfolio website built using Hugo and TailwindCSS, deployed on Netlify.
 
 The site generates static HTML files at build time and serves them via a CDN for maximum performance.
 
@@ -67,7 +67,7 @@ static/images/artworks/example.jpg
 
 becomes:
 
-https://handrada.com/images/artworks/example.jpg
+https://andrada.one/images/artworks/example.jpg
 
 ---
 

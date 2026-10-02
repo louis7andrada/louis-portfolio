@@ -11,6 +11,8 @@
 {{ $photos := sort (where .Site.RegularPages "Section" "photography") "Params.order" "desc" }}
 {{ partial "jsonld/collection.html" (dict "page" . "items" $photos) }}
 
+{{ partial "face-hero.html" (dict "face" "odi" "items" $photos) }}
+
 <section id="books-section" class="w-full px-4 py-12 relative">
 
   <div class="book-page-header">

@@ -1,4 +1,4 @@
-baseURL = "https://handrada.com/"
+baseURL = "https://andrada.one/"
 languageCode = "en-us"
 title = "Louis Andrada"
 theme = "portfolio-theme"
@@ -45,14 +45,43 @@ disableKinds = ["taxonomy", "term"]
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"
 
-  # One name at a time (Oct 2026). The browser tab, link previews and visible
-  # text show ONE name, picked by the address the visitor came in through:
-  # handrada.com → the default below (also what search engines see);
-  # louisandrada.com → Louis Andrada (its redirect in netlify.toml adds ?name=louis).
-  # Any link can pick one with ?name=<key>, e.g. handrada.com/?name=odi.
+  # ANDRADA.ONE (Oct 2026): one domain, one person, three names. Each name owns a part of the work
+  # and lives on its own subdomain, which opens on a home-page-style hero (one image + the staggered
+  # menu, the grid below):
+  #   louis.andrada.one → Artworks (the home page)   han.andrada.one → Oeuvre   odi.andrada.one → Photography
+  #   andrada.one       → the Links page (the hub: every name, every door)
+  # The menus jump between them (Photography → odi.andrada.one…, Links → andrada.one); shared pages
+  # (About, Inquiry, Archive…) stay on whichever subdomain the visitor is on. netlify.toml serves each
+  # subdomain's front page and sends a section asked for on the wrong host (and every old
+  # handrada.com / louisandrada.com address) to its one real address.
+  #
+  # NAMES: titles, link previews and visible text show ONE name, never "Louis Andrada (Han’drada)".
+  # The server-rendered name (what search engines see) is the owner of the page's section, or
+  # name_default for shared pages. In the browser, a face subdomain always shows its own name; on
+  # andrada.one, ?name=<key> picks it for the visit (removed from the address bar).
   # JSON-LD identity, meta descriptions and keywords keep every name, on purpose.
-  name_default = "han"
+  # Off andrada.one (hugo server, any other baseURL) all of this falls back to plain local paths.
+  name_default = "louis"
+  face_domain = "andrada.one"
+  hub = "/links/"
+
   [params.names]
     han = "Han’drada"
     louis = "Louis Andrada"
     odi = "Odi"
+
+  # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
+  # section: the content section the face owns (its pages live on the face's subdomain).
+  # hero: the image at the top. Odi: a photo id ("photo107"); empty = the newest Ambiguous photo.
+  #       Han: a book id; empty = the newest book (highest order). Louis: set in index.html.
+  [params.faces.louis]
+    page = "/"
+    section = "artworks"
+  [params.faces.han]
+    page = "/oeuvre/"
+    section = "oeuvre"
+    hero = ""
+  [params.faces.odi]
+    page = "/photography/"
+    section = "photography"
+    hero = ""

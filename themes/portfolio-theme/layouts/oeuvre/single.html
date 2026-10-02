@@ -88,7 +88,7 @@
   <div class="book-text-body">
     <p class="book-text-note">
       The full text of <em>{{ $.Title }}</em>{{ with $.Params.description }} &mdash; {{ . }}{{ end }},
-      by <span data-artist-name>{{ index site.Params.names site.Params.name_default }}</span>.
+      by <span data-artist-name>{{ index site.Params.names (partial "page-name.html" $) }}</span>.
       Also available as <a href="{{ (printf "/oeuvre/%s.txt" $.Params.slug) | relURL }}">plain text</a>.
     </p>
     {{ range $i, $page := .pages }}

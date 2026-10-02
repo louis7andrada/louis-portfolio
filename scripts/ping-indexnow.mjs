@@ -29,9 +29,11 @@
 
 import fs from "node:fs";
 
-const HOST = "handrada.com";
+// Since Oct 2026 the site lives on andrada.one and its subdomains (louis. / han. / odi.), and the
+// sitemap lists every page at its own address. IndexNow takes one host per submission, so changed
+// URLs are grouped by host; the key file is part of the site, so every host serves it.
 const KEY = "90c777ff5e46432f81a0138dec0a2ed0";
-const KEY_LOCATION = `https://${HOST}/${KEY}.txt`;
+const keyLocation = (host) => `https://${host}/${KEY}.txt`;
 const SITEMAP_PATH = "public/sitemap.xml";
 const STATE_PATH = ".indexnow-state.json";
 const BATCH_LIMIT = 10000; // IndexNow caps a single submission at 10,000 URLs
@@ -62,9 +64,9 @@ function readState() {
 
 // The key file has to be live and contain exactly the key, or every submission
 // is rejected — and IndexNow rejects quietly enough that it's worth checking.
-async function keyFileIsLive() {
+async function keyFileIsLive(host) {
   try {
-    const res = await fetch(KEY_LOCATION, { cache: "no-store" });
+    const res = await fetch(keyLocation(host), { cache: "no-store" });
     if (!res.ok) return `responded ${res.status}`;
     const body = (await res.text()).trim();
     return body === KEY ? true : "served different contents than the key";
@@ -73,11 +75,11 @@ async function keyFileIsLive() {
   }
 }
 
-async function submit(urlList) {
+async function submit(host, urlList) {
   const res = await fetch("https://api.indexnow.org/indexnow", {
     method: "POST",
     headers: { "Content-Type": "application/json; charset=utf-8" },
-    body: JSON.stringify({ host: HOST, key: KEY, keyLocation: KEY_LOCATION, urlList }),
+    body: JSON.stringify({ host, key: KEY, keyLocation: keyLocation(host), urlList }),
   });
   return res.status;
 }
@@ -119,29 +121,37 @@ async function main() {
     return;
   }
 
-  const keyCheck = await keyFileIsLive();
-  if (keyCheck !== true) {
-    console.error(`✗ Key file ${KEY_LOCATION} ${keyCheck}.`);
-    console.error("  IndexNow will reject the submission — deploy the site first, then retry.");
-    process.exitCode = 1;
-    return;
+  const byHost = new Map();
+  for (const u of changed) {
+    const host = new URL(u).host;
+    if (!byHost.has(host)) byHost.set(host, []);
+    byHost.get(host).push(u);
   }
-  console.log(`✓ Key file verified at ${KEY_LOCATION}`);
 
   let allOk = true;
-  for (let i = 0; i < changed.length; i += BATCH_LIMIT) {
-    const batch = changed.slice(i, i + BATCH_LIMIT);
-    try {
-      const status = await submit(batch);
-      if (status === 200 || status === 202) {
-        console.log(`✓ IndexNow accepted ${batch.length} URLs (status ${status})`);
-      } else {
-        allOk = false;
-        console.error(`✗ IndexNow returned status ${status} for ${batch.length} URLs`);
-      }
-    } catch (err) {
+  for (const [host, urls] of byHost) {
+    const keyCheck = await keyFileIsLive(host);
+    if (keyCheck !== true) {
       allOk = false;
-      console.error(`✗ IndexNow request failed — ${err.message}`);
+      console.error(`✗ Key file ${keyLocation(host)} ${keyCheck}.`);
+      console.error("  IndexNow will reject this host's URLs — deploy the site (and connect the domain) first, then retry.");
+      continue;
+    }
+    console.log(`✓ Key file verified at ${keyLocation(host)}`);
+    for (let i = 0; i < urls.length; i += BATCH_LIMIT) {
+      const batch = urls.slice(i, i + BATCH_LIMIT);
+      try {
+        const status = await submit(host, batch);
+        if (status === 200 || status === 202) {
+          console.log(`✓ IndexNow accepted ${batch.length} URLs on ${host} (status ${status})`);
+        } else {
+          allOk = false;
+          console.error(`✗ IndexNow returned status ${status} for ${batch.length} URLs on ${host}`);
+        }
+      } catch (err) {
+        allOk = false;
+        console.error(`✗ IndexNow request failed for ${host} — ${err.message}`);
+      }
     }
   }
 

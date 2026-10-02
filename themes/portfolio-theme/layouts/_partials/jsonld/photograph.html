@@ -8,9 +8,9 @@
 {
   "@context": "https://schema.org",
   "@type": "Photograph",
-  "@id": "{{ .Permalink }}#work",
+  "@id": "{{ partial "canonical.html" . }}#work",
   "name": "{{ .Title }}",
-  "url": "{{ .Permalink }}",
+  "url": "{{ partial "canonical.html" . }}",
   "license": "{{ "/license/" | absURL }}",
   {{ with .Params.year }}"dateCreated": "{{ . }}",
   {{ end }}{{ with .Params.collection }}"genre": "{{ . }}",

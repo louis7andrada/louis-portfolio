@@ -4,6 +4,8 @@
 {{ partial "book-viewer-engine.html" . }}
 {{ partial "jsonld/collection.html" (dict "page" . "items" (sort (where (where .Site.RegularPages "Section" "oeuvre") "Params.pageCount" "!=" nil) "Params.order" "desc")) }}
 
+{{ partial "face-hero.html" (dict "face" "han" "items" (sort (where (where .Site.RegularPages "Section" "oeuvre") "Params.pageCount" "!=" nil) "Params.order" "desc")) }}
+
 <section id="books-section" class="w-full px-4 py-12 relative">
 
   <div class="book-page-header">

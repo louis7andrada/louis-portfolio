@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+# ANDRADA.ONE ROUTING (Oct 2026) — one domain, one person, three names, each owning part of the work:
+#   louis.andrada.one → Artworks (the home page)    han.andrada.one → Oeuvre    odi.andrada.one → Photography
+#   andrada.one       → the Links page (the hub: every name, every door)
+# Same site on every host (Netlify domain aliases). Netlify reads this file BEFORE the [[redirects]]
+# in netlify.toml. First match wins, so an exact address comes before the /* that would also catch
+# it. "!" = force (applies even though a file exists there). 200 = served in place: the address bar
+# keeps the subdomain. 301 = moved for good (browsers and search engines remember it).
+# The pages' own <link rel=canonical> says the same thing (_partials/canonical.html).
+# ─────────────────────────────────────────────────────────────────────────────────────────────
+
+# Front pages. louis.andrada.one/ is the home page itself, so it needs no rule.
+https://andrada.one/            /links/index.html          200!
+https://han.andrada.one/        /oeuvre/index.html         200!
+https://odi.andrada.one/        /photography/index.html    200!
+
+https://www.andrada.one/*       https://andrada.one/:splat   301!
+
+# A section asked for on andrada.one itself moves to its face (one address per page).
+https://andrada.one/artworks/                   https://louis.andrada.one/                          301!
+https://andrada.one/artworks/*                  https://louis.andrada.one/artworks/:splat           301!
+https://andrada.one/oeuvre/                     https://han.andrada.one/                            301!
+https://andrada.one/oeuvre/*                    https://han.andrada.one/oeuvre/:splat               301!
+https://andrada.one/photography/                https://odi.andrada.one/                            301!
+https://andrada.one/photography/*               https://odi.andrada.one/photography/:splat          301!
+https://andrada.one/books/*                     https://han.andrada.one/oeuvre/:splat               301!
+
+# The old domains (kept registered: every old link and search result still points at them).
+# Each page goes straight to its new address in one hop; everything else to andrada.one, path kept.
+# handrada.com/ and louisandrada.com/ land on the hub (andrada.one/).
+https://handrada.com/artworks/                  https://louis.andrada.one/                          301!
+https://handrada.com/artworks/*                 https://louis.andrada.one/artworks/:splat           301!
+https://handrada.com/oeuvre/                    https://han.andrada.one/                            301!
+https://handrada.com/oeuvre/*                   https://han.andrada.one/oeuvre/:splat               301!
+https://handrada.com/photography/               https://odi.andrada.one/                            301!
+https://handrada.com/photography/*              https://odi.andrada.one/photography/:splat          301!
+https://handrada.com/books/*                    https://han.andrada.one/oeuvre/:splat               301!
+https://handrada.com/*                          https://andrada.one/:splat                          301!
+
+https://www.handrada.com/artworks/              https://louis.andrada.one/                          301!
+https://www.handrada.com/artworks/*             https://louis.andrada.one/artworks/:splat           301!
+https://www.handrada.com/oeuvre/                https://han.andrada.one/                            301!
+https://www.handrada.com/oeuvre/*               https://han.andrada.one/oeuvre/:splat               301!
+https://www.handrada.com/photography/           https://odi.andrada.one/                            301!
+https://www.handrada.com/photography/*          https://odi.andrada.one/photography/:splat          301!
+https://www.handrada.com/books/*                https://han.andrada.one/oeuvre/:splat               301!
+https://www.handrada.com/*                      https://andrada.one/:splat                          301!
+
+https://louisandrada.com/artworks/              https://louis.andrada.one/                          301!
+https://louisandrada.com/artworks/*             https://louis.andrada.one/artworks/:splat           301!
+https://louisandrada.com/oeuvre/                https://han.andrada.one/                            301!
+https://louisandrada.com/oeuvre/*               https://han.andrada.one/oeuvre/:splat               301!
+https://louisandrada.com/photography/           https://odi.andrada.one/                            301!
+https://louisandrada.com/photography/*          https://odi.andrada.one/photography/:splat          301!
+https://louisandrada.com/books/*                https://han.andrada.one/oeuvre/:splat               301!
+https://louisandrada.com/*                      https://andrada.one/:splat                          301!
+
+https://www.louisandrada.com/artworks/          https://louis.andrada.one/                          301!
+https://www.louisandrada.com/artworks/*         https://louis.andrada.one/artworks/:splat           301!
+https://www.louisandrada.com/oeuvre/            https://han.andrada.one/                            301!
+https://www.louisandrada.com/oeuvre/*           https://han.andrada.one/oeuvre/:splat               301!
+https://www.louisandrada.com/photography/       https://odi.andrada.one/                            301!
+https://www.louisandrada.com/photography/*      https://odi.andrada.one/photography/:splat          301!
+https://www.louisandrada.com/books/*            https://han.andrada.one/oeuvre/:splat               301!
+https://www.louisandrada.com/*                  https://andrada.one/:splat                          301!

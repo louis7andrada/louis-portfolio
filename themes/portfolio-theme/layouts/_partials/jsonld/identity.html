@@ -25,7 +25,8 @@
       "alternateName": [
         "{{ site.Params.artist_alt }}",
         "Han'drada",
-        "{{ site.Params.artist_alt_plain }}"
+        "{{ site.Params.artist_alt_plain }}",
+        "{{ site.Params.names.odi }}"
       ],
       "description": "{{ site.Params.tagline }}",
       "jobTitle": "Visual Artist",
@@ -60,7 +61,7 @@
       "url": "{{ site.BaseURL }}",
       {{- /* The site's name is the one name it shows (params.names); the others are alternates. */}}
       {{- $name := index site.Params.names site.Params.name_default }}
-      {{- $alts := slice }}{{ range slice site.Params.artist site.Params.artist_alt site.Params.artist_alt_plain }}{{ if ne . $name }}{{ $alts = $alts | append . }}{{ end }}{{ end }}
+      {{- $alts := slice }}{{ range slice site.Params.artist site.Params.artist_alt site.Params.names.odi site.Params.artist_alt_plain }}{{ if ne . $name }}{{ $alts = $alts | append . }}{{ end }}{{ end }}
       "name": "{{ $name }}",
       "alternateName": {{ $alts }},
       "description": "{{ site.Params.tagline }}",

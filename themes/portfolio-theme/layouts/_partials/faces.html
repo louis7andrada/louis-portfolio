@@ -1,0 +1,96 @@
+{{/* FACES — behaviour of the front pages of Han (Oeuvre) and Odi (Photography), which open on a
+     home-page-style hero (face-hero.html); the artworks home has its own in header.html/index.html.
+     Rendered right after the header, so the hiding below happens before the first paint.
+     - The face's own menu entries (header, phone menu, hero menu; data-face) scroll down to the
+       grid on this page. Arriving with #oeuvre / #photography (every menu link elsewhere carries
+       it) opens the page already at the grid, like Artworks does for the home page.
+     - While the hero is on screen, the header menu and the page's pinned title + filters wait
+       (as the header menu does on the home page).
+     - Clicking the hero image opens it in the page's own popup, like the same item in the grid.
+     - Menu entries of the face that owns this page are marked active; Links on the hub. */}}
+{{ $heroFace := "" }}{{ $owner := "" }}
+{{ range $k, $f := site.Params.faces }}
+  {{ if eq $.RelPermalink $f.page }}{{ $owner = $k }}{{ if ne $k "louis" }}{{ $heroFace = $k }}{{ end }}{{ end }}
+  {{ if and $f.section (eq $.Section $f.section) }}{{ $owner = $k }}{{ end }}
+{{ end }}
+{{ $isHub := eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}
+{{ $hash := "" }}{{ with $heroFace }}{{ $hash = printf "#%s" (index site.Params.faces .).section }}{{ end }}
+<script>
+  (function () {
+    var heroFace = {{ $heroFace }}, owner = {{ $owner }}, isHub = {{ $isHub }}, hash = {{ $hash }};
+    var html = document.documentElement, desktopNav = document.getElementById("desktopNav");
+    var jump = !!hash && location.hash === hash;
+    if (heroFace) {
+      if (jump) html.style.opacity = "0";
+      else html.classList.add("hero-in-view");
+      if (desktopNav && !jump) { desktopNav.style.opacity = "0"; desktopNav.style.pointerEvents = "none"; }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      if (owner) document.querySelectorAll('#siteHeader a[data-face="' + owner + '"], #mobileMenu a[data-face="' + owner + '"]').forEach(function (a) { a.classList.add("nav-link-active"); });
+      if (isHub) document.querySelectorAll('#siteHeader nav a, #mobileMenu a').forEach(function (a) { if (/^Links$/.test(a.textContent.trim())) a.classList.add("nav-link-active"); });
+      if (!heroFace) return;
+
+      var main = document.querySelector("body > main");
+      var hero = main && main.querySelector(".face-hero--" + heroFace);
+      var grid = main && main.querySelector("#books-section");
+      if (!hero || !grid) {
+        html.classList.remove("hero-in-view"); html.style.opacity = "";
+        if (desktopNav) { desktopNav.style.opacity = ""; desktopNav.style.pointerEvents = ""; }
+        return;
+      }
+      var header = document.getElementById("siteHeader");
+      function toGrid(smooth) {
+        var top = grid.getBoundingClientRect().top + window.scrollY - (header ? header.offsetHeight : 0);
+        window.scrollTo({ top: top, behavior: smooth ? "smooth" : "auto" });
+      }
+      function closeMenu() {
+        var menu = document.getElementById("mobileMenu"), btn = document.getElementById("mobileMenuBtn");
+        if (!menu || !menu.classList.contains("open")) return;
+        menu.classList.remove("open");
+        if (btn) btn.classList.remove("open");
+        document.body.removeAttribute("data-menu-open");
+        if (!document.body.getAttribute("data-lightbox-open")) document.body.style.overflow = "";
+      }
+
+      document.querySelectorAll('a[data-face="' + heroFace + '"]').forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          e.preventDefault();
+          closeMenu();
+          setTimeout(function () { toGrid(true); }, 60);
+        });
+      });
+
+      if (jump) {
+        history.replaceState(history.state, "", location.pathname + location.search);
+        setTimeout(function () {
+          toGrid(false);
+          requestAnimationFrame(function () {
+            html.style.transition = "opacity 0.2s ease";
+            html.style.opacity = "1";
+            setTimeout(function () { html.style.opacity = ""; html.style.transition = ""; }, 250);
+          });
+        }, 200);
+      }
+
+      if (desktopNav) desktopNav.style.transition = "opacity 0.4s ease";
+      function heroShown(on) {
+        html.classList.toggle("hero-in-view", on);
+        if (desktopNav) { desktopNav.style.opacity = on ? "0" : "1"; desktopNav.style.pointerEvents = on ? "none" : "auto"; }
+      }
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) { heroShown(en.intersectionRatio > 0.1); });
+        }, { threshold: [0, 0.1] }).observe(hero);
+      } else {
+        heroShown(false);
+      }
+
+      var link = hero.querySelector(".face-hero-link");
+      if (link) link.addEventListener("click", function (e) {
+        var item = grid.querySelector('#bookGallery a[href="' + link.getAttribute("href") + '"]');
+        if (item) { e.preventDefault(); item.click(); }
+      });
+    });
+  })();
+</script>

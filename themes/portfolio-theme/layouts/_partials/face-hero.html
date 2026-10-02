@@ -1,0 +1,47 @@
+{{/* FACE HERO — the top of a face's front page (params.faces in hugo.toml): Oeuvre for Han
+     (han.andrada.one), Photography for Odi (odi.andrada.one). Laid out exactly like the home page's
+     hero (hero-style.html): one image on the left, the staggered menu on the right, the grid below.
+     The face's own menu entry and scrolling down lead to the grid; clicking the image opens it in
+     the page's own popup, like a grid item (behaviour: faces.html).
+     Call: partial "face-hero.html" (dict "face" "odi" "items" $photos) — items in grid order. */}}
+{{ $face := .face }}
+{{ $cfg := index site.Params.faces $face }}
+{{ $pick := "" }}
+{{ with $cfg.hero }}{{ with where $.items "Params.id" "eq" . }}{{ $pick = index . 0 }}{{ end }}{{ end }}
+{{ if and (not $pick) (eq $face "odi") }}
+  {{ with where $.items "Params.collection" "eq" "Ambiguous" }}{{ $pick = index . 0 }}{{ end }}
+{{ end }}
+{{ if not $pick }}{{ with $.items }}{{ $pick = index . 0 }}{{ end }}{{ end }}
+
+{{ with $pick }}
+{{ $src := "" }}{{ $dimsKey := "" }}{{ $alt := "" }}
+{{ if eq $face "odi" }}
+  {{ $src = partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
+  {{ $dimsKey = .Params.image }}
+  {{ $alt = printf "%s, photograph" .Title }}
+{{ else }}
+  {{ $src = printf "%s/cover.jpg" .Params.imageBase }}
+  {{ $dimsKey = $src }}
+  {{ $alt = .Title }}
+{{ end }}
+<section class="face-hero face-hero--{{ $face }} mb-14" data-face="{{ $face }}">
+  <div class="homepage-wrapper">
+    <div class="homepage-layout">
+      <div class="hp-left">
+        <a href="{{ .RelPermalink }}" class="hp-image-link face-hero-link">
+          <img src="{{ $src }}" alt="{{ $alt }}" class="hp-image"{{ partial "imgdims.html" $dimsKey }} />
+        </a>
+      </div>
+      {{ partial "hero-nav.html" . }}
+    </div>
+  </div>
+</section>
+{{ partial "hero-style.html" . }}
+{{ partial "jsonld/face-site.html" $face }}
+<style>
+  /* The page's own title + filters cluster is pinned to the screen: it waits until the hero has
+     scrolled away (html.hero-in-view, set by faces.html), as the header menu does on the home page. */
+  .book-page-header { transition: opacity 0.4s ease, visibility 0.4s; }
+  html.hero-in-view .book-page-header { opacity: 0; visibility: hidden; pointer-events: none; }
+</style>
+{{ end }}

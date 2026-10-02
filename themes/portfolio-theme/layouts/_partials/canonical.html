@@ -1,0 +1,18 @@
+{{/* A page's one real address (params.faces in hugo.toml). On andrada.one: a face's front page is
+     https://<key>.andrada.one/, a page in a face's section lives on that subdomain, the hub (Links)
+     is https://andrada.one/, everything else https://andrada.one/<path>. Used by <link
+     rel=canonical>, og:url, every JSON-LD "url" and the sitemap, so they always agree.
+     Usage: partial "canonical.html" $page */}}
+{{ $p := . }}
+{{ $u := $p.Permalink }}
+{{ $dom := site.Params.face_domain }}
+{{ if and $dom (eq (urls.Parse site.BaseURL).Host $dom) }}
+  {{ $rel := $p.RelPermalink }}
+  {{ $relN := strings.TrimSuffix "/" $rel }}
+  {{ if eq $relN (strings.TrimSuffix "/" site.Params.hub) }}{{ $u = printf "https://%s/" $dom }}{{ end }}
+  {{ range $k, $f := site.Params.faces }}
+    {{ if eq $rel $f.page }}{{ $u = printf "https://%s.%s/" $k $dom }}
+    {{ else if and $f.section (eq $p.Section $f.section) }}{{ $u = printf "https://%s.%s%s" $k $dom $rel }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ return $u }}

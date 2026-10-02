@@ -139,21 +139,47 @@ Since Oct 2026 the site is dark-only: `params.light_mode = false` in `hugo.toml`
 `html.dark` (ignoring any saved `theme: light`) and leaves the toggle button out of the header. All the light-theme
 CSS and the toggle code in `main.ts` are kept on purpose: set `light_mode = true` to bring the toggle back.
 
-## Domain, discoverability, metadata
+## Domain: andrada.one, one person, three faces (Oct 2026)
 
-`handrada.com` is the canonical domain (the artist also signs as Han’drada; `alternateName`
-covers `Han’drada`/`Han'drada`/`Handrada`). `louisandrada.com` and both `www.` hosts
-301 to it via `netlify.toml` — they used to serve the site in parallel, which split
-ranking signals. `hugo.toml` `baseURL` must stay in sync with that choice.
+`andrada.one` is the one domain (`hugo.toml` `baseURL`). Louis, Han and Odi are one person; each name owns part
+of the work and has its own subdomain, which opens on a home-page-style hero (one image + the staggered menu,
+the grid below; scrolling or the face's own menu entry leads to the grid):
 
-- ONE name at a time (Oct 2026; Louis found "Louis Andrada (Han’drada)" crowded). Titles, `og:title`/`site_name`,
-  the WebSite JSON-LD `name` and visible `[data-artist-name]` spans show a single name from `params.names` in
-  `hugo.toml` (default `name_default = "han"` → Han’drada, which crawlers see). The name follows the door:
-  louisandrada.com's 301 adds `?name=louis`; a head script in `baseof.html` reads `?name=`, strips it from the
-  address bar, keeps it for the visit (sessionStorage `artist-name`, kept on internal clicks/reload/back) and
-  falls back to the default on any outside arrival. Search terms can't drive it: engines don't pass them on.
-  Meta descriptions, keywords, `author`, the Person node and `creditText` deliberately keep BOTH names (that's
-  where "Louis Andrada" searches still match). New visible name text: `<span data-artist-name>`.
+| address | page (Hugo) | owner name |
+|---|---|---|
+| `louis.andrada.one/` | `/` (artworks home), section `artworks` | Louis Andrada |
+| `han.andrada.one/` | `/oeuvre/` (+ `face-hero.html`), section `oeuvre` | Han’drada |
+| `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi |
+| `andrada.one/` | `/links/` (the hub: every name, every door) | all three |
+
+- Config: `params.faces` / `params.names` / `hub` / `face_domain` in `hugo.toml`. Helpers: `_partials/face-url.html`
+  (a face's front-page address), `canonical.html` (a page's ONE address), `page-name.html` (its owner name).
+- Routing: `static/_redirects` (Netlify reads it before `netlify.toml`): 200 rewrites serve each subdomain's front
+  page; a section asked for on the wrong host, and every old `handrada.com` / `louisandrada.com` address (both
+  kept registered, auto-renew ON), 301 to its one address in one hop. www → bare.
+- Every page's canonical, `og:url`, JSON-LD `url`s and `sitemap.xml` (custom template) use `canonical.html`:
+  section pages live on their face's subdomain, the Links page is `https://andrada.one/`, everything else
+  (About, Inquiry, Archive, License…) on `andrada.one`. Same site on every host; canonical prevents duplicates.
+- Menus (`hero-nav.html`, header): Artworks/Oeuvre/Photography → the face's subdomain + `#artworks-section` /
+  `#oeuvre` / `#photography` (opens at the grid); Links → `andrada.one`; About/Inquiry/Archive stay relative
+  (the visitor keeps their face). `faces.html` = the Han/Odi front-page behaviour (scroll to grid, header menu and
+  the pinned title+filters wait while the hero shows, hero image opens in the popup).
+- Off andrada.one (`hugo server`, a draft deploy) `face-url.html`/`canonical.html` fall back to local paths, so local
+  work never jumps to the live site — the subdomain behaviour only exists in production.
+- sessionStorage is per subdomain, so `storageSet` in `header.html` also writes a cookie on `domain=andrada.one`:
+  the intro door plays once per visit, not once per face.
+- Each face's front page declares its own WebSite (`jsonld/face-site.html`) so Google can show its own site name.
+- ONE name at a time (Louis found "Louis Andrada (Han’drada)" crowded). Titles, `og:title`/`site_name` and visible
+  `[data-artist-name]` spans show a single name: the owner of the page's section (`page-name.html`), else
+  `name_default` (louis). In the browser a face subdomain always shows its own name (About on odi. says Odi); on
+  bare andrada.one `?name=<key>` picks it for the visit (stripped from the address bar, sessionStorage
+  `artist-name`). Search terms can't drive anything: engines don't pass them on. Meta descriptions, keywords,
+  `author`, the Person node and `creditText` deliberately keep BOTH names (that's where name searches still match).
+- History: louisandrada.com → handrada.com (Sep 2026, after serving both in parallel split ranking signals) →
+  andrada.one (Oct 2026).
+
+## Discoverability, metadata
+
 - Per-page `<title>`/description/`og:image` are computed in `baseof.html` from front
   matter (artworks get medium+size+year, books their subtitle+page count, photographs
   id+collection). Archive photos have NO text by Louis's choice (Oct 2026): no title/comment, only year and
@@ -170,9 +196,9 @@ ranking signals. `hugo.toml` `baseURL` must stay in sync with that choice.
   intentionally NOT shown as visible links anywhere.
 - `static/robots.txt` allows every crawler (incl. AI) explicitly; `llms.txt` +
   `llms-full.txt` hand LLMs the whole corpus. Update the book list in `llms.txt` when
-  books change (its links are absolute `/oeuvre/...` URLs).
+  books change (its links are absolute `https://han.andrada.one/oeuvre/...` URLs).
 - `npm run deploy` ends with `npm run notify-search-engines` (IndexNow → Bing/Yandex/etc.,
-  changed URLs only, state in gitignored `.indexnow-state.json`). Google doesn't use
+  changed URLs only, one submission per host, state in gitignored `.indexnow-state.json`). Google doesn't use
   IndexNow; it relies on `sitemap.xml`. The old `bing.com/ping` endpoint is dead (410).
 - `sanitize()` in `baseof.html` strips `.book-text-body` from the fog-stack clones —
   that DOM is cloned ~5x, and the transcript has no business being in a blurred copy.

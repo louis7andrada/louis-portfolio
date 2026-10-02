@@ -1,0 +1,16 @@
+{{/* The front-page address of a face ("louis", "han", "odi") or of the hub ("hub"); see
+     params.faces in hugo.toml. On andrada.one (production baseURL): https://<key>.andrada.one/ and
+     https://andrada.one/. Anywhere else (hugo server, a draft deploy) the plain local page
+     ("/", "/oeuvre/", "/photography/", "/links/"), so local work never jumps to the live site.
+     Usage: partial "face-url.html" "odi" */}}
+{{ $dom := site.Params.face_domain }}
+{{ $live := and $dom (eq (urls.Parse site.BaseURL).Host $dom) }}
+{{ $u := "" }}
+{{ if eq . "hub" }}
+  {{ $u = site.Params.hub }}
+  {{ if $live }}{{ $u = printf "https://%s/" $dom }}{{ end }}
+{{ else }}
+  {{ $u = (index site.Params.faces .).page }}
+  {{ if $live }}{{ $u = printf "https://%s.%s/" . $dom }}{{ end }}
+{{ end }}
+{{ return $u }}

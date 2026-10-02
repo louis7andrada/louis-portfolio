@@ -12,14 +12,12 @@
 directory = "netlify/functions"
 
 # ─────────────────────────────────────────────────────────────────────────
-# One site, one hostname. louisandrada.com and handrada.com were both
-# serving the full site with a 200 — to a crawler that reads as two
-# competing copies of everything, splitting ranking signals between them
-# and leaving neither authoritative. handrada.com is the canonical host
-# (it matches the artist name Han’drada, and is already Netlify's primary),
-# so the other one hands its traffic and its accumulated authority over
-# with a permanent redirect. `force = true` makes this win even though a
-# real file exists at the requested path.
+# DOMAINS live in static/_redirects (Netlify reads it before these rules):
+# andrada.one is the one domain since Oct 2026 — the hub at andrada.one/, the
+# faces on louis. / han. / odi.andrada.one — and handrada.com and
+# louisandrada.com (kept registered) send every old address there in one hop.
+# Every page also names its one real address in <link rel=canonical>, so
+# serving the same site on several hosts never reads as competing copies.
 # ─────────────────────────────────────────────────────────────────────────
 # ─────────────────────────────────────────────────────────────────────────
 # The Oeuvre section used to live at /books/. Those URLs were already
@@ -38,27 +36,6 @@ directory = "netlify/functions"
   from = "/books/*"
   to = "/oeuvre/:splat"
   status = 301
-
-# ?name=louis: people who came in through louisandrada.com see the site as
-# "Louis Andrada" instead of the default Han’drada (params.names in hugo.toml;
-# the page reads it and removes it from the address bar; canonical stays clean).
-[[redirects]]
-  from = "https://louisandrada.com/*"
-  to = "https://handrada.com/:splat?name=louis"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.louisandrada.com/*"
-  to = "https://handrada.com/:splat?name=louis"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "https://www.handrada.com/*"
-  to = "https://handrada.com/:splat"
-  status = 301
-  force = true
 
 # ─────────────────────────────────────────────────────────────────────────
 # Security headers. None of these restrict crawlers/bots (including AI

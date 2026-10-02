@@ -91,10 +91,12 @@
        None of this is visible in the page body; it's all <head> metadata
        plus the browser/search-result title.
        ══════════════════════════════════════════════════════════════════════ */}}
-  {{/* $name: the ONE name shown in titles and previews (params.names, see hugo.toml);
-       the head script below swaps it for visitors who came in through another address.
+  {{/* $name: the ONE name shown in titles and previews (params.names, see hugo.toml): the owner of
+       the page's section, else the default; the head script below swaps it on a face subdomain.
        $artist: both names, kept for descriptions and author, where search engines match them. */}}
-  {{ $name := index site.Params.names site.Params.name_default }}
+  {{ $name := index site.Params.names (partial "page-name.html" .) }}
+  {{ $canonical := partial "canonical.html" . }}
+  {{ $isHub := eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}
   {{ $artist := printf "%s (%s)" site.Params.artist site.Params.artist_alt }}
   {{ $pageTitle := printf "%s — %s" .Title $name }}
   {{ $desc := site.Params.tagline }}
@@ -104,6 +106,12 @@
 
   {{ if .IsHome }}
     {{ $pageTitle = printf "%s — Paintings & Artist Books" $name }}
+    {{ $desc = site.Params.tagline }}
+
+  {{/* The hub (andrada.one): every name, no single one. */}}
+  {{ else if $isHub }}
+    {{ $names := slice }}{{ range slice "louis" "han" "odi" }}{{ $names = $names | append (index site.Params.names .) }}{{ end }}
+    {{ $pageTitle = delimit $names " · " }}
     {{ $desc = site.Params.tagline }}
 
   {{/* Only real items take the per-item branches. Section lists and the
@@ -151,31 +159,40 @@
 
   <title>{{ $pageTitle }}</title>
 
-  {{/* ONE NAME PER VISIT (params.names in hugo.toml). The name follows the door the visitor
-       came in through: ?name=<key> (louisandrada.com's redirect adds ?name=louis) picks it and
-       is removed from the address bar; it then holds while they move around the site (and on
-       reload/back). Arriving any other way (typed handrada.com, a search engine, a link from
-       another site) means the default. Swaps the tab title now, and every [data-artist-name]
-       before the page is shown (this listener runs before the fog copies are built). */}}
+  {{/* ONE NAME PER VISIT (params.names / params.faces in hugo.toml). On a face subdomain
+       (louis. / han. / odi.andrada.one) the subdomain IS the name, and the page gets html.face-<key>.
+       Anywhere else the name follows the door the visitor came in through: ?name=<key> picks it and
+       is removed from the address bar; it then holds while they move around (and on reload/back).
+       Arriving any other way means the name the page was rendered with.
+       Swaps the tab title now, and every [data-artist-name] before the page is shown (this
+       listener runs before the fog copies are built). */}}
   <script>
     (function () {
-      var names = {{ site.Params.names }}, def = {{ site.Params.name_default }}, key = null;
+      var names = {{ site.Params.names }}, pageName = {{ $name }}, faceDomain = {{ site.Params.face_domain | default "" }};
+      var key = null, face = null;
       try {
-        var url = new URL(location.href), asked = url.searchParams.get("name");
-        if (asked && names.hasOwnProperty(asked)) {
-          key = asked;
-          url.searchParams.delete("name");
-          history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+        var host = location.hostname, tail = "." + faceDomain, sub = host.slice(0, -tail.length);
+        if (faceDomain && host.length > tail.length && host.slice(-tail.length) === tail && names.hasOwnProperty(sub)) {
+          key = face = sub;
+          document.documentElement.classList.add("face-" + face);
         } else {
           var nav = performance.getEntriesByType ? performance.getEntriesByType("navigation")[0] : null;
-          var fromHere = document.referrer && new URL(document.referrer).host === location.host;
-          if (fromHere || (nav && nav.type !== "navigate")) key = sessionStorage.getItem("artist-name");
+          var fromHere = (document.referrer && new URL(document.referrer).host === location.host) || (nav && nav.type !== "navigate");
+          var url = new URL(location.href), asked = url.searchParams.get("name");
+          if (asked && names.hasOwnProperty(asked)) {
+            key = asked;
+            url.searchParams.delete("name");
+            history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+          } else if (fromHere) {
+            key = sessionStorage.getItem("artist-name");
+          }
+          if (key) sessionStorage.setItem("artist-name", key); else sessionStorage.removeItem("artist-name");
         }
-        if (key && key !== def) sessionStorage.setItem("artist-name", key); else sessionStorage.removeItem("artist-name");
       } catch (e) {}
-      if (!key || !names.hasOwnProperty(key) || key === def) return;
+      window.__face = face;
+      if (!key || !names.hasOwnProperty(key) || names[key] === pageName) return;
       var name = names[key];
-      document.title = document.title.split(names[def]).join(name);
+      document.title = document.title.split(pageName).join(name);
       document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll("[data-artist-name]").forEach(function (el) { el.textContent = name; });
       });
@@ -199,7 +216,7 @@
 
   {{/* Canonical URL. The site answers on more than one hostname, so without
        this crawlers have to guess which address is the real one. */}}
-  <link rel="canonical" href="{{ .Permalink }}">
+  <link rel="canonical" href="{{ $canonical }}">
   {{- if or (eq .Kind "404") .Params.noindex }}
   <meta name="robots" content="noindex">
   {{- end }}
@@ -213,7 +230,7 @@
   <meta property="og:title" content="{{ $pageTitle }}" />
   <meta property="og:description" content="{{ $desc }}" />
   <meta property="og:type" content="{{ $ogType }}" />
-  <meta property="og:url" content="{{ .Permalink }}" />
+  <meta property="og:url" content="{{ $canonical }}" />
   <meta property="og:site_name" content="{{ $name }}" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="{{ $ogImage }}" />
@@ -306,6 +323,7 @@
   {{ if ne .Params.hideHeader true }}
   <div id="headerMirrorEcho" aria-hidden="true" inert></div>
   {{ partial "header.html" . }}
+  {{ partial "faces.html" . }}
   <div id="headerBleed" aria-hidden="true" inert><div class="edge-layer edge-core"></div><div class="edge-layer edge-mid"></div><div class="edge-layer edge-far"></div></div>
   {{ end }}
   {{ partial "zoom-controls.html" . }}
