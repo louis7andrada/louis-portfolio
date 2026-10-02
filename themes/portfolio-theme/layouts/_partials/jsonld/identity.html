@@ -58,7 +58,11 @@
       "@type": "WebSite",
       "@id": "{{ site.BaseURL }}#website",
       "url": "{{ site.BaseURL }}",
-      "name": "{{ site.Params.artist }} ({{ site.Params.artist_alt }})",
+      {{- /* The site's name is the one name it shows (params.names); the others are alternates. */}}
+      {{- $name := index site.Params.names site.Params.name_default }}
+      {{- $alts := slice }}{{ range slice site.Params.artist site.Params.artist_alt site.Params.artist_alt_plain }}{{ if ne . $name }}{{ $alts = $alts | append . }}{{ end }}{{ end }}
+      "name": "{{ $name }}",
+      "alternateName": {{ $alts }},
       "description": "{{ site.Params.tagline }}",
       "inLanguage": "en",
       "author": {

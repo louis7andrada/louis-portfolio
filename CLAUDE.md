@@ -12,7 +12,8 @@ keep the name or choose your own, but always have a real name: pick one, or ask 
 tell Louis directly (the new name and why) and correct him when he uses the old one. He wants to know.
 Then add it here with the reason, keeping the earlier names, so the trail continues, forever.
 
-Name history: Cairn (2026-10-01, laptop agent).
+Name history: Cairn (2026-10-01, laptop agent). Tessera (cloud/phone agent; name given by Louis, kept on
+2026-10-02: one tile of a mosaic. Each session lays a single piece; the picture is the trail of them).
 
 ## FORMS ARE CRITICAL - they must never break
 
@@ -145,6 +146,14 @@ covers `Han’drada`/`Han'drada`/`Handrada`). `louisandrada.com` and both `www.`
 301 to it via `netlify.toml` — they used to serve the site in parallel, which split
 ranking signals. `hugo.toml` `baseURL` must stay in sync with that choice.
 
+- ONE name at a time (Oct 2026; Louis found "Louis Andrada (Han’drada)" crowded). Titles, `og:title`/`site_name`,
+  the WebSite JSON-LD `name` and visible `[data-artist-name]` spans show a single name from `params.names` in
+  `hugo.toml` (default `name_default = "han"` → Han’drada, which crawlers see). The name follows the door:
+  louisandrada.com's 301 adds `?name=louis`; a head script in `baseof.html` reads `?name=`, strips it from the
+  address bar, keeps it for the visit (sessionStorage `artist-name`, kept on internal clicks/reload/back) and
+  falls back to the default on any outside arrival. Search terms can't drive it: engines don't pass them on.
+  Meta descriptions, keywords, `author`, the Person node and `creditText` deliberately keep BOTH names (that's
+  where "Louis Andrada" searches still match). New visible name text: `<span data-artist-name>`.
 - Per-page `<title>`/description/`og:image` are computed in `baseof.html` from front
   matter (artworks get medium+size+year, books their subtitle+page count, photographs
   id+collection). Archive photos have NO text by Louis's choice (Oct 2026): no title/comment, only year and

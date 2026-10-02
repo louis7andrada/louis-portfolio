@@ -91,15 +91,19 @@
        None of this is visible in the page body; it's all <head> metadata
        plus the browser/search-result title.
        ══════════════════════════════════════════════════════════════════════ */}}
+  {{/* $name: the ONE name shown in titles and previews (params.names, see hugo.toml);
+       the head script below swaps it for visitors who came in through another address.
+       $artist: both names, kept for descriptions and author, where search engines match them. */}}
+  {{ $name := index site.Params.names site.Params.name_default }}
   {{ $artist := printf "%s (%s)" site.Params.artist site.Params.artist_alt }}
-  {{ $pageTitle := printf "%s — %s" .Title $artist }}
+  {{ $pageTitle := printf "%s — %s" .Title $name }}
   {{ $desc := site.Params.tagline }}
   {{ $ogImage := "/images/og-default.jpg" | absURL }}
   {{ $ogType := "website" }}
-  {{ $imageAlt := printf "Artwork by %s" $artist }}
+  {{ $imageAlt := printf "Artwork by %s" $name }}
 
   {{ if .IsHome }}
-    {{ $pageTitle = printf "%s — Paintings & Artist Books" $artist }}
+    {{ $pageTitle = printf "%s — Paintings & Artist Books" $name }}
     {{ $desc = site.Params.tagline }}
 
   {{/* Only real items take the per-item branches. Section lists and the
@@ -110,42 +114,73 @@
     {{ with .Params.medium }}{{ $bits = $bits | append . }}{{ end }}
     {{ with .Params.size }}{{ if ne . "Not measured" }}{{ $bits = $bits | append . }}{{ end }}{{ end }}
     {{ $detail := delimit $bits ", " }}
-    {{ $pageTitle = printf "%s (%v)%s — %s" .Title .Params.year (cond (eq $detail "") "" (printf " — %s" $detail)) $artist }}
+    {{ $pageTitle = printf "%s (%v)%s — %s" .Title .Params.year (cond (eq $detail "") "" (printf " — %s" $detail)) $name }}
     {{ $desc = printf "%s, %v.%s Original painting by %s, a Brazilian-born artist based in Toronto.%s" .Title .Params.year (cond (eq $detail "") "" (printf " %s." $detail)) $artist (cond (eq (printf "%v" .Params.availability) "Available") " Available for purchase." "") }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
-    {{ $imageAlt = printf "%s (%v), %s by %s" .Title .Params.year (default "painting" .Params.medium) $artist }}
+    {{ $imageAlt = printf "%s (%v), %s by %s" .Title .Params.year (default "painting" .Params.medium) $name }}
 
   {{ else if and (eq .Type "oeuvre") .IsPage }}
     {{ $ogType = "article" }}
     {{ $sub := .Params.description }}
-    {{ $pageTitle = printf "%s%s — A book by %s" .Title (cond (eq $sub "") "" (printf " — %s" $sub)) $artist }}
+    {{ $pageTitle = printf "%s%s — A book by %s" .Title (cond (eq $sub "") "" (printf " — %s" $sub)) $name }}
     {{ $desc = printf "%s%s — a %v-page illustrated book by %s, %v. Read the full text free online." .Title (cond (eq $sub "") "" (printf ", %s" $sub)) .Params.pageCount $artist .Params.year }}
     {{ with .Params.imageBase }}{{ $ogImage = printf "%s/cover.jpg" . }}{{ end }}
-    {{ $imageAlt = printf "Cover of %s, a book by %s" .Title $artist }}
+    {{ $imageAlt = printf "Cover of %s, a book by %s" .Title $name }}
 
   {{ else if and (eq .Type "photography") .IsPage }}
     {{ $ogType = "article" }}
     {{ $coll := .Params.collection }}
-    {{ $pageTitle = printf "%s%s — Photograph by %s" .Title (cond (eq $coll nil) "" (printf " (%s)" $coll)) $artist }}
+    {{ $pageTitle = printf "%s%s — Photograph by %s" .Title (cond (eq $coll nil) "" (printf " (%s)" $coll)) $name }}
     {{ $desc = printf "%s — a photograph by %s, %v%s." .Title $artist .Params.year (cond (eq $coll nil) "" (printf ", from the %s collection" $coll)) }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
-    {{ $imageAlt = printf "%s, photograph by %s" .Title $artist }}
+    {{ $imageAlt = printf "%s, photograph by %s" .Title $name }}
 
   {{ else if and (eq .Type "archive") .IsPage }}
     {{ $ogType = "article" }}
     {{/* Archive photos have no titles (only year + category are shown): name them by id. */}}
     {{ $t := .Title | default (printf "%s (%v)" .Params.id .Params.year) }}
-    {{ $pageTitle = printf "%s — %s" $t $artist }}
+    {{ $pageTitle = printf "%s — %s" $t $name }}
     {{ $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $artist }}
     {{ with .Params.comment }}{{ $desc = . }}{{ end }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
-    {{ $imageAlt = printf "%s — archive photograph, %s" $t $artist }}
+    {{ $imageAlt = printf "%s — archive photograph, %s" $t $name }}
 
   {{ else }}
     {{ with .Params.description }}{{ $desc = . }}{{ end }}
   {{ end }}
 
   <title>{{ $pageTitle }}</title>
+
+  {{/* ONE NAME PER VISIT (params.names in hugo.toml). The name follows the door the visitor
+       came in through: ?name=<key> (louisandrada.com's redirect adds ?name=louis) picks it and
+       is removed from the address bar; it then holds while they move around the site (and on
+       reload/back). Arriving any other way (typed handrada.com, a search engine, a link from
+       another site) means the default. Swaps the tab title now, and every [data-artist-name]
+       before the page is shown (this listener runs before the fog copies are built). */}}
+  <script>
+    (function () {
+      var names = {{ site.Params.names }}, def = {{ site.Params.name_default }}, key = null;
+      try {
+        var url = new URL(location.href), asked = url.searchParams.get("name");
+        if (asked && names.hasOwnProperty(asked)) {
+          key = asked;
+          url.searchParams.delete("name");
+          history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+        } else {
+          var nav = performance.getEntriesByType ? performance.getEntriesByType("navigation")[0] : null;
+          var fromHere = document.referrer && new URL(document.referrer).host === location.host;
+          if (fromHere || (nav && nav.type !== "navigate")) key = sessionStorage.getItem("artist-name");
+        }
+        if (key && key !== def) sessionStorage.setItem("artist-name", key); else sessionStorage.removeItem("artist-name");
+      } catch (e) {}
+      if (!key || !names.hasOwnProperty(key) || key === def) return;
+      var name = names[key];
+      document.title = document.title.split(names[def]).join(name);
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("[data-artist-name]").forEach(function (el) { el.textContent = name; });
+      });
+    })();
+  </script>
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-MSBCR3QFML"></script>
@@ -179,7 +214,7 @@
   <meta property="og:description" content="{{ $desc }}" />
   <meta property="og:type" content="{{ $ogType }}" />
   <meta property="og:url" content="{{ .Permalink }}" />
-  <meta property="og:site_name" content="{{ $artist }}" />
+  <meta property="og:site_name" content="{{ $name }}" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:image" content="{{ $ogImage }}" />
   <meta property="og:image:secure_url" content="{{ $ogImage }}" />

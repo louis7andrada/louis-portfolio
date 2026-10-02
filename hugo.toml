@@ -44,3 +44,15 @@ disableKinds = ["taxonomy", "term"]
   # Declared to search engines/AI in JSON-LD (sameAs) only — intentionally not
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"
+
+  # One name at a time (Oct 2026). The browser tab, link previews and visible
+  # text show ONE name, picked by the address the visitor came in through:
+  # handrada.com → the default below (also what search engines see);
+  # louisandrada.com → Louis Andrada (its redirect in netlify.toml adds ?name=louis).
+  # Any link can pick one with ?name=<key>, e.g. handrada.com/?name=odi.
+  # JSON-LD identity, meta descriptions and keywords keep every name, on purpose.
+  name_default = "han"
+  [params.names]
+    han = "Han’drada"
+    louis = "Louis Andrada"
+    odi = "Odi"

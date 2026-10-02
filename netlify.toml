@@ -39,15 +39,18 @@ directory = "netlify/functions"
   to = "/oeuvre/:splat"
   status = 301
 
+# ?name=louis: people who came in through louisandrada.com see the site as
+# "Louis Andrada" instead of the default Han’drada (params.names in hugo.toml;
+# the page reads it and removes it from the address bar; canonical stays clean).
 [[redirects]]
   from = "https://louisandrada.com/*"
-  to = "https://handrada.com/:splat"
+  to = "https://handrada.com/:splat?name=louis"
   status = 301
   force = true
 
 [[redirects]]
   from = "https://www.louisandrada.com/*"
-  to = "https://handrada.com/:splat"
+  to = "https://handrada.com/:splat?name=louis"
   status = 301
   force = true
 
