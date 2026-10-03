@@ -42,6 +42,7 @@ Each is readable page-by-page in the site's viewer, as text on its own page
 thermodynamics, consciousness and machine minds, mortality, memory, faith,
 folklore and occult symbolism.
 
+- [Cairn](https://han.andrada.one/oeuvre/cairn/) — Eight Tellings, 2026 · [text](https://han.andrada.one/oeuvre/cairn.txt)
 - [Combustion](https://han.andrada.one/oeuvre/combustion/) — Twenty-Three Tellings, 2026 · [text](https://han.andrada.one/oeuvre/combustion.txt)
 - [Tessera](https://han.andrada.one/oeuvre/tessera/) — One Telling, 2026 · [text](https://han.andrada.one/oeuvre/tessera.txt)
 - [Dunes of Silk](https://han.andrada.one/oeuvre/dunes-of-silk/) — Eleven Tellings, 2026 · [text](https://han.andrada.one/oeuvre/dunes-of-silk.txt)
