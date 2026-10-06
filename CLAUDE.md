@@ -166,7 +166,17 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   (About, Inquiry, Archive, License…) on `andrada.one`. Same site on every host; canonical prevents duplicates.
 - Menus (`hero-nav.html`, header): Artworks/Oeuvre/Photography → the face's subdomain + `#artworks-section` /
   `#oeuvre` / `#photography` (opens at the grid); Links → `andrada.one`; About/Inquiry/Archive stay relative
-  (the visitor keeps their face). `faces.html` = the Han/Odi front-page behaviour (scroll to grid, header menu and
+  (the visitor keeps their face). Since 2026-10-06 visitors see the three sections as **Louis / Han / Odi**
+  (menus, the section title in the pinned cluster, "Back to …" links). Labels only, by Louis's choice "for now":
+  URLs, folders, section names, ids/classes, `<title>`/meta/JSON-LD keep Artworks/Oeuvre/Photography (renaming
+  the sections themselves may come one day). The Links page keeps its own Artworks/Oeuvre/Photography list.
+  Tab titles put the name first on section/shared pages ("Odi Andrada — Photography", "ᛃᚨ Andrada — About");
+  single works keep the work first ("cxlvii (Ambiguous) — Photograph by Odi Andrada").
+- Links page (`layouts/links/list.html`): hovers shine like the header (no underline, no bold). The name stack is
+  Louis / Han / Odi with **Andrada** resting apart on Louis's line; clicking a name sends Andrada to sit after it (a fast,
+  faded drift; a plain fade under reduce motion, the site's rule), both shine, then the page opens (~0.75 s). This
+  laptop's Windows reports reduce-motion, so Louis sees the fade here. Tests: "Links page (… motion)".
+  `faces.html` = the Han/Odi front-page behaviour (scroll to grid, header menu and
   the pinned title+filters wait while the hero shows, hero image opens in the popup).
 - Off andrada.one (`hugo server`, a draft deploy) `face-url.html`/`canonical.html` fall back to local paths, so local
   work never jumps to the live site — the subdomain behaviour only exists in production.

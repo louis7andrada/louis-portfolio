@@ -69,9 +69,9 @@
     <!-- Desktop Navigation — non-home pages -->
     {{ if not .IsHome }}
     <nav id="desktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
-      <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Artworks</a>
-      <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
-      <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
+      <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Louis</a>
+      <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Han</a>
+      <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Odi</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -82,9 +82,9 @@
     <!-- HOME desktop nav — hidden while home section is visible -->
     {{ if .IsHome }}
     <nav id="homeDesktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
-      <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkHome" class="dark:text-gray-300 dark:hover:text-white nav-link-active">Artworks</a>
-      <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkHome" class="dark:text-gray-300 dark:hover:text-white">Oeuvre</a>
-      <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Photography</a>
+      <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkHome" class="dark:text-gray-300 dark:hover:text-white nav-link-active">Louis</a>
+      <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkHome" class="dark:text-gray-300 dark:hover:text-white">Han</a>
+      <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Odi</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -117,9 +117,9 @@
 
 <!-- FULLSCREEN MOBILE MENU — outside header to avoid backdrop-filter stacking context conflict -->
 <nav id="mobileMenu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
-  <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkMobile" class="block">Artworks</a>
-  <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkMobile" class="block">Oeuvre</a>
-  <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkMobile" class="block">Photography</a>
+  <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkMobile" class="block">Louis</a>
+  <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkMobile" class="block">Han</a>
+  <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkMobile" class="block">Odi</a>
   <a href="/about" class="block">About</a>
   <a href="/inquiry/" class="block">Inquiry</a>
   <a href="/archive" class="block">Archive</a>

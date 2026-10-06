@@ -99,7 +99,9 @@
   {{ $name := index site.Params.names $nameKey }}
   {{ $canonical := partial "canonical.html" . }}
   {{ $isHub := eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}
-  {{ $pageTitle := printf "%s — %s" .Title $name }}
+  {{/* Name first, then the section: "Odi Andrada — Photography", "Han’drada — Oeuvre", "ᛃᚨ Andrada — About"
+       (Louis, Oct 2026: every tab reads like the home page's). Single works keep the work first. */}}
+  {{ $pageTitle := printf "%s — %s" $name .Title }}
   {{ $desc := index site.Params.taglines $nameKey }}
   {{ $ogImage := "/images/og-default.jpg" | absURL }}
   {{ $ogType := "website" }}
@@ -224,7 +226,7 @@
 
   {{/* Feed discovery — without a link tag the RSS feed is effectively invisible. */}}
   {{ range .AlternativeOutputFormats -}}
-    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $.Title }} — {{ $name }}">
+    <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ $name }} — {{ $.Title }}">
   {{ end }}
 
   <!-- OpenGraph -->

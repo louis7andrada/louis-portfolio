@@ -1683,6 +1683,61 @@ async function main() {
     return true;
   });
 
+  // Links page (Louis, Oct 2026): hover shines like the header (no underline, no bold). Louis / Han / Odi,
+  // with Andrada resting apart on Louis's line; a click sends Andrada right after the name (a drift, or a
+  // plain fade under reduce motion), both shine, then the page changes.
+  for (const motion of ["no-preference", "reduce"]) {
+    await check(`Links page (${motion} motion): header-style hover, and a click brings Andrada to the name, both shine, then it opens`, async () => {
+      const page = await browser.newPage();
+      await page.browser.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: motion }] }, page.sessionId);
+      await page.goto(BASE_URL + "/links/");
+      await page.evaluate(`sessionStorage.setItem('intro-seen','1'); sessionStorage.removeItem('__nsTest'); true`);
+      await page.goto(BASE_URL + "/links/");
+      await new Promise((r) => setTimeout(r, 2500));
+      const mouse = async (type, x, y) => page.browser.send("Input.dispatchMouseEvent",
+        { type, x, y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+      const centre = (sel) => page.evaluate(`(function(){ var b = document.querySelector('body > main ${sel}').getBoundingClientRect(); return [b.right - 6, b.top + b.height / 2]; })()`);
+      const rest = await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); var s = m && m.querySelector('.ns-surname'), l = m && m.querySelector('.ns-1');
+        if (!s || !l) return null; var a = s.getBoundingClientRect(), b = l.getBoundingClientRect(); return { text: l.textContent, gap: a.left - b.right, ch: a.width / 7, dy: a.top - b.top }; })()`);
+      if (!rest) throw new Error("no Louis link / Andrada in the name stack");
+      if (rest.text !== "Louis") throw new Error(`first name reads "${rest.text}", not "Louis"`);
+      if (Math.abs(rest.dy) > 1 || rest.gap < rest.ch * 1.5) throw new Error(`Andrada doesn't rest on Louis's line a little apart (gap ${rest.gap.toFixed(1)}px, one character ${rest.ch.toFixed(1)}px, dy ${rest.dy})`);
+      const hoverStyle = async (sel) => { const p = await centre(sel); await mouse("mouseMoved", p[0], p[1]); await new Promise((r) => setTimeout(r, 400));
+        return page.evaluate(`(function(){ var e = document.querySelector('body > main ${sel}'), cs = getComputedStyle(e), af = getComputedStyle(e, '::after');
+          return { deco: cs.textDecorationLine, weight: cs.fontWeight, shadow: cs.textShadow, opacity: cs.opacity, after: af.content + ' ' + af.display }; })()`); };
+      for (const sel of [".links-col nav .tw-link", ".name-stack .ns-3"]) {
+        const h = await hoverStyle(sel);
+        if (h.deco !== "none") throw new Error(`hovering ${sel} underlines it (${h.deco})`);
+        if (!/^none/.test(h.after) && !/none$/.test(h.after)) throw new Error(`hovering ${sel} draws an underline bar (::after ${h.after})`);
+        const restWeight = sel.includes("tw-link") ? "400" : "700"; // the name band is bold already
+        if (h.weight !== restWeight) throw new Error(`hovering ${sel} changes its weight to ${h.weight} (the header's hover never bolds)`);
+        if (h.shadow === "none") throw new Error(`hovering ${sel} doesn't shine like the header (no glow)`);
+        if (sel.includes("ns-3") && h.opacity !== "1") throw new Error(`hovering Odi doesn't brighten it (opacity ${h.opacity})`);
+      }
+      const listWeight = await page.evaluate(`getComputedStyle(document.querySelector('body > main .links-col nav .tw-link')).fontWeight`);
+      // record the moment both shine (sessionStorage survives the page change), then click Han for real
+      await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); window.__t0 = performance.now();
+        new MutationObserver(function(){ var s = m.querySelector('.ns-surname'), l = m.querySelector('.ns-2');
+          if (!s.classList.contains('ns-shine') || !l.classList.contains('ns-shine') || sessionStorage.getItem('__nsTest')) return;
+          var a = s.getBoundingClientRect(), b = l.getBoundingClientRect();
+          sessionStorage.setItem('__nsTest', JSON.stringify({ gap: a.left - b.right, ch: a.width / 7, dy: a.top - b.top, ms: performance.now() - window.__t0 })); })
+          .observe(m, { subtree: true, attributes: true, attributeFilter: ['class'] }); return true; })()`);
+      const han = await centre(".name-stack .ns-2");
+      await mouse("mouseMoved", han[0], han[1]);
+      await mouse("mousePressed", han[0], han[1]);
+      await mouse("mouseReleased", han[0], han[1]);
+      await new Promise((r) => setTimeout(r, 1600));
+      const after = await page.evaluate(`({ path: location.pathname, rec: JSON.parse(sessionStorage.getItem('__nsTest') || 'null') })`);
+      await page.close();
+      if (listWeight !== "400") throw new Error(`list links are weight ${listWeight} at rest`);
+      if (!after.rec) throw new Error("Andrada and Han never shone together before the page changed");
+      if (Math.abs(after.rec.gap - after.rec.ch) > 2 || Math.abs(after.rec.dy) > 1) throw new Error(`Andrada didn't land one space after Han (gap ${after.rec.gap.toFixed(1)}px vs ${after.rec.ch.toFixed(1)}px, dy ${after.rec.dy})`);
+      if (after.rec.ms < 300) throw new Error(`no visible move: both shone ${Math.round(after.rec.ms)}ms after the click`);
+      if (after.path !== "/oeuvre/") throw new Error(`the click didn't open Han's page (now at ${after.path})`);
+      return true;
+    });
+  }
+
   await check("Fallback font takes the same width as AndradaMono (no reflow when the font arrives)", async () => {
     // Until AndradaMono loads, text draws in the next font of the stack. If that one is narrower
     // (the generic monospace - Consolas on Windows - is 9% narrower), lines re-wrap on the swap:

@@ -264,7 +264,7 @@ section("Books/Oeuvre section");
   if (grid === null) {
     fail("Oeuvre grid page exists (oeuvre/index.html)");
   } else {
-    assert(/>Oeuvre</.test(grid), "Books grid page has an 'Oeuvre' heading");
+    assert(/>Han</.test(grid), "Books grid page has its 'Han' heading (the Oeuvre section, shown as Han)");
     assert(grid.includes('id=booksSearchInput'), "Books grid has the search input");
     assert(grid.includes('id=bookFilterToggle'), "Books grid has the filter toggle");
     assert(grid.includes('id=bookModal'), "Books grid includes the popup-viewer modal");
@@ -300,16 +300,20 @@ section("Books/Oeuvre section");
   }
 }
 
-// ── 7. Nav: "Oeuvre" added alongside "Artworks", not replacing it ───────
-section('Nav — "Oeuvre" added alongside "Artworks"');
+// ── 7. Nav: the sections are shown by their owner names (Oct 2026) ───────
+// Artworks / Oeuvre / Photography read Louis / Han / Odi in the menus, the
+// section titles and the back links. Only the labels: URLs, folders and ids
+// keep the section names. The Links page keeps its own list as it was.
+section('Nav — sections shown as "Louis", "Han", "Odi"');
 {
   const home = readHtml("index.html");
   if (home === null) {
     fail("Home page exists for nav-rename check");
   } else {
-    assert(/>Artworks</.test(home), "Home page's own Artworks heading is unchanged");
-    assert(/>Oeuvre</.test(home), "Home page's nav also includes an Oeuvre link (to Books)");
-    assert(home.includes('href="/oeuvre/"') || home.includes("href=/oeuvre/"), "Home page links to /oeuvre/");
+    assert(/<h1[^>]*>Louis</.test(home), "Home page's section heading says Louis");
+    for (const label of ["Louis", "Han", "Odi"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
+    for (const label of ["Artworks", "Oeuvre", "Photography"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
+    assert(/href="?https:\/\/han\.andrada\.one\/#oeuvre/.test(home), "Home page's Han link opens han.andrada.one at the grid");
   }
 
   const artworkDirs = fs.existsSync(path.join(BUILD_DIR, "artworks"))
@@ -320,7 +324,7 @@ section('Nav — "Oeuvre" added alongside "Artworks"');
   for (const d of artworkDirs) {
     const html = readHtml(`artworks/${d.name}/index.html`);
     if (html === null) continue;
-    assert(html.includes("Back to Artworks"), `Artwork page "${d.name}" back-link still says "Back to Artworks"`);
+    assert(html.includes("Back to Louis"), `Artwork page "${d.name}" back-link says "Back to Louis"`);
   }
 }
 
@@ -366,7 +370,8 @@ section("Navigation sanity");
 {
   const home = readHtml("index.html");
   if (home) {
-    for (const href of ["/about/", "/inquiry/", "/archive/", "/links/", "/oeuvre/"]) {
+    // About/Inquiry/Archive stay relative; the faces and the hub are their own (sub)domains (Oct 2026).
+    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography"]) {
       assert(home.includes(`href=${href}`) || home.includes(`href="${href}"`), `Home page links to ${href}`);
     }
   }

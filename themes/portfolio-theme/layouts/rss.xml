@@ -18,7 +18,7 @@
        A face's section feed links to the face's front page (louis. for /artworks/, which only forwards there). */}}
 {{- $key := cond .IsHome site.Params.name_default (partial "page-name.html" .) }}
 {{- $name := index site.Params.names $key }}
-{{- $title := cond .IsHome $name (printf "%s — %s" .Title $name) }}
+{{- $title := cond .IsHome $name (printf "%s — %s" $name .Title) }}
 {{- $link := partial "canonical.html" . }}
 {{- if .IsHome }}{{ $link = partial "face-url.html" "hub" }}{{ end }}
 {{- range $k, $f := site.Params.faces }}{{ if and $.IsSection (eq $.Section $f.section) }}{{ $link = partial "face-url.html" $k }}{{ end }}{{ end }}
