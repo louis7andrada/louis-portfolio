@@ -1738,11 +1738,11 @@ async function main() {
     });
   }
 
-  // Links page on phones (Louis, Oct 2026): Andrada alone on top, centred; Louis / Han / Odi below in one
-  // row of equal columns; an empty line under them where Andrada lands under the clicked name; then
-  // Polymath / Toronto based. The list has no "Portfolio" any more.
+  // Links page on phones (Louis, Oct 2026): Louis / Han / Odi on top in one row of equal columns; an empty
+  // line under them where Andrada lands under the clicked name; Andrada itself centred below that line;
+  // then Polymath / Toronto based. The list has no "Portfolio" any more.
   for (const motion of ["no-preference", "reduce"]) {
-    await check(`Links page on a phone (${motion} motion): Andrada on top, the names in one row, a click brings Andrada under the name`, async () => {
+    await check(`Links page on a phone (${motion} motion): the names in one row, Andrada centred a line below, a click brings Andrada under the name`, async () => {
       const page = await browser.newPage();
       await page.setViewport(390, 844, true);
       await page.browser.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: motion }] }, page.sessionId);
@@ -1761,10 +1761,10 @@ async function main() {
       if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
       if (Math.abs(lay.s.c - lay.mc) > 2) bad.push(`Andrada is ${Math.round(lay.s.c - lay.mc)}px off centre`);
       if (lay.names.some((n) => Math.abs(n.t - lay.names[0].t) > 1)) bad.push("the names aren't on one row");
-      if (lay.names[0].t < lay.s.b) bad.push("the names aren't below Andrada");
+      if (lay.s.t < lay.names[0].t + 2 * lay.s.h - 1) bad.push("Andrada doesn't rest below the names with an empty line between");
       const widths = lay.names.map((n) => n.r - n.l);
       if (Math.max(...widths) - Math.min(...widths) > 2) bad.push(`the columns aren't equal (${widths.map(Math.round).join("/")}px)`);
-      if (lay.tagTop < lay.names[0].t + 2 * lay.s.h - 1) bad.push("no room under the names for Andrada before Polymath / Toronto based");
+      if (lay.tagTop < lay.s.b) bad.push("Polymath / Toronto based isn't below Andrada");
       if (lay.sw > lay.vw) bad.push(`the page scrolls sideways (${lay.sw}px > ${lay.vw}px)`);
       if (lay.list.join(" ") !== "Artworks Oeuvre Photography Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
       if (bad.length) { await page.close(); throw new Error(bad.join(" | ")); }

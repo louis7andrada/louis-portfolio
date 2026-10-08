@@ -13,7 +13,7 @@
          a little lighter, with the links' ink trailing off the last letters. Each name opens its
          own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography).
          The shared surname, Andrada, waits on the first line a little apart from Louis (on phones:
-         centred above the three names, which sit in one row); clicking a name sends it over to that
+         centred a line below the three names, which sit in one row); clicking a name sends it over to that
          name before the page changes (script below). Andrada itself opens andrada.one, this page. -->
     <div class="name-stack" aria-label="Louis Andrada, Han’drada and Odi Andrada">
       <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}">Andrada</a></div>
@@ -110,15 +110,15 @@
   html .links-page .name-stack a.ns-surname, html .links-page .name-stack a.ns-surname:hover { color: inherit !important; text-decoration: none; }
   .name-stack .ns-2 { padding-left: 2.6ch; opacity: 0.78; }
   .name-stack .ns-3 { padding-left: 5.2ch; opacity: 0.58; }
-  /* Phones: Andrada alone on top, centred; the first names below it in one row of equal columns
-     (as many as there are names, and each whole column is its name's tap target); then one empty
-     line, where Andrada lands under the clicked name; then Polymath / Toronto based. */
+  /* Phones: the first names in one row of equal columns (as many as there are names, and each
+     whole column is its name's tap target); then one empty line, where Andrada lands under the
+     clicked name; then Andrada itself, centred; then Polymath / Toronto based. */
   @media (max-width: 640px) {
     .links-page .name-band { flex-direction: column; align-items: center; row-gap: 0.5rem; }
-    .name-stack { flex-direction: row; flex-wrap: wrap; align-items: flex-start; width: 100%; padding-bottom: 1.18em; }
+    .name-stack { flex-direction: row; flex-wrap: wrap; align-items: flex-start; width: 100%; }
     .name-stack .ns-row { display: contents; }
-    .name-stack .ns-surname { order: -2; margin: 0 auto; }
-    .name-stack::before { content: ""; order: -1; flex: 0 0 100%; height: 0.4em; } /* the line break after Andrada */
+    .name-stack .ns-surname { order: 2; margin: 0 auto; }
+    .name-stack::before { content: ""; order: 1; flex: 0 0 100%; height: 1.18em; } /* the line break + the empty landing line */
     .name-stack .ns { flex: 1 1 0; text-align: center; padding: 0.35em 0; margin: -0.35em 0; }
   }
   .name-stack .ink { font-weight: inherit; color: inherit; }
