@@ -175,7 +175,11 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 - Links page (`layouts/links/list.html`): hovers shine like the header (no underline, no bold). The name stack is
   Louis / Han / Odi with **Andrada** resting apart on Louis's line; clicking a name sends Andrada to sit after it (a fast,
   faded drift; a plain fade under reduce motion, the site's rule), both shine, then the page opens (~0.75 s). This
-  laptop's Windows reports reduce-motion, so Louis sees the fade here. Tests: "Links page (… motion)".
+  laptop's Windows reports reduce-motion, so Louis sees the fade here. Andrada is itself a link to andrada.one (this
+  page): a click moves nothing, it shines and the page reopens. Phones (≤640px): Andrada alone on top, centred; the
+  first names below in ONE row of equal columns (any number of names); an empty line under them where Andrada lands
+  under the clicked name; then Polymath / Toronto based. The list has no "Portfolio" (removed Oct 2026). Tests:
+  "Links page …". The footer's logo and its "<name> © 2026 — All Rights Reserved" line lead to andrada.one on every page.
   `faces.html` = the Han/Odi front-page behaviour (scroll to grid, header menu and
   the pinned title+filters wait while the hero shows, hero image opens in the popup).
 - Off andrada.one (`hugo server`, a draft deploy) `face-url.html`/`canonical.html` fall back to local paths, so local

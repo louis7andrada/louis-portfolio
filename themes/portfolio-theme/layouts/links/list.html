@@ -12,10 +12,11 @@
     <!-- One person, three names: each steps in from the one above (the About page's staircase),
          a little lighter, with the links' ink trailing off the last letters. Each name opens its
          own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography).
-         The shared surname, Andrada, waits on the first line a little apart from Louis; clicking a
-         name sends it over to that name before the page changes (script below). -->
+         The shared surname, Andrada, waits on the first line a little apart from Louis (on phones:
+         centred above the three names, which sit in one row); clicking a name sends it over to that
+         name before the page changes (script below). Andrada itself opens andrada.one, this page. -->
     <div class="name-stack" aria-label="Louis Andrada, Han’drada and Odi Andrada">
-      <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><span class="ns-surname" aria-hidden="true">Andrada</span></div>
+      <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}">Andrada</a></div>
       <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
       <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
     </div>
@@ -33,7 +34,6 @@
 
       <nav class="flex flex-col items-end text-right">
         <div class="tw-header links-header">Links</div>
-        <a href="{{ partial "face-url.html" "louis" }}" class="tw-link">Po<span class="ink i0">rt</span><span class="ink i1">fo</span><span class="ink i3">l</span><span class="ink i4">i</span><span class="ink i4">o</span></a>
         <a href="{{ partial "face-url.html" "louis" }}#artworks-section" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
         <a href="{{ partial "face-url.html" "han" }}#oeuvre" class="tw-link">Oe<span class="ink i0">u</span><span class="ink i1">v</span><span class="ink i3">r</span><span class="ink i4">e</span></a>
         <a href="{{ partial "face-url.html" "odi" }}#photography" class="tw-link">Ph<span class="ink i0">ot</span><span class="ink i1">o</span><span class="ink i2">gr</span><span class="ink i3">ap</span><span class="ink i4">hy</span></a>
@@ -101,23 +101,33 @@
      wide as its name (flex-start), so the script can put Andrada right after it. */
   .name-stack { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.18; }
   .name-stack .ns, .name-stack .ns-row { white-space: nowrap; }
-  /* Andrada rests on Louis's line, a little more than a space away (~4 characters; 2 on phones,
-     where the band also keeps a gap so Andrada never touches "Polymath"). */
-  .name-stack .ns-surname { display: inline-block; margin-left: 2.5em; cursor: default; }
-  @media (max-width: 640px) {
-    .name-stack .ns-surname { margin-left: 1.24em; }
-    .name-band { column-gap: 0.75rem; }
-  }
+  /* Andrada rests on Louis's line, a little more than a space away (~4 characters). It is a link
+     too: andrada.one, this very page. */
+  .name-stack .ns-surname { display: inline-block; margin-left: 2.5em; }
   /* the names are links to the three faces, but read as the names they were
      (main.css colours every .links-page link blue with !important) */
-  html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover { color: inherit !important; text-decoration: none; }
+  html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover,
+  html .links-page .name-stack a.ns-surname, html .links-page .name-stack a.ns-surname:hover { color: inherit !important; text-decoration: none; }
   .name-stack .ns-2 { padding-left: 2.6ch; opacity: 0.78; }
   .name-stack .ns-3 { padding-left: 5.2ch; opacity: 0.58; }
+  /* Phones: Andrada alone on top, centred; the first names below it in one row of equal columns
+     (as many as there are names, and each whole column is its name's tap target); then one empty
+     line, where Andrada lands under the clicked name; then Polymath / Toronto based. */
+  @media (max-width: 640px) {
+    .links-page .name-band { flex-direction: column; align-items: center; row-gap: 0.5rem; }
+    .name-stack { flex-direction: row; flex-wrap: wrap; align-items: flex-start; width: 100%; padding-bottom: 1.18em; }
+    .name-stack .ns-row { display: contents; }
+    .name-stack .ns-surname { order: -2; margin: 0 auto; }
+    .name-stack::before { content: ""; order: -1; flex: 0 0 100%; height: 0.4em; } /* the line break after Andrada */
+    .name-stack .ns { flex: 1 1 0; text-align: center; padding: 0.35em 0; margin: -0.35em 0; }
+  }
   .name-stack .ink { font-weight: inherit; color: inherit; }
   /* Hover = the header's shine (main.css nav a:hover), at full strength even for the lighter steps.
-     A click: Andrada drifts over, then BOTH shine a little more (.ns-shine) as the page changes. */
+     A click on a first name: Andrada drifts over, then BOTH shine a little more (.ns-shine) as the
+     page changes. A click on Andrada: nothing moves, it only shines. */
   .name-stack .ns, .name-stack .ns-surname { transition: color 0.25s ease, text-shadow 0.25s ease, filter 0.25s ease, opacity 0.25s ease; }
-  .name-stack .ns:hover, .name-stack .ns:focus-visible {
+  .name-stack .ns:hover, .name-stack .ns:focus-visible,
+  .name-stack .ns-surname:hover, .name-stack .ns-surname:focus-visible {
     opacity: 1;
     filter: brightness(1.35);
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.45), 0 0 22px rgba(255, 255, 255, 0.2);
@@ -127,9 +137,10 @@
     filter: brightness(1.5) drop-shadow(0 0 6px rgba(255, 255, 255, 0.35));
     text-shadow: 0 0 12px rgba(255, 255, 255, 0.7), 0 0 26px rgba(255, 255, 255, 0.35);
   }
-  html.dark .links-page .name-stack a.ns:hover,
+  html.dark .links-page .name-stack a.ns:hover, html.dark .links-page .name-stack a.ns-surname:hover,
   html.dark .links-page .name-stack .ns-shine { color: #fff !important; }
   html:not(.dark) .name-stack .ns:hover, html:not(.dark) .name-stack .ns:focus-visible,
+  html:not(.dark) .name-stack .ns-surname:hover, html:not(.dark) .name-stack .ns-surname:focus-visible,
   html:not(.dark) .name-stack .ns-shine { filter: none; text-shadow: 0 0 10px rgba(0, 0, 0, 0.28); color: #000 !important; }
 
   /* width locked by JS once rendered so the layout never shifts */
@@ -367,14 +378,16 @@
 
 <script>
 (function () {
-  /* Clicking Louis / Han / Odi: Andrada drifts over to sit after that name (fast and faded, like a
-     cloud; diagonal for Han and Odi), both shine, then the page changes. Hover only brightens the
-     name (CSS). New-tab clicks are left alone. "Reduce motion" keeps it as a plain fade (the site's
-     rule, see the fog-in): Andrada fades out where it rests and back in after the name, no travel.
-     Scoped to body > main: the fog copies (#siteMirror) clone this markup. */
+  /* Clicking Louis / Han / Odi: Andrada drifts over to sit after that name (on phones: under it),
+     fast and faded, like a cloud; diagonal for Han and Odi. Both shine, then the page changes.
+     Clicking Andrada: nothing moves, it shines, and andrada.one (this page) opens again. Hover only
+     brightens the name (CSS). New-tab clicks are left alone. "Reduce motion" keeps it as a plain
+     fade (the site's rule, see the fog-in): Andrada fades out where it rests and back in at the
+     name, no travel. Scoped to body > main: the fog copies (#siteMirror) clone this markup. */
   var stack = document.querySelector('body > main .name-stack');
   var surname = stack && stack.querySelector('.ns-surname');
   if (!surname || !surname.animate) return;
+  var phone = window.matchMedia && matchMedia('(max-width: 640px)'); // the CSS's phone layout
   var busy = false;
 
   function reset() {
@@ -385,18 +398,37 @@
   // Back button: the browser may restore this page exactly as it was left (Andrada moved, shining).
   window.addEventListener('pageshow', function (e) { if (e.persisted) reset(); });
 
+  function plainClick(e) { return !e.defaultPrevented && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey; }
+
+  surname.addEventListener('click', function (e) {
+    if (!plainClick(e)) return;
+    e.preventDefault();
+    if (busy) return;
+    busy = true;
+    surname.classList.add('ns-shine');
+    var href = surname.href;
+    setTimeout(function () { location.href = href; }, 450);
+  });
+
   stack.querySelectorAll('a.ns').forEach(function (link) {
     link.addEventListener('click', function (e) {
-      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      if (!plainClick(e)) return;
       e.preventDefault();
       if (busy) return;
       busy = true;
       var href = link.href;
       setTimeout(function () { location.href = href; }, 1200); // the click always gets there, whatever the animation does
       var a = link.getBoundingClientRect(), s = surname.getBoundingClientRect();
-      var ch = s.width / surname.textContent.length; // one character: the font is monospaced
-      var dx = a.right + ch - s.left;
-      var dy = (link.closest('.ns-row') || link).getBoundingClientRect().top - surname.parentNode.getBoundingClientRect().top;
+      var dx, dy;
+      if (phone && phone.matches) {
+        // centred under the name, one line down (the link's padding only widens the tap target)
+        dx = a.left + a.width / 2 - (s.left + s.width / 2);
+        dy = a.top + (parseFloat(getComputedStyle(link).paddingTop) || 0) + s.height - s.top;
+      } else {
+        var ch = s.width / surname.textContent.length; // one character: the font is monospaced
+        dx = a.right + ch - s.left;
+        dy = (link.closest('.ns-row') || link).getBoundingClientRect().top - surname.parentNode.getBoundingClientRect().top;
+      }
       var to = 'translate(' + dx + 'px, ' + dy + 'px)';
       var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var drift = surname.animate(reduce ? [

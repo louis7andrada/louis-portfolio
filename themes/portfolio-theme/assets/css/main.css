@@ -1288,7 +1288,7 @@ html.reveal-reduced.reveal-pending .reveal-item-opacity-only {
 /* Cancel only what the reveal itself adds. The variants are named for the
    element's OWN property they must leave alone: -no-transform keeps its own
    transform (e.g. the footer's centred "Join the List"), -no-filter its own
-   filter, -opacity-only both (e.g. the footer logo's centring + dark invert). */
+   filter (e.g. the footer logo's dark invert), -opacity-only both. */
 html.reveal-reduced.reveal-pending .reveal-item,
 html.reveal-reduced.reveal-pending .reveal-item-no-filter { transform: none !important; }
 html.reveal-reduced.reveal-pending .reveal-item,

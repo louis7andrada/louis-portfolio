@@ -4,11 +4,12 @@
   <!--      AndradaMono Font by Louis Andrada       -->
   <!--        Codes by Louis Andrada                -->
 
-  <img src="/lalogo.png" alt="ᛃᚨ" class="footer-logo dark:invert" />
+  {{- /* The logo and the copyright line both lead home: andrada.one, the hub (the Links page). */}}
+  <a href="{{ partial "face-url.html" "hub" }}" class="footer-logo-link" aria-label="{{ site.Params.names.ja }}"><img src="/lalogo.png" alt="ᛃᚨ" class="footer-logo dark:invert" /></a>
 
   <span class="text-[13px] footer-copy">
     {{- /* The page's one name (its face, or ᛃᚨ Andrada); swapped in the browser on a face subdomain. The legal holder is on /license/. */}}
-    <span data-artist-name>{{ index site.Params.names (partial "page-name.html" .) }}</span> © {{ now.Format "2006" }} — All Rights Reserved
+    <a href="{{ partial "face-url.html" "hub" }}" class="footer-home"><span data-artist-name>{{ index site.Params.names (partial "page-name.html" .) }}</span> © {{ now.Format "2006" }} — All Rights Reserved</a>
     <span class="footer-legal"><a href="/license/">License</a> · <a href="/privacy/">Privacy</a></span>
   </span>
 
@@ -21,17 +22,22 @@
   </span>
 
 <style>
-  .footer-logo {
+  .footer-logo-link {
     position: absolute;
     left: 50%;
     top: 50%;
     /* sits directly above the centered "Join the List" button */
     transform: translate(-50%, calc(-100% - 10px));
-    height: 23px;
-    width: auto;
     opacity: 0.8;
-    pointer-events: none;
+    transition: opacity 0.15s ease, filter 0.25s ease;
   }
+  .footer-logo { display: block; height: 23px; width: auto; }
+  /* the copyright line keeps its look; hover = the header's shine */
+  .footer-home { color: inherit; text-decoration: none; transition: text-shadow 0.25s ease; }
+  .footer-home:hover, .footer-home:focus-visible { text-shadow: 0 0 10px rgba(255, 255, 255, 0.45), 0 0 22px rgba(255, 255, 255, 0.2); }
+  .footer-logo-link:hover, .footer-logo-link:focus-visible { opacity: 1; filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.35)); }
+  html:not(.dark) .footer-home:hover, html:not(.dark) .footer-home:focus-visible { text-shadow: 0 0 10px rgba(0, 0, 0, 0.28); }
+  html:not(.dark) .footer-logo-link:hover, html:not(.dark) .footer-logo-link:focus-visible { filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.25)); }
 
   @media (max-width: 640px) {
     footer { flex-direction: column; gap: 0.75rem; }
@@ -94,14 +100,13 @@
     /* On mobile the footer stacks in normal flow instead of being
        absolutely centered, so the logo instead becomes the first
        stacked item — on top of the copyright line. */
-    .footer-logo {
+    .footer-logo-link {
       position: static;
       transform: none;
       order: -1;
-      height: 21px;
       margin: 0 auto 0.15rem;
-      display: block;
     }
+    .footer-logo { height: 21px; }
   }
 </style>
 

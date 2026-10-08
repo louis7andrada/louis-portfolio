@@ -1705,7 +1705,7 @@ async function main() {
       const hoverStyle = async (sel) => { const p = await centre(sel); await mouse("mouseMoved", p[0], p[1]); await new Promise((r) => setTimeout(r, 400));
         return page.evaluate(`(function(){ var e = document.querySelector('body > main ${sel}'), cs = getComputedStyle(e), af = getComputedStyle(e, '::after');
           return { deco: cs.textDecorationLine, weight: cs.fontWeight, shadow: cs.textShadow, opacity: cs.opacity, after: af.content + ' ' + af.display }; })()`); };
-      for (const sel of [".links-col nav .tw-link", ".name-stack .ns-3"]) {
+      for (const sel of [".links-col nav .tw-link", ".name-stack .ns-3", ".name-stack .ns-surname"]) {
         const h = await hoverStyle(sel);
         if (h.deco !== "none") throw new Error(`hovering ${sel} underlines it (${h.deco})`);
         if (!/^none/.test(h.after) && !/none$/.test(h.after)) throw new Error(`hovering ${sel} draws an underline bar (::after ${h.after})`);
@@ -1737,6 +1737,118 @@ async function main() {
       return true;
     });
   }
+
+  // Links page on phones (Louis, Oct 2026): Andrada alone on top, centred; Louis / Han / Odi below in one
+  // row of equal columns; an empty line under them where Andrada lands under the clicked name; then
+  // Polymath / Toronto based. The list has no "Portfolio" any more.
+  for (const motion of ["no-preference", "reduce"]) {
+    await check(`Links page on a phone (${motion} motion): Andrada on top, the names in one row, a click brings Andrada under the name`, async () => {
+      const page = await browser.newPage();
+      await page.setViewport(390, 844, true);
+      await page.browser.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: motion }] }, page.sessionId);
+      await page.goto(BASE_URL + "/links/");
+      await page.evaluate(`sessionStorage.setItem('intro-seen','1'); sessionStorage.removeItem('__nsPhone'); true`);
+      await page.goto(BASE_URL + "/links/");
+      await new Promise((r) => setTimeout(r, 2500));
+      const lay = await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'), s = m.querySelector('.ns-surname');
+        var names = [].slice.call(m.querySelectorAll('a.ns')).map(function (a) { var r = a.getBoundingClientRect(), pt = parseFloat(getComputedStyle(a).paddingTop) || 0;
+          return { text: a.textContent, l: r.left, r: r.right, t: r.top + pt }; });
+        var sr = s.getBoundingClientRect(), mr = m.getBoundingClientRect(), tag = document.querySelector('body > main .name-band').children[1].getBoundingClientRect();
+        return { names: names, s: { c: (sr.left + sr.right) / 2, t: sr.top, b: sr.bottom, h: sr.height }, mc: (mr.left + mr.right) / 2, tagTop: tag.top,
+          list: [].map.call(document.querySelectorAll('body > main .links-col nav .tw-link'), function (a) { return a.textContent; }).slice(0, 6),
+          vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth }; })()`);
+      const bad = [];
+      if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
+      if (Math.abs(lay.s.c - lay.mc) > 2) bad.push(`Andrada is ${Math.round(lay.s.c - lay.mc)}px off centre`);
+      if (lay.names.some((n) => Math.abs(n.t - lay.names[0].t) > 1)) bad.push("the names aren't on one row");
+      if (lay.names[0].t < lay.s.b) bad.push("the names aren't below Andrada");
+      const widths = lay.names.map((n) => n.r - n.l);
+      if (Math.max(...widths) - Math.min(...widths) > 2) bad.push(`the columns aren't equal (${widths.map(Math.round).join("/")}px)`);
+      if (lay.tagTop < lay.names[0].t + 2 * lay.s.h - 1) bad.push("no room under the names for Andrada before Polymath / Toronto based");
+      if (lay.sw > lay.vw) bad.push(`the page scrolls sideways (${lay.sw}px > ${lay.vw}px)`);
+      if (lay.list.join(" ") !== "Artworks Oeuvre Photography Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
+      if (bad.length) { await page.close(); throw new Error(bad.join(" | ")); }
+      // record where Andrada is the moment both shine (sessionStorage survives the page change), then tap Odi
+      await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); window.__t0 = performance.now();
+        new MutationObserver(function(){ var s = m.querySelector('.ns-surname'), l = m.querySelector('.ns-3');
+          if (!s.classList.contains('ns-shine') || !l.classList.contains('ns-shine') || sessionStorage.getItem('__nsPhone')) return;
+          var a = s.getBoundingClientRect(), b = l.getBoundingClientRect(), pt = parseFloat(getComputedStyle(l).paddingTop) || 0;
+          sessionStorage.setItem('__nsPhone', JSON.stringify({ dx: (a.left + a.right) / 2 - (b.left + b.right) / 2, dy: a.top - (b.top + pt), h: a.height, ms: performance.now() - window.__t0 })); })
+          .observe(m, { subtree: true, attributes: true, attributeFilter: ['class'] }); return true; })()`);
+      const odi = lay.names[2];
+      const x = (odi.l + odi.r) / 2, y = odi.t + lay.s.h / 2;
+      for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+        await page.browser.send("Input.dispatchMouseEvent", { type, x, y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+      await new Promise((r) => setTimeout(r, 1600));
+      const after = await page.evaluate(`({ path: location.pathname, rec: JSON.parse(sessionStorage.getItem('__nsPhone') || 'null') })`);
+      await page.close();
+      if (!after.rec) throw new Error("Andrada and Odi never shone together before the page changed");
+      if (Math.abs(after.rec.dx) > 2 || Math.abs(after.rec.dy - after.rec.h) > 1.5) throw new Error(`Andrada didn't land under Odi (dx ${after.rec.dx.toFixed(1)}px, dy ${after.rec.dy.toFixed(1)}px vs one line ${after.rec.h.toFixed(1)}px)`);
+      if (after.rec.ms < 300) throw new Error(`no visible move: both shone ${Math.round(after.rec.ms)}ms after the tap`);
+      if (after.path !== "/photography/") throw new Error(`the tap didn't open Odi's page (now at ${after.path})`);
+      return true;
+    });
+  }
+
+  // Andrada itself is a link to andrada.one (this very page): a click moves nothing, it shines, and the page opens again.
+  for (const [w, h] of [[1440, 900], [390, 844]]) {
+    await check(`Links page (${w}px): clicking Andrada only shines it, then andrada.one opens again`, async () => {
+      const page = await browser.newPage();
+      await page.setViewport(w, h, w < 640);
+      await page.goto(BASE_URL + "/links/");
+      await page.evaluate(`sessionStorage.setItem('intro-seen','1'); sessionStorage.removeItem('__nsA'); true`);
+      await page.goto(BASE_URL + "/links/");
+      await new Promise((r) => setTimeout(r, 2500));
+      const s = await page.evaluate(`(function(){ var s = document.querySelector('body > main .name-stack .ns-surname'); if (!s) return null;
+        var b = s.getBoundingClientRect(); window.__samePage = 1;
+        new MutationObserver(function(){ if (!s.classList.contains('ns-shine') || sessionStorage.getItem('__nsA')) return;
+          var c = s.getBoundingClientRect(); sessionStorage.setItem('__nsA', JSON.stringify({ dx: c.left - b.left, dy: c.top - b.top })); })
+          .observe(s, { attributes: true, attributeFilter: ['class'] });
+        return { tag: s.tagName, href: s.getAttribute('href'), x: b.left + b.width / 2, y: b.top + b.height / 2 }; })()`);
+      if (!s) { await page.close(); throw new Error("no Andrada in the name stack"); }
+      if (s.tag !== "A" || !["/links/", "https://andrada.one/"].includes(s.href)) { await page.close(); throw new Error(`Andrada is a <${s.tag}> to "${s.href}", not a link to andrada.one`); }
+      for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+        await page.browser.send("Input.dispatchMouseEvent", { type, x: s.x, y: s.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+      await new Promise((r) => setTimeout(r, 1500));
+      const after = await page.evaluate(`({ path: location.pathname, reloaded: window.__samePage === undefined, rec: JSON.parse(sessionStorage.getItem('__nsA') || 'null') })`);
+      await page.close();
+      if (!after.rec) throw new Error("Andrada never shone after the click");
+      if (Math.abs(after.rec.dx) > 0.5 || Math.abs(after.rec.dy) > 0.5) throw new Error(`Andrada moved (${after.rec.dx}, ${after.rec.dy}) - it should only shine`);
+      if (after.path !== "/links/" || !after.reloaded) throw new Error(`the click didn't open andrada.one again (at ${after.path}, reloaded ${after.reloaded})`);
+      return true;
+    });
+  }
+
+  // Footer (Louis, Oct 2026): the small logo above "Join the List" and the "<name> © 2026 — All Rights Reserved"
+  // line both open andrada.one, on every page.
+  await check("Footer: the logo and the copyright line open andrada.one (desktop and phone)", async () => {
+    const bad = [];
+    for (const [w, h] of [[1440, 900], [390, 844]]) {
+      for (const sel of [".footer-logo", ".footer-home"]) {
+        const page = await browser.newPage();
+        await page.setViewport(w, h, w < 640);
+        await page.goto(BASE_URL + "/about/");
+        await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+        await page.goto(BASE_URL + "/about/");
+        await page.evaluate(`document.querySelector('#footerWrap > footer').scrollIntoView({ block: 'end' })`);
+        await new Promise((r) => setTimeout(r, 1500));
+        const p = await page.evaluate(`(function(){ var el = document.querySelector('#footerWrap > footer ${sel}'); if (!el) return null;
+          var b = el.getBoundingClientRect(), x = b.left + b.width / 2, y = b.top + b.height / 2, hit = document.elementFromPoint(x, y), a = hit && hit.closest('a');
+          return { x: x, y: y, href: a ? a.getAttribute('href') : null, text: el.textContent.trim() }; })()`);
+        if (!p) { bad.push(`${w}px: no ${sel}`); await page.close(); continue; }
+        if (!["/links/", "https://andrada.one/"].includes(p.href)) { bad.push(`${w}px: ${sel} leads to ${p.href}`); await page.close(); continue; }
+        for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+          await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+        await new Promise((r) => setTimeout(r, 1200));
+        const path = await page.evaluate(`location.pathname`);
+        await page.close();
+        if (path !== "/links/") bad.push(`${w}px: clicking ${sel} landed on ${path}`);
+        if (sel === ".footer-home" && !/© \d{4} — All Rights Reserved$/.test(p.text)) bad.push(`${w}px: the copyright link reads "${p.text}"`);
+      }
+    }
+    if (bad.length) throw new Error(bad.join(" | "));
+    return true;
+  });
 
   await check("Fallback font takes the same width as AndradaMono (no reflow when the font arrives)", async () => {
     // Until AndradaMono loads, text draws in the next font of the stack. If that one is narrower
