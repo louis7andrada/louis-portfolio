@@ -147,8 +147,12 @@
 
   {{ else if and (eq .Type "vestments") .IsPage }}
     {{ $ogType = "article" }}
-    {{ $pageTitle = printf "%s — Vestment by %s" .Title $name }}
-    {{ $desc = printf "%s — a vestment by %s, %v." .Title $name .Params.year }}
+    {{/* "i (Shirt) — Vestment by L'"; "i — a long-sleeve shirt by L', 2026." */}}
+    {{ $kind := "" }}{{ $what := "vestment" }}
+    {{ with .Params.garment }}{{ $kind = printf " (%s)" . }}{{ $what = lower . }}{{ end }}
+    {{ $pageTitle = printf "%s%s — Vestment by %s" .Title $kind $name }}
+    {{ with .Params.sleeve }}{{ $what = printf "%s-sleeve %s" (lower .) $what }}{{ end }}
+    {{ $desc = printf "%s — a %s by %s, %v." .Title $what $name .Params.year }}
     {{/* The PNG is transparent; link previews get a JPEG on the site's own black instead of white. */}}
     {{ with .Params.image }}{{ $ogImage = partial "img-url.html" (dict "src" . "width" 1200 "format" "jpg" "bg" "#0c0c0c") | absURL }}{{ end }}
     {{ $imageAlt = printf "%s, vestment by %s" .Title $name }}

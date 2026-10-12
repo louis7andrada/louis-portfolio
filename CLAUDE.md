@@ -141,11 +141,13 @@ cache files that start with `HTTP/2.0 404` and rebuild; check the built page has
 
 `/vestments/` (`content/vestments/`, `layouts/vestments/`) is a copy of Photography for clothes, owned by **L'**
 (`params.names.l = "L'"`, face `l` → `l.andrada.one`). Visitors see "L'" (menus, pinned title, "Back to L'", ©,
-tab titles "L' — Vestments", "i — Vestment by L'"); the section itself stays Vestments. Same ids/classes as Photography;
-no Filters yet (nothing to split by). Each image is the garment alone on a TRANSPARENT background: grid = Hugo WebP
+tab titles "L' — Vestments", "i (Shirt) — Vestment by L'"); the section itself stays Vestments. Same ids/classes as
+Photography. Filters (Louis, 2026-10-11): Category / Type / Sleeves from front matter `category` ("Tops"), `garment`
+("Shirt" = a button-up, his "camisa social"; "T-shirt"; "Henley") and `sleeve` ("Long"/"Short"), set BY HAND per page;
+each group lists the values in use. Never call the field `type` (Hugo reserves it for the layout). Each image is the garment alone on a TRANSPARENT background: grid = Hugo WebP
 (keeps alpha), popup/fullscreen = the 1600px PNG untouched, link previews = a JPEG flattened on #0c0c0c
 (`img-url.html` "bg"). `image-dims.py` keeps alpha in the 8px fog previews (else the fog paints dark rectangles).
-L' has no logo yet: its pages show Jera Ansuz at once (`LOGOS.l = "new"` in header.html). New logo → add it like Odi's.
+L''s logo is `static/llogo.png` (+ white `llogoinvert.png`; drawing in `private/logo-drawings/l.png`), 2026-10-11.
 
 ### Adding vestments
 
@@ -158,6 +160,7 @@ L' has no logo yet: its pages show Jera Ansuz at once (`LOGOS.l = "new"` in head
    redrawn smooth, edge colours are cleaned (no grey floor fringe on the black site), stray fragments dropped.
    Full-size cutouts land in `private/vestments-cutouts/` and are never redone (fix one by hand if needed). Writes
    `vestments-images/vestmentN.png` and `content/vestments/vestmentN.md` (numbered by date taken, roman titles).
+   Then set `garment` and `sleeve` in each NEW page by looking at it (re-runs keep them; new pages get category Tops).
    LOOK at every cutout's neck brightened ~2x on black before publishing: that's where flaws hide.
 3. Upload `vestments-images/*` to `vestments/` in the images repo, then `python scripts/image-dims.py`.
 
@@ -226,9 +229,9 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   page's head has only its own name, unique titles/descriptions (noindex pages may share) and valid JSON-LD.
 - Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`).
 - Header logo (`header.html`): every page load shows the page's OWN logo — louis. → Louis Andrada (`old`, logoold.png),
-  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), andrada.one → Andrada (`andrada`,
+  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), andrada.one → Andrada (`andrada`,
   andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's
-  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi. New logo from a
+  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L'. New logo from a
   black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
 - A new face needs, before its deploy: a Cloudflare DNS record (CNAME `<key>` → `louisandrada.netlify.app`, proxied)
   AND a Netlify domain alias (`netlify api updateSite`, site `louisandrada`). There is no wildcard record.

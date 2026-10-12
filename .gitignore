@@ -106,3 +106,6 @@ Thumbs.db
 .indexnow-state.json
 # Commit last deployed by npm run deploy (local to this machine)
 .last-deploy
+
+# Python bytecode caches
+__pycache__/

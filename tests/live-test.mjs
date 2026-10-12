@@ -294,14 +294,14 @@ async function main() {
     return true;
   });
 
-  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / Andrada), then turns into Jera Ansuz", async () => {
+  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / L' / Andrada), then turns into Jera Ansuz", async () => {
     const page = await browser.newPage();
     const active = `document.getElementById('logoMorphWrap')?.getAttribute('data-active')`;
     // Locally there are no subdomains, so the page's section decides (Artworks home = Louis "old",
     // Oeuvre = Han "ha", Photography = Odi Andrada "odi", Links and shared pages = Andrada "andrada";
-    // Vestments = L', which has no logo of its own yet, so it opens on Jera Ansuz itself).
+    // Vestments = L' "l").
     // The first stop can include the intro door (~4s) + entrance (900ms) + hold (3200ms): poll.
-    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/vestments/vestment1/", "new", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
+    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/vestments/vestment1/", "l", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
       await page.goto(BASE_URL + path);
       const shown = await page.evaluate(active);
       if (shown !== logo) throw new Error(`${path} opened on "${shown}", not its own logo "${logo}"`);
@@ -342,6 +342,40 @@ async function main() {
 
   // The menus open each face at its grid with a hash (louis.andrada.one/#artworks-section, han./#oeuvre,
   // odi./#photography, l./#vestments). The page must scroll to the grid and drop the hash: the address bar shows the bare face.
+  // Vestments (L', Oct 2026): Filters by Category / Type / Sleeves, built from the pages' own values.
+  await check("Vestments: Filters narrow the grid by Type and Sleeves, show the choice, and Deselect all brings everything back", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/vestments/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/vestments/");
+    await new Promise((r) => setTimeout(r, 1500));
+    const shown = `[].filter.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (i) { return i.style.display !== 'none'; }).length`;
+    const pick = (key, value) => page.evaluate(`document.querySelector('body > main #bookFilterOverlay [data-filter="${key}"][data-value="${value}"]').click(); true`);
+    const problems = [];
+    const all = await page.evaluate(shown);
+    if (all < 2) problems.push(`only ${all} vestment(s) on the page`);
+    const groups = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookFilterOverlay .artwork-filter-group-label'), function (g) { return g.textContent.trim(); }).join(",")`);
+    if (groups !== "Category,Type,Sleeves") problems.push(`filter groups read "${groups}"`);
+    await page.evaluate(`document.querySelector('body > main #bookFilterToggle').click(); true`);
+    if (!(await page.evaluate(`document.querySelector('body > main #bookFilterOverlay').classList.contains('open')`))) problems.push("Filters didn't open");
+    await pick("garment", "t-shirt");
+    const tees = await page.evaluate(shown);
+    const wanted = await page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item[data-garment="T-shirt"]').length`);
+    if (tees !== wanted || tees === 0) problems.push(`Type T-shirt shows ${tees}, expected ${wanted}`);
+    const tag = await page.evaluate(`document.querySelector('body > main #activeBookFilterTags').textContent`);
+    if (!/Type\s*T-shirt/.test(tag)) problems.push(`the active tag reads "${tag}"`);
+    await pick("sleeve", "long");
+    const both = await page.evaluate(shown);
+    const wantedBoth = await page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item[data-garment="T-shirt"][data-sleeve="Long"]').length`);
+    if (both !== wantedBoth) problems.push(`T-shirt + Long shows ${both}, expected ${wantedBoth}`);
+    await page.evaluate(`document.querySelector('body > main #bookFilterResetBtn').click(); true`);
+    const back = await page.evaluate(shown);
+    if (back !== all) problems.push(`Deselect all shows ${back} of ${all}`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
   await check("Menu links that open a face at its grid scroll there and leave no #hash in the address bar", async () => {
     const page = await browser.newPage();
     const problems = [];

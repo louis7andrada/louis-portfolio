@@ -13,6 +13,10 @@ For every photo in the folder it:
      transparent, sRGB, NO metadata: iPhone photos carry GPS) and the page
      content/vestments/vestmentN.md (title in lowercase roman numerals, like Photography).
 
+The Filters read three fields set BY HAND in each page (re-runs keep them): category (e.g.
+"Tops"), garment ("Shirt", "T-shirt", "Henley" …; not `type`, which Hugo reserves) and sleeve
+("Long" / "Short"). New pages get category "Tops" and empty garment/sleeve: fill them in.
+
 Numbering follows the date the photo was taken (EXIF), oldest = vestment1 / i. Pages already
 in content/vestments/ keep their number (matched by `source`, the original file name).
 
@@ -142,8 +146,11 @@ def cut_out(im, clicks, sessions):
     return Image.fromarray(out[y0:y1, x0:x1], "RGBA")
 
 
+FIELDS = ("category", "garment", "sleeve")  # set by hand, kept on re-runs
+
+
 def existing():
-    """original name (e.g. IMG_0823) -> order, from the pages already written."""
+    """original name (e.g. IMG_0823) -> (order, {field: value}), from the pages already written."""
     known = {}
     for md in glob.glob(os.path.join(CONTENT, "*.md")):
         if md.endswith("_index.md"):
@@ -152,7 +159,8 @@ def existing():
         src = re.search(r'^source:\s*"([^"]+)"', text, re.M)
         order = re.search(r"^order:\s*(\d+)", text, re.M)
         if src and order:
-            known[src.group(1)] = int(order.group(1))
+            fields = {k: m.group(1) for k in FIELDS if (m := re.search(rf'^{k}:\s*"([^"]*)"', text, re.M))}
+            known[src.group(1)] = (int(order.group(1)), fields)
     return known
 
 
@@ -176,10 +184,10 @@ def main():
     photos.sort()
 
     known = existing()
-    next_order = max(known.values(), default=0) + 1
+    next_order = max((o for o, _ in known.values()), default=0) + 1
     sessions = {}
     for date, name, path in photos:
-        order = known.get(name)
+        order, fields = known.get(name, (None, {"category": "Tops", "garment": "", "sleeve": ""}))
         if order is None:
             order, next_order = next_order, next_order + 1
         vid = f"vestment{order}"
@@ -195,7 +203,8 @@ def main():
         year = date[:4] if date[:4].isdigit() and date[0] != "9" else "2026"
         with open(os.path.join(CONTENT, f"{vid}.md"), "w", encoding="utf-8", newline="\n") as f:
             f.write(f'---\nid: "{vid}"\ntitle: "{roman(order)}"\norder: {order}\nyear: {year}\n'
-                    f'source: "{name}"\nimage: "{IMAGE_BASE}/{vid}.png"\n---\n')
+                    + "".join(f'{k}: "{fields.get(k, "")}"\n' for k in FIELDS)
+                    + f'source: "{name}"\nimage: "{IMAGE_BASE}/{vid}.png"\n---\n')
         print(f"{vid:>11}  {roman(order):>6}  {name}  {date[:10]}")
 
 

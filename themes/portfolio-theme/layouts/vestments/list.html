@@ -3,8 +3,9 @@
 {{/* Vestments (L', l.andrada.one): a copy of the Photography page (photography/list.html) —
      same pinned title + search, scatter grid, popup and fullscreen, and it keeps the same
      ids/classes (#books-section, .book-page-header, .book-modal, body.page-books) so main.css
-     and the fog-mirror exclusions in baseof.html apply unchanged. No Filters yet: there is
-     nothing to split the pieces by (add a field and copy Photography's Collections group).
+     and the fog-mirror exclusions in baseof.html apply unchanged. Filters: Category (Tops …),
+     Type (front matter `garment`: Shirt, T-shirt, Henley …) and Sleeves (Long / Short), each
+     group built from the values the pages actually use, so a new kind of piece adds itself.
      Each image is a garment cut out on a transparent background (scripts/ingest-vestments.py).
      Titles are lowercase roman numerals (i, ii …), ids vestment1, vestment2 …; `order` is the
      number (higher shows first). */}}
@@ -23,8 +24,42 @@
         <svg class="book-search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         <input type="text" id="booksSearchInput" class="book-search-input" placeholder="...">
       </div>
+      <button id="bookFilterToggle" class="artwork-filter-toggle">
+        <span class="filter-label">Filters</span>
+        <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
+      </button>
+      <div id="activeBookFilterTags" class="artwork-active-tags"></div>
     </div>
   </div>
+
+  <!-- Outside .book-page-header on purpose: that header has a transform, which
+       would make this position:fixed overlay relative to it instead of the screen. -->
+  <div id="bookFilterOverlay" class="artwork-filter-overlay">
+      <div class="artwork-filter-inner">
+        <div class="artwork-filter-left-col">
+          <div class="artwork-filter-toggle filter-spacer" aria-hidden="true">
+            <span class="filter-label">Filters</span>
+            <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
+          </div>
+          <button id="bookFilterResetBtn" class="artwork-filter-reset-btn">DESELECT ALL</button>
+        </div>
+        <div class="artwork-filter-columns">
+          {{ range $g := slice (dict "key" "category" "label" "Category") (dict "key" "garment" "label" "Type") (dict "key" "sleeve" "label" "Sleeves") }}
+          <div class="artwork-filter-group">
+            <div class="artwork-filter-group-label">{{ $g.label }}</div>
+            <div class="artwork-filter-options">
+              <button class="artwork-filter-option active" data-filter="{{ $g.key }}" data-value="all">All</button>
+              {{ $vals := slice }}
+              {{ range $photos }}{{ with index .Params $g.key }}{{ $vals = $vals | append . }}{{ end }}{{ end }}
+              {{ range sort (uniq $vals) }}
+              <button class="artwork-filter-option" data-filter="{{ $g.key }}" data-value="{{ lower . }}">{{ . }}</button>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
 
   <div id="bookGallery" class="aw-grid">
     {{ range $i, $page := $photos }}
@@ -33,6 +68,9 @@
        data-idx="{{ $i }}"
        data-year="{{ $page.Params.year }}"
        data-title="{{ $page.Title }}"
+       data-category="{{ $page.Params.category | default "" }}"
+       data-garment="{{ $page.Params.garment | default "" }}"
+       data-sleeve="{{ $page.Params.sleeve | default "" }}"
        data-src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1600 "keep" true) }}">
       {{/* the popup/fullscreen show the 1600px PNG itself; the grid a 1200px WebP (keeps the transparency),
            q90 like Photography: black fabric shows compression as much as night photos do */}}
@@ -63,6 +101,8 @@
         <div class="sp-info-top">
           <h2 class="sp-title" id="photoModalTitle"></h2>
           <p id="photoModalYear"></p>
+          <p id="photoModalGarment"></p>
+          <p id="photoModalSleeve"></p>
         </div>
       </div>
 
@@ -317,16 +357,40 @@ html.dark .book-modal-bg { background: var(--glass-modal); }
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput  = document.getElementById("booksSearchInput");
+  const filterToggle = document.getElementById("bookFilterToggle");
+  const filterBar    = document.getElementById("bookFilterBar");
+  const overlay      = document.getElementById("bookFilterOverlay");
+  const resetBtn     = document.getElementById("bookFilterResetBtn");
+  const tagsEl       = document.getElementById("activeBookFilterTags");
   const items        = Array.from(document.querySelectorAll(".aw-item"));
 
+  const KEYS = ["category", "garment", "sleeve"];
+  const LABELS = { category: "Category", garment: "Type", sleeve: "Sleeves" };
+  let active = { category: "all", garment: "all", sleeve: "all" };
   let query = "";
+  const val = (item, key) => (item.dataset[key] || "").toLowerCase();
 
   function applyFilters() {
     items.forEach(item => {
-      const matchesQuery = !query || (item.dataset.title || "").toLowerCase().includes(query);
-      item.style.display = matchesQuery ? "" : "none";
+      const matchesFilters = KEYS.every(k => active[k] === "all" || val(item, k) === active[k]);
+      // the search box matches the title and every field ("shirt", "short", "tops" …)
+      const text = [item.dataset.title, ...KEYS.map(k => item.dataset[k])].join(" ").toLowerCase();
+      const matchesQuery = !query || text.includes(query);
+      item.style.display = (matchesFilters && matchesQuery) ? "" : "none";
     });
     window._artworkLayout?.();
+  }
+
+  function renderTags() {
+    tagsEl.innerHTML = "";
+    KEYS.forEach(key => {
+      if (active[key] === "all") return;
+      const btn = document.querySelector(`#bookFilterOverlay [data-filter="${key}"][data-value="${active[key]}"]`);
+      const group = document.createElement("div"); group.className = "artwork-active-tag-group";
+      const label = document.createElement("span"); label.className = "artwork-active-tag-label"; label.textContent = LABELS[key];
+      const value = document.createElement("span"); value.className = "artwork-active-tag-value"; value.textContent = btn ? btn.textContent : active[key];
+      group.appendChild(label); group.appendChild(value); tagsEl.appendChild(group);
+    });
   }
 
   if (searchInput) {
@@ -336,8 +400,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ── POPUP — one vestment, with prev/next through whatever the search
-     currently shows (same as the Photography popup). ── */
+  function openOverlay() {
+    overlay.classList.add("open");
+    filterToggle.classList.add("open");
+    filterBar.classList.add("filter-open");
+    document.body.classList.add("filter-lock");
+  }
+  function closeOverlay() {
+    overlay.classList.remove("open");
+    filterToggle.classList.remove("open");
+    filterBar.classList.remove("filter-open");
+    document.body.classList.remove("filter-lock");
+  }
+
+  overlay?.addEventListener("click", (e) => { if (e.target === overlay) closeOverlay(); });
+  filterToggle?.addEventListener("click", () => {
+    overlay.classList.contains("open") ? closeOverlay() : openOverlay();
+  });
+
+  document.querySelectorAll("#bookFilterOverlay .artwork-filter-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.filter;
+      document.querySelectorAll(`#bookFilterOverlay [data-filter="${key}"]`).forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      active[key] = btn.dataset.value;
+      applyFilters();
+      renderTags();
+    });
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    active = { category: "all", garment: "all", sleeve: "all" };
+    document.querySelectorAll("#bookFilterOverlay .artwork-filter-option").forEach(b => b.classList.toggle("active", b.dataset.value === "all"));
+    applyFilters();
+    renderTags();
+  });
+
+  /* ── POPUP — one vestment, with prev/next through whatever the filters and
+     search currently show (same as the Photography popup). ── */
   const modal     = document.getElementById("photoModal");
   const modalImg  = document.getElementById("photoModalImg");
   const prevBtn   = document.getElementById("photoPrevBtn");
@@ -366,6 +466,8 @@ document.addEventListener("DOMContentLoaded", () => {
     modalImg.alt = (d.title || "") + ", vestment";
     document.getElementById("photoModalTitle").textContent = d.title || "";
     setField("photoModalYear", d.year);
+    setField("photoModalGarment", d.garment);
+    setField("photoModalSleeve", d.sleeve ? d.sleeve + " sleeves" : "");
     const list = shown(), i = list.indexOf(item);
     prevBtn.style.display = i > 0 ? "flex" : "none";
     nextBtn.style.display = i >= 0 && i < list.length - 1 ? "flex" : "none";

@@ -6,8 +6,7 @@
   <!--       Codes by Louis Andrada                -->
 
   <!-- Left: Logo — always visible. Every page load shows the page's OWN logo first (louis. → Louis
-       Andrada "old", han. → Han Andrada "ha", odi. → Odi Andrada "odi", andrada.one → Andrada "andrada";
-       l. has no logo of its own yet, so L' pages show Jera Ansuz at once),
+       Andrada "old", han. → Han Andrada "ha", odi. → Odi Andrada "odi", l. → L' "l", andrada.one → Andrada "andrada"),
        then it turns into Jera Ansuz ("new", lalogo.png) — see startHeaderLogoSequence below. -->
   {{- /* The logo owner as rendered: the face that owns this page's section or front page, "hub" on the
          Links page. In the browser a face subdomain (window.__face) wins, as it does for the name. */ -}}
@@ -20,6 +19,7 @@
       <img src="/lalogo.png" alt="ᛃᚨ Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
       <img src="/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
       <img src="/odiandradalogo.png" alt="Odi Andrada Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
+      <img src="/llogo.png" alt="L' Logo" id="logoL" class="logo-img logo-l" data-logo="l">
       <img src="/andradalogo.png" alt="Andrada Logo" id="logoAndrada" class="logo-img logo-andrada" data-logo="andrada">
     </div>
   </a>
@@ -53,7 +53,7 @@
 
       // The page's own logo: the face subdomain, else the page's owner as rendered, else the name the
       // visitor came in with (?name=, baseof.html), else the hub's Andrada.
-      var LOGOS = { louis: "old", han: "ha", odi: "odi", l: "new", ja: "andrada", hub: "andrada" }; // l: no logo yet
+      var LOGOS = { louis: "old", han: "ha", odi: "odi", l: "l", ja: "andrada", hub: "andrada" };
       var who = window.__face || {{ $logoOwner }} || window.__nameKey || "hub";
       var pageLogo = LOGOS[who] || "andrada";
       wrap.setAttribute("data-page-logo", pageLogo);
@@ -144,6 +144,7 @@
     <img src="/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
     <img src="/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
     <img src="/odiandradalogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi Andrada" />
+    <img src="/llogo.png" id="introLogoL" class="intro-logo-img intro-logo-l" data-logo="l" alt="L'" />
     <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
   </div>
 </div>
@@ -238,16 +239,18 @@
     width: 2rem;
   }
 
-  /* Odi Andrada / Andrada — drawn on the same 3240x1440 canvas, side-trimmed by scripts/make-logo.py
-     (2686 and 2231 px wide): drawn at halogo's scale, so the box is halogo's width times that share. */
+  /* Odi Andrada / Andrada / L' — drawn on the same 3240x1440 canvas, side-trimmed by scripts/make-logo.py
+     (2686, 2231 and 1016 px wide): drawn at halogo's scale, so the box is halogo's width times that share. */
   .logo-odi     { height: 2.5rem; width: calc(7rem * 0.8290); }
   .logo-andrada { height: 2.5rem; width: calc(7rem * 0.6886); }
+  .logo-l       { height: 2.5rem; width: calc(7rem * 0.3136); }
 
   @media (max-width: 767px) {
     .logo-old, .logo-ha { height: 2rem; width: 5.5rem; }
     .logo-new { height: 2rem; width: 2rem; }
     .logo-odi     { height: 2rem; width: calc(5.5rem * 0.8290); }
     .logo-andrada { height: 2rem; width: calc(5.5rem * 0.6886); }
+    .logo-l       { height: 2rem; width: calc(5.5rem * 0.3136); }
   }
 
   /* ── DARK MODE (header logo) ── */
@@ -278,7 +281,7 @@
     cursor: pointer;
   }
 
-  /* The logos step through in sequence (new → andrada → old → ha → odi); JS toggles
+  /* The logos step through in sequence (new → andrada → old → ha → odi → l); JS toggles
      .active on whichever is current — same pattern as the header logo. */
   .intro-logo-img {
     position: absolute;
@@ -305,6 +308,7 @@
   .intro-logo-old,
   .intro-logo-ha,
   .intro-logo-odi,
+  .intro-logo-l,
   .intro-logo-andrada { height: 100%; } /* signatures on the 1440px-tall canvas — span the full wrap */
 
   /* Final stage: whichever logo is active morphs away (bigger blur/scale,
@@ -576,7 +580,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!logoMorphWrap) return;
 
     // Every page load: the page's own logo (put in place before paint by the inline script next to the
-    // logo: Louis / Han / Odi Andrada / Andrada), then it turns into Jera Ansuz and stays.
+    // logo: Louis / Han / Odi Andrada / L' / Andrada), then it turns into Jera Ansuz and stays.
     const STATE_KEY = "headerLogoState"; // set once the entrance has played this visit
     const JERA = "new";                  // lalogo.png
     const isFirstRun = !storageGet(STATE_KEY);
@@ -624,12 +628,12 @@ document.addEventListener("DOMContentLoaded", () => {
       door.style.display = "none";
       startHeaderLogoSequence();
     } else {
-      // Every logo/name steps through here (Jera Ansuz → Andrada → Louis → Han → Odi). The door
+      // Every logo/name steps through here (Jera Ansuz → Andrada → Louis → Han → Odi → L'). The door
       // always takes about the same time (LOGO_BUDGET for the logos, then the
       // dissolve), so each new logo makes every step a little quicker instead
       // of making the door longer. To add a logo: add its <img> above and its
       // name to INTRO_STEPS; the timings below rescale themselves.
-      const INTRO_STEPS         = ["new", "andrada", "old", "ha", "odi"];
+      const INTRO_STEPS         = ["new", "andrada", "old", "ha", "odi", "l"];
       // The 3-logo door's timings (1100 first hold, 900 morphs, 350 between,
       // 700 final hold = 3950ms) set the proportions and the budget.
       const LOGO_BUDGET         = 3950;

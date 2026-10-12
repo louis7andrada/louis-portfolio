@@ -43,6 +43,14 @@
           <p>{{ . }}</p>
         {{ end }}
 
+        {{ with .Params.garment }}
+          <p>{{ . }}</p>
+        {{ end }}
+
+        {{ with .Params.sleeve }}
+          <p>{{ . }} sleeves</p>
+        {{ end }}
+
         {{ with .Params.comment }}
           <p class="photo-comment">{{ . }}</p>
         {{ end }}
