@@ -145,6 +145,14 @@
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s, photograph by %s" .Title $name }}
 
+  {{ else if and (eq .Type "vestments") .IsPage }}
+    {{ $ogType = "article" }}
+    {{ $pageTitle = printf "%s — Vestment by %s" .Title $name }}
+    {{ $desc = printf "%s — a vestment by %s, %v." .Title $name .Params.year }}
+    {{/* The PNG is transparent; link previews get a JPEG on the site's own black instead of white. */}}
+    {{ with .Params.image }}{{ $ogImage = partial "img-url.html" (dict "src" . "width" 1200 "format" "jpg" "bg" "#0c0c0c") | absURL }}{{ end }}
+    {{ $imageAlt = printf "%s, vestment by %s" .Title $name }}
+
   {{ else if and (eq .Type "archive") .IsPage }}
     {{ $ogType = "article" }}
     {{/* Archive photos have no titles (only year + category are shown): name them by id. */}}
@@ -162,7 +170,7 @@
   <title>{{ $pageTitle }}</title>
 
   {{/* ONE NAME PER VISIT (params.names / params.faces in hugo.toml). On a face subdomain
-       (louis. / han. / odi.andrada.one) the subdomain IS the name, and the page gets html.face-<key>.
+       (louis. / han. / odi. / l.andrada.one) the subdomain IS the name, and the page gets html.face-<key>.
        Anywhere else the name follows the door the visitor came in through: ?name=<key> picks it and
        is removed from the address bar; it then holds while they move around (and on reload/back).
        Arriving any other way means the name the page was rendered with.
@@ -311,7 +319,7 @@
 
 </head>
 
-<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") }}page-books{{ end }}">
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") }}page-books{{ end }}">
 
   <!-- ══════════════════════════════════════════════════════
        SITE MIRROR — a vertically-flipped, color-inverted,

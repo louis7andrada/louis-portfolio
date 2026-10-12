@@ -137,13 +137,37 @@ FOREVER (`getresource` maxAge -1, in `%LOCALAPPDATA%/hugo_cache/louis-portfolio/
 in that window silently falls back to the full-size originals (`img-url.html` returns the raw URL). Fix: delete the
 cache files that start with `HTTP/2.0 404` and rebuild; check the built page has no `src=https://raw.githubusercontent`.
 
+## Vestments section (L', Oct 2026)
+
+`/vestments/` (`content/vestments/`, `layouts/vestments/`) is a copy of Photography for clothes, owned by **L'**
+(`params.names.l = "L'"`, face `l` → `l.andrada.one`). Visitors see "L'" (menus, pinned title, "Back to L'", ©,
+tab titles "L' — Vestments", "i — Vestment by L'"); the section itself stays Vestments. Same ids/classes as Photography;
+no Filters yet (nothing to split by). Each image is the garment alone on a TRANSPARENT background: grid = Hugo WebP
+(keeps alpha), popup/fullscreen = the 1600px PNG untouched, link previews = a JPEG flattened on #0c0c0c
+(`img-url.html` "bg"). `image-dims.py` keeps alpha in the 8px fog previews (else the fog paints dark rectangles).
+L' has no logo yet: its pages show Jera Ansuz at once (`LOGOS.l = "new"` in header.html). New logo → add it like Odi's.
+
+### Adding vestments
+
+1. Originals go in `private/vestments-originals/` (gitignored). For each photo with a hanger, add SAM clicks to
+   `private/vestments-originals/hangers.json` (points on the upright photo: `pos` on hook/arch/any bar showing,
+   `neg` on fabric/floor next to it; one group per separate piece of hanger). Render a gridded crop to pick them.
+2. `python scripts/ingest-vestments.py private/vestments-originals` (needs `pip install "rembg[cpu]"
+   opencv-python-headless`; ~1 GB of models on first run; a venv is fine). BiRefNet cuts the garment out, SAM finds the
+   hanger, the hanger is cut away over the floor and painted over with fabric over the garment, the edge there is
+   redrawn smooth, edge colours are cleaned (no grey floor fringe on the black site), stray fragments dropped.
+   Full-size cutouts land in `private/vestments-cutouts/` and are never redone (fix one by hand if needed). Writes
+   `vestments-images/vestmentN.png` and `content/vestments/vestmentN.md` (numbered by date taken, roman titles).
+   LOOK at every cutout's neck brightened ~2x on black before publishing: that's where flaws hide.
+3. Upload `vestments-images/*` to `vestments/` in the images repo, then `python scripts/image-dims.py`.
+
 ## Dark mode only
 
 Since Oct 2026 the site is dark-only: `params.light_mode = false` in `hugo.toml` makes `baseof.html` always add
 `html.dark` (ignoring any saved `theme: light`) and leaves the toggle button out of the header. All the light-theme
 CSS and the toggle code in `main.ts` are kept on purpose: set `light_mode = true` to bring the toggle back.
 
-## Domain: andrada.one, one person, three faces (Oct 2026)
+## Domain: andrada.one, one person, four faces (Oct 2026)
 
 `andrada.one` is the one domain (`hugo.toml` `baseURL`). Louis, Han and Odi are one person; each name owns part
 of the work and has its own subdomain, which opens on a home-page-style hero (one image + the staggered menu,
@@ -154,6 +178,7 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 | `louis.andrada.one/` | `/` (artworks home), section `artworks` | Louis Andrada |
 | `han.andrada.one/` | `/oeuvre/` (+ `face-hero.html`), section `oeuvre` | Han’drada |
 | `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi Andrada |
+| `l.andrada.one/` | `/vestments/` (+ `face-hero.html`), section `vestments` | L' |
 | `andrada.one/` | `/links/` (the hub: every name, every door) + the shared pages | ᛃᚨ Andrada |
 
 - Config: `params.faces` / `params.names` / `hub` / `face_domain` in `hugo.toml`. Helpers: `_partials/face-url.html`
@@ -205,6 +230,8 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's
   owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi. New logo from a
   black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
+- A new face needs, before its deploy: a Cloudflare DNS record (CNAME `<key>` → `louisandrada.netlify.app`, proxied)
+  AND a Netlify domain alias (`netlify api updateSite`, site `louisandrada`). There is no wildcard record.
 - TLS depends on Cloudflare: every andrada.one DNS record is orange (proxied), and Netlify has NO certificate of its
   own for these hosts (it serves `*.netlify.app`); visitors get Cloudflare's `*.andrada.one` certificate. Cloudflare's
   SSL mode must stay **Full**: Netlify redirects plain HTTP to HTTPS here, so "Flexible" loops forever, and

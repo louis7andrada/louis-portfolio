@@ -27,6 +27,8 @@ static/images/books/
 static/images/photography/
 # Photography web copies, staged for upload to the images repo (scripts/ingest-photography.py)
 photography-images/
+# Vestments web copies, same (scripts/ingest-vestments.py)
+vestments-images/
 
 # =========================
 # Private files — never publish (this repo is public)

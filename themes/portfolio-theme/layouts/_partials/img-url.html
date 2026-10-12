@@ -6,6 +6,8 @@
   Usage: {{ partial "img-url.html" (dict "src" .Params.image "width" 800) }}
   Optional "format": "webp" (default) or "jpg" (for link previews).
   Optional "quality": 1-100 (default 80).
+  Optional "bg": a colour ("#0c0c0c") that transparent images are flattened onto
+  when the format has no transparency (jpg) - Vestments' link previews.
   Optional "keep": true publishes the original file untouched (no re-encoding)
   when it is no wider than "width" - for images that are already web-sized
   JPEGs (Photography: 1600px q80), where a second lossy pass only adds blotches.
@@ -18,6 +20,7 @@
 {{- $format := .format | default "webp" -}}
 {{- $quality := .quality | default 80 -}}
 {{- $keep := .keep | default false -}}
+{{- $bg := .bg | default "" -}}
 {{- $out := $src -}}
 {{- if and $src (strings.HasSuffix $src "/inprogress.jpeg") -}}
   {{- /* shared "in progress" placeholder: small already, keep as is */ -}}
@@ -31,6 +34,7 @@
       {{- if eq .MediaType.MainType "image" -}}
         {{- $img := . | images.Filter images.AutoOrient -}}
         {{- $opts := printf "%s q%d" $format $quality -}}
+        {{- with $bg }}{{ $opts = printf "%s %s" $opts . }}{{ end -}}
         {{- if and $keep (le .Width $width) -}}
           {{- $out = .RelPermalink -}}
         {{- else if gt $img.Width $width -}}

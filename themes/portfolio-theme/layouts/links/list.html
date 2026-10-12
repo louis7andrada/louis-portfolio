@@ -9,16 +9,18 @@
 <section class="links-page flex flex-col items-center pt-4 pb-4 px-4 sm:px-10">
 
   <div class="name-band w-full flex justify-between items-start mt-2">
-    <!-- One person, three names: each steps in from the one above (the About page's staircase),
+    <!-- One person, four names: each steps in from the one above (the About page's staircase),
          a little lighter, with the links' ink trailing off the last letters. Each name opens its
-         own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography).
+         own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography),
+         l.andrada.one (Vestments).
          The shared surname, Andrada, waits on the first line a little apart from Louis (on phones:
-         centred a line below the three names, which sit in one row); clicking a name sends it over to that
+         centred a line below the first names, which sit in one row); clicking a name sends it over to that
          name before the page changes (script below). Andrada itself opens andrada.one, this page. -->
-    <div class="name-stack" aria-label="Louis Andrada, Han’drada and Odi Andrada">
+    <div class="name-stack" aria-label="Louis Andrada, Han’drada, Odi Andrada and L'">
       <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}">Andrada</a></div>
       <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
       <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
+      <a href="{{ partial "face-url.html" "l" }}" class="ns ns-4" aria-label="{{ site.Params.names.l }}" title="{{ site.Params.names.l }}">L<span class="ink i4">'</span></a>
     </div>
     <div class="flex gap-6 md:gap-10">
       <span>Polymath</span>
@@ -37,6 +39,7 @@
         <a href="{{ partial "face-url.html" "louis" }}#artworks-section" class="tw-link">Ar<span class="ink i0">t</span><span class="ink i1">w</span><span class="ink i2">o</span><span class="ink i3">rk</span><span class="ink i4">s</span></a>
         <a href="{{ partial "face-url.html" "han" }}#oeuvre" class="tw-link">Oe<span class="ink i0">u</span><span class="ink i1">v</span><span class="ink i3">r</span><span class="ink i4">e</span></a>
         <a href="{{ partial "face-url.html" "odi" }}#photography" class="tw-link">Ph<span class="ink i0">ot</span><span class="ink i1">o</span><span class="ink i2">gr</span><span class="ink i3">ap</span><span class="ink i4">hy</span></a>
+        <a href="{{ partial "face-url.html" "l" }}#vestments" class="tw-link">Ve<span class="ink i0">s</span><span class="ink i1">t</span><span class="ink i2">m</span><span class="ink i3">en</span><span class="ink i4">ts</span></a>
         <a href="/inquiry/" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
         <a href="/archive/" class="tw-link">Ar<span class="ink i0">c</span><span class="ink i1">h</span><span class="ink i2">i</span><span class="ink i3">v</span><span class="ink i4">e</span></a>
         <a href="/about/" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
@@ -97,19 +100,20 @@
   }
   .dark .name-band { color: #ececec; }
 
-  /* Louis / Han / Odi: a staircase, each name a step in and a shade lighter. Each link is only as
+  /* Louis / Han / Odi / L': a staircase, each name a step in and a shade lighter. Each link is only as
      wide as its name (flex-start), so the script can put Andrada right after it. */
   .name-stack { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.18; }
   .name-stack .ns, .name-stack .ns-row { white-space: nowrap; }
   /* Andrada rests on Louis's line, a little more than a space away (~4 characters). It is a link
      too: andrada.one, this very page. */
   .name-stack .ns-surname { display: inline-block; margin-left: 2.5em; }
-  /* the names are links to the three faces, but read as the names they were
+  /* the names are links to the faces, but read as the names they were
      (main.css colours every .links-page link blue with !important) */
   html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover,
   html .links-page .name-stack a.ns-surname, html .links-page .name-stack a.ns-surname:hover { color: inherit !important; text-decoration: none; }
   .name-stack .ns-2 { padding-left: 2.6ch; opacity: 0.78; }
   .name-stack .ns-3 { padding-left: 5.2ch; opacity: 0.58; }
+  .name-stack .ns-4 { padding-left: 7.8ch; opacity: 0.42; }
   /* Phones: the first names in one row of equal columns (as many as there are names, and each
      whole column is its name's tap target); then one empty line, where Andrada lands under the
      clicked name; then Andrada itself, centred; then Polymath / Toronto based. */
@@ -378,8 +382,8 @@
 
 <script>
 (function () {
-  /* Clicking Louis / Han / Odi: Andrada drifts over to sit after that name (on phones: under it),
-     fast and faded, like a cloud; diagonal for Han and Odi. Both shine, then the page changes.
+  /* Clicking Louis / Han / Odi / L': Andrada drifts over to sit after that name (on phones: under it),
+     fast and faded, like a cloud; diagonal for Han, Odi and L'. Both shine, then the page changes.
      Clicking Andrada: nothing moves, it shines, and andrada.one (this page) opens again. Hover only
      brightens the name (CSS). New-tab clicks are left alone. "Reduce motion" keeps it as a plain
      fade (the site's rule, see the fog-in): Andrada fades out where it rests and back in at the

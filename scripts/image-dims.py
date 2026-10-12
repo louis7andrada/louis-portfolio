@@ -58,9 +58,11 @@ def collect_urls():
 
 
 def tiny(im):
-    """8px-wide preview (as a data: URI) the background fog uses instead of the real image."""
+    """8px-wide preview (as a data: URI) the background fog uses instead of the real image.
+    Transparent images (Vestments cutouts) keep their transparency: dropping it would paint
+    a dark rectangle in the fog instead of the garment's shape."""
     im.draft("RGB", (64, 64))
-    im = im.convert("RGB")
+    im = im.convert("RGBA" if im.mode in ("RGBA", "LA", "PA") or "transparency" in im.info else "RGB")
     im.thumbnail((8, 8), Image.LANCZOS)
     buf = io.BytesIO()
     im.save(buf, "PNG", optimize=True)

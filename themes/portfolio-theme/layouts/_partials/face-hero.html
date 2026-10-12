@@ -1,5 +1,6 @@
 {{/* FACE HERO — the top of a face's front page (params.faces in hugo.toml): Oeuvre for Han
-     (han.andrada.one), Photography for Odi (odi.andrada.one). Laid out exactly like the home page's
+     (han.andrada.one), Photography for Odi (odi.andrada.one), Vestments for L' (l.andrada.one).
+     Laid out exactly like the home page's
      hero (hero-style.html): one image on the left, the staggered menu on the right, the grid below.
      The face's own menu entry and scrolling down lead to the grid; clicking the image opens it in
      the page's own popup, like a grid item (behaviour: faces.html).
@@ -15,10 +16,10 @@
 
 {{ with $pick }}
 {{ $src := "" }}{{ $dimsKey := "" }}{{ $alt := "" }}
-{{ if eq $face "odi" }}
+{{ if eq $face "odi" "l" }}
   {{ $src = partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
   {{ $dimsKey = .Params.image }}
-  {{ $alt = printf "%s, photograph" .Title }}
+  {{ $alt = printf "%s, %s" .Title (cond (eq $face "l") "vestment" "photograph") }}
 {{ else }}
   {{ $src = printf "%s/cover.jpg" .Params.imageBase }}
   {{ $dimsKey = $src }}

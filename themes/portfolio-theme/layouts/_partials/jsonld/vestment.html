@@ -1,0 +1,45 @@
+{{/* A vestment from the Vestments section (/vestments/<slug>/, L').
+
+     Same shape as photograph.html, typed as a CreativeWork with "Vestment" as its genre.
+     Credited to the same …/#person entity as everything else on the site. */}}
+{{ $person := printf "%s#person" site.BaseURL }}
+{{/* Credited to the page's one name (L'); copyright to the legal entity. */}}
+{{ $who := index site.Params.names (partial "page-name.html" .) }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "@id": "{{ partial "canonical.html" . }}#work",
+  "name": "{{ .Title }}",
+  "url": "{{ partial "canonical.html" . }}",
+  "genre": "Vestment",
+  "license": "{{ "/license/" | absURL }}",
+  {{ with .Params.year }}"dateCreated": "{{ . }}",
+  {{ end }}"creator": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ $who }}"
+  },
+  "copyrightHolder": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.legal_name }}"
+  },
+  {{ with .Params.image }}"image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ . }}",
+    "creditText": "{{ $who }}",
+    "copyrightNotice": "© {{ site.Params.legal_name }}",
+    "creator": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ $who }}"
+    },
+    "license": "{{ "/license/" | absURL }}",
+    "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
+  },
+  {{ end }}"isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  }
+}
+</script>
