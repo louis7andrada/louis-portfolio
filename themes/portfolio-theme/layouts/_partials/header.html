@@ -243,14 +243,15 @@
      (2686, 2231 and 1016 px wide): drawn at halogo's scale, so the box is halogo's width times that share. */
   .logo-odi     { height: 2.5rem; width: calc(7rem * 0.8290); }
   .logo-andrada { height: 2.5rem; width: calc(7rem * 0.6886); }
-  .logo-l       { height: 2.5rem; width: calc(7rem * 0.3136); }
+  /* L' fills more of its canvas than the others (ink 84% of the height vs ~70%): 0.85 matches them by eye */
+  .logo-l       { height: calc(2.5rem * 0.85); width: calc(7rem * 0.3136 * 0.85); }
 
   @media (max-width: 767px) {
     .logo-old, .logo-ha { height: 2rem; width: 5.5rem; }
     .logo-new { height: 2rem; width: 2rem; }
     .logo-odi     { height: 2rem; width: calc(5.5rem * 0.8290); }
     .logo-andrada { height: 2rem; width: calc(5.5rem * 0.6886); }
-    .logo-l       { height: 2rem; width: calc(5.5rem * 0.3136); }
+    .logo-l       { height: calc(2rem * 0.85); width: calc(5.5rem * 0.3136 * 0.85); }
   }
 
   /* ── DARK MODE (header logo) ── */
@@ -308,8 +309,8 @@
   .intro-logo-old,
   .intro-logo-ha,
   .intro-logo-odi,
-  .intro-logo-l,
   .intro-logo-andrada { height: 100%; } /* signatures on the 1440px-tall canvas — span the full wrap */
+  .intro-logo-l { height: 85%; } /* same signature canvas, but L' fills more of it (see .logo-l) */
 
   /* Final stage: whichever logo is active morphs away (bigger blur/scale,
      slower) as the door dissolves underneath it, instead of a flat fade */
