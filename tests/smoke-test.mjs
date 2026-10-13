@@ -343,7 +343,7 @@ section("Header logos (each face's logo, then Jera Ansuz)");
   if (home === null) {
     fail("Home page exists for header-logo check");
   } else {
-    for (const [src, name] of [["/logoold.png", "old"], ["/lalogo.png", "new"], ["/halogo.png", "ha"], ["/odiandradalogo.png", "odi"], ["/llogo.png", "l"], ["/andradalogo.png", "andrada"]]) {
+    for (const [src, name] of [["/logoold.png", "old"], ["/lalogo.png", "new"], ["/halogo.png", "ha"], ["/odiandradalogo.png", "odi"], ["/llogo.png", "l"], ["/nylogo.png", "ny"], ["/nilologo.png", "nilo"], ["/andradalogo.png", "andrada"]]) {
       assert(
         home.includes(`src=${src}`) && home.includes(`data-logo=${name}`),
         `Header logo includes ${src} (data-logo=${name})`

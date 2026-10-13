@@ -4,6 +4,9 @@ title: "Rust in the Circuit"
 order: 1
 year: 2026
 duration: 228
+style: "Industrial Techno"
+elements: []
+voice: "Vocals"
 cover: "photo115"
 coverCrop: 0.5
 source: "Rust in the Circuit"

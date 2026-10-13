@@ -6,8 +6,7 @@
      The face's own menu entry and scrolling down lead to the grid; clicking the image opens it in
      the page's own popup, like a grid item (behaviour: faces.html).
      Call: partial "face-hero.html" (dict "face" "odi" "items" $photos) — items in grid order.
-     "player": a line of text, and the hero gets the music player under its image with that line
-     below it (Production). */}}
+     "player": true gives the hero the music player under its image (Production). */}}
 {{ $face := .face }}
 {{ $cfg := index site.Params.faces $face }}
 {{ $pick := "" }}
@@ -37,11 +36,10 @@
         </a>
         {{/* Production (Ny): the player under the cover. It shows whatever plays (production/list.html
              swaps the cover, title and sides); before anything has played, this track, ready to start. */}}
-        {{ with $.player }}
+        {{ if $.player }}
         <div class="face-hero-player" data-track="{{ $pick.Params.id }}">
-          <p class="fh-title"><span class="fh-name">{{ $pick.Title }}</span><span class="fh-sides"></span></p>
+          <p class="fh-title"><span class="fh-name">{{ $pick.Title }}</span><span class="fh-sides mp-sides"></span></p>
           {{ partial "music-controls.html" (dict "id" "heroPlayer" "skip" true "duration" $pick.Params.duration) }}
-          <p class="mp-hint">{{ . }}</p>
         </div>
         {{ end }}
       </div>
@@ -60,11 +58,6 @@
   .face-hero-player { width: 60%; margin: 16px auto 0; transform: translateX(40px); }
   .face-hero-player .mp-player { max-width: none; }
   .fh-title { margin: 0 0 6px; font-size: 0.95rem; letter-spacing: 0.02em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
-  .fh-sides { display: inline-flex; gap: 12px; font-size: 0.8rem; }
-  .fh-sides:empty { display: none; }
-  .fh-side { background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; letter-spacing: 0.04em; opacity: 0.45; transition: opacity 0.2s; }
-  .fh-side:hover { opacity: 0.85; }
-  .fh-side.active { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
   @media (max-width: 1200px) { .face-hero-player { width: 85%; transform: none; } }
 </style>
 {{ end }}

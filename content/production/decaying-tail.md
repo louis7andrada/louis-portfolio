@@ -4,6 +4,9 @@ title: "Decaying Tail"
 order: 15
 year: 2026
 duration: 244
+style: "Industrial Rave"
+elements: ["Trance breaks", "Breakbeat"]
+voice: "Instrumental"
 cover: "photo138"
 coverCrop: 0
 source: "Decaying Tail"

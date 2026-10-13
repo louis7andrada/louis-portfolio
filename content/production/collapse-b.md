@@ -5,6 +5,9 @@ side: "B"
 order: 9
 year: 2026
 duration: 234
+style: "Industrial Hardcore"
+elements: ["Trance breaks", "Breakbeat"]
+voice: "Instrumental"
 cover: "photo169"
 coverCrop: 0
 source: "Collapse (1)"

@@ -296,14 +296,14 @@ async function main() {
     return true;
   });
 
-  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / L' / Andrada; Ny has none yet), then turns into Jera Ansuz", async () => {
+  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / L' / Ny / Andrada), then turns into Jera Ansuz", async () => {
     const page = await browser.newPage();
     const active = `document.getElementById('logoMorphWrap')?.getAttribute('data-active')`;
     // Locally there are no subdomains, so the page's section decides (Artworks home = Louis "old",
     // Oeuvre = Han "ha", Photography = Odi Andrada "odi", Links and shared pages = Andrada "andrada";
-    // Vestments = L' "l"; Production = Ny, who has no logo of its own yet: Jera Ansuz "new" at once).
+    // Vestments = L' "l"; Production = Ny "ny").
     // The first stop can include the intro door (~4s) + entrance (900ms) + hold (3200ms): poll.
-    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/vestments/vestment1/", "l", 8000], ["/production/omnipulse/", "new", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
+    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/vestments/vestment1/", "l", 8000], ["/production/omnipulse/", "ny", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
       await page.goto(BASE_URL + path);
       const shown = await page.evaluate(active);
       if (shown !== logo) throw new Error(`${path} opened on "${shown}", not its own logo "${logo}"`);
@@ -401,22 +401,25 @@ async function main() {
       open: document.getElementById('photoModal').classList.contains('open'), mini: !!document.querySelector('.mp-mini.show'), title: document.getElementById('photoModalTitle').textContent }; })()`;
     const problems = [];
     const ids = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (a) { return a.dataset.id; })`);
-    if (ids.length < 3) problems.push(`only ${ids.length} track(s) on the page`);
+    if (ids.length < 3) problems.push(`only ${ids.length} record(s) on the page`);
+    const titleOf = (id) => page.evaluate(`JSON.parse(document.getElementById('mpTracksData').textContent).find(function (t) { return t.id === ${JSON.stringify(id)}; }).title`);
     await click("body > main #bookGallery .aw-item", 1);
     if (!(await page.waitFor(`window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the clicked track never started playing");
     let s = await page.evaluate(st);
     if (!s.open || s.id !== ids[1] || !s.playing) problems.push(`after the cover click: ${JSON.stringify(s)}`);
     if (!/^http:\/\/[^/]+\/audio\/[^/]+\.mp3$/.test(s.src || "")) problems.push(`the MP3 isn't served from the site's own /audio/ (${s.src})`);
+    const q = await page.evaluate(`window.musicPlayer.queue()`);
+    const next1 = q[q.indexOf(ids[1]) + 1], next2 = q[q.indexOf(ids[1]) + 2];
     await click("#photoNextBtn");
-    if (!(await page.waitFor(`window.musicPlayer.state().track.id === ${JSON.stringify(ids[2])} && window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the next arrow didn't play the next track");
+    if (!(await page.waitFor(`window.musicPlayer.state().track.id === ${JSON.stringify(next1)} && window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push(`the next arrow didn't play ${next1}`);
     s = await page.evaluate(st);
-    if (s.title !== (await page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item')[2].dataset.title`))) problems.push(`the popup shows "${s.title}", not the playing track`);
+    if (s.title !== (await titleOf(next1))) problems.push(`the popup shows "${s.title}", not the playing track`);
     await click("#photoModalClose");
     await new Promise((r) => setTimeout(r, 700));
     s = await page.evaluate(st);
     if (s.open || !s.playing || !s.mini) problems.push(`after closing: ${JSON.stringify(s)} (expected: closed, still playing, bar shown)`);
     await page.evaluate(`window.musicPlayer.seek(window.musicPlayer.state().duration - 1.2); true`);
-    if (!(await page.waitFor(`window.musicPlayer.state().track && window.musicPlayer.state().track.id === ${JSON.stringify(ids[3])} && window.musicPlayer.state().playing`, { timeout: 8000 }))) problems.push("a track's end didn't start the next one");
+    if (!(await page.waitFor(`window.musicPlayer.state().track && window.musicPlayer.state().track.id === ${JSON.stringify(next2)} && window.musicPlayer.state().playing`, { timeout: 8000 }))) problems.push(`a track's end didn't start the next one (${next2})`);
     await click(".mp-mini-x");
     await new Promise((r) => setTimeout(r, 500));
     s = await page.evaluate(st);
@@ -443,20 +446,22 @@ async function main() {
         await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
     };
     const hero = `(function () { var b = document.querySelector('body > main .face-hero-player'); return { name: b.querySelector('.fh-name').textContent,
-      sides: [].map.call(b.querySelectorAll('.fh-side'), function (x) { return x.textContent + (x.classList.contains('active') ? '*' : ''); }).join(','),
-      img: document.querySelector('body > main .face-hero .hp-image').getAttribute('src'), hint: b.querySelector('.mp-hint').textContent,
+      sides: [].map.call(b.querySelectorAll('.mp-side'), function (x) { return x.textContent + (x.classList.contains('active') ? '*' : ''); }).join(','),
+      img: document.querySelector('body > main .face-hero .hp-image').getAttribute('src'), hint: !!b.querySelector('.mp-hint'),
       id: window.musicPlayer.state().track && window.musicPlayer.state().track.id }; })()`;
     const problems = [];
     let h = await page.evaluate(hero);
     if (h.name !== "Ritual Annihilation" || h.sides !== "Side A*,Side B" || h.id) problems.push(`before playing, the hero shows ${JSON.stringify(h)}`);
-    if (!/click any of the musics/.test(h.hint)) problems.push(`the hero's line reads "${h.hint}"`);
+    if (h.hint) problems.push("the line is back under the hero's player (Louis took it out; it belongs at the top of the grid only)");
     if (!(await page.evaluate(`/click any of the musics/.test(document.querySelector('body > main .mp-hint-grid').textContent)`))) problems.push("no line at the top of the grid");
     await click("#heroPlayer .mp-play");
     if (!(await page.waitFor(`window.musicPlayer.state().track && window.musicPlayer.state().track.id === 'ritual-annihilation-a' && window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the hero's play button didn't start Ritual Annihilation (Side A)");
-    await click("body > main .face-hero-player .fh-side", 1);
+    await click("body > main .face-hero-player .mp-side", 1);
     if (!(await page.waitFor(`window.musicPlayer.state().track.id === 'ritual-annihilation-b' && window.musicPlayer.state().playing`, { timeout: 10000 }))) problems.push("Side B didn't play Side B");
     h = await page.evaluate(hero);
     if (h.sides !== "Side A,Side B*" || !/ritual-annihilation-b/.test(h.img)) problems.push(`after Side B, the hero shows ${JSON.stringify(h)}`);
+    const sq = await page.evaluate(`(function () { var a = document.querySelector('body > main #bookGallery .aw-item'); return { id: a.dataset.id, img: a.querySelector('img').getAttribute('src') }; })()`);
+    if (sq.id !== "ritual-annihilation-b" || !/ritual-annihilation-b/.test(sq.img)) problems.push(`the grid's Ritual Annihilation square didn't turn to Side B: ${JSON.stringify(sq)}`);
     const third = await page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item')[2].dataset.id`);
     await click("body > main #bookGallery .aw-item", 2);
     await page.waitFor(`window.musicPlayer.state().track.id === ${JSON.stringify(third)}`, { timeout: 10000 });
@@ -469,17 +474,101 @@ async function main() {
     return true;
   });
 
-  await check("Production: the volume line (click, scroll wheel) sets the volume and the speaker mutes", async () => {
+  // Two sides, one square (Louis, 2026-10-13): Side A, then Side B, then the next record; the square, the popup's
+  // Side A · Side B and its cover follow the side that plays.
+  await check("Production: a two-sided song is one square that plays Side A, then Side B, then the next record, its cover following the side", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.goto(BASE_URL + "/production/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/production/");
+    await new Promise((r) => setTimeout(r, 1500));
+    const sq = `document.querySelector('body > main #bookGallery .aw-item')`;
+    await page.evaluate(`${sq}.scrollIntoView({ block: 'center' }); true`);
+    await new Promise((r) => setTimeout(r, 250));
+    const p = await page.evaluate(`(function () { var b = ${sq}.getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; })()`);
+    for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+      await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+    const view = `(function () { var a = ${sq}; return { id: window.musicPlayer.state().track && window.musicPlayer.state().track.id, square: a.dataset.id, img: a.querySelector('img').getAttribute('src'),
+      label: (a.querySelector('.aw-lbl-b') || {}).textContent || '', sides: [].map.call(document.querySelectorAll('body > main #photoModalSides .mp-side'), function (x) { return x.textContent + (x.classList.contains('active') ? '*' : ''); }).join(','),
+      title: document.getElementById('photoModalTitle').textContent }; })()`;
+    const problems = [];
+    if (!(await page.waitFor(`window.musicPlayer.state().track && window.musicPlayer.state().track.id === 'ritual-annihilation-a' && window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the square didn't play Side A");
+    let v = await page.evaluate(view);
+    if (v.sides !== "Side A*,Side B") problems.push(`the popup's sides read "${v.sides}"`);
+    await page.evaluate(`window.musicPlayer.seek(window.musicPlayer.state().duration - 1.2); true`);
+    if (!(await page.waitFor(`window.musicPlayer.state().track.id === 'ritual-annihilation-b' && window.musicPlayer.state().playing`, { timeout: 8000 }))) problems.push("Side A's end didn't start Side B");
+    v = await page.evaluate(view);
+    if (v.square !== "ritual-annihilation-b" || !/ritual-annihilation-b/.test(v.img) || !/Side B/.test(v.label)) problems.push(`the square didn't turn to Side B: ${JSON.stringify(v)}`);
+    if (v.sides !== "Side A,Side B*" || v.title !== "Ritual Annihilation") problems.push(`the popup after Side A: ${JSON.stringify(v)}`);
+    const q = await page.evaluate(`window.musicPlayer.queue()`);
+    const after = q[q.indexOf("ritual-annihilation-b") + 1];
+    await page.evaluate(`window.musicPlayer.seek(window.musicPlayer.state().duration - 1.2); true`);
+    if (!(await page.waitFor(`window.musicPlayer.state().track.id === ${JSON.stringify(after)}`, { timeout: 8000 }))) problems.push(`Side B's end didn't start the next record (${after})`);
+    await page.evaluate(`window.musicPlayer.play('ritual-annihilation-a'); true`);
+    await new Promise((r) => setTimeout(r, 300));
+    v = await page.evaluate(view);
+    if (v.square !== "ritual-annihilation-a" || !/ritual-annihilation-a/.test(v.img)) problems.push(`back on Side A, the square shows ${JSON.stringify(v)}`);
+    await page.evaluate(`window.musicPlayer.stop(); true`);
+    await page.goto(BASE_URL + "/production/ritual-annihilation-b/");
+    const links = await page.evaluate(`[].map.call(document.querySelectorAll('body > main .mp-sides .mp-side'), function (a) { return a.textContent + (a.classList.contains('active') ? '*' : '') + '>' + a.getAttribute('href'); }).join(',')`);
+    if (links !== "Side A>/production/ritual-annihilation-a/,Side B*>/production/ritual-annihilation-b/") problems.push(`Side B's page links its sides as "${links}"`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  await check("Production: Filters narrow the grid by Style, Elements and Voice, and Deselect all brings everything back", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.goto(BASE_URL + "/production/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/production/");
+    await new Promise((r) => setTimeout(r, 1500));
+    const shown = `[].filter.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (i) { return i.style.display !== 'none'; }).length`;
+    const pick = (key, value) => page.evaluate(`document.querySelector('body > main #bookFilterOverlay [data-filter="${key}"][data-value="${value}"]').click(); true`);
+    const count = (sel) => page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item${sel}').length`);
+    const problems = [];
+    const all = await page.evaluate(shown);
+    const groups = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookFilterOverlay .artwork-filter-group-label'), function (g) { return g.textContent.trim(); }).join(",")`);
+    if (groups !== "Style,Elements,Voice") problems.push(`filter groups read "${groups}"`);
+    await page.evaluate(`document.querySelector('body > main #bookFilterToggle').click(); true`);
+    await pick("style", "hard techno");
+    const hard = await page.evaluate(shown), wantHard = await count(`[data-style="Hard Techno"]`);
+    if (hard !== wantHard || !hard) problems.push(`Style Hard Techno shows ${hard}, expected ${wantHard}`);
+    await pick("style", "all");
+    await pick("elements", "dubstep drops");
+    const dub = await page.evaluate(shown), wantDub = await count(`[data-elements*="Dubstep drops"]`);
+    if (dub !== wantDub || !dub) problems.push(`Elements Dubstep drops shows ${dub}, expected ${wantDub}`);
+    await pick("voice", "vocals");
+    const both = await page.evaluate(shown), wantBoth = await count(`[data-elements*="Dubstep drops"][data-voice="Vocals"]`);
+    if (both !== wantBoth) problems.push(`Dubstep drops + Vocals shows ${both}, expected ${wantBoth}`);
+    const tag = await page.evaluate(`document.querySelector('body > main #activeBookFilterTags').textContent`);
+    if (!/Elements\s*Dubstep drops/.test(tag) || !/Voice\s*Vocals/.test(tag)) problems.push(`the active tags read "${tag}"`);
+    await page.evaluate(`document.querySelector('body > main #bookFilterResetBtn').click(); true`);
+    if ((await page.evaluate(shown)) !== all) problems.push("Deselect all didn't bring every track back");
+    const label = await page.evaluate(`(document.querySelector('body > main #bookGallery .aw-item .aw-lbl-r, body > main #bookGallery .aw-item .aw-lbl-l') || {}).textContent || ''`);
+    if (!/Techno|Rave|Hardcore|Dubstep/.test(label)) problems.push(`the side label reads "${label}", not the track's style`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  await check("Production: the speaker opens the volume line (click, scroll wheel); the left end mutes; a click elsewhere closes it", async () => {
     const page = await browser.newPage();
     await page.setViewport(1440, 900);
     await page.goto(BASE_URL + "/production/omnipulse/");
     await page.evaluate(`sessionStorage.setItem('intro-seen','1'); localStorage.removeItem('mp-volume'); localStorage.removeItem('mp-muted'); true`);
     await page.goto(BASE_URL + "/production/omnipulse/");
     await new Promise((r) => setTimeout(r, 800));
-    const box = await page.evaluate(`(function () { var b = document.querySelector('#trackPlayer .mp-vbar').getBoundingClientRect(); return { l: b.left, w: b.width, y: b.top + b.height / 2 }; })()`);
-    const mouse = async (type, x, y, extra = {}) => page.browser.send("Input.dispatchMouseEvent", Object.assign({ type, x, y, button: type === "mouseMoved" || type === "mouseWheel" ? "none" : "left", clickCount: type === "mousePressed" || type === "mouseReleased" ? 1 : 0 }, extra), page.sessionId);
-    const vol = `({ v: window.musicPlayer.audio.volume, m: window.musicPlayer.audio.muted, fill: document.querySelector('#trackPlayer .mp-vfill').style.width })`;
     const problems = [];
+    if (await page.evaluate(`document.querySelector('#trackPlayer .mp-vol').classList.contains('open')`)) problems.push("the volume line shows before the speaker is clicked");
+    await page.evaluate(`document.querySelector('#trackPlayer .mp-volbtn').click(); true`);
+    await new Promise((r) => setTimeout(r, 300));
+    if (!(await page.evaluate(`document.querySelector('#trackPlayer .mp-vol').classList.contains('open')`))) problems.push("clicking the speaker didn't open the volume line");
+    const box = await page.evaluate(`(function () { var b = document.querySelector('#trackPlayer .mp-vbar .mp-bar-line').getBoundingClientRect(); return { l: b.left, w: b.width, y: b.top + b.height / 2 }; })()`);
+    const mouse = async (type, x, y, extra = {}) => page.browser.send("Input.dispatchMouseEvent", Object.assign({ type, x, y, button: type === "mouseMoved" || type === "mouseWheel" ? "none" : "left", clickCount: type === "mousePressed" || type === "mouseReleased" ? 1 : 0 }, extra), page.sessionId);
+    const vol = `({ v: window.musicPlayer.audio.volume, m: window.musicPlayer.state().muted, fill: document.querySelector('#trackPlayer .mp-vfill').style.width })`;
     for (const type of ["mouseMoved", "mousePressed", "mouseReleased"]) await mouse(type, box.l + box.w * 0.25, box.y);
     let r = await page.evaluate(vol);
     if (Math.abs(r.v - 0.25) > 0.05 || r.fill !== "25%") problems.push(`a click at a quarter of the line set ${JSON.stringify(r)}`);
@@ -492,20 +581,21 @@ async function main() {
     await new Promise((r) => setTimeout(r, 150));
     const down = (await page.evaluate(vol)).v;
     if (!(down < up)) problems.push(`scrolling down didn't lower it (${up} -> ${down})`);
-    await page.evaluate(`document.querySelector('#trackPlayer .mp-mute').click(); true`);
-    r = await page.evaluate(vol);
-    if (!r.m || r.fill !== "0%") problems.push(`the speaker didn't mute: ${JSON.stringify(r)}`);
-    await page.evaluate(`document.querySelector('#trackPlayer .mp-mute').click(); true`);
-    if ((await page.evaluate(vol)).m) problems.push("the speaker didn't unmute");
     const kept = await page.evaluate(`localStorage.getItem('mp-volume')`);
     if (Math.abs(parseFloat(kept) - down) > 0.001) problems.push(`the volume isn't kept for the next visit (${kept})`);
+    for (const type of ["mouseMoved", "mousePressed", "mouseReleased"]) await mouse(type, box.l - 2, box.y);
+    r = await page.evaluate(vol);
+    if (!r.m || r.fill !== "0%" || !(await page.evaluate(`document.querySelector('#trackPlayer').classList.contains('is-muted')`))) problems.push(`sliding to the left end didn't mute: ${JSON.stringify(r)}`);
+    for (const type of ["mouseMoved", "mousePressed", "mouseReleased"]) await mouse(type, 40, 400);
+    await new Promise((r) => setTimeout(r, 300));
+    if (await page.evaluate(`document.querySelector('#trackPlayer .mp-vol').classList.contains('open')`)) problems.push("a click elsewhere didn't close the volume line");
     await page.evaluate(`localStorage.removeItem('mp-volume'); localStorage.removeItem('mp-muted'); true`);
     await page.close();
     if (problems.length) throw new Error(problems.join("; "));
     return true;
   });
 
-  await check("Production: the newest record (Ritual Annihilation, Sides A and B) leads the grid and the hero, and a track's own page plays it", async () => {
+  await check("Production: the newest record (Ritual Annihilation, Sides A and B) leads the grid as one square and the hero, and a track's own page plays it", async () => {
     const page = await browser.newPage();
     await page.setViewport(1440, 900);
     await page.enforceCsp(PROD_CSP, new URL(BASE_URL).origin);
@@ -513,8 +603,11 @@ async function main() {
     await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
     await page.goto(BASE_URL + "/production/");
     const problems = [];
-    const first = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (a) { return a.dataset.id; }).slice(0, 2).join(",")`);
-    if (first !== "ritual-annihilation-a,ritual-annihilation-b") problems.push(`the grid opens with ${first}`);
+    const first = await page.evaluate(`document.querySelector('body > main #bookGallery .aw-item').dataset.sides`);
+    if (first !== "ritual-annihilation-a ritual-annihilation-b") problems.push(`the grid opens with ${first}`);
+    const titles = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (a) { return a.dataset.title; })`);
+    const twice = titles.filter((t, i) => titles.indexOf(t) !== i);
+    if (twice.length) problems.push(`the same song has two squares: ${twice.join(", ")} (its sides belong in one)`);
     const hero = await page.evaluate(`(document.querySelector('body > main .face-hero .hp-image') || {}).getAttribute ? document.querySelector('body > main .face-hero .hp-image').getAttribute('src') : ''`);
     if (!/ritual-annihilation-a/.test(hero)) problems.push(`the hero shows ${hero}`);
     await page.goto(BASE_URL + "/production/omnipulse/");

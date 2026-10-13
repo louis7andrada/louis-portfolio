@@ -81,6 +81,7 @@ disableKinds = ["taxonomy", "term"]
     odi = "Odi Andrada"
     l = "L'"
     ny = "Ny"
+    nilo = "Nilo"   # no section yet (Louis, 2026-10-13: "surprises soon"); in About, the intro door, alternateName
     ja = "ᛃᚨ Andrada"
 
   # Each name's own description (meta description where a page has none of its own, WebSite JSON-LD).

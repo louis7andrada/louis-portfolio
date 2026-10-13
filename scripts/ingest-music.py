@@ -111,8 +111,11 @@ def existing():
             return m.group(1) if m else None
         src = field("source")
         if src:
+            elements = re.search(r"^elements:\s*(\[.*\])\s*$", fm, re.M)
             known[src] = {"order": int(field("order") or 0), "cover": field("cover"),
-                          "coverCrop": field("coverCrop"), "description": field("description") or ""}
+                          "coverCrop": field("coverCrop"), "description": field("description") or "",
+                          "style": field("style") or "", "voice": field("voice") or "",
+                          "elements": elements.group(1) if elements else "[]"}
     return known
 
 
@@ -232,7 +235,11 @@ def main():
         if s["side"]:
             lines.append(f'side: "{s["side"]}"')
         lines += [f"order: {order}", f"year: {s['made'][:4] if s['made'][0] != '9' else '2026'}",
-                  f"duration: {s['length']}", f'cover: "{pid}"', f"coverCrop: {crop}",
+                  f"duration: {s['length']}",
+                  # the Filters (set BY HAND per page from the song's Suno style prompt; re-runs keep them)
+                  f'style: {q(kept.get("style", ""))}', f'elements: {kept.get("elements", "[]")}',
+                  f'voice: {q(kept.get("voice", "") or ("Vocals" if s["words"] else "Instrumental"))}',
+                  f'cover: "{pid}"', f"coverCrop: {crop}",
                   f'source: {q(s["source"])}', f'description: {q(kept.get("description", ""))}',
                   f'image: "{BASE}/{s["slug"]}.jpg"', f'audio: "{BASE}/{s["slug"]}.mp3"']
         if s["words"]:

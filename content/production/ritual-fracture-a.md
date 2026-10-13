@@ -5,6 +5,9 @@ side: "A"
 order: 7
 year: 2026
 duration: 245
+style: "Hard Techno"
+elements: ["Trance breaks"]
+voice: "Instrumental"
 cover: "photo137"
 coverCrop: 0
 source: "Ritual Fracture"

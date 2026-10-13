@@ -4,6 +4,9 @@ title: "Near-Sacred"
 order: 11
 year: 2026
 duration: 224
+style: "Industrial Rave"
+elements: ["Trance breaks"]
+voice: "Instrumental"
 cover: "photo163"
 coverCrop: 0.3
 source: "Near-Sacred"

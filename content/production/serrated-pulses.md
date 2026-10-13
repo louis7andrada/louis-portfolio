@@ -4,6 +4,9 @@ title: "Serrated Pulses"
 order: 4
 year: 2026
 duration: 212
+style: "Dark Techno"
+elements: []
+voice: "Instrumental"
 cover: "photo171"
 coverCrop: 0
 source: "Serrated Pulses"

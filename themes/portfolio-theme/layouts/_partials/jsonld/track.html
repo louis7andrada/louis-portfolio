@@ -19,6 +19,7 @@
   {{ if $d }}"duration": "{{ $iso }}",
   {{ end }}"license": "{{ "/license/" | absURL }}",
   {{ with .Params.year }}"dateCreated": "{{ . }}",
+  {{ end }}{{ with .Params.style }}"genre": {{ slice "Techno" . | append ($.Params.elements | default slice) | uniq | jsonify }},
   {{ end }}"byArtist": {
     "@type": "Person",
     "@id": "{{ $person }}",

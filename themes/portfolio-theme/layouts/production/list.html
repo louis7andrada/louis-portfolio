@@ -3,18 +3,18 @@
 {{/* Production (Ny, ny.andrada.one): Ny's tracks, as a DJ / producer. A copy of the Vestments page (vestments/list.html) — same pinned
      title + search, scatter grid, popup, arrows and fullscreen, and it keeps the same ids/classes
      (#books-section, .book-page-header, .book-modal, body.page-books) so main.css and the
-     fog-mirror exclusions in baseof.html apply unchanged. Each square is one track's cover.
+     fog-mirror exclusions in baseof.html apply unchanged. Each square is one record (a song, with its sides).
      Clicking it opens the popup AND starts the track; the popup's arrows change track; closing it
-     leaves the music playing in a small now-playing bar (music-player.html). No filters (yet):
-     the search box finds titles, sides and words.
+     leaves the music playing in a small now-playing bar (music-player.html). Filters: Style /
+     Elements / Voice; the search box finds titles, sides, words and styles.
      Tracks come from scripts/ingest-music.py: ids are the slugged titles, the two sides of one song
      share a cover and differ by `side` (A / B); `order` = the date Suno made it (higher shows first). */}}
 {{ $tracks := sort (where .Site.RegularPages "Section" "production") "Params.order" "desc" }}
 {{ partial "jsonld/collection.html" (dict "page" . "items" $tracks) }}
 
-{{/* Louis's line (Oct 2026), under the hero player and at the top of the grid */}}
+{{/* Louis's line (Oct 2026), at the top of the grid (not under the hero player: he took that one out) */}}
 {{ $hint := "go ahead.. click any of the musics :)" }}
-{{ partial "face-hero.html" (dict "face" "ny" "items" $tracks "player" $hint) }}
+{{ partial "face-hero.html" (dict "face" "ny" "items" $tracks "player" true) }}
 
 <section id="books-section" class="w-full px-4 py-12 relative">
 
@@ -26,32 +26,92 @@
         <svg class="book-search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         <input type="text" id="booksSearchInput" class="book-search-input" placeholder="...">
       </div>
+      <button id="bookFilterToggle" class="artwork-filter-toggle">
+        <span class="filter-label">Filters</span>
+        <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
+      </button>
+      <div id="activeBookFilterTags" class="artwork-active-tags"></div>
     </div>
   </div>
 
+  <!-- Outside .book-page-header on purpose: that header has a transform, which
+       would make this position:fixed overlay relative to it instead of the screen.
+       Filters (Louis, Oct 2026): Style (each track's kind of techno, one per track), Elements (what
+       else is in it: trance breaks, breakbeat, dubstep drops, metal; a track can have several) and
+       Voice (Instrumental / Vocals), set by hand per page from the song's Suno style prompt. Each
+       group lists the values the pages actually use, so a new kind adds itself. -->
+  <div id="bookFilterOverlay" class="artwork-filter-overlay">
+      <div class="artwork-filter-inner">
+        <div class="artwork-filter-left-col">
+          <div class="artwork-filter-toggle filter-spacer" aria-hidden="true">
+            <span class="filter-label">Filters</span>
+            <span class="filter-icon"><span class="fbar fbar-h"></span><span class="fbar fbar-v"></span></span>
+          </div>
+          <button id="bookFilterResetBtn" class="artwork-filter-reset-btn">DESELECT ALL</button>
+        </div>
+        <div class="artwork-filter-columns">
+          {{ range $g := slice (dict "key" "style" "label" "Style") (dict "key" "elements" "label" "Elements") (dict "key" "voice" "label" "Voice") }}
+          <div class="artwork-filter-group">
+            <div class="artwork-filter-group-label">{{ $g.label }}</div>
+            <div class="artwork-filter-options">
+              <button class="artwork-filter-option active" data-filter="{{ $g.key }}" data-value="all">All</button>
+              {{ $vals := slice }}
+              {{ range $tracks }}{{ with index .Params $g.key }}{{ if reflect.IsSlice . }}{{ $vals = $vals | append . }}{{ else }}{{ $vals = $vals | append (slice .) }}{{ end }}{{ end }}{{ end }}
+              {{ range sort (uniq $vals) }}
+              <button class="artwork-filter-option" data-filter="{{ $g.key }}" data-value="{{ lower . }}">{{ . }}</button>
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+
   <p class="mp-hint mp-hint-grid">{{ $hint }}</p>
 
+  {{/* One square per record (Louis, 2026-10-13): the sides of one song (A, B …) share a square, which shows
+       the side that plays: its cover, label and link follow it (a side clicked, Side A ending, the arrows).
+       Every side, in play order (A, then B, then the next record), is in #mpTracksData for the player. */}}
+  {{ $records := slice }}
+  {{ range $tracks }}{{ if or (not .Params.side) (eq .Params.side "A") }}{{ $records = $records | append . }}{{ end }}{{ end }}
+  {{ $data := slice }}
   <div id="bookGallery" class="aw-grid">
-    {{ range $i, $page := $tracks }}
+    {{ range $i, $page := $records }}
+    {{ $sides := slice $page }}
+    {{ with $page.Params.side }}{{ $sides = sort (where (where $tracks "Title" $page.Title) "Params.side" "!=" nil) "Params.side" }}{{ end }}
+    {{ $ids := slice }}{{ $words := slice }}
+    {{ range $sides }}
+      {{ $ids = $ids | append .Params.id }}
+      {{ with .Params.words }}{{ $words = $words | append . }}{{ end }}
+      {{ $data = $data | append (dict "id" .Params.id "title" .Title "side" (.Params.side | default "") "year" .Params.year
+          "style" (.Params.style | default "") "elements" (.Params.elements | default slice) "voice" (.Params.voice | default "")
+          "duration" (.Params.duration | default 0) "desc" (.Params.description | default "") "words" (.Params.words | default "")
+          "audio" (partial "audio-url.html" .Params.audio) "href" .RelPermalink
+          "src" (partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true))
+          "grid" (partial "img-url.html" (dict "src" .Params.image "width" 1200 "quality" 90))) }}
+    {{ end }}
     <a href="{{ $page.RelPermalink }}"
        class="artwork-item aw-item"
        data-idx="{{ $i }}"
        data-id="{{ $page.Params.id }}"
+       data-sides="{{ delimit $ids " " }}"
        data-year="{{ $page.Params.year }}"
        data-title="{{ $page.Title }}"
        data-side="{{ $page.Params.side | default "" }}"
-       data-duration="{{ $page.Params.duration | default 0 }}"
+       data-style="{{ $page.Params.style | default "" }}"
+       data-elements="{{ delimit ($page.Params.elements | default slice) "|" }}"
+       data-voice="{{ $page.Params.voice | default "" }}"
        data-desc="{{ $page.Params.description | default "" }}"
-       data-words="{{ $page.Params.words | default "" }}"
-       data-audio="{{ partial "audio-url.html" $page.Params.audio }}"
-       data-src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1600 "keep" true) }}">
-      {{/* the popup/fullscreen show the 1600px cover JPEG itself; the grid a 1200px WebP, q90 like
-           Photography (the covers are its night photographs) */}}
+       data-words="{{ delimit (uniq $words) "\n\n" }}">
+      {{/* the grid shows a 1200px WebP, q90 like Photography (the covers are its night photographs); the
+           popup/fullscreen the 1600px cover JPEG itself */}}
       <img src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1200 "quality" 90) }}" alt="Cover of {{ $page.Title }}{{ with $page.Params.side }}, Side {{ . }}{{ end }}" class="aw-img" loading="lazy"{{ partial "imgdims.html" $page.Params.image }} />
       <span class="mp-cover-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"><polygon points="8,5 19,12 8,19"/></svg></span>
     </a>
     {{ end }}
   </div>
+  {{/* script blocks never go into the fog copies (baseof.html sanitize), so this data isn't cloned */}}
+  <script type="application/json" id="mpTracksData">{{ $data | jsonify | safeJS }}</script>
 
   {{ if eq (len $tracks) 0 }}
     <p class="books-empty">No tracks yet.</p>
@@ -74,8 +134,9 @@
       <div class="sp-info">
         <div class="sp-info-top">
           <h2 class="sp-title" id="photoModalTitle"></h2>
-          <p id="photoModalSide"></p>
+          <p class="mp-sides" id="photoModalSides"></p>
           <p id="photoModalYear"></p>
+          <p id="photoModalStyle"></p>
           <p class="sp-comment" id="photoModalDesc"></p>
         </div>
         {{ partial "music-controls.html" (dict "id" "photoModalPlayer" "skip" true) }}
@@ -133,7 +194,52 @@
    since Hugo doesn't share a page's inline <style> across templates. ── */
 .artwork-filter-bar { position: sticky; top: 100px; z-index: 110; display: inline-flex; align-items: flex-start; gap: 1.2rem; width: fit-content; max-width: min(90vw, 900px); margin-bottom: 1rem; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.65); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); transition: background 0.2s ease; }
 html.dark .artwork-filter-bar { background: var(--glass-bar); }
+.artwork-filter-bar.filter-open { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+.artwork-filter-bar.filter-open .artwork-active-tags { display: none; }
+.artwork-filter-toggle { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; color: inherit; opacity: 0.55; padding: 0; transition: opacity 0.2s; font-family: inherit; white-space: nowrap; flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.5rem; }
+.artwork-filter-toggle:hover, .artwork-filter-toggle.open { opacity: 1; }
+.artwork-filter-toggle .filter-label { text-decoration: underline; text-underline-offset: 3px; }
+.artwork-filter-toggle.filter-spacer { opacity: 0; pointer-events: none; cursor: default; }
+.filter-icon { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 11px; height: 11px; flex-shrink: 0; }
+.fbar { position: absolute; background: currentColor; border-radius: 1px; top: 50%; left: 50%; }
+.fbar-h { width: 11px; height: 1.5px; transform: translate(-50%,-50%); }
+.fbar-v { width: 1.5px; height: 11px; transform: translate(-50%,-50%); transform-origin: center center; transition: transform 0.35s ease, opacity 0.25s ease; }
+.artwork-filter-toggle.open .fbar-v { transform: translate(-50%,-50%) scaleY(0); opacity: 0; }
+.artwork-active-tags { display: flex; flex-wrap: wrap; gap: 1rem; max-width: 700px; }
+.artwork-active-tag-group { display: flex; flex-direction: column; gap: 0.1rem; white-space: nowrap; }
+.artwork-active-tag-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; text-decoration: underline; text-underline-offset: 2px; }
+.artwork-active-tag-value { font-size: 0.78rem; letter-spacing: 0.03em; opacity: 0.75; }
+.artwork-filter-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(255,255,255,0.72); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  display: flex; align-items: flex-start; justify-content: flex-start;
+  padding: 7rem 4rem 3rem 5rem; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch;
+  opacity: 0;
+  transform: scale(0.96);
+  filter: blur(10px);
+  pointer-events: none;
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
+}
+@media (max-width: 700px) { .artwork-filter-overlay { padding: 6rem 1.5rem 4rem 1.5rem; } .artwork-filter-inner { padding-bottom: 3rem; } }
 body.filter-lock { overflow: hidden; }
+html.dark .artwork-filter-overlay { background: var(--glass-overlay); backdrop-filter: blur(20px) !important; -webkit-backdrop-filter: blur(20px) !important; }
+.artwork-filter-overlay.open {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0px);
+  pointer-events: auto;
+}
+.artwork-filter-inner { display: flex; align-items: flex-start; gap: 3rem; width: 100%; }
+.artwork-filter-columns { display: flex; gap: 4rem; flex-wrap: wrap; }
+.artwork-filter-group { display: flex; flex-direction: column; gap: 0.5rem; min-width: 110px; }
+.artwork-filter-group-label { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.35; margin-bottom: 0.3rem; text-decoration: underline; text-underline-offset: 3px; }
+.artwork-filter-options { display: flex; flex-direction: column; gap: 0.25rem; }
+.artwork-filter-option { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.03em; color: inherit; opacity: 0.3; text-align: left; padding: 0.1rem 0; transition: opacity 0.15s; font-family: inherit; }
+.artwork-filter-option:hover { opacity: 0.7; }
+.artwork-filter-option.active { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+.artwork-filter-reset-btn { background: none; border: none; cursor: pointer; font-size: 0.82rem; letter-spacing: 0.03em; color: inherit; opacity: 0.45; text-align: left; padding: 0.1rem 0; font-family: inherit; transition: opacity 0.15s; margin-left: 0; margin-top: 1.5rem; }
+.artwork-filter-reset-btn:hover { opacity: 1; }
+.artwork-filter-left-col { display: flex; flex-direction: column; gap: 1.2rem; flex-shrink: 0; }
 
 .book-search-wrap { position: relative; display: inline-flex; align-items: center; }
 .book-search-icon { position: absolute; left: 0; opacity: 0.35; pointer-events: none; }
@@ -196,7 +302,7 @@ body.filter-lock { overflow: hidden; }
 }
 
 .books-empty { text-align: center; opacity: 0.5; padding: 4rem 0; }
-/* Louis's line at the top of the grid (the same one is under the hero player) */
+/* Louis's line at the top of the grid */
 .mp-hint-grid { text-align: center; margin: 0 auto; padding: 0 1rem; }
 
 /* ── PHOTO POPUP — the Oeuvre popup with one image where the book
@@ -300,19 +406,52 @@ html.dark .book-modal-bg { background: var(--glass-modal); }
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const searchInput  = document.getElementById("booksSearchInput");
+  const filterToggle = document.getElementById("bookFilterToggle");
+  const filterBar    = document.getElementById("bookFilterBar");
+  const overlay      = document.getElementById("bookFilterOverlay");
+  const resetBtn     = document.getElementById("bookFilterResetBtn");
+  const tagsEl       = document.getElementById("activeBookFilterTags");
   const items        = Array.from(document.querySelectorAll("body > main .aw-item"));
   const player       = window.musicPlayer;
+
+  /* Records and sides: each square (item) is one record; data-sides lists its tracks in order (A, B …).
+     TRACKS (from #mpTracksData) holds every side, in play order. */
+  const TRACKS = JSON.parse(document.getElementById("mpTracksData").textContent || "[]");
+  const T = id => TRACKS.find(t => t.id === id) || null;
+  const sideIds = it => (it.dataset.sides || it.dataset.id).split(" ");
+  const itemOf = id => items.find(it => sideIds(it).includes(id)) || null;
+  const sidesOf = id => { const it = itemOf(id); return it ? sideIds(it).map(T).filter(Boolean) : []; };
+
+  // Filters (Style / Elements / Voice). Elements holds several values per track ("trance breaks|breakbeat").
+  const KEYS = ["style", "elements", "voice"];
+  const LABELS = { style: "Style", elements: "Elements", voice: "Voice" };
+  let active = { style: "all", elements: "all", voice: "all" };
   let query = "";
+  const vals = (item, key) => (item.dataset[key] || "").toLowerCase().split("|").filter(Boolean);
 
   function applyFilters() {
     items.forEach(item => {
-      // the search box matches the title, the side ("side a") and the words
+      const matchesFilters = KEYS.every(k => active[k] === "all" || vals(item, k).includes(active[k]));
+      // the search box matches the title, the sides ("side b"), the words and every filter value ("dubstep" …)
       const d = item.dataset;
-      const text = [d.title, d.side ? "side " + d.side : "", d.desc, d.words].join(" ").toLowerCase();
-      item.style.display = (!query || text.includes(query)) ? "" : "none";
+      const sides = sideIds(item).map(T).filter(t => t && t.side).map(t => "side " + t.side).join(" ");
+      const text = [d.title, sides, d.desc, d.words, d.style, d.elements, d.voice].join(" ").toLowerCase();
+      item.style.display = (matchesFilters && (!query || text.includes(query))) ? "" : "none";
     });
     window._artworkLayout?.();
     player.refresh();
+  }
+
+  function renderTags() {
+    tagsEl.innerHTML = "";
+    KEYS.forEach(key => {
+      if (active[key] === "all") return;
+      const btn = document.querySelector(`#bookFilterOverlay [data-filter="${key}"][data-value="${active[key]}"]`);
+      const group = document.createElement("div"); group.className = "artwork-active-tag-group";
+      const label = document.createElement("span"); label.className = "artwork-active-tag-label"; label.textContent = LABELS[key];
+      const value = document.createElement("span"); value.className = "artwork-active-tag-value"; value.textContent = btn ? btn.textContent : active[key];
+      group.appendChild(label); group.appendChild(value); tagsEl.appendChild(group);
+    });
   }
 
   if (searchInput) {
@@ -322,8 +461,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  /* ── POPUP — one track: its cover, its player and its words, with prev/next through whatever
-     the search currently shows. It always shows the track that is playing. ── */
+  function openOverlay() {
+    overlay.classList.add("open");
+    filterToggle.classList.add("open");
+    filterBar.classList.add("filter-open");
+    document.body.classList.add("filter-lock");
+  }
+  function closeOverlay() {
+    overlay.classList.remove("open");
+    filterToggle.classList.remove("open");
+    filterBar.classList.remove("filter-open");
+    document.body.classList.remove("filter-lock");
+  }
+  overlay?.addEventListener("click", (e) => { if (e.target === overlay) closeOverlay(); });
+  filterToggle?.addEventListener("click", () => { overlay.classList.contains("open") ? closeOverlay() : openOverlay(); });
+  document.querySelectorAll("#bookFilterOverlay .artwork-filter-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.filter;
+      document.querySelectorAll(`#bookFilterOverlay [data-filter="${key}"]`).forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      active[key] = btn.dataset.value;
+      applyFilters();
+      renderTags();
+    });
+  });
+  resetBtn?.addEventListener("click", () => {
+    active = { style: "all", elements: "all", voice: "all" };
+    document.querySelectorAll("#bookFilterOverlay .artwork-filter-option").forEach(b => b.classList.toggle("active", b.dataset.value === "all"));
+    applyFilters();
+    renderTags();
+  });
+
+  /* ── POPUP — one track: its cover, its sides, its player and its words, with prev/next through what the
+     filters and search show (a record's sides in order: A, then B, then the next record). It always shows
+     the track that is playing. ── */
   const modal     = document.getElementById("photoModal");
   const modalImg  = document.getElementById("photoModalImg");
   const prevBtn   = document.getElementById("photoPrevBtn");
@@ -336,56 +507,73 @@ document.addEventListener("DOMContentLoaded", () => {
   prevBtn.innerHTML = leftArrowSVG;
   nextBtn.innerHTML = rightArrowSVG;
 
-  let current = null;
+  let current = null; // the track id the popup shows
   const shown = () => items.filter(it => it.style.display !== "none");
-  const byId = id => items.find(it => it.dataset.id === id);
+  const shownIds = () => shown().flatMap(sideIds);
   const isOpen = () => modal.classList.contains("open");
 
-  player.setTracks(items.map(it => ({
-    id: it.dataset.id, title: it.dataset.title, side: it.dataset.side, src: it.dataset.audio,
-    cover: it.dataset.src, duration: +it.dataset.duration || 0,
-    get thumb() { const img = it.querySelector("img"); return img && (img.currentSrc || img.src); }
-  })), { artist: {{ index site.Params.names "ny" }} });
-  player.setQueue(() => shown().map(it => it.dataset.id));
-  player.autoNext = true; // one track after another, like a record; it stops after the last
+  player.setTracks(TRACKS.map(t => ({ id: t.id, title: t.title, side: t.side, src: t.audio, cover: t.src, duration: +t.duration || 0, thumb: t.grid })),
+    { artist: {{ index site.Params.names "ny" }} });
+  player.setQueue(shownIds);
+  player.autoNext = true; // one track after another, like a record (Side A, then Side B); it stops after the last
   player.bind(document.getElementById("photoModalPlayer"));
-  player.miniBar({ isOpen: isOpen, open: id => { const it = byId(id); if (it) openPhotoModal(it, false); } });
+  player.miniBar({ isOpen: isOpen, open: id => openPhotoModal(id, false) });
+
+  // Side A · Side B: buttons for a record with sides (the popup, the hero); pressing one plays that side.
+  function renderSides(box, id) {
+    box.textContent = "";
+    const sides = sidesOf(id);
+    box.style.display = sides.length > 1 ? "" : "none";
+    if (sides.length < 2) return;
+    sides.forEach(t => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "mp-side" + (t.id === id ? " active" : "");
+      b.textContent = "Side " + t.side;
+      b.setAttribute("aria-pressed", t.id === id ? "true" : "false");
+      b.addEventListener("click", (e) => { e.stopPropagation(); if (t.id !== id || !player.state().playing) player.play(t.id); });
+      box.appendChild(b);
+    });
+  }
+
+  // A record's square shows the side that plays: its cover, label, link and alt text follow it.
+  function showSideOnItem(id) {
+    const t = T(id), it = itemOf(id);
+    if (!t || !it || it.dataset.id === id) return;
+    it.dataset.id = id;
+    it.dataset.side = t.side;
+    it.setAttribute("href", t.href);
+    const img = it.querySelector("img");
+    if (img) { img.src = t.grid; img.alt = "Cover of " + t.title + (t.side ? ", Side " + t.side : ""); }
+    const lbl = it.querySelector(".aw-lbl-b");
+    if (lbl) lbl.textContent = t.title + (t.side ? " — Side " + t.side : "");
+  }
+
   player.on(s => {
-    items.forEach(it => it.classList.toggle("is-playing", !!s.track && it.dataset.id === s.track.id));
-    // a track ended and the next one started: the open popup follows it
-    if (isOpen() && s.track && current && current.dataset.id !== s.track.id) { const it = byId(s.track.id); if (it) showTrack(it); }
+    if (s.track) showSideOnItem(s.track.id);
+    items.forEach(it => it.classList.toggle("is-playing", !!s.track && sideIds(it).includes(s.track.id)));
+    // a track ended and the next one started (Side B, the next record): the open popup follows it
+    if (isOpen() && s.track && current !== s.track.id) showTrack(s.track.id);
   });
 
   /* ── HERO — the player under the big cover (face-hero.html) follows the music: its cover, title and
      sides switch to whatever plays (a cover, the arrows, the bar, the end of a track). Before anything
-     has played it shows the hero's own track (params.faces.ny.hero), ready to start. Side A · Side B
-     appear for a record that has sides; pressing one plays it. ── */
+     has played it shows the hero's own track (params.faces.ny.hero), ready to start. ── */
   const heroBox = document.querySelector("body > main .face-hero-player");
   if (heroBox) {
     const heroImg = document.querySelector("body > main .face-hero .hp-image");
     const heroLink = document.querySelector("body > main .face-hero .face-hero-link");
     const heroName = heroBox.querySelector(".fh-name"), heroSides = heroBox.querySelector(".fh-sides");
-    const sidesOf = it => items.filter(x => it.dataset.side && x.dataset.side && x.dataset.title === it.dataset.title)
-      .sort((a, b) => a.dataset.side.localeCompare(b.dataset.side));
     let heroShown = null;
     player.bind(document.getElementById("heroPlayer"), { fallback: heroBox.dataset.track });
     player.on(s => {
-      const it = byId(s.track ? s.track.id : heroBox.dataset.track);
-      if (!it || it.dataset.id === heroShown) return;
-      heroShown = it.dataset.id;
-      if (heroImg) { heroImg.src = it.dataset.src; heroImg.alt = "Cover of " + it.dataset.title + (it.dataset.side ? ", Side " + it.dataset.side : ""); }
-      if (heroLink) heroLink.setAttribute("href", it.getAttribute("href")); // the cover opens what plays
-      heroName.textContent = it.dataset.title;
-      heroSides.textContent = "";
-      sidesOf(it).forEach(x => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "fh-side" + (x === it ? " active" : "");
-        b.textContent = "Side " + x.dataset.side;
-        b.setAttribute("aria-pressed", x === it ? "true" : "false");
-        b.addEventListener("click", () => { if (x !== it || !player.state().playing) player.play(x.dataset.id); });
-        heroSides.appendChild(b);
-      });
+      const id = s.track ? s.track.id : heroBox.dataset.track, t = T(id);
+      if (!t || id === heroShown) return;
+      heroShown = id;
+      if (heroImg) { heroImg.src = t.src; heroImg.alt = "Cover of " + t.title + (t.side ? ", Side " + t.side : ""); }
+      if (heroLink) heroLink.setAttribute("href", t.href); // the cover opens what plays
+      heroName.textContent = t.title;
+      renderSides(heroSides, id);
     });
   }
 
@@ -395,30 +583,33 @@ document.addEventListener("DOMContentLoaded", () => {
     el.style.display = value ? "" : "none";
   }
 
-  function showTrack(item) {
-    current = item;
-    const d = item.dataset;
+  function showTrack(id) {
+    const t = T(id);
+    if (!t) return;
+    current = id;
     const words = document.getElementById("photoModalWords");
-    modalImg.src = d.src || "";
-    modalImg.alt = "Cover of " + (d.title || "") + (d.side ? ", Side " + d.side : "");
-    document.getElementById("photoModalTitle").textContent = d.title || "";
-    setField("photoModalSide", d.side ? "Side " + d.side : "");
-    setField("photoModalYear", d.year);
-    setField("photoModalDesc", d.desc);
-    words.textContent = d.words || "";
+    modalImg.src = t.src || "";
+    modalImg.alt = "Cover of " + t.title + (t.side ? ", Side " + t.side : "");
+    document.getElementById("photoModalTitle").textContent = t.title;
+    renderSides(document.getElementById("photoModalSides"), id);
+    setField("photoModalYear", t.year ? String(t.year) : "");
+    // "Hard Techno · Trance breaks": the style, then what else is in it
+    setField("photoModalStyle", [t.style].concat(t.elements || []).filter(Boolean).join(" · "));
+    setField("photoModalDesc", t.desc);
+    words.textContent = t.words || "";
     words.scrollTop = 0;
-    const list = shown(), i = list.indexOf(item);
+    const q = shownIds(), i = q.indexOf(id);
     prevBtn.style.display = i > 0 ? "flex" : "none";
-    nextBtn.style.display = i >= 0 && i < list.length - 1 ? "flex" : "none";
+    nextBtn.style.display = i >= 0 && i < q.length - 1 ? "flex" : "none";
   }
 
   // start: true when the visitor asked for this track (a cover, an arrow): it plays from here.
   // play() runs inside their click, the only moment a browser lets sound start.
-  function openPhotoModal(item, start) {
-    showTrack(item);
+  function openPhotoModal(id, start) {
+    showTrack(id);
     modal.classList.add("open");
     document.body.classList.add("filter-lock");
-    if (start) player.play(item.dataset.id); else player.refresh();
+    if (start) player.play(id); else player.refresh();
   }
 
   function closePhotoModal() {
@@ -429,30 +620,33 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => { if (!isOpen()) modalImg.src = ""; }, 420);
   }
 
+  // the arrows: Side A → Side B → the next record (and back)
   function step(dir) {
     if (!current) return;
-    const list = shown(), next = list[list.indexOf(current) + dir];
-    if (next) { showTrack(next); player.play(next.dataset.id); }
+    const q = shownIds(), next = q[q.indexOf(current) + dir];
+    if (next) { showTrack(next); player.play(next); }
   }
 
   function updateRotateHint() {
     lbHint.style.display = (window.innerWidth <= 900 && lbImg.naturalWidth > lbImg.naturalHeight) ? "block" : "none";
   }
   function openLightbox() {
-    if (!current) return;
+    const t = T(current);
+    if (!t) return;
     lbImg.classList.remove("is-rotated");
     lbImg.onload = updateRotateHint;
-    lbImg.src = current.dataset.src;
+    lbImg.src = t.src;
     lbImg.alt = modalImg.alt;
     lightbox.classList.add("active");
     updateRotateHint();
   }
   function closeLightbox() { lightbox.classList.remove("active"); }
 
+  // a square plays the side it shows (Side A until another side has played)
   items.forEach(item => {
     item.addEventListener("click", (e) => {
       e.preventDefault();
-      openPhotoModal(item, true);
+      openPhotoModal(item.dataset.id, true);
     });
   });
 
@@ -498,7 +692,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function addLabels(item, imgW, imgH) {
     item.querySelectorAll('.aw-lbl').forEach(l => l.remove());
 
-    const year = (item.dataset.year || '').trim();
+    // the vertical label: the track's style (every track is 2026), else the year
+    const year = (item.dataset.style || item.dataset.year || '').trim();
     const title = ((item.dataset.title || '') + (item.dataset.side ? ' — Side ' + item.dataset.side : '')).trim();
 
     const idx = parseInt(item.dataset.idx, 10) || 0;

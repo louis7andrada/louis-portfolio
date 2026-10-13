@@ -17,13 +17,22 @@
 .mp-bar-fill::after, .mp-vfill::after { content: ""; position: absolute; right: -3.5px; top: -3px; width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0; transition: opacity 0.2s; }
 .mp-bar:hover .mp-bar-fill::after, .mp-bar:focus-visible .mp-bar-fill::after, .mp-bar.dragging .mp-bar-fill::after,
 .mp-vbar:hover .mp-vfill::after, .mp-vbar:focus-visible .mp-vfill::after, .mp-vbar.dragging .mp-vfill::after { opacity: 1; }
-/* volume: speaker (mutes) + a short line, dragged, clicked or scrolled. Hidden where a page can't set the volume (iPhone) */
-.mp-vol { display: flex; align-items: center; gap: 6px; margin-left: -6px; }
+/* volume: a speaker next to the length; clicking it opens a short line above it (Louis: "only once clicked"),
+   dragged or clicked; the wheel over either turns it up/down. Hidden where a page can't set the volume (iPhone) */
+.mp-end { display: inline-flex; align-items: center; justify-content: flex-end; gap: 0; }
+.mp-vol { position: relative; display: inline-flex; align-items: center; margin-right: -6px; }
 .mp-vol[hidden] { display: none; }
-.mp-vbar { position: relative; width: 96px; height: 18px; display: flex; align-items: center; cursor: pointer; touch-action: none; outline: none; }
-.mp-mute svg { width: 18px; height: 18px; }
-.mp-mute .mp-i-muted, .is-muted .mp-mute .mp-i-vol { display: none; }
-.is-muted .mp-mute .mp-i-muted { display: block; }
+.mp-volbtn svg { width: 18px; height: 18px; }
+.mp-volbtn .mp-i-muted, .is-muted .mp-volbtn .mp-i-vol { display: none; }
+.is-muted .mp-volbtn .mp-i-muted { display: block; }
+.mp-vol.open .mp-volbtn { opacity: 1; }
+.mp-vbar {
+  position: absolute; right: 0; top: calc(100% + 6px); z-index: 5; /* below the speaker: above it, it lined up with the position line */
+  display: flex; align-items: center; width: 116px; height: 30px; padding: 0 12px; box-sizing: border-box;
+  cursor: pointer; touch-action: none; outline: none;
+  opacity: 0; pointer-events: none; transform: translateY(-4px); transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.mp-vol.open .mp-vbar { opacity: 1; pointer-events: auto; transform: none; }
 .mp-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .mp-time { font-size: 0.78rem; letter-spacing: 0.03em; opacity: 0.55; min-width: 3.4em; font-variant-numeric: tabular-nums; }
 .mp-dur { text-align: right; }
@@ -38,6 +47,13 @@
 .is-loading .mp-play { animation: mp-pulse 1.1s ease-in-out infinite; }
 @keyframes mp-pulse { 50% { opacity: 0.3; } }
 .mp-msg { margin: 0; font-size: 0.78rem; opacity: 0.55; }
+/* Side A · Side B (the hero, the popup, a track's own page): the side shown is underlined; the others play
+   (or open) that side */
+.mp-sides { display: inline-flex; flex-wrap: wrap; gap: 12px; font-size: 0.8rem; }
+.mp-sides:empty { display: none; }
+.mp-side { background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit !important; cursor: pointer; letter-spacing: 0.04em; opacity: 0.45; text-decoration: none; transition: opacity 0.2s; }
+.mp-side:hover { opacity: 0.85; }
+.mp-side.active { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
 /* Louis's line under the hero player and at the top of the grid ("go ahead.. click any of the musics :)") */
 .mp-hint { margin: 12px 0 0; font-size: 0.85rem; letter-spacing: 0.04em; opacity: 0.7; }
 /* the grid's covers: a play triangle on hover, so they read as music at a glance */
@@ -51,15 +67,31 @@
   display: flex; align-items: center; gap: 14px;
   width: max-content; max-width: min(560px, calc(100vw - 32px)); box-sizing: border-box;
   padding: 8px 10px 8px 8px; color: inherit;
-  background: rgba(255,255,255,0.65); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   opacity: 0; pointer-events: none; transform: translate(-50%, 12px);
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-html.dark .mp-mini { background: var(--glass-bar); color: #ececec; }
+html.dark .mp-mini { color: #ececec; }
+/* Both float in the site's own fog, like the pinned title, search and Filters (main.css "Cloud islands"):
+   the box stays transparent and its fog lives on an oversized ::before, the header's fog shaped like a
+   small cloud (--island-mask), soft at every edge. Text gets the pinned UI's smoke (.fog-pinned). */
+.mp-mini, .mp-vbar { isolation: isolate; }
+.mp-mini::before, .mp-vbar::before {
+  content: ""; position: absolute; inset: -26px -46px; z-index: -1; pointer-events: none;
+  background: var(--fog-light);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-mask-image: var(--island-mask); mask-image: var(--island-mask);
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.mp-vbar::before { inset: -18px -34px; }
+html.dark .mp-mini::before, html.dark .mp-vbar::before { background: var(--fog-dark); }
+.mp-mini {
+  text-shadow: 0 1px 3px color-mix(in srgb, currentColor 45%, transparent), 0 5px 12px color-mix(in srgb, currentColor 26%, transparent),
+    0 12px 28px color-mix(in srgb, currentColor 14%, transparent);
+}
 .mp-mini.show { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
 .mp-mini > .mp-bar-line { position: absolute; left: 0; right: 0; top: 0; width: auto; }
-.mp-mini .mp-vol { margin-left: 0; gap: 2px; }
-.mp-mini .mp-vbar { width: 64px; }
+.mp-mini .mp-vol { margin-right: 0; }
+.mp-mini .mp-vbar { top: auto; bottom: calc(100% + 14px); transform: translateY(4px); } /* the bar is at the bottom of the screen: it opens upwards */
 .mp-mini-open { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0; background: none; border: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
 .mp-mini-img { display: block; flex-shrink: 0; width: 40px; height: 40px; object-fit: cover; }
 .mp-mini-title { font-size: 0.8rem; letter-spacing: 0.03em; opacity: 0.85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 34vw; }
@@ -232,20 +264,28 @@ html.dark .mp-mini { background: var(--glass-bar); color: #ececec; }
       root.classList.toggle("is-muted", s.muted);
       if (vfill) vfill.style.width = (s.muted ? 0 : s.volume * 100) + "%";
       if (vbar) { vbar.setAttribute("aria-valuenow", s.muted ? 0 : Math.round(s.volume * 100)); vbar.setAttribute("aria-valuetext", s.muted ? "muted" : Math.round(s.volume * 100) + "%"); }
-      if (muteBtn) muteBtn.setAttribute("aria-label", s.muted ? "Unmute" : "Mute");
     }
     function at(e, el) { var r = (el || bar).getBoundingClientRect(); return Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); }
 
-    var volBox = q(".mp-vol"), vbar = q(".mp-vbar"), vfill = q(".mp-vfill"), muteBtn = q(".mp-mute"), vdrag = false;
+    // Volume: the speaker opens/closes the line above it; a click anywhere else closes it. Sliding to the
+    // left end mutes (the speaker shows it), sliding back up unmutes.
+    var volBox = q(".mp-vol"), vbar = q(".mp-vbar"), vfill = q(".mp-vfill"), volBtn = q(".mp-volbtn"), vdrag = false;
+    var vline = vbar && vbar.querySelector(".mp-bar-line");
+    function volOpen(on) {
+      if (!volBox) return;
+      volBox.classList.toggle("open", on);
+      if (volBtn) volBtn.setAttribute("aria-expanded", on ? "true" : "false");
+    }
     if (volBox && !canVolume) volBox.hidden = true;
-    if (muteBtn) muteBtn.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); toggleMute(); });
+    if (volBtn) volBtn.addEventListener("click", function (e) { e.preventDefault(); e.stopPropagation(); volOpen(!volBox.classList.contains("open")); });
+    document.addEventListener("pointerdown", function (e) { if (volBox && volBox.classList.contains("open") && !volBox.contains(e.target)) volOpen(false); });
     if (vbar) {
       vbar.addEventListener("pointerdown", function (e) {
         vdrag = true; vbar.classList.add("dragging");
         try { vbar.setPointerCapture(e.pointerId); } catch (x) {}
-        setVolume(at(e, vbar));
+        setVolume(at(e, vline));
       });
-      vbar.addEventListener("pointermove", function (e) { if (vdrag) setVolume(at(e, vbar)); });
+      vbar.addEventListener("pointermove", function (e) { if (vdrag) setVolume(at(e, vline)); });
       vbar.addEventListener("pointerup", function () { vdrag = false; vbar.classList.remove("dragging"); });
       vbar.addEventListener("pointercancel", function () { vdrag = false; vbar.classList.remove("dragging"); });
       vbar.addEventListener("click", function (e) { e.stopPropagation(); });
@@ -307,7 +347,7 @@ html.dark .mp-mini { background: var(--glass-bar); color: #ececec; }
       '<button type="button" class="mp-btn mp-prev" aria-label="Previous track"><svg ' + svg + '><line x1="6" y1="6" x2="6" y2="18"/><polygon points="18,6 9,12 18,18"/></svg></button>' +
       '<button type="button" class="mp-btn mp-play" aria-label="Play"><svg class="mp-i-play" ' + svg + '><polygon points="8,5 19,12 8,19"/></svg><svg class="mp-i-pause" ' + svg + '><line x1="9" y1="5" x2="9" y2="19"/><line x1="15" y1="5" x2="15" y2="19"/></svg></button>' +
       '<button type="button" class="mp-btn mp-next" aria-label="Next track"><svg ' + svg + '><line x1="18" y1="6" x2="18" y2="18"/><polygon points="6,6 15,12 6,18"/></svg></button>' +
-      '</span><span class="mp-vol"><button type="button" class="mp-btn mp-mute" aria-label="Mute">' +
+      '</span><span class="mp-vol"><button type="button" class="mp-btn mp-volbtn" aria-label="Volume" aria-expanded="false">' +
       '<svg class="mp-i-vol" ' + svg + '><polygon points="4,9.5 8,9.5 13,5.5 13,18.5 8,14.5 4,14.5"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></svg>' +
       '<svg class="mp-i-muted" ' + svg + '><polygon points="4,9.5 8,9.5 13,5.5 13,18.5 8,14.5 4,14.5"/><line x1="16.5" y1="9.5" x2="21.5" y2="14.5"/><line x1="21.5" y1="9.5" x2="16.5" y2="14.5"/></svg></button>' +
       '<span class="mp-vbar" role="slider" tabindex="0" aria-label="Volume" aria-valuemin="0" aria-valuemax="100"><span class="mp-bar-line"><span class="mp-vfill"></span></span></span></span>' +
@@ -340,7 +380,7 @@ html.dark .mp-mini { background: var(--glass-bar); color: #ececec; }
     setTracks: function (list, o) { tracks = list; artist = (o && o.artist) || ""; emit(); },
     setQueue: function (fn) { queue = fn; emit(); },
     play: play, pause: pause, toggle: toggle, next: next, prev: prev, seek: seek, stop: stop, setVolume: setVolume, toggleMute: toggleMute,
-    bind: bind, miniBar: miniBar, refresh: emit, state: state,
+    bind: bind, miniBar: miniBar, refresh: emit, state: state, queue: function () { return queue(); },
     on: function (fn) { subs.push(fn); fn(state()); }
   };
 })();

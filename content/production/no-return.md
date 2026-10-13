@@ -4,6 +4,9 @@ title: "No Return"
 order: 2
 year: 2026
 duration: 262
+style: "Industrial Dubstep"
+elements: ["Dubstep drops", "Metal"]
+voice: "Vocals"
 cover: "photo114"
 coverCrop: 0.5
 source: "No Return"

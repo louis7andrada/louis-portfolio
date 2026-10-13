@@ -4,6 +4,9 @@ title: "Omnipulse"
 order: 5
 year: 2026
 duration: 214
+style: "Dark Techno"
+elements: []
+voice: "Instrumental"
 cover: "photo124"
 coverCrop: 0.3
 source: "Omnipulse"

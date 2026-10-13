@@ -168,7 +168,7 @@ L''s logo is `static/llogo.png` (+ white `llogoinvert.png`; drawing in `private/
 
 `/production/` (`content/production/`, `layouts/production/`) is Ny's music, as a producer/DJ (Louis: "what Skrillex,
 deadmau5, Mandragora are"; a separate section for singing will come later, so this one is NOT called Music). Owner
-**Ny** (`params.names.ny`, face `ny` → `ny.andrada.one`, no logo yet: its pages show Jera Ansuz at once). Capital N,
+**Ny** (`params.names.ny`, face `ny` → `ny.andrada.one`, logo `nylogo.png` since 2026-10-13). Capital N,
 small y. Louis first said "Ky" (voice typing) and corrected it to Ny the same night, before anything was live; Suno's
 artist tag inside the MP3s is "nyandrada". A copy of
 Vestments (same ids/classes) without Filters; the search box finds titles, sides and words. Items are **tracks**
@@ -183,9 +183,18 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
 - The hero (Louis, 2026-10-13): under the big cover, the same player (`face-hero.html` "player", bound with
   `fallback` = the hero track): before anything plays it shows Ritual Annihilation (Side A), ready; then it shows
   whatever plays (cover, title, `Side A · Side B` switch for records with sides, the link). Louis's line "go ahead..
-  click any of the musics :)" sits under it and at the top of the grid (`$hint` in production/list.html, his
-  wording, keep it). Covers show a thin play triangle on hover. Volume: speaker (mute) + a line you drag, click or
-  scroll (up = louder), kept in localStorage `mp-volume`/`mp-muted`; hidden where pages can't set volume (iPhone).
+  click any of the musics :)" sits at the top of the grid only (`$hint` in production/list.html, his wording, keep
+  it; he took it out from under the hero player). Covers show a thin play triangle on hover. Volume: a speaker right
+  after the length ("3:50"); clicking it opens a short volume line BELOW it (above it the line read as part of the
+  position line; in the bottom bar it opens upwards), a click elsewhere closes it, the wheel over it turns it up/down,
+  the left end mutes; kept in localStorage `mp-volume`/`mp-muted`; hidden where pages can't set volume (iPhone).
+  The bottom bar and the volume line float in the site's fog (main.css "Cloud islands" recipe, copied in
+  music-player.html), like the pinned title cluster.
+- Filters (Louis, 2026-10-13): Style (one per track), Elements (several: Trance breaks, Breakbeat, Dubstep drops,
+  Metal) and Voice (Instrumental / Vocals), front matter `style` / `elements` / `voice`, set BY HAND from each
+  song's Suno style prompt (public at suno.com/song/<id>, the link is inside the MP3; `curl` the page, the prompt is
+  in its `tags`). Re-runs of ingest-music.py keep them; a new track gets voice from its words, style empty: fill it.
+  The grid's side label shows the style (every track is 2026), the popup and track page "Hard Techno · Trance breaks".
 - AUDIO MUST COME FROM THE SITE ITSELF: the CSP has no `media-src`, so `default-src 'self'` applies. The MP3s live in
   the images repo (`music/<slug>.mp3`) and `_partials/audio-url.html` has Hugo fetch them and publish them untouched
   under `/audio/` (needs `[mediaTypes."audio/mpeg"]` in `hugo.toml`). It FAILS the build if one can't be fetched (a
@@ -197,6 +206,15 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
   Collapse photo169, Near-Sacred photo163, Decaying Tail photo138, Untitled n.1 photo173,
   Ascent photo126, Omnipulse photo124, Serrated Pulses photo171, Black Current photo118, No Return photo114, Rust in the Circuit photo115.
 - Two downloads with the same title are the two sides of one song (Louis): no number = Side A, " (1)" = Side B.
+- ONE SQUARE PER RECORD (Louis, 2026-10-13: two near-identical covers side by side looked repetitive): the grid renders
+  the head track (Side A, or a one-sided song); `data-sides` lists its sides, and every side's data (audio, covers,
+  words, link) is in the JSON block `#mpTracksData` (script blocks never go into the fog copies). Play order is
+  A, then B, then the next record (Side A's end starts Side B; the arrows step through sides). The square's cover,
+  label, link and alt follow the side that plays; it plays the side it shows. The popup and the hero have
+  `Side A · Side B` buttons (`.mp-side`, music-player.html); each side's own page links to the other side(s).
+  Each side keeps its own page and sitemap entry (/production/<song>-a/, -b/).
+- llms.txt has a "## Production (Ny)" list (one line per record, style, sides, lengths). When tracks change,
+  regenerate it from content/production (the block is replaced whole; see the session of 2026-10-13).
 - The release Louis names as the latest leads the grid and the hero (`params.faces.ny.hero`): Ritual Annihilation,
   Sides A and B (Louis, 2026-10-12). Its `order` is set BY HAND above everything (A 21, B 20); the rest follow,
   newest first. A new track gets max+1 and lands on top: renumber so the pinned release stays first, and ask Louis
@@ -287,10 +305,16 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 - Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`);
   Ny's is `ritual-annihilation-a`, the latest release (clicking it plays it).
 - Header logo (`header.html`): every page load shows the page's OWN logo — louis. → Louis Andrada (`old`, logoold.png),
-  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), andrada.one → Andrada (`andrada`,
+  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), ny. → Ny (`ny`, nylogo.png), andrada.one → Andrada (`andrada`,
   andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's
-  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L'. New logo from a
+  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L' → Ny → Nilo. New logo from a
   black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
+  Louis also wants a white copy of each new one (`static/<name>invert.png`: same alpha, white ink; for his own use).
+  Size: L' and Ny fill more of their canvas, so `.logo-l` / `.logo-ny` scale them down (0.62 / 0.574, the same ink
+  height; Louis found L' at 0.72 still too big, 2026-10-13); Nilo 0.60, same ink height.
+- **Nilo** (2026-10-13): a name with NO section yet ("surprises soon"). It is in About, the intro door, the
+  Person's alternateName and `params.names.nilo`; its header logo (`nilo`, nilologo.png) waits for a face. Not in
+  menus, Links, taglines or llms.txt until it owns work: ask Louis its discipline when the section comes.
 - A new face needs, before its deploy: a Cloudflare DNS record (CNAME `<key>` → `louisandrada.netlify.app`, proxied)
   AND a Netlify domain alias (`netlify api updateSite`, site `louisandrada`). There is no wildcard record.
 - TLS depends on Cloudflare: every andrada.one DNS record is orange (proxied), and Netlify has NO certificate of its

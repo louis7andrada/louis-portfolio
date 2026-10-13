@@ -40,12 +40,19 @@
       <div class="photo-info-top">
         <h1 class="photo-title">{{ .Title }}</h1>
 
-        {{ with .Params.side }}
-          <p>Side {{ . }}</p>
+        {{/* Side A · Side B: links to this song's other side(s) */}}
+        {{ if .Params.side }}
+          {{ $sides := sort (where (where (where site.RegularPages "Section" "production") "Title" .Title) "Params.side" "!=" nil) "Params.side" }}
+          <p class="mp-sides">{{ range $sides }}<a href="{{ .RelPermalink }}" class="mp-side{{ if eq .RelPermalink $.RelPermalink }} active{{ end }}"{{ if eq .RelPermalink $.RelPermalink }} aria-current="page"{{ end }}>Side {{ .Params.side }}</a>{{ end }}</p>
         {{ end }}
 
         {{ with .Params.year }}
           <p>{{ . }}</p>
+        {{ end }}
+
+        {{/* "Hard Techno · Trance breaks": the style, then what else is in it (the Filters' values) */}}
+        {{ with .Params.style }}
+          <p>{{ delimit (slice . | append ($.Params.elements | default slice)) " · " }}</p>
         {{ end }}
 
         {{ with .Params.description }}

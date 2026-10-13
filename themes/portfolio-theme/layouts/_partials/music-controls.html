@@ -19,14 +19,17 @@
       <button type="button" class="mp-btn mp-next" aria-label="Next track"><svg {{ $svg | safeHTMLAttr }}><line x1="18" y1="6" x2="18" y2="18"/><polygon points="6,6 15,12 6,18"/></svg></button>
       {{- end }}
     </span>
-    <span class="mp-time mp-dur">{{ div $d 60 }}:{{ printf "%02d" (mod $d 60) }}</span>
-  </div>
-  {{- /* volume: the speaker mutes; the line is dragged, clicked or scrolled (up = louder) */}}
-  <div class="mp-vol">
-    <button type="button" class="mp-btn mp-mute" aria-label="Mute"><svg class="mp-i-vol" {{ $svg | safeHTMLAttr }}><polygon points="4,9.5 8,9.5 13,5.5 13,18.5 8,14.5 4,14.5"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></svg><svg class="mp-i-muted" {{ $svg | safeHTMLAttr }}><polygon points="4,9.5 8,9.5 13,5.5 13,18.5 8,14.5 4,14.5"/><line x1="16.5" y1="9.5" x2="21.5" y2="14.5"/><line x1="21.5" y1="9.5" x2="16.5" y2="14.5"/></svg></button>
-    <div class="mp-vbar" role="slider" tabindex="0" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-      <span class="mp-bar-line"><span class="mp-vfill"></span></span>
-    </div>
+    <span class="mp-end">
+      <span class="mp-time mp-dur">{{ div $d 60 }}:{{ printf "%02d" (mod $d 60) }}</span>
+      {{- /* volume: the speaker next to the length opens the volume line (Louis: only once clicked);
+             the line is dragged or clicked, and the wheel over the speaker or the line turns it up/down */}}
+      <span class="mp-vol">
+        <button type="button" class="mp-btn mp-volbtn" aria-label="Volume" aria-expanded="false"><svg class="mp-i-vol" {{ $svg | safeHTMLAttr }}><polygon points="4,9.5 8,9.5 13,5.5 13,18.5 8,14.5 4,14.5"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/><path d="M19 6.5a8 8 0 0 1 0 11"/></svg><svg class="mp-i-muted" {{ $svg | safeHTMLAttr }}><polygon points="4,9.5 8,9.5 13,5.5 13,18.5 8,14.5 4,14.5"/><line x1="16.5" y1="9.5" x2="21.5" y2="14.5"/><line x1="21.5" y1="9.5" x2="16.5" y2="14.5"/></svg></button>
+        <span class="mp-vbar" role="slider" tabindex="0" aria-label="Volume" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+          <span class="mp-bar-line"><span class="mp-vfill"></span></span>
+        </span>
+      </span>
+    </span>
   </div>
   <p class="mp-msg" hidden></p>
 </div>

@@ -5,6 +5,9 @@ side: "B"
 order: 18
 year: 2026
 duration: 242
+style: "Industrial Rave"
+elements: ["Trance breaks", "Breakbeat"]
+voice: "Instrumental"
 cover: "photo126"
 coverCrop: 0.3
 source: "Ascent (1)"

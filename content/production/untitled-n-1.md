@@ -4,6 +4,9 @@ title: "Untitled n.1"
 order: 14
 year: 2026
 duration: 242
+style: "Industrial Rave"
+elements: ["Trance breaks", "Breakbeat"]
+voice: "Instrumental"
 cover: "photo173"
 coverCrop: 0.7
 source: "Untitled n.1"

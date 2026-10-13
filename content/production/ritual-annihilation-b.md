@@ -5,6 +5,9 @@ side: "B"
 order: 20
 year: 2026
 duration: 245
+style: "Hard Techno"
+elements: ["Trance breaks"]
+voice: "Instrumental"
 cover: "photo111"
 coverCrop: 0.3
 source: "Ritual Annihilation (1)"

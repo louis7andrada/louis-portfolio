@@ -6,8 +6,8 @@
   <!--       Codes by Louis Andrada                -->
 
   <!-- Left: Logo — always visible. Every page load shows the page's OWN logo first (louis. → Louis
-       Andrada "old", han. → Han Andrada "ha", odi. → Odi Andrada "odi", l. → L' "l", andrada.one → Andrada "andrada";
-       ny. has no logo of its own yet, so Ny pages show Jera Ansuz at once),
+       Andrada "old", han. → Han Andrada "ha", odi. → Odi Andrada "odi", l. → L' "l", ny. → Ny "ny", andrada.one → Andrada "andrada";
+       Nilo's logo "nilo" is ready for the day Nilo has pages; until then it appears in the intro door),
        then it turns into Jera Ansuz ("new", lalogo.png) — see startHeaderLogoSequence below. -->
   {{- /* The logo owner as rendered: the face that owns this page's section or front page, "hub" on the
          Links page. In the browser a face subdomain (window.__face) wins, as it does for the name. */ -}}
@@ -21,6 +21,8 @@
       <img src="/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
       <img src="/odiandradalogo.png" alt="Odi Andrada Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
       <img src="/llogo.png" alt="L' Logo" id="logoL" class="logo-img logo-l" data-logo="l">
+      <img src="/nylogo.png" alt="Ny Logo" id="logoNy" class="logo-img logo-ny" data-logo="ny">
+      <img src="/nilologo.png" alt="Nilo Logo" id="logoNilo" class="logo-img logo-nilo" data-logo="nilo">
       <img src="/andradalogo.png" alt="Andrada Logo" id="logoAndrada" class="logo-img logo-andrada" data-logo="andrada">
     </div>
   </a>
@@ -54,7 +56,7 @@
 
       // The page's own logo: the face subdomain, else the page's owner as rendered, else the name the
       // visitor came in with (?name=, baseof.html), else the hub's Andrada.
-      var LOGOS = { louis: "old", han: "ha", odi: "odi", l: "l", ny: "new", ja: "andrada", hub: "andrada" }; // ny: no logo yet
+      var LOGOS = { louis: "old", han: "ha", odi: "odi", l: "l", ny: "ny", nilo: "nilo", ja: "andrada", hub: "andrada" };
       var who = window.__face || {{ $logoOwner }} || window.__nameKey || "hub";
       var pageLogo = LOGOS[who] || "andrada";
       wrap.setAttribute("data-page-logo", pageLogo);
@@ -149,6 +151,8 @@
     <img src="/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
     <img src="/odiandradalogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi Andrada" />
     <img src="/llogo.png" id="introLogoL" class="intro-logo-img intro-logo-l" data-logo="l" alt="L'" />
+    <img src="/nylogo.png" id="introLogoNy" class="intro-logo-img intro-logo-ny" data-logo="ny" alt="Ny" />
+    <img src="/nilologo.png" id="introLogoNilo" class="intro-logo-img intro-logo-nilo" data-logo="nilo" alt="Nilo" />
     <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
   </div>
 </div>
@@ -247,15 +251,22 @@
      (2686, 2231 and 1016 px wide): drawn at halogo's scale, so the box is halogo's width times that share. */
   .logo-odi     { height: 2.5rem; width: calc(7rem * 0.8290); }
   .logo-andrada { height: 2.5rem; width: calc(7rem * 0.6886); }
-  /* L' fills more of its canvas than the others (ink 84% of the height): 0.72 gives it Odi's ink height */
-  .logo-l       { height: calc(2.5rem * 0.72); width: calc(7rem * 0.3136 * 0.72); }
+  /* L' and Ny fill more of their canvas than the others (ink 84% and 91% of the height). Louis found L' at
+     Odi's ink height (0.72) still too big (2026-10-13): L' 0.62, and Ny (1392 px wide) scaled to the same ink
+     height (0.838 x 0.62 / 0.906 = 0.574). */
+  .logo-l       { height: calc(2.5rem * 0.62); width: calc(7rem * 0.3136 * 0.62); }
+  .logo-ny      { height: calc(2.5rem * 0.574); width: calc(7rem * 0.4296 * 0.574); }
+  /* Nilo (ink 87% of the height, 1397 px wide): the same ink height as L' and Ny (0.838 x 0.62 / 0.867 = 0.60) */
+  .logo-nilo    { height: calc(2.5rem * 0.60); width: calc(7rem * 0.4312 * 0.60); }
 
   @media (max-width: 767px) {
     .logo-old, .logo-ha { height: 2rem; width: 5.5rem; }
     .logo-new { height: 2rem; width: 2rem; }
     .logo-odi     { height: 2rem; width: calc(5.5rem * 0.8290); }
     .logo-andrada { height: 2rem; width: calc(5.5rem * 0.6886); }
-    .logo-l       { height: calc(2rem * 0.72); width: calc(5.5rem * 0.3136 * 0.72); }
+    .logo-l       { height: calc(2rem * 0.62); width: calc(5.5rem * 0.3136 * 0.62); }
+    .logo-ny      { height: calc(2rem * 0.574); width: calc(5.5rem * 0.4296 * 0.574); }
+    .logo-nilo    { height: calc(2rem * 0.60); width: calc(5.5rem * 0.4312 * 0.60); }
   }
 
   /* ── DARK MODE (header logo) ── */
@@ -314,7 +325,9 @@
   .intro-logo-ha,
   .intro-logo-odi,
   .intro-logo-andrada { height: 100%; } /* signatures on the 1440px-tall canvas — span the full wrap */
-  .intro-logo-l { height: 72%; } /* same signature canvas, but L' fills more of it (see .logo-l) */
+  .intro-logo-l { height: 62%; } /* same signature canvas, but L' fills more of it (see .logo-l) */
+  .intro-logo-ny { height: 57.4%; } /* and Ny more still (see .logo-ny) */
+  .intro-logo-nilo { height: 60%; } /* and Nilo (see .logo-nilo) */
 
   /* Final stage: whichever logo is active morphs away (bigger blur/scale,
      slower) as the door dissolves underneath it, instead of a flat fade */
@@ -638,7 +651,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // dissolve), so each new logo makes every step a little quicker instead
       // of making the door longer. To add a logo: add its <img> above and its
       // name to INTRO_STEPS; the timings below rescale themselves.
-      const INTRO_STEPS         = ["new", "andrada", "old", "ha", "odi", "l"];
+      const INTRO_STEPS         = ["new", "andrada", "old", "ha", "odi", "l", "ny", "nilo"];
       // The 3-logo door's timings (1100 first hold, 900 morphs, 350 between,
       // 700 final hold = 3950ms) set the proportions and the budget.
       const LOGO_BUDGET         = 3950;

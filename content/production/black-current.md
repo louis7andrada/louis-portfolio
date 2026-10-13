@@ -4,6 +4,9 @@ title: "Black Current"
 order: 3
 year: 2026
 duration: 255
+style: "Industrial Dubstep"
+elements: ["Dubstep drops", "Metal"]
+voice: "Vocals"
 cover: "photo118"
 coverCrop: 0.5
 source: "Black Current"
