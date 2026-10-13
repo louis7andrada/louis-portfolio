@@ -98,6 +98,8 @@
        data-year="{{ $page.Params.year }}"
        data-title="{{ $page.Title }}"
        data-side="{{ $page.Params.side | default "" }}"
+       {{- /* the grid title of a record with sides: "Ritual Fracture — Side A & B" (Louis, 2026-10-13) */}}
+       data-sides-label="{{ if gt (len $sides) 1 }}{{ $letters := slice }}{{ range $sides }}{{ $letters = $letters | append .Params.side }}{{ end }}{{ delimit $letters " & " }}{{ end }}"
        data-style="{{ $page.Params.style | default "" }}"
        data-elements="{{ delimit ($page.Params.elements | default slice) "|" }}"
        data-voice="{{ $page.Params.voice | default "" }}"
@@ -545,8 +547,7 @@ document.addEventListener("DOMContentLoaded", () => {
     it.setAttribute("href", t.href);
     const img = it.querySelector("img");
     if (img) { img.src = t.grid; img.alt = "Cover of " + t.title + (t.side ? ", Side " + t.side : ""); }
-    const lbl = it.querySelector(".aw-lbl-b");
-    if (lbl) lbl.textContent = t.title + (t.side ? " — Side " + t.side : "");
+    // (the title under the square stays the record's: "Ritual Fracture — Side A & B"; the cover shows the side)
   }
 
   player.on(s => {
@@ -694,7 +695,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // the vertical label: the track's style (every track is 2026), else the year
     const year = (item.dataset.style || item.dataset.year || '').trim();
-    const title = ((item.dataset.title || '') + (item.dataset.side ? ' — Side ' + item.dataset.side : '')).trim();
+    // a record with sides is titled for both ("Ritual Fracture — Side A & B"); its cover shows the side playing
+    const sides = item.dataset.sidesLabel || item.dataset.side;
+    const title = ((item.dataset.title || '') + (sides ? ' — Side ' + sides : '')).trim();
 
     const idx = parseInt(item.dataset.idx, 10) || 0;
     const r = mkRng(idx * 7919 + 31);

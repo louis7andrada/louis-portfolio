@@ -210,7 +210,8 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
   the head track (Side A, or a one-sided song); `data-sides` lists its sides, and every side's data (audio, covers,
   words, link) is in the JSON block `#mpTracksData` (script blocks never go into the fog copies). Play order is
   A, then B, then the next record (Side A's end starts Side B; the arrows step through sides). The square's cover,
-  label, link and alt follow the side that plays; it plays the side it shows. The popup and the hero have
+  link and alt follow the side that plays; it plays the side it shows. Its title is the record's, always:
+  "Ritual Fracture — Side A & B" (`data-sides-label`; Louis, 2026-10-13). The popup and the hero have
   `Side A · Side B` buttons (`.mp-side`, music-player.html); each side's own page links to the other side(s).
   Each side keeps its own page and sitemap entry (/production/<song>-a/, -b/).
 - llms.txt has a "## Production (Ny)" list (one line per record, style, sides, lengths). When tracks change,

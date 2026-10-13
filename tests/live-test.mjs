@@ -499,7 +499,8 @@ async function main() {
     await page.evaluate(`window.musicPlayer.seek(window.musicPlayer.state().duration - 1.2); true`);
     if (!(await page.waitFor(`window.musicPlayer.state().track.id === 'ritual-annihilation-b' && window.musicPlayer.state().playing`, { timeout: 8000 }))) problems.push("Side A's end didn't start Side B");
     v = await page.evaluate(view);
-    if (v.square !== "ritual-annihilation-b" || !/ritual-annihilation-b/.test(v.img) || !/Side B/.test(v.label)) problems.push(`the square didn't turn to Side B: ${JSON.stringify(v)}`);
+    if (v.square !== "ritual-annihilation-b" || !/ritual-annihilation-b/.test(v.img)) problems.push(`the square didn't turn to Side B: ${JSON.stringify(v)}`);
+    if (v.label !== "Ritual Annihilation — Side A & B") problems.push(`the square's title reads "${v.label}", not the record's "Ritual Annihilation — Side A & B"`);
     if (v.sides !== "Side A,Side B*" || v.title !== "Ritual Annihilation") problems.push(`the popup after Side A: ${JSON.stringify(v)}`);
     const q = await page.evaluate(`window.musicPlayer.queue()`);
     const after = q[q.indexOf("ritual-annihilation-b") + 1];
