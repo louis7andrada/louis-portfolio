@@ -32,7 +32,7 @@
         "@type": "ListItem",
         "position": {{ add $i 1 }},
         "url": "{{ partial "canonical.html" $item }}",
-        "name": "{{ $item.Title | default (printf "%s (%v)" $item.Params.id $item.Params.year) }}"
+        "name": "{{ $item.Title | default (printf "%s (%v)" $item.Params.id $item.Params.year) }}{{ with $item.Params.side }} (Side {{ . }}){{ end }}"
       }{{ end }}
     ]
   }

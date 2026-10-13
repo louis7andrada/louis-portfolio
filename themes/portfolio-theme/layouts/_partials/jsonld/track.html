@@ -1,0 +1,55 @@
+{{/* A track from the Production section (/production/<slug>/, Ny).
+
+     A schema.org MusicRecording with its length, its cover (an ImageObject, with the same license
+     fields every image on the site carries) and the MP3 itself (an AudioObject, served from this
+     site under /audio/). Credited to the same …/#person entity as everything else on the site. */}}
+{{ $person := printf "%s#person" site.BaseURL }}
+{{/* Credited to the page's one name (Ny); copyright to the legal entity. */}}
+{{ $who := index site.Params.names (partial "page-name.html" .) }}
+{{ $name := .Title }}{{ with .Params.side }}{{ $name = printf "%s (Side %s)" $name . }}{{ end }}
+{{ $d := int (.Params.duration | default 0) }}
+{{ $iso := printf "PT%dM%dS" (div $d 60) (mod $d 60) }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MusicRecording",
+  "@id": "{{ partial "canonical.html" . }}#work",
+  "name": "{{ $name }}",
+  "url": "{{ partial "canonical.html" . }}",
+  {{ if $d }}"duration": "{{ $iso }}",
+  {{ end }}"license": "{{ "/license/" | absURL }}",
+  {{ with .Params.year }}"dateCreated": "{{ . }}",
+  {{ end }}"byArtist": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ $who }}"
+  },
+  "copyrightHolder": {
+    "@type": "Person",
+    "@id": "{{ $person }}",
+    "name": "{{ site.Params.legal_name }}"
+  },
+  {{ with .Params.audio }}"audio": {
+    "@type": "AudioObject",
+    "contentUrl": "{{ partial "audio-url.html" . | absURL }}",
+    "encodingFormat": "audio/mpeg"{{ if $d }},
+    "duration": "{{ $iso }}"{{ end }}
+  },
+  {{ end }}{{ with .Params.image }}"image": {
+    "@type": "ImageObject",
+    "contentUrl": "{{ . }}",
+    "creditText": "{{ $who }}",
+    "copyrightNotice": "© {{ site.Params.legal_name }}",
+    "creator": {
+      "@type": "Person",
+      "@id": "{{ $person }}",
+      "name": "{{ $who }}"
+    },
+    "license": "{{ "/license/" | absURL }}",
+    "acquireLicensePage": "{{ "/inquiry/" | absURL }}"
+  },
+  {{ end }}"isPartOf": {
+    "@id": "{{ site.BaseURL }}#website"
+  }
+}
+</script>

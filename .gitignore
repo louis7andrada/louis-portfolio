@@ -29,6 +29,8 @@ static/images/photography/
 photography-images/
 # Vestments web copies, same (scripts/ingest-vestments.py)
 vestments-images/
+# Production (Ny): MP3s and covers, same (scripts/ingest-music.py)
+music-images/
 
 # =========================
 # Private files — never publish (this repo is public)

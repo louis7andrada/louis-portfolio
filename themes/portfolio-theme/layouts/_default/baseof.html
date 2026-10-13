@@ -157,6 +157,17 @@
     {{ with .Params.image }}{{ $ogImage = partial "img-url.html" (dict "src" . "width" 1200 "format" "jpg" "bg" "#0c0c0c") | absURL }}{{ end }}
     {{ $imageAlt = printf "%s, vestment by %s" .Title $name }}
 
+  {{ else if and (eq .Type "production") .IsPage }}
+    {{ $ogType = "article" }}
+    {{/* "Ritual Annihilation (Side A) — Track by Ny"; "… — a track by Ny, 2026 (3:50)." */}}
+    {{ $t := .Title }}{{ with .Params.side }}{{ $t = printf "%s (Side %s)" $t . }}{{ end }}
+    {{ $d := int (.Params.duration | default 0) }}
+    {{ $pageTitle = printf "%s — Track by %s" $t $name }}
+    {{ $desc = printf "%s — a track by %s, %v (%d:%02d). Listen on the site." $t $name .Params.year (div $d 60) (mod $d 60) }}
+    {{ with .Params.description }}{{ $desc = printf "%s — a track by %s. %s" $t $name . }}{{ end }}
+    {{ with .Params.image }}{{ $ogImage = partial "img-url.html" (dict "src" . "width" 1200 "format" "jpg") | absURL }}{{ end }}
+    {{ $imageAlt = printf "Cover of %s, a track by %s" $t $name }}
+
   {{ else if and (eq .Type "archive") .IsPage }}
     {{ $ogType = "article" }}
     {{/* Archive photos have no titles (only year + category are shown): name them by id. */}}
@@ -174,7 +185,7 @@
   <title>{{ $pageTitle }}</title>
 
   {{/* ONE NAME PER VISIT (params.names / params.faces in hugo.toml). On a face subdomain
-       (louis. / han. / odi. / l.andrada.one) the subdomain IS the name, and the page gets html.face-<key>.
+       (louis. / han. / odi. / l. / ny.andrada.one) the subdomain IS the name, and the page gets html.face-<key>.
        Anywhere else the name follows the door the visitor came in through: ?name=<key> picks it and
        is removed from the address bar; it then holds while they move around (and on reload/back).
        Arriving any other way means the name the page was rendered with.
@@ -323,7 +334,7 @@
 
 </head>
 
-<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") }}page-books{{ end }}">
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") (eq .Type "production") }}page-books{{ end }}">
 
   <!-- ══════════════════════════════════════════════════════
        SITE MIRROR — a vertically-flipped, color-inverted,

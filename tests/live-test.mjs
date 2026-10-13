@@ -172,6 +172,8 @@ async function main() {
     ["/photography/", "Photography"],
     ["/vestments/", "Vestments"],
     ["/vestments/vestment1/", "Vestment single"],
+    ["/production/", "Production"],
+    ["/production/ritual-annihilation-a/", "Track single"],
     ["/inquiry/", "Inquiry"],
     ["/links/", "Links"],
     ["/unsubscribe/", "Unsubscribe"],
@@ -294,14 +296,14 @@ async function main() {
     return true;
   });
 
-  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / L' / Andrada), then turns into Jera Ansuz", async () => {
+  await check("Header logo: every page load shows the page's own logo (Louis / Han / Odi Andrada / L' / Andrada; Ny has none yet), then turns into Jera Ansuz", async () => {
     const page = await browser.newPage();
     const active = `document.getElementById('logoMorphWrap')?.getAttribute('data-active')`;
     // Locally there are no subdomains, so the page's section decides (Artworks home = Louis "old",
     // Oeuvre = Han "ha", Photography = Odi Andrada "odi", Links and shared pages = Andrada "andrada";
-    // Vestments = L' "l").
+    // Vestments = L' "l"; Production = Ny, who has no logo of its own yet: Jera Ansuz "new" at once).
     // The first stop can include the intro door (~4s) + entrance (900ms) + hold (3200ms): poll.
-    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/vestments/vestment1/", "l", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
+    for (const [path, logo, wait] of [["/", "old", 15000], ["/oeuvre/", "ha", 8000], ["/photography/photo3/", "odi", 8000], ["/vestments/vestment1/", "l", 8000], ["/production/omnipulse/", "new", 8000], ["/links/", "andrada", 8000], ["/about/", "andrada", 8000]]) {
       await page.goto(BASE_URL + path);
       const shown = await page.evaluate(active);
       if (shown !== logo) throw new Error(`${path} opened on "${shown}", not its own logo "${logo}"`);
@@ -341,7 +343,7 @@ async function main() {
   });
 
   // The menus open each face at its grid with a hash (louis.andrada.one/#artworks-section, han./#oeuvre,
-  // odi./#photography, l./#vestments). The page must scroll to the grid and drop the hash: the address bar shows the bare face.
+  // odi./#photography, l./#vestments, ny./#production). The page must scroll to the grid and drop the hash: the address bar shows the bare face.
   // Vestments (L', Oct 2026): Filters by Category / Type / Sleeves, built from the pages' own values.
   await check("Vestments: Filters narrow the grid by Type and Sleeves, show the choice, and Deselect all brings everything back", async () => {
     const page = await browser.newPage();
@@ -376,10 +378,160 @@ async function main() {
     return true;
   });
 
+  // Production (Ny, Oct 2026): Ny's tracks. A cover click opens the popup AND starts that track; the popup's
+  // arrows change track; closing it leaves the music in a now-playing bar; a track's end starts the next one.
+  // Real mouse clicks (browsers only let sound start inside a visitor's own gesture), under the production CSP:
+  // the MP3s must come from the site's own /audio/ (the CSP has no media-src).
+  await check("Production: a cover click opens its popup and plays it; arrows change track; closing keeps the music in the now-playing bar", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.enforceCsp(PROD_CSP, new URL(BASE_URL).origin);
+    await page.goto(BASE_URL + "/production/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/production/");
+    await new Promise((r) => setTimeout(r, 1500));
+    const click = async (sel, i = 0) => {
+      await page.evaluate(`document.querySelectorAll(${JSON.stringify(sel)})[${i}].scrollIntoView({ block: 'center' }); true`);
+      await new Promise((r) => setTimeout(r, 200));
+      const p = await page.evaluate(`(function () { var b = document.querySelectorAll(${JSON.stringify(sel)})[${i}].getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; })()`);
+      for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+        await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+    };
+    const st = `(function () { var s = window.musicPlayer.state(), a = window.musicPlayer.audio; return { id: s.track && s.track.id, playing: s.playing, t: a.currentTime, src: a.currentSrc,
+      open: document.getElementById('photoModal').classList.contains('open'), mini: !!document.querySelector('.mp-mini.show'), title: document.getElementById('photoModalTitle').textContent }; })()`;
+    const problems = [];
+    const ids = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (a) { return a.dataset.id; })`);
+    if (ids.length < 3) problems.push(`only ${ids.length} track(s) on the page`);
+    await click("body > main #bookGallery .aw-item", 1);
+    if (!(await page.waitFor(`window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the clicked track never started playing");
+    let s = await page.evaluate(st);
+    if (!s.open || s.id !== ids[1] || !s.playing) problems.push(`after the cover click: ${JSON.stringify(s)}`);
+    if (!/^http:\/\/[^/]+\/audio\/[^/]+\.mp3$/.test(s.src || "")) problems.push(`the MP3 isn't served from the site's own /audio/ (${s.src})`);
+    await click("#photoNextBtn");
+    if (!(await page.waitFor(`window.musicPlayer.state().track.id === ${JSON.stringify(ids[2])} && window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the next arrow didn't play the next track");
+    s = await page.evaluate(st);
+    if (s.title !== (await page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item')[2].dataset.title`))) problems.push(`the popup shows "${s.title}", not the playing track`);
+    await click("#photoModalClose");
+    await new Promise((r) => setTimeout(r, 700));
+    s = await page.evaluate(st);
+    if (s.open || !s.playing || !s.mini) problems.push(`after closing: ${JSON.stringify(s)} (expected: closed, still playing, bar shown)`);
+    await page.evaluate(`window.musicPlayer.seek(window.musicPlayer.state().duration - 1.2); true`);
+    if (!(await page.waitFor(`window.musicPlayer.state().track && window.musicPlayer.state().track.id === ${JSON.stringify(ids[3])} && window.musicPlayer.state().playing`, { timeout: 8000 }))) problems.push("a track's end didn't start the next one");
+    await click(".mp-mini-x");
+    await new Promise((r) => setTimeout(r, 500));
+    s = await page.evaluate(st);
+    if (s.id || s.mini) problems.push(`the bar's X didn't stop the music: ${JSON.stringify(s)}`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  // The player under the hero's cover (Louis, Oct 2026): before anything plays it shows the newest release,
+  // ready; Side A · Side B switch sides; whatever plays (a grid cover, the arrows, the bar) shows there too.
+  await check("Production: the hero's player starts the newest release, switches sides, and follows whatever plays", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.goto(BASE_URL + "/production/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/production/");
+    await new Promise((r) => setTimeout(r, 1500));
+    const click = async (sel, i = 0) => {
+      await page.evaluate(`document.querySelectorAll(${JSON.stringify(sel)})[${i}].scrollIntoView({ block: 'center' }); true`);
+      await new Promise((r) => setTimeout(r, 250));
+      const p = await page.evaluate(`(function () { var b = document.querySelectorAll(${JSON.stringify(sel)})[${i}].getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; })()`);
+      for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+        await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+    };
+    const hero = `(function () { var b = document.querySelector('body > main .face-hero-player'); return { name: b.querySelector('.fh-name').textContent,
+      sides: [].map.call(b.querySelectorAll('.fh-side'), function (x) { return x.textContent + (x.classList.contains('active') ? '*' : ''); }).join(','),
+      img: document.querySelector('body > main .face-hero .hp-image').getAttribute('src'), hint: b.querySelector('.mp-hint').textContent,
+      id: window.musicPlayer.state().track && window.musicPlayer.state().track.id }; })()`;
+    const problems = [];
+    let h = await page.evaluate(hero);
+    if (h.name !== "Ritual Annihilation" || h.sides !== "Side A*,Side B" || h.id) problems.push(`before playing, the hero shows ${JSON.stringify(h)}`);
+    if (!/click any of the musics/.test(h.hint)) problems.push(`the hero's line reads "${h.hint}"`);
+    if (!(await page.evaluate(`/click any of the musics/.test(document.querySelector('body > main .mp-hint-grid').textContent)`))) problems.push("no line at the top of the grid");
+    await click("#heroPlayer .mp-play");
+    if (!(await page.waitFor(`window.musicPlayer.state().track && window.musicPlayer.state().track.id === 'ritual-annihilation-a' && window.musicPlayer.audio.currentTime > 0.3`, { timeout: 10000 }))) problems.push("the hero's play button didn't start Ritual Annihilation (Side A)");
+    await click("body > main .face-hero-player .fh-side", 1);
+    if (!(await page.waitFor(`window.musicPlayer.state().track.id === 'ritual-annihilation-b' && window.musicPlayer.state().playing`, { timeout: 10000 }))) problems.push("Side B didn't play Side B");
+    h = await page.evaluate(hero);
+    if (h.sides !== "Side A,Side B*" || !/ritual-annihilation-b/.test(h.img)) problems.push(`after Side B, the hero shows ${JSON.stringify(h)}`);
+    const third = await page.evaluate(`document.querySelectorAll('body > main #bookGallery .aw-item')[2].dataset.id`);
+    await click("body > main #bookGallery .aw-item", 2);
+    await page.waitFor(`window.musicPlayer.state().track.id === ${JSON.stringify(third)}`, { timeout: 10000 });
+    await page.evaluate(`document.getElementById('photoModalClose').click(); true`);
+    h = await page.evaluate(hero);
+    if (!h.img.includes(third)) problems.push(`after playing ${third} from the grid, the hero still shows ${h.img}`);
+    await page.evaluate(`window.musicPlayer.stop(); true`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  await check("Production: the volume line (click, scroll wheel) sets the volume and the speaker mutes", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.goto(BASE_URL + "/production/omnipulse/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); localStorage.removeItem('mp-volume'); localStorage.removeItem('mp-muted'); true`);
+    await page.goto(BASE_URL + "/production/omnipulse/");
+    await new Promise((r) => setTimeout(r, 800));
+    const box = await page.evaluate(`(function () { var b = document.querySelector('#trackPlayer .mp-vbar').getBoundingClientRect(); return { l: b.left, w: b.width, y: b.top + b.height / 2 }; })()`);
+    const mouse = async (type, x, y, extra = {}) => page.browser.send("Input.dispatchMouseEvent", Object.assign({ type, x, y, button: type === "mouseMoved" || type === "mouseWheel" ? "none" : "left", clickCount: type === "mousePressed" || type === "mouseReleased" ? 1 : 0 }, extra), page.sessionId);
+    const vol = `({ v: window.musicPlayer.audio.volume, m: window.musicPlayer.audio.muted, fill: document.querySelector('#trackPlayer .mp-vfill').style.width })`;
+    const problems = [];
+    for (const type of ["mouseMoved", "mousePressed", "mouseReleased"]) await mouse(type, box.l + box.w * 0.25, box.y);
+    let r = await page.evaluate(vol);
+    if (Math.abs(r.v - 0.25) > 0.05 || r.fill !== "25%") problems.push(`a click at a quarter of the line set ${JSON.stringify(r)}`);
+    await mouse("mouseWheel", box.l + box.w / 2, box.y, { deltaX: 0, deltaY: -100 });
+    await new Promise((r) => setTimeout(r, 150));
+    const up = (await page.evaluate(vol)).v;
+    if (!(up > r.v)) problems.push(`scrolling up didn't raise it (${r.v} -> ${up})`);
+    await mouse("mouseWheel", box.l + box.w / 2, box.y, { deltaX: 0, deltaY: 100 });
+    await mouse("mouseWheel", box.l + box.w / 2, box.y, { deltaX: 0, deltaY: 100 });
+    await new Promise((r) => setTimeout(r, 150));
+    const down = (await page.evaluate(vol)).v;
+    if (!(down < up)) problems.push(`scrolling down didn't lower it (${up} -> ${down})`);
+    await page.evaluate(`document.querySelector('#trackPlayer .mp-mute').click(); true`);
+    r = await page.evaluate(vol);
+    if (!r.m || r.fill !== "0%") problems.push(`the speaker didn't mute: ${JSON.stringify(r)}`);
+    await page.evaluate(`document.querySelector('#trackPlayer .mp-mute').click(); true`);
+    if ((await page.evaluate(vol)).m) problems.push("the speaker didn't unmute");
+    const kept = await page.evaluate(`localStorage.getItem('mp-volume')`);
+    if (Math.abs(parseFloat(kept) - down) > 0.001) problems.push(`the volume isn't kept for the next visit (${kept})`);
+    await page.evaluate(`localStorage.removeItem('mp-volume'); localStorage.removeItem('mp-muted'); true`);
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  await check("Production: the newest record (Ritual Annihilation, Sides A and B) leads the grid and the hero, and a track's own page plays it", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.enforceCsp(PROD_CSP, new URL(BASE_URL).origin);
+    await page.goto(BASE_URL + "/production/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/production/");
+    const problems = [];
+    const first = await page.evaluate(`[].map.call(document.querySelectorAll('body > main #bookGallery .aw-item'), function (a) { return a.dataset.id; }).slice(0, 2).join(",")`);
+    if (first !== "ritual-annihilation-a,ritual-annihilation-b") problems.push(`the grid opens with ${first}`);
+    const hero = await page.evaluate(`(document.querySelector('body > main .face-hero .hp-image') || {}).getAttribute ? document.querySelector('body > main .face-hero .hp-image').getAttribute('src') : ''`);
+    if (!/ritual-annihilation-a/.test(hero)) problems.push(`the hero shows ${hero}`);
+    await page.goto(BASE_URL + "/production/omnipulse/");
+    await new Promise((r) => setTimeout(r, 800));
+    const p = await page.evaluate(`(function () { var b = document.querySelector('#trackPlayer .mp-play').getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; })()`);
+    for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+      await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+    if (!(await page.waitFor(`window.musicPlayer.audio.currentTime > 0.3 && window.musicPlayer.state().track.id === 'omnipulse'`, { timeout: 10000 }))) problems.push("the track page's play button didn't play it");
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
   await check("Menu links that open a face at its grid scroll there and leave no #hash in the address bar", async () => {
     const page = await browser.newPage();
     const problems = [];
-    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography", "/vestments/#vestments"]) {
+    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography", "/vestments/#vestments", "/production/#production"]) {
       await page.goto(BASE_URL + path);
       await page.waitFor(`!location.hash && scrollY > 200`, { timeout: 5000 });
       const r = await page.evaluate(`({ hash: location.hash, y: Math.round(scrollY) })`);
@@ -1437,6 +1589,7 @@ async function main() {
   for (const [path, open, close] of [
     ["/photography/", `document.querySelector('body > main .aw-item:not([style*="none"])').click()`, `document.getElementById('photoModalClose').click()`],
     ["/vestments/", `document.querySelector('body > main .aw-item:not([style*="none"])').click()`, `document.getElementById('photoModalClose').click()`],
+    ["/production/", `document.querySelector('body > main .aw-item:not([style*="none"])').click()`, `document.getElementById('photoModalClose').click(); window.musicPlayer.stop()`],
     ["/archive/", `document.querySelector('body > main .arch-item').click()`, `document.getElementById('archPopupX').click()`],
   ]) {
     await check(`Popup fog (${path}): rises with the popup, clears after it closes, and never re-copies the page`, async () => {
@@ -1776,7 +1929,7 @@ async function main() {
     });
   }
 
-  // Links page on phones (Louis, Oct 2026): Louis / Han / Odi / L' on top in one row of equal columns; an empty
+  // Links page on phones (Louis, Oct 2026): Louis / Han / Odi / L' / Ny on top in one row of equal columns; an empty
   // line under them where Andrada lands under the clicked name; Andrada itself centred below that line;
   // then Polymath / Toronto based. The list has no "Portfolio" any more.
   for (const motion of ["no-preference", "reduce"]) {
@@ -1793,10 +1946,10 @@ async function main() {
           return { text: a.textContent, l: r.left, r: r.right, t: r.top + pt }; });
         var sr = s.getBoundingClientRect(), mr = m.getBoundingClientRect(), tag = document.querySelector('body > main .name-band').children[1].getBoundingClientRect();
         return { names: names, s: { c: (sr.left + sr.right) / 2, t: sr.top, b: sr.bottom, h: sr.height }, mc: (mr.left + mr.right) / 2, tagTop: tag.top,
-          list: [].map.call(document.querySelectorAll('body > main .links-col nav .tw-link'), function (a) { return a.textContent; }).slice(0, 7),
+          list: [].map.call(document.querySelectorAll('body > main .links-col nav .tw-link'), function (a) { return a.textContent; }).slice(0, 8),
           vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth }; })()`);
       const bad = [];
-      if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi L'") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
+      if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi L' Ny") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
       if (Math.abs(lay.s.c - lay.mc) > 2) bad.push(`Andrada is ${Math.round(lay.s.c - lay.mc)}px off centre`);
       if (lay.names.some((n) => Math.abs(n.t - lay.names[0].t) > 1)) bad.push("the names aren't on one row");
       if (lay.s.t < lay.names[0].t + 2 * lay.s.h - 1) bad.push("Andrada doesn't rest below the names with an empty line between");
@@ -1804,7 +1957,7 @@ async function main() {
       if (Math.max(...widths) - Math.min(...widths) > 2) bad.push(`the columns aren't equal (${widths.map(Math.round).join("/")}px)`);
       if (lay.tagTop < lay.s.b) bad.push("Polymath / Toronto based isn't below Andrada");
       if (lay.sw > lay.vw) bad.push(`the page scrolls sideways (${lay.sw}px > ${lay.vw}px)`);
-      if (lay.list.join(" ") !== "Artworks Oeuvre Photography Vestments Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
+      if (lay.list.join(" ") !== "Artworks Oeuvre Photography Vestments Production Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
       if (bad.length) { await page.close(); throw new Error(bad.join(" | ")); }
       // record where Andrada is the moment both shine (sessionStorage survives the page change), then tap Odi
       await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); window.__t0 = performance.now();

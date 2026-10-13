@@ -1,0 +1,27 @@
+{{- /*
+  A track's MP3 (Production, Ny), published by Hugo under /audio/<file> from the copy in the images repo.
+  The CSP has no media-src, so audio may only come from the site's own address (default-src 'self'):
+  the raw.githubusercontent.com URL itself would be blocked. Served by Netlify it also gets the right
+  type (audio/mpeg) and byte ranges, which seeking (and Safari, to play at all) need.
+
+  Unlike img-url.html this fails the build instead of falling back: the fallback URL could never
+  play, and a deploy that stops is better than a page whose player silently does nothing.
+  Hugo keeps the download forever (getresource cache), so only a new track needs the network; a
+  404 cached in the minute after an upload has to be deleted from that cache (see CLAUDE.md).
+
+  Usage: {{ partial "audio-url.html" .Params.audio }}
+*/ -}}
+{{- $src := . -}}
+{{- $out := "" -}}
+{{- with $src -}}
+  {{- with try (resources.GetRemote $src) -}}
+    {{- with .Err -}}
+      {{- errorf "audio-url: could not fetch %s: %s" $src . -}}
+    {{- else with .Value -}}
+      {{- $out = (resources.Copy (printf "audio/%s" (path.Base $src)) .).RelPermalink -}}
+    {{- else -}}
+      {{- errorf "audio-url: %s is not there (404)" $src -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $out -}}

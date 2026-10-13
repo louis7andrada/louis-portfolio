@@ -80,6 +80,7 @@ const shouldNotHaveRecaptcha = {
   "oeuvre/index.html": "Oeuvre list",
   "photography/index.html": "Photography list",
   "vestments/index.html": "Vestments list",
+  "production/index.html": "Production list",
   "docs/index.html": "Docs",
   "privacy/index.html": "Privacy",
   "cv/index.html": "CV redirect",
@@ -302,18 +303,18 @@ section("Books/Oeuvre section");
 }
 
 // ── 7. Nav: the sections are shown by their owner names (Oct 2026) ───────
-// Artworks / Oeuvre / Photography / Vestments read Louis / Han / Odi / L' in the menus, the
+// Artworks / Oeuvre / Photography / Vestments / Production read Louis / Han / Odi / L' / Ny in the menus, the
 // section titles and the back links. Only the labels: URLs, folders and ids
 // keep the section names. The Links page keeps its own list as it was.
-section(`Nav — sections shown as "Louis", "Han", "Odi", "L'"`);
+section(`Nav — sections shown as "Louis", "Han", "Odi", "L'", "Ny"`);
 {
   const home = readHtml("index.html");
   if (home === null) {
     fail("Home page exists for nav-rename check");
   } else {
     assert(/<h1[^>]*>Louis</.test(home), "Home page's section heading says Louis");
-    for (const label of ["Louis", "Han", "Odi", "L'"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
-    for (const label of ["Artworks", "Oeuvre", "Photography", "Vestments"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
+    for (const label of ["Louis", "Han", "Odi", "L'", "Ny"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
+    for (const label of ["Artworks", "Oeuvre", "Photography", "Vestments", "Production"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
     assert(/href="?https:\/\/han\.andrada\.one\/#oeuvre/.test(home), "Home page's Han link opens han.andrada.one at the grid");
   }
 
@@ -330,6 +331,9 @@ section(`Nav — sections shown as "Louis", "Han", "Odi", "L'"`);
   const vestment = readHtml("vestments/vestment1/index.html");
   if (vestment === null) fail("Vestment page exists (vestments/vestment1/)");
   else assert(vestment.includes("Back to L'"), `Vestment page back-link says "Back to L'"`);
+  const track = readHtml("production/ritual-annihilation-a/index.html");
+  if (track === null) fail("Track page exists (production/ritual-annihilation-a/)");
+  else assert(track.includes("Back to Ny"), `Track page back-link says "Back to Ny"`);
 }
 
 // ── 8. Header logo — page logos (old / ha / odi / andrada) + Jera Ansuz (new) ──
@@ -375,7 +379,7 @@ section("Navigation sanity");
   const home = readHtml("index.html");
   if (home) {
     // About/Inquiry/Archive stay relative; the faces and the hub are their own (sub)domains (Oct 2026).
-    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments"]) {
+    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production"]) {
       assert(home.includes(`href=${href}`) || home.includes(`href="${href}"`), `Home page links to ${href}`);
     }
   }

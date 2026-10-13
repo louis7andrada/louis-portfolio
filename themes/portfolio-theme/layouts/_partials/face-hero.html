@@ -1,10 +1,13 @@
 {{/* FACE HERO — the top of a face's front page (params.faces in hugo.toml): Oeuvre for Han
-     (han.andrada.one), Photography for Odi (odi.andrada.one), Vestments for L' (l.andrada.one).
+     (han.andrada.one), Photography for Odi (odi.andrada.one), Vestments for L' (l.andrada.one),
+     Production for Ny (ny.andrada.one).
      Laid out exactly like the home page's
      hero (hero-style.html): one image on the left, the staggered menu on the right, the grid below.
      The face's own menu entry and scrolling down lead to the grid; clicking the image opens it in
      the page's own popup, like a grid item (behaviour: faces.html).
-     Call: partial "face-hero.html" (dict "face" "odi" "items" $photos) — items in grid order. */}}
+     Call: partial "face-hero.html" (dict "face" "odi" "items" $photos) — items in grid order.
+     "player": a line of text, and the hero gets the music player under its image with that line
+     below it (Production). */}}
 {{ $face := .face }}
 {{ $cfg := index site.Params.faces $face }}
 {{ $pick := "" }}
@@ -16,10 +19,10 @@
 
 {{ with $pick }}
 {{ $src := "" }}{{ $dimsKey := "" }}{{ $alt := "" }}
-{{ if eq $face "odi" "l" }}
+{{ if eq $face "odi" "l" "ny" }}
   {{ $src = partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
   {{ $dimsKey = .Params.image }}
-  {{ $alt = printf "%s, %s" .Title (cond (eq $face "l") "vestment" "photograph") }}
+  {{ $alt = printf "%s, %s" .Title (index (dict "odi" "photograph" "l" "vestment" "ny" "cover") $face) }}
 {{ else }}
   {{ $src = printf "%s/cover.jpg" .Params.imageBase }}
   {{ $dimsKey = $src }}
@@ -32,6 +35,15 @@
         <a href="{{ .RelPermalink }}" class="hp-image-link face-hero-link">
           <img src="{{ $src }}" alt="{{ $alt }}" class="hp-image"{{ partial "imgdims.html" $dimsKey }} />
         </a>
+        {{/* Production (Ny): the player under the cover. It shows whatever plays (production/list.html
+             swaps the cover, title and sides); before anything has played, this track, ready to start. */}}
+        {{ with $.player }}
+        <div class="face-hero-player" data-track="{{ $pick.Params.id }}">
+          <p class="fh-title"><span class="fh-name">{{ $pick.Title }}</span><span class="fh-sides"></span></p>
+          {{ partial "music-controls.html" (dict "id" "heroPlayer" "skip" true "duration" $pick.Params.duration) }}
+          <p class="mp-hint">{{ . }}</p>
+        </div>
+        {{ end }}
       </div>
       {{ partial "hero-nav.html" . }}
     </div>
@@ -44,5 +56,15 @@
      scrolled away (html.hero-in-view, set by faces.html), as the header menu does on the home page. */
   .book-page-header { transition: opacity 0.4s ease, visibility 0.4s; }
   html.hero-in-view .book-page-header { opacity: 0; visibility: hidden; pointer-events: none; }
+  /* the player under the cover (Production): as wide as the image and placed like it */
+  .face-hero-player { width: 60%; margin: 16px auto 0; transform: translateX(40px); }
+  .face-hero-player .mp-player { max-width: none; }
+  .fh-title { margin: 0 0 6px; font-size: 0.95rem; letter-spacing: 0.02em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; }
+  .fh-sides { display: inline-flex; gap: 12px; font-size: 0.8rem; }
+  .fh-sides:empty { display: none; }
+  .fh-side { background: none; border: none; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; letter-spacing: 0.04em; opacity: 0.45; transition: opacity 0.2s; }
+  .fh-side:hover { opacity: 0.85; }
+  .fh-side.active { opacity: 1; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 1200px) { .face-hero-player { width: 85%; transform: none; } }
 </style>
 {{ end }}

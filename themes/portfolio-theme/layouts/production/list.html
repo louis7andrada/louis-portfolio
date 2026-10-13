@@ -1,0 +1,637 @@
+{{ define "main" }}
+
+{{/* Production (Ny, ny.andrada.one): Ny's tracks, as a DJ / producer. A copy of the Vestments page (vestments/list.html) — same pinned
+     title + search, scatter grid, popup, arrows and fullscreen, and it keeps the same ids/classes
+     (#books-section, .book-page-header, .book-modal, body.page-books) so main.css and the
+     fog-mirror exclusions in baseof.html apply unchanged. Each square is one track's cover.
+     Clicking it opens the popup AND starts the track; the popup's arrows change track; closing it
+     leaves the music playing in a small now-playing bar (music-player.html). No filters (yet):
+     the search box finds titles, sides and words.
+     Tracks come from scripts/ingest-music.py: ids are the slugged titles, the two sides of one song
+     share a cover and differ by `side` (A / B); `order` = the date Suno made it (higher shows first). */}}
+{{ $tracks := sort (where .Site.RegularPages "Section" "production") "Params.order" "desc" }}
+{{ partial "jsonld/collection.html" (dict "page" . "items" $tracks) }}
+
+{{/* Louis's line (Oct 2026), under the hero player and at the top of the grid */}}
+{{ $hint := "go ahead.. click any of the musics :)" }}
+{{ partial "face-hero.html" (dict "face" "ny" "items" $tracks "player" $hint) }}
+
+<section id="books-section" class="w-full px-4 py-12 relative">
+
+  <div class="book-page-header">
+    <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Ny</h1>
+
+    <div class="artwork-filter-bar" id="bookFilterBar">
+      <div class="book-search-wrap">
+        <svg class="book-search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.6"/><line x1="15.4" y1="15.4" x2="21" y2="21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="booksSearchInput" class="book-search-input" placeholder="...">
+      </div>
+    </div>
+  </div>
+
+  <p class="mp-hint mp-hint-grid">{{ $hint }}</p>
+
+  <div id="bookGallery" class="aw-grid">
+    {{ range $i, $page := $tracks }}
+    <a href="{{ $page.RelPermalink }}"
+       class="artwork-item aw-item"
+       data-idx="{{ $i }}"
+       data-id="{{ $page.Params.id }}"
+       data-year="{{ $page.Params.year }}"
+       data-title="{{ $page.Title }}"
+       data-side="{{ $page.Params.side | default "" }}"
+       data-duration="{{ $page.Params.duration | default 0 }}"
+       data-desc="{{ $page.Params.description | default "" }}"
+       data-words="{{ $page.Params.words | default "" }}"
+       data-audio="{{ partial "audio-url.html" $page.Params.audio }}"
+       data-src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1600 "keep" true) }}">
+      {{/* the popup/fullscreen show the 1600px cover JPEG itself; the grid a 1200px WebP, q90 like
+           Photography (the covers are its night photographs) */}}
+      <img src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 1200 "quality" 90) }}" alt="Cover of {{ $page.Title }}{{ with $page.Params.side }}, Side {{ . }}{{ end }}" class="aw-img" loading="lazy"{{ partial "imgdims.html" $page.Params.image }} />
+      <span class="mp-cover-play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"><polygon points="8,5 19,12 8,19"/></svg></span>
+    </a>
+    {{ end }}
+  </div>
+
+  {{ if eq (len $tracks) 0 }}
+    <p class="books-empty">No tracks yet.</p>
+  {{ end }}
+
+  <!-- ═══════════════════════════════════════════════════
+       POPUP — clicking a cover opens it here and plays it
+       (the standalone /production/<slug>/ page still exists for
+       direct links). It always shows the track that plays.
+       ═══════════════════════════════════════════════════ -->
+  <div id="photoModal" class="book-modal music-modal" role="dialog" aria-modal="true" aria-labelledby="photoModalTitle">
+    <div class="book-modal-bg" id="photoModalBg"></div>
+    <button class="book-modal-close" id="photoModalClose" aria-label="Close">&#x2715;</button>
+    <div class="book-modal-pane">
+
+      <div class="sp-img-wrap">
+        <img id="photoModalImg" class="photo-modal-img" src="" alt="" title="View fullscreen">
+      </div>
+
+      <div class="sp-info">
+        <div class="sp-info-top">
+          <h2 class="sp-title" id="photoModalTitle"></h2>
+          <p id="photoModalSide"></p>
+          <p id="photoModalYear"></p>
+          <p class="sp-comment" id="photoModalDesc"></p>
+        </div>
+        {{ partial "music-controls.html" (dict "id" "photoModalPlayer" "skip" true) }}
+        <div class="mp-words" id="photoModalWords"></div>
+      </div>
+
+    </div>
+    <!-- Arrows are siblings of the pane so the pane's scale transform never moves them -->
+    <a class="photo-arrow photo-arrow-prev" id="photoPrevBtn" href="#" aria-label="Previous track"></a>
+    <a class="photo-arrow photo-arrow-next" id="photoNextBtn" href="#" aria-label="Next track"></a>
+  </div>
+
+  <!-- Fullscreen (click the popup image). zoom-controls.html wires every .lightbox-overlay with the +/− bar. -->
+  <div id="lightbox" class="lightbox-overlay">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&#x2715;</button>
+    <img id="lightbox-img" src="" alt="" class="lightbox-img" />
+    <div id="rotateHint" class="rotate-hint">Rotate image &#x27F3;</div>
+  </div>
+
+  <section class="max-w-7xl mx-auto px-6">
+    <div class="end-spacer-1"></div>
+    <div class="end-message text-center">The End :)</div>
+    <div class="end-spacer-2"></div>
+    <div class="end-spacer-3"></div>
+  </section>
+
+</section>
+
+<style>
+/* ── HEADER CLUSTER (title + filter bar) — fixed left, vertically
+   centred, exactly like Archive's .arch-sidebar (archive/list.html),
+   so the grid below reserves space for it via padding-left instead
+   of the cluster overlapping/covering thumbnails. ── */
+#books-section { padding-left: 230px; box-sizing: border-box; }
+@media (max-width: 1100px) { #books-section { padding-left: 190px; } }
+@media (max-width: 800px) { #books-section { padding-left: 0; padding-top: 72px; } }
+
+.book-page-header {
+  position: fixed;
+  left: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  width: fit-content;
+  max-width: min(40vw, 420px);
+}
+@media (max-width: 1100px) { .book-page-header { left: 16px; } }
+@media (max-width: 800px) {
+  .book-page-header { position: fixed; top: 60px; left: 20px; transform: none; max-width: calc(100vw - 40px); }
+}
+
+.book-page-header .artwork-filter-bar { position: static; top: auto; }
+
+/* ── FILTER BAR — copied verbatim from the Artworks page (index.html)
+   since Hugo doesn't share a page's inline <style> across templates. ── */
+.artwork-filter-bar { position: sticky; top: 100px; z-index: 110; display: inline-flex; align-items: flex-start; gap: 1.2rem; width: fit-content; max-width: min(90vw, 900px); margin-bottom: 1rem; padding: 0.6rem 0.9rem; background: rgba(255,255,255,0.65); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); transition: background 0.2s ease; }
+html.dark .artwork-filter-bar { background: var(--glass-bar); }
+body.filter-lock { overflow: hidden; }
+
+.book-search-wrap { position: relative; display: inline-flex; align-items: center; }
+.book-search-icon { position: absolute; left: 0; opacity: 0.35; pointer-events: none; }
+.book-search-input {
+  background: none;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.55;
+  padding: 0.1rem 0.1rem 0.1rem 1.5rem;
+  font-size: 0.82rem;
+  font-family: inherit;
+  color: inherit;
+  outline: none;
+  width: 90px;
+}
+.book-search-input:focus { opacity: 1; }
+.book-search-input::placeholder { opacity: 0.6; letter-spacing: 0.15em; }
+
+/* ── AW SCATTER GRID — same classes/values as the Artworks grid
+   (index.html), copied here since Hugo doesn't share a page's
+   inline <style> block across templates. No hero section sits
+   above this page, so the homepage's -20vh pull-up is dropped. ── */
+.aw-grid {
+  position: relative;
+  width: 100%;
+  min-height: 600px;
+  overflow: visible;
+  padding: 0 clamp(4rem, 7vw, 9rem);
+  box-sizing: border-box;
+}
+.aw-item {
+  position: absolute;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  overflow: visible;
+  transition: transform 0.32s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.aw-item:hover { transform: scale(1.02); z-index: 20 !important; }
+.aw-img { display: block; width: 100%; height: auto; pointer-events: none; }
+.aw-lbl {
+  position: absolute;
+  font-size: 0.86rem;
+  letter-spacing: 0.055em;
+  line-height: 1.5;
+  opacity: 0.55;
+  pointer-events: none;
+  color: inherit;
+  font-family: inherit;
+}
+.aw-lbl-r { left: calc(100% + 12px); top: 0; writing-mode: vertical-lr; white-space: nowrap; overflow: hidden; }
+.aw-lbl-l { right: calc(100% + 12px); top: 0; writing-mode: vertical-rl; white-space: nowrap; overflow: hidden; }
+.aw-lbl-b { top: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
+.aw-lbl-a { bottom: calc(100% + 9px); left: 0; writing-mode: horizontal-tb; white-space: normal; word-break: break-word; overflow: hidden; }
+
+@media (max-width: 700px) {
+  .aw-grid { padding: 0 1.5rem; }
+  .aw-lbl { font-size: 0.8rem; letter-spacing: 0.055em; line-height: 0.8; opacity: 0.55; }
+}
+
+.books-empty { text-align: center; opacity: 0.5; padding: 4rem 0; }
+/* Louis's line at the top of the grid (the same one is under the hero player) */
+.mp-hint-grid { text-align: center; margin: 0 auto; padding: 0 1rem; }
+
+/* ── PHOTO POPUP — the Oeuvre popup with one image where the book
+   viewer was. ── */
+.sp-title { font-size: clamp(1rem, 3.8vw, 1.2rem); font-weight: 600; line-height: 1.15; margin: 0 0 8px; letter-spacing: -0.01em; }
+.sp-info-top { display: flex; flex-direction: column; gap: 2px; }
+.sp-info-top p { margin: 0; font-size: clamp(0.78rem, 2.2vw, 0.93rem); line-height: 1.45; opacity: 0.62; }
+.sp-comment { font-size: 0.83rem !important; margin-top: 6px !important; }
+.photo-modal-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: zoom-in; }
+/* the words of the track (Suno's lyrics without its [Verse] markers), small, under the player */
+.music-modal .book-modal-pane .sp-info { gap: 22px; }
+.mp-words { margin: 0; font-size: 0.83rem; line-height: 1.5; opacity: 0.62; white-space: pre-line; max-height: 32vh; overflow-y: auto; overscroll-behavior: contain; }
+.mp-words:empty { display: none; }
+@media (max-width: 900px) { .mp-words { max-height: none; overflow: visible; } }
+/* the track that is playing: its labels stay lit and breathe slowly */
+.aw-item.is-playing .aw-lbl { opacity: 1; animation: mp-breathe 2.4s ease-in-out infinite; }
+@keyframes mp-breathe { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .aw-item.is-playing .aw-lbl { animation: none; } }
+
+/* prev/next — same arrows as the Archive popup */
+.photo-arrow {
+  position: fixed; top: 50%; transform: translateY(-50%); z-index: 20;
+  display: none; align-items: center;
+  color: inherit; opacity: 0.6; line-height: 0; cursor: pointer;
+  background: none !important; border: none !important; text-decoration: none !important; box-shadow: none !important;
+  padding: 16px 10px !important;
+  transition: opacity 0.22s;
+}
+.photo-arrow:hover { opacity: 0.2; }
+.photo-arrow-prev { left: 16px; }
+.photo-arrow-next { right: 16px; }
+@media (max-width: 600px) { .photo-arrow { top: auto; bottom: 28px; transform: none; } }
+
+/* ── FULLSCREEN — same as the artwork page's lightbox (artworks/single.html) ── */
+.lightbox-overlay { position: fixed; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; cursor: pointer; background: rgba(255,255,255,0.18); backdrop-filter: blur(18px) saturate(0.7); -webkit-backdrop-filter: blur(18px) saturate(0.7); opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+html.dark .lightbox-overlay { background: var(--glass-veil); }
+.lightbox-overlay.active { opacity: 1; pointer-events: auto; }
+.lightbox-img { max-width: 88vw; max-height: 88vh; width: auto; height: auto; object-fit: contain; cursor: default; border-radius: 2px; transform-origin: center center; transition: transform 0.18s linear, max-width 0.18s linear, max-height 0.18s linear; }
+.lightbox-img:not(.is-rotated) { transform: scale(1); }
+.lightbox-img.is-rotated { transform: rotate(90deg) scale(0.96); max-width: 84vh; max-height: 84vw; }
+@media (max-width: 900px) { .lightbox-img.is-rotated { max-width: min(92vh, 140vw); max-height: min(92vw, 140vh); transform: rotate(90deg) scale(0.94); } }
+.lightbox-close { position: fixed; top: 1rem; right: 50%; font-size: 1.3rem; font-family: 'AndradaMono','Courier New',Courier,monospace; font-weight: bold; text-transform: uppercase; background: none; border: none; cursor: pointer; color: inherit; opacity: 0.8; letter-spacing: 0.05em; transition: opacity 0.2s ease; }
+.lightbox-close:hover { opacity: 1; }
+.lightbox-close, .rotate-hint { z-index: 9999; }
+.rotate-hint { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 0.8rem; letter-spacing: 0.06em; opacity: 0.7; cursor: pointer; }
+
+.book-modal {
+  position: fixed; inset: 0; z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.book-modal.open { opacity: 1; pointer-events: auto; }
+.book-modal-bg {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+}
+html.dark .book-modal-bg { background: var(--glass-modal); }
+/* same X as the artwork / archive single pages and every fullscreen viewer (.lightbox-close) */
+.book-modal-close {
+  position: fixed; top: 1rem; right: 50%; z-index: 10;
+  font-size: 1.3rem; font-family: 'AndradaMono','Courier New',Courier,monospace; font-weight: bold; text-transform: uppercase;
+  background: none; border: none; cursor: pointer;
+  color: inherit; opacity: 0.8; letter-spacing: 0.05em;
+  transition: opacity 0.2s ease;
+}
+.book-modal-close:hover { opacity: 1; }
+.book-modal-pane {
+  position: relative; width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 4rem;
+  padding: 60px 40px; box-sizing: border-box;
+  transform: scale(0.96);
+  transition: transform 0.4s ease;
+}
+.book-modal.open .book-modal-pane { transform: scale(1); }
+.book-modal-pane .sp-img-wrap {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: clamp(280px, 40vw, 640px); max-width: 44vw; height: min(70vh, 700px); flex-shrink: 0;
+}
+.book-modal-pane .sp-info {
+  position: relative; width: clamp(220px, 22vw, 300px);
+  display: flex; flex-direction: column; gap: 28px;
+}
+
+@media (max-width: 900px) {
+  .book-modal-pane { flex-direction: column; padding: 70px 20px 30px; overflow-y: auto; gap: 1.2rem; }
+  .book-modal-pane .sp-img-wrap { width: 100%; max-width: 100%; height: auto; min-height: 40vh; max-height: 45vh; }
+  .book-modal-pane .sp-info { width: 100%; max-width: 480px; }
+  .book-modal-pane .sp-info-top { text-align: left; }
+}
+
+/* ── END SPACERS — override the much taller sitewide default
+   (main.css) with the same smaller values Artworks uses. ── */
+.end-spacer-1 { height: 20vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 1vh; }
+@media (max-width: 768px) { .end-spacer-1 { height: 15vh; } .end-spacer-2 { height: 30vh; } .end-spacer-3 { height: 8vh; } }
+@media (max-width: 480px) { .end-spacer-1 { height: 10vh; } .end-spacer-2 { height: 20vh; } .end-spacer-3 { height: 5vh; } }
+</style>
+
+{{ partial "music-player.html" . }}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput  = document.getElementById("booksSearchInput");
+  const items        = Array.from(document.querySelectorAll("body > main .aw-item"));
+  const player       = window.musicPlayer;
+  let query = "";
+
+  function applyFilters() {
+    items.forEach(item => {
+      // the search box matches the title, the side ("side a") and the words
+      const d = item.dataset;
+      const text = [d.title, d.side ? "side " + d.side : "", d.desc, d.words].join(" ").toLowerCase();
+      item.style.display = (!query || text.includes(query)) ? "" : "none";
+    });
+    window._artworkLayout?.();
+    player.refresh();
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      query = searchInput.value.trim().toLowerCase();
+      applyFilters();
+    });
+  }
+
+  /* ── POPUP — one track: its cover, its player and its words, with prev/next through whatever
+     the search currently shows. It always shows the track that is playing. ── */
+  const modal     = document.getElementById("photoModal");
+  const modalImg  = document.getElementById("photoModalImg");
+  const prevBtn   = document.getElementById("photoPrevBtn");
+  const nextBtn   = document.getElementById("photoNextBtn");
+  const lightbox  = document.getElementById("lightbox");
+  const lbImg     = document.getElementById("lightbox-img");
+  const lbHint    = document.getElementById("rotateHint");
+  const leftArrowSVG  = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  const rightArrowSVG = '<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  prevBtn.innerHTML = leftArrowSVG;
+  nextBtn.innerHTML = rightArrowSVG;
+
+  let current = null;
+  const shown = () => items.filter(it => it.style.display !== "none");
+  const byId = id => items.find(it => it.dataset.id === id);
+  const isOpen = () => modal.classList.contains("open");
+
+  player.setTracks(items.map(it => ({
+    id: it.dataset.id, title: it.dataset.title, side: it.dataset.side, src: it.dataset.audio,
+    cover: it.dataset.src, duration: +it.dataset.duration || 0,
+    get thumb() { const img = it.querySelector("img"); return img && (img.currentSrc || img.src); }
+  })), { artist: {{ index site.Params.names "ny" }} });
+  player.setQueue(() => shown().map(it => it.dataset.id));
+  player.autoNext = true; // one track after another, like a record; it stops after the last
+  player.bind(document.getElementById("photoModalPlayer"));
+  player.miniBar({ isOpen: isOpen, open: id => { const it = byId(id); if (it) openPhotoModal(it, false); } });
+  player.on(s => {
+    items.forEach(it => it.classList.toggle("is-playing", !!s.track && it.dataset.id === s.track.id));
+    // a track ended and the next one started: the open popup follows it
+    if (isOpen() && s.track && current && current.dataset.id !== s.track.id) { const it = byId(s.track.id); if (it) showTrack(it); }
+  });
+
+  /* ── HERO — the player under the big cover (face-hero.html) follows the music: its cover, title and
+     sides switch to whatever plays (a cover, the arrows, the bar, the end of a track). Before anything
+     has played it shows the hero's own track (params.faces.ny.hero), ready to start. Side A · Side B
+     appear for a record that has sides; pressing one plays it. ── */
+  const heroBox = document.querySelector("body > main .face-hero-player");
+  if (heroBox) {
+    const heroImg = document.querySelector("body > main .face-hero .hp-image");
+    const heroLink = document.querySelector("body > main .face-hero .face-hero-link");
+    const heroName = heroBox.querySelector(".fh-name"), heroSides = heroBox.querySelector(".fh-sides");
+    const sidesOf = it => items.filter(x => it.dataset.side && x.dataset.side && x.dataset.title === it.dataset.title)
+      .sort((a, b) => a.dataset.side.localeCompare(b.dataset.side));
+    let heroShown = null;
+    player.bind(document.getElementById("heroPlayer"), { fallback: heroBox.dataset.track });
+    player.on(s => {
+      const it = byId(s.track ? s.track.id : heroBox.dataset.track);
+      if (!it || it.dataset.id === heroShown) return;
+      heroShown = it.dataset.id;
+      if (heroImg) { heroImg.src = it.dataset.src; heroImg.alt = "Cover of " + it.dataset.title + (it.dataset.side ? ", Side " + it.dataset.side : ""); }
+      if (heroLink) heroLink.setAttribute("href", it.getAttribute("href")); // the cover opens what plays
+      heroName.textContent = it.dataset.title;
+      heroSides.textContent = "";
+      sidesOf(it).forEach(x => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "fh-side" + (x === it ? " active" : "");
+        b.textContent = "Side " + x.dataset.side;
+        b.setAttribute("aria-pressed", x === it ? "true" : "false");
+        b.addEventListener("click", () => { if (x !== it || !player.state().playing) player.play(x.dataset.id); });
+        heroSides.appendChild(b);
+      });
+    });
+  }
+
+  function setField(id, value) {
+    const el = document.getElementById(id);
+    el.textContent = value || "";
+    el.style.display = value ? "" : "none";
+  }
+
+  function showTrack(item) {
+    current = item;
+    const d = item.dataset;
+    const words = document.getElementById("photoModalWords");
+    modalImg.src = d.src || "";
+    modalImg.alt = "Cover of " + (d.title || "") + (d.side ? ", Side " + d.side : "");
+    document.getElementById("photoModalTitle").textContent = d.title || "";
+    setField("photoModalSide", d.side ? "Side " + d.side : "");
+    setField("photoModalYear", d.year);
+    setField("photoModalDesc", d.desc);
+    words.textContent = d.words || "";
+    words.scrollTop = 0;
+    const list = shown(), i = list.indexOf(item);
+    prevBtn.style.display = i > 0 ? "flex" : "none";
+    nextBtn.style.display = i >= 0 && i < list.length - 1 ? "flex" : "none";
+  }
+
+  // start: true when the visitor asked for this track (a cover, an arrow): it plays from here.
+  // play() runs inside their click, the only moment a browser lets sound start.
+  function openPhotoModal(item, start) {
+    showTrack(item);
+    modal.classList.add("open");
+    document.body.classList.add("filter-lock");
+    if (start) player.play(item.dataset.id); else player.refresh();
+  }
+
+  function closePhotoModal() {
+    modal.classList.remove("open");
+    document.body.classList.remove("filter-lock");
+    current = null;
+    player.refresh(); // the music goes on, in the now-playing bar
+    setTimeout(() => { if (!isOpen()) modalImg.src = ""; }, 420);
+  }
+
+  function step(dir) {
+    if (!current) return;
+    const list = shown(), next = list[list.indexOf(current) + dir];
+    if (next) { showTrack(next); player.play(next.dataset.id); }
+  }
+
+  function updateRotateHint() {
+    lbHint.style.display = (window.innerWidth <= 900 && lbImg.naturalWidth > lbImg.naturalHeight) ? "block" : "none";
+  }
+  function openLightbox() {
+    if (!current) return;
+    lbImg.classList.remove("is-rotated");
+    lbImg.onload = updateRotateHint;
+    lbImg.src = current.dataset.src;
+    lbImg.alt = modalImg.alt;
+    lightbox.classList.add("active");
+    updateRotateHint();
+  }
+  function closeLightbox() { lightbox.classList.remove("active"); }
+
+  items.forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      openPhotoModal(item, true);
+    });
+  });
+
+  document.getElementById("photoModalBg").addEventListener("click", closePhotoModal);
+  document.getElementById("photoModalClose").addEventListener("click", closePhotoModal);
+  prevBtn.addEventListener("click", e => { e.preventDefault(); step(-1); });
+  nextBtn.addEventListener("click", e => { e.preventDefault(); step(1); });
+  modalImg.addEventListener("click", openLightbox);
+  lightbox.addEventListener("click", e => { if (e.target === lightbox) closeLightbox(); });
+  document.getElementById("lightboxClose").addEventListener("click", closeLightbox);
+  lbImg.addEventListener("click", e => e.stopPropagation());
+  lbHint.addEventListener("click", e => { e.stopPropagation(); lbImg.classList.toggle("is-rotated"); });
+  window.addEventListener("resize", () => { if (lightbox.classList.contains("active")) updateRotateHint(); });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox.classList.contains("active")) { if (e.key === "Escape") closeLightbox(); return; }
+    if (!isOpen()) return;
+    if (e.key === "Escape") closePhotoModal();
+    if (e.key === "ArrowLeft") step(-1);
+    if (e.key === "ArrowRight") step(1);
+    // Space plays/pauses, unless a button or the position line has the focus (they handle their own keys)
+    if (e.key === " " && !e.target.closest("button, input, textarea, [role=slider]")) { e.preventDefault(); player.toggle(); }
+  });
+});
+/* ── SCATTER GALLERY LAYOUT — identical algorithm to the Artworks grid ── */
+(function () {
+  const grid = document.getElementById('bookGallery');
+  if (!grid) return;
+
+  function mkRng(seed) {
+    let s = seed >>> 0;
+    return () => {
+      s = Math.imul(s ^ (s >>> 15), s | 1);
+      s ^= s + Math.imul(s ^ (s >>> 7), s | 61);
+      return ((s ^ (s >>> 14)) >>> 0) / 0x100000000;
+    };
+  }
+
+  const items = Array.from(grid.querySelectorAll('.aw-item'));
+  const MAX_H = 42;
+  const MAX_V = 36;
+
+  function addLabels(item, imgW, imgH) {
+    item.querySelectorAll('.aw-lbl').forEach(l => l.remove());
+
+    const year = (item.dataset.year || '').trim();
+    const title = ((item.dataset.title || '') + (item.dataset.side ? ' — Side ' + item.dataset.side : '')).trim();
+
+    const idx = parseInt(item.dataset.idx, 10) || 0;
+    const r = mkRng(idx * 7919 + 31);
+
+    const yearRight = r() < 0.5;
+
+    const lbDefs = [];
+
+    if (year) {
+      lbDefs.push({
+        text: year.length > MAX_V ? year.slice(0, MAX_V - 1) + '…' : year,
+        pos: yearRight ? 'r' : 'l',
+        maxH: Math.round(imgH * 0.70),
+        maxW: null
+      });
+    }
+
+    if (title) {
+      const t = title.length > MAX_H ? title.slice(0, MAX_H - 1) + '…' : title;
+      lbDefs.push({
+        text: t,
+        pos: 'b',
+        maxH: Math.round(1.5 * 0.86 * 16 * 2.2),
+        maxW: Math.round(imgW * 0.88)
+      });
+    }
+
+    lbDefs.forEach(({ text, pos, maxH, maxW }) => {
+      const el = document.createElement('div');
+      el.className = `aw-lbl aw-lbl-${pos}`;
+      el.textContent = text;
+      if (maxH) el.style.maxHeight = maxH + 'px';
+      if (maxW) el.style.maxWidth = maxW + 'px';
+      item.appendChild(el);
+    });
+  }
+
+  function visible() {
+    return items.filter(it => it.style.display !== 'none');
+  }
+
+  function layout() {
+    const W = grid.offsetWidth;
+    if (!W) { requestAnimationFrame(layout); return; }
+
+    const mobile = window.innerWidth <= 700;
+    const NCOLS = W > 1100 ? 11 : W > 900 ? 9 : W > 680 ? 6 : W > 480 ? 3 : 2;
+    const H_GAP = mobile ? 24 : 50;
+    const V_MIN = mobile ? 50 : 70;
+    const V_EXTRA = mobile ? 40 : 50;
+
+    const vis = visible();
+    if (!vis.length) { grid.style.height = '300px'; return; }
+
+    const colW = W / NCOLS;
+    const bots = new Array(NCOLS).fill(40);
+
+    vis.forEach((item, vi) => {
+      const idx = parseInt(item.dataset.idx, 10) || vi;
+      const r = mkRng(idx * 3331 + 113);
+
+      const isLarge = idx % 7 === 0;
+      const wBase = isLarge ? 3 : 2;
+      const wExtra = Math.floor(r() * (isLarge ? 2 : 3));
+      const wCols = Math.min(NCOLS, wBase + wExtra);
+
+      const wColsCapped = mobile
+        ? Math.min(wCols, Math.max(2, Math.round(NCOLS * 0.8)))
+        : wCols;
+
+      const maxStart = Math.max(0, NCOLS - wColsCapped);
+      const startCol = Math.floor(r() * (maxStart + 1));
+
+      const spanMax = Math.max(...bots.slice(startCol, startCol + wColsCapped));
+      const vGap = V_MIN + Math.floor(r() * V_EXTRA);
+      const topY = spanMax + vGap;
+
+      const slotW = wColsCapped * colW;
+      const imgW = Math.max(60, slotW - H_GAP);
+      const leftX = startCol * colW + H_GAP / 2;
+
+      item.style.left = leftX + 'px';
+      item.style.top = topY + 'px';
+      item.style.width = imgW + 'px';
+
+      const img = item.querySelector('img');
+      // declared size (width/height attrs from data/imageDims.json) first: same position before and after the image loads
+      const dw = img ? (img.getAttribute('width') | 0) : 0, dh = img ? (img.getAttribute('height') | 0) : 0;
+      const ar = (dw > 0 && dh > 0) ? dh / dw
+        : (img && img.naturalWidth > 0 && img.naturalHeight > 0)
+        ? img.naturalHeight / img.naturalWidth
+        : 1.25;
+      const imgH = imgW * ar;
+
+      addLabels(item, imgW, imgH);
+
+      for (let c = startCol; c < startCol + wColsCapped; c++) {
+        bots[c] = topY + imgH;
+      }
+    });
+
+    grid.style.height = (Math.max(...bots) + 220) + 'px';
+    window.dispatchEvent(new Event('sitelayout'));
+  }
+
+  window._artworkLayout = layout;
+
+  let loaded = 0;
+  Array.from(grid.querySelectorAll('img')).forEach(img => {
+    const done = () => {
+      loaded++;
+      if (loaded <= 8 || loaded % 4 === 0) layout();
+    };
+    if (img.complete) done();
+    else { img.onload = done; img.onerror = done; }
+  });
+
+  window.addEventListener('load', layout);
+  document.addEventListener('DOMContentLoaded', () => setTimeout(layout, 100));
+
+  let rt;
+  // Width only: on phones the address bar sliding in/out while scrolling fires
+  // resize events with the same width, and re-laying-out the grid on each
+  // one makes scrolling stutter.
+  let lastGridW = window.innerWidth;
+  window.addEventListener('resize', () => {
+    if (window.innerWidth === lastGridW) return;
+    lastGridW = window.innerWidth;
+    clearTimeout(rt);
+    rt = setTimeout(layout, 180);
+  });
+})();
+</script>
+
+{{ end }}

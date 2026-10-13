@@ -164,13 +164,69 @@ L''s logo is `static/llogo.png` (+ white `llogoinvert.png`; drawing in `private/
    LOOK at every cutout's neck brightened ~2x on black before publishing: that's where flaws hide.
 3. Upload `vestments-images/*` to `vestments/` in the images repo, then `python scripts/image-dims.py`.
 
+## Production section (Ny, Oct 2026)
+
+`/production/` (`content/production/`, `layouts/production/`) is Ny's music, as a producer/DJ (Louis: "what Skrillex,
+deadmau5, Mandragora are"; a separate section for singing will come later, so this one is NOT called Music). Owner
+**Ny** (`params.names.ny`, face `ny` → `ny.andrada.one`, no logo yet: its pages show Jera Ansuz at once). Capital N,
+small y. Louis first said "Ky" (voice typing) and corrected it to Ny the same night, before anything was live; Suno's
+artist tag inside the MP3s is "nyandrada". A copy of
+Vestments (same ids/classes) without Filters; the search box finds titles, sides and words. Items are **tracks**
+("Ritual Annihilation (Side A) — Track by Ny", JSON-LD `MusicRecording`, `jsonld/track.html`).
+- Player: `_partials/music-player.html` (`window.musicPlayer`, one `Audio` never in the DOM, Media Session for lock
+  screens) + `music-controls.html` (markup). Named for what they do so the singing section can reuse them. Clicking a
+  cover opens the popup AND plays it; the popup's arrows (and its ⏮ ⏭) change track and play; the popup always shows
+  the playing track; a track's end starts the next one (stops after the last); closing the popup keeps the music in a
+  now-playing bar built on `<body>` (outside `<main>`, so never in the fog copies), hidden while the footer shows
+  (the newsletter form must stay reachable). `play()` must run inside the visitor's own click: browsers block sound
+  otherwise. A track's own page plays only that track. Tests: "Production: …".
+- The hero (Louis, 2026-10-13): under the big cover, the same player (`face-hero.html` "player", bound with
+  `fallback` = the hero track): before anything plays it shows Ritual Annihilation (Side A), ready; then it shows
+  whatever plays (cover, title, `Side A · Side B` switch for records with sides, the link). Louis's line "go ahead..
+  click any of the musics :)" sits under it and at the top of the grid (`$hint` in production/list.html, his
+  wording, keep it). Covers show a thin play triangle on hover. Volume: speaker (mute) + a line you drag, click or
+  scroll (up = louder), kept in localStorage `mp-volume`/`mp-muted`; hidden where pages can't set volume (iPhone).
+- AUDIO MUST COME FROM THE SITE ITSELF: the CSP has no `media-src`, so `default-src 'self'` applies. The MP3s live in
+  the images repo (`music/<slug>.mp3`) and `_partials/audio-url.html` has Hugo fetch them and publish them untouched
+  under `/audio/` (needs `[mediaTypes."audio/mpeg"]` in `hugo.toml`). It FAILS the build if one can't be fetched (a
+  raw.githubusercontent URL could never play). Don't add raw.githubusercontent.com to the CSP instead: touching the CSP
+  means re-verifying every form.
+- Covers: one Ambiguous photograph per song (Louis: "choose for me … and keep it"), cut square from the full-size
+  original, 1600px, with only the name small in AndradaMono (bottom left) and, for a song with two sides, `A`/`B` in the
+  top right corner. Both sides share the cover. Chosen so far: Ritual Annihilation photo111, Ritual Fracture photo137,
+  Collapse photo169, Near-Sacred photo163, Decaying Tail photo138, Untitled n.1 photo173,
+  Ascent photo126, Omnipulse photo124, Serrated Pulses photo171, Black Current photo118, No Return photo114, Rust in the Circuit photo115.
+- Two downloads with the same title are the two sides of one song (Louis): no number = Side A, " (1)" = Side B.
+- The release Louis names as the latest leads the grid and the hero (`params.faces.ny.hero`): Ritual Annihilation,
+  Sides A and B (Louis, 2026-10-12). Its `order` is set BY HAND above everything (A 21, B 20); the rest follow,
+  newest first. A new track gets max+1 and lands on top: renumber so the pinned release stays first, and ask Louis
+  whether the new one is the new latest release.
+- A renamed download keeps Louis's name: "Near-Sacred.mp3" holds Suno's title "Sacred Near-Death"; the site says
+  Near-Sacred (the script prints a note whenever file name and tag differ).
+
+### Adding tracks
+
+1. MP3s go in `private/music-originals/` (gitignored). Suno also gives a `.wav`: the same recording, ignored.
+2. `python scripts/ingest-music.py private/music-originals --cover "Title=photoN[@crop]"` (needs `mutagen`, Pillow,
+   `fonttools`; `@0.3` = where the square sits on the portrait photo, 0 top, 1 bottom). Reads title/length/words from the
+   tags (Suno's `[Verse]` markers dropped), copies each MP3 untouched and makes its cover into `music-images/`, writes
+   `content/production/<slug>.md`. Re-runs keep every page's order, cover, crop and `description` (Louis can write one).
+   Order = the date Suno made the song; Side A just above Side B. LOOK at each cover before uploading.
+3. Upload `music-images/*` to `music/` in the images repo (the folder keeps that name: internal, never in a site URL),
+   wait for `curl -I …/music/<slug>.mp3` → 200 (see the 404 gotcha above), then `python scripts/image-dims.py`.
+   If `hugo server` was running during step 2, it fetched the new files BEFORE the upload and cached the 404s
+   (the rebuild fails: "audio-url: … is not there (404)"): stop it, delete the getresource cache files that start
+   with `HTTP/2.0 404`, start it again. Happened with Ritual Fracture, and with Ascent through LOUIS'S OWN
+   `hugo server -D` (it picks a random port when 1313 is taken): look for any running hugo.exe before step 2, and
+   never kill his; ask him to restart it after the upload.
+
 ## Dark mode only
 
 Since Oct 2026 the site is dark-only: `params.light_mode = false` in `hugo.toml` makes `baseof.html` always add
 `html.dark` (ignoring any saved `theme: light`) and leaves the toggle button out of the header. All the light-theme
 CSS and the toggle code in `main.ts` are kept on purpose: set `light_mode = true` to bring the toggle back.
 
-## Domain: andrada.one, one person, four faces (Oct 2026)
+## Domain: andrada.one, one person, five faces (Oct 2026)
 
 `andrada.one` is the one domain (`hugo.toml` `baseURL`). Louis, Han and Odi are one person; each name owns part
 of the work and has its own subdomain, which opens on a home-page-style hero (one image + the staggered menu,
@@ -182,6 +238,7 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 | `han.andrada.one/` | `/oeuvre/` (+ `face-hero.html`), section `oeuvre` | Han’drada |
 | `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi Andrada |
 | `l.andrada.one/` | `/vestments/` (+ `face-hero.html`), section `vestments` | L' |
+| `ny.andrada.one/` | `/production/` (+ `face-hero.html`), section `production` | Ny |
 | `andrada.one/` | `/links/` (the hub: every name, every door) + the shared pages | ᛃᚨ Andrada |
 
 - Config: `params.faces` / `params.names` / `hub` / `face_domain` in `hugo.toml`. Helpers: `_partials/face-url.html`
@@ -227,7 +284,8 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   license copyright, JSON-LD `copyrightHolder`/`copyrightNotice`, RSS `<copyright>`). Never as a public name.
 - SEO audit (2026-10-02): build to a scratch dir (`hugo --minify -d …`), then check every
   page's head has only its own name, unique titles/descriptions (noindex pages may share) and valid JSON-LD.
-- Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`).
+- Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`);
+  Ny's is `ritual-annihilation-a`, the latest release (clicking it plays it).
 - Header logo (`header.html`): every page load shows the page's OWN logo — louis. → Louis Andrada (`old`, logoold.png),
   han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), andrada.one → Andrada (`andrada`,
   andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's

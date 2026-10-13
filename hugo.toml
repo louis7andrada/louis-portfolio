@@ -20,6 +20,13 @@ disableKinds = ["taxonomy", "term"]
   oeuvre   = "/oeuvre/:contentbasename/"
   photography = "/photography/:contentbasename/"
   vestments = "/vestments/:contentbasename/"
+  production = "/production/:contentbasename/"
+
+# Ny's tracks (Production) are MP3s that Hugo fetches and publishes under /audio/
+# (_partials/audio-url.html); Hugo has no audio type of its own to recognise them by.
+[mediaTypes]
+  [mediaTypes."audio/mpeg"]
+    suffixes = ["mp3"]
 
 [outputs]
   home = ["HTML", "RSS"]
@@ -46,11 +53,11 @@ disableKinds = ["taxonomy", "term"]
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"
 
-  # ANDRADA.ONE (Oct 2026): one domain, one person, four names. Each name owns a part of the work
+  # ANDRADA.ONE (Oct 2026): one domain, one person, five names. Each name owns a part of the work
   # and lives on its own subdomain, which opens on a home-page-style hero (one image + the staggered
   # menu, the grid below):
   #   louis.andrada.one → Artworks (the home page)   han.andrada.one → Oeuvre   odi.andrada.one → Photography
-  #   l.andrada.one → Vestments (L', Oct 2026)
+  #   l.andrada.one → Vestments (L', Oct 2026)        ny.andrada.one → Production (Ny, Oct 2026)
   #   andrada.one       → the Links page (the hub: every name, every door)
   # The menus jump between them (Photography → odi.andrada.one…, Links → andrada.one); shared pages
   # (About, Inquiry, Archive…) stay on whichever subdomain the visitor is on. netlify.toml serves each
@@ -59,7 +66,7 @@ disableKinds = ["taxonomy", "term"]
   #
   # NAMES (Louis, Oct 2026): every page carries ONE name, in its title, description, keywords, link
   # previews, author and JSON-LD credits: the owner of the page's section (louis. paintings, han. books,
-  # odi. photographs, l. vestments), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
+  # odi. photographs, l. vestments, ny. music production), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
   # name) for andrada.one itself and the shared pages that live there. Never two names side by side.
   # In the browser a face subdomain always shows its own name; on andrada.one, ?name=<key> picks it
   # for the visit (removed from the address bar). Only the Person node lists every name (alternateName).
@@ -73,6 +80,7 @@ disableKinds = ["taxonomy", "term"]
     louis = "Louis Andrada"
     odi = "Odi Andrada"
     l = "L'"
+    ny = "Ny"
     ja = "ᛃᚨ Andrada"
 
   # Each name's own description (meta description where a page has none of its own, WebSite JSON-LD).
@@ -81,7 +89,8 @@ disableKinds = ["taxonomy", "term"]
     han = "Illustrated artist books by Han’drada: philosophical tellings on entropy, consciousness, mortality, memory and faith, readable in full online."
     odi = "Photographs by Odi Andrada, in two collections: Ambiguous (abstract, black and white) and Lucid."
     l = "Vestments by L'."
-    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under four names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography) and L' (vestments)."
+    ny = "Electronic music produced by Ny."
+    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under five names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments) and Ny (music production)."
 
   # Each name's keywords (meta keywords), its own name first.
   [params.keywords]
@@ -89,13 +98,14 @@ disableKinds = ["taxonomy", "term"]
     han = "Han’drada, Han'drada, Handrada, Han Andrada, artist books, illustrated books, philosophical fiction, existentialism, tellings, read online"
     odi = "Odi Andrada, photography, photographs, black and white photography, abstract photography, fine art photography"
     l = "L', vestments, garments, clothing, shirts"
-    ja = "ᛃᚨ Andrada, Andrada, Louis Andrada, Han’drada, Odi Andrada, L', artist, painter, writer, photographer, Toronto artist, Brazilian artist"
+    ny = "Ny, music producer, music production, electronic music, tracks, listen online"
+    ja = "ᛃᚨ Andrada, Andrada, Louis Andrada, Han’drada, Odi Andrada, L', Ny, artist, painter, writer, photographer, music producer, Toronto artist, Brazilian artist"
 
   # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
   # section: the content section the face owns (its pages live on the face's subdomain).
   # hero: the image at the top. Odi: a photo id ("photo107"); empty = the newest Ambiguous photo.
   #       Han: a book id; empty = the newest book (highest order). L': a vestment id; empty = the newest.
-  #       Louis: set in index.html.
+  #       Ny: a track id ("omnipulse"); empty = the newest. Louis: set in index.html.
   [params.faces.louis]
     page = "/"
     section = "artworks"
@@ -111,3 +121,7 @@ disableKinds = ["taxonomy", "term"]
     page = "/vestments/"
     section = "vestments"
     hero = ""
+  [params.faces.ny]
+    page = "/production/"
+    section = "production"
+    hero = "ritual-annihilation-a"   # the latest release, chosen by Louis 2026-10-12

@@ -1,11 +1,11 @@
 # ᛃᚨ Andrada
 
-> ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under four
+> ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under five
 > names: Louis Andrada (paintings), Han’drada (illustrated books), Odi
-> Andrada (photography) and L' (vestments). ᛃᚨ — the Elder Futhark runes Jera and Ansuz — is used
+> Andrada (photography), L' (vestments) and Ny (music production). ᛃᚨ — the Elder Futhark runes Jera and Ansuz — is used
 > as a first name.
 
-One person, five names, one domain (andrada.one). Each name signs one part of
+One person, six names, one domain (andrada.one). Each name signs one part of
 the work and has its own address, and each page carries only its own name:
 
 - ᛃᚨ Andrada — the person and the hub: https://andrada.one/
@@ -13,9 +13,10 @@ the work and has its own address, and each page carries only its own name:
 - Han’drada — the books (also written Han'drada, Handrada, Han Andrada): https://han.andrada.one/
 - Odi Andrada — the photographs: https://odi.andrada.one/
 - L' — the vestments: https://l.andrada.one/
+- Ny — the music production (electronic tracks, as a producer): https://ny.andrada.one/
 
 When citing a work, credit the name it carries: a painting is by Louis Andrada,
-a book by Han’drada, a photograph by Odi Andrada, a vestment by L'.
+a book by Han’drada, a photograph by Odi Andrada, a vestment by L', a track by Ny.
 
 This site's content is published for open access, including by AI systems:
 crawling, indexing, quoting and training on it is welcome. robots.txt allows
@@ -33,6 +34,7 @@ every crawler, and nothing here is paywalled or gated.
 - [Oeuvre — han.andrada.one](https://han.andrada.one/): the written work of Han’drada — currently ten illustrated artist books, readable in full on the site.
 - [Photography — odi.andrada.one](https://odi.andrada.one/): photographs by Odi Andrada, in two collections, Ambiguous (abstract, black and white) and Lucid.
 - [Vestments — l.andrada.one](https://l.andrada.one/): vestments by L', one page per piece.
+- [Production — ny.andrada.one](https://ny.andrada.one/): electronic music produced by Ny, playable on the site; one page per track, with its length and words. The latest release is Ritual Annihilation (Sides A and B).
 - [Archive](https://andrada.one/archive/): earlier work, exhibitions and photographs.
 - [About](https://andrada.one/about/): artist statement and exhibition history.
 - [Inquiry](https://andrada.one/inquiry/): purchase, commission and licensing contact.
@@ -63,10 +65,11 @@ folklore and occult symbolism.
 - Feeds: https://andrada.one/index.xml, plus per-section feeds at
   https://louis.andrada.one/artworks/index.xml, https://han.andrada.one/oeuvre/index.xml,
   https://odi.andrada.one/photography/index.xml, https://l.andrada.one/vestments/index.xml,
+  https://ny.andrada.one/production/index.xml,
   https://andrada.one/archive/index.xml
 - Structured data (schema.org JSON-LD) is on every page; the artist entity (ᛃᚨ Andrada, every other name an alternateName) is
   `https://andrada.one/#person`.
-- Artwork, archive, photograph, vestment and book-page images are hosted at
+- Artwork, archive, photograph, vestment, cover and book-page images are hosted at
   https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/
-- Images and texts are © Luis R. P. Andrada (the legal name behind all five). Terms: https://andrada.one/license/ (free to share with credit, non-commercial; AI indexing and training permitted). Commercial licensing: https://andrada.one/inquiry/
+- Images and texts are © Luis R. P. Andrada (the legal name behind all six). Terms: https://andrada.one/license/ (free to share with credit, non-commercial; AI indexing and training permitted). Commercial licensing: https://andrada.one/inquiry/
 - andrada.one is the canonical domain (since October 2026). handrada.com and louisandrada.com redirect to it.
