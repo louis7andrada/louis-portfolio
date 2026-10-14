@@ -625,7 +625,7 @@ async function main() {
   await check("Menu links that open a face at its grid scroll there and leave no #hash in the address bar", async () => {
     const page = await browser.newPage();
     const problems = [];
-    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography", "/vestments/#vestments", "/production/#production", "/career/#career"]) {
+    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography", "/vestments/#vestments", "/production/#production"]) {
       await page.goto(BASE_URL + path);
       await page.waitFor(`!location.hash && scrollY > 200`, { timeout: 5000 });
       const r = await page.evaluate(`({ hash: location.hash, y: Math.round(scrollY) })`);
@@ -637,20 +637,33 @@ async function main() {
     return true;
   });
 
-  // Career (Luis, luis.andrada.one, Oct 2026): a resume under a portrait hero. The pinned cluster (title, section
-  // links, LinkedIn, Contact) waits while the hero shows; its section links scroll to their section and mark it.
-  await check("Career: the cluster waits on the hero, its section links scroll to their section and mark it", async () => {
+  // Career (Luis, luis.andrada.one, Oct 2026): no hero (Louis: the page starts right on the resume, the menu only
+  // in the header). A small portrait sits on top of his name; the pinned cluster's section links scroll to their
+  // section and mark it.
+  await check("Career: opens on the resume (header menu, small portrait over the name), section links scroll and mark", async () => {
     const page = await browser.newPage();
     await page.goto(BASE_URL + "/career/");
     await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
     await page.goto(BASE_URL + "/career/");
     await new Promise((r) => setTimeout(r, 1200));
     const problems = [];
-    const cluster = `document.querySelector('body > main .career-cluster')`;
-    if (!(await page.evaluate(`document.documentElement.classList.contains('hero-in-view') && getComputedStyle(${cluster}).visibility === 'hidden'`))) problems.push("the cluster shows on top of the hero");
-    await page.evaluate(`[].find.call(document.querySelectorAll('body > main .hp-nav a'), function (a) { return a.textContent.trim() === 'Luis'; }).click(); true`);
-    if (!(await page.waitFor(`scrollY > 200 && !document.documentElement.classList.contains('hero-in-view')`, { timeout: 4000 }))) problems.push("the hero's Luis entry didn't scroll down to the resume");
-    if (!(await page.waitFor(`getComputedStyle(${cluster}).visibility === 'visible'`, { timeout: 2000 }))) problems.push("the cluster didn't appear once the hero was gone");
+    const top = JSON.parse(await page.evaluate(`JSON.stringify((function(){ var m = document.querySelector('body > main');
+      var name = m.querySelector('.cr-name'), av = m.querySelector('.cr-avatar'), nav = document.getElementById('desktopNav');
+      var n = name.getBoundingClientRect(), a = av ? av.getBoundingClientRect() : null;
+      return { hero: !!m.querySelector('.face-hero, .hp-nav'), heroClass: document.documentElement.classList.contains('hero-in-view'),
+        nameTop: n.top, vh: innerHeight, navOpacity: nav ? getComputedStyle(nav).opacity : null,
+        av: a && { w: a.width, bottom: a.bottom, left: a.left }, nameLeft: n.left, loaded: av ? av.complete && av.naturalWidth > 0 : false,
+        cluster: getComputedStyle(m.querySelector('.career-cluster')).visibility }; })())`));
+    if (top.hero || top.heroClass) problems.push("the page still has a hero");
+    if (top.nameTop > top.vh * 0.6) problems.push(`the resume doesn't start on the first screen (name at ${Math.round(top.nameTop)}px)`);
+    if (top.navOpacity !== "1") problems.push(`the header menu isn't showing (opacity ${top.navOpacity})`);
+    if (!top.av) problems.push("no portrait");
+    else {
+      if (top.av.w > 200) problems.push(`the portrait is ${Math.round(top.av.w)}px wide (meant to be small)`);
+      if (top.av.bottom > top.nameTop + 1 || Math.abs(top.av.left - top.nameLeft) > 2) problems.push("the portrait isn't right on top of the name");
+      if (!top.loaded) problems.push("the portrait didn't load");
+    }
+    if (top.cluster !== "visible") problems.push("the pinned cluster is hidden");
     await page.evaluate(`document.querySelector('body > main .career-cluster a[href="#skills"]').click(); true`);
     const reached = await page.waitFor(`Math.abs(document.querySelector('body > main #skills').getBoundingClientRect().top) < 120`, { timeout: 4000 });
     if (!reached) problems.push("Skills link didn't bring Skills to the top");

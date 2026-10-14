@@ -9,9 +9,10 @@
      profile (Louis: "this page is literally supposed to be the same thing" as his LinkedIn).
      Everything comes from content/career/_index.md: experience (several roles at one place are grouped
      under it, as LinkedIn does), education, certifications, skills, languages; its body is the About text.
-     The same frame as the other faces: a hero (his portrait + the staggered menu, face-hero.html), then
-     the page, with the pinned cluster on the left (.book-page-header, as on Oeuvre/Photography, so
-     main.css gives it the same fog island) holding the title, the section links, LinkedIn and Contact.
+     No hero (Louis, 2026-10-14: the page starts right on the resume, the menu only in the header; the face is
+     "plain" in hugo.toml): a small portrait sits on top of his name, as on LinkedIn. The pinned cluster on the
+     left (.book-page-header, as on Oeuvre/Photography, so main.css gives it the same fog island) holds the
+     title, the section links, LinkedIn and Contact.
      No phone, email or references' contacts: the forms are the only way to reach him (Contact → Inquiry).
      LinkedIn is a visible link HERE only (Louis, 2026-10-14); elsewhere profiles are declared to machines only. */}}
 {{ $name := index site.Params.names "luis" }}
@@ -21,7 +22,7 @@
 
 {{ partial "jsonld/career.html" . }}
 
-{{ partial "face-hero.html" (dict "face" "luis" "image" (dict "src" $p.image "alt" (printf "Portrait of %s" $name) "width" 1000 "height" 1000)) }}
+{{ partial "jsonld/face-site.html" "luis" }}
 
 <section id="career-section" class="w-full px-4 py-12 relative">
 
@@ -44,6 +45,7 @@
   <div class="career-body">
 
     <div class="cr-head">
+      {{ with $p.avatar }}<img src="{{ . }}" alt="Portrait of {{ $name }}" class="cr-avatar" width="360" height="360" />{{ end }}
       <h2 class="cr-name">{{ $name }}</h2>
       {{ with $p.headline }}<p class="cr-headline">{{ . }}</p>{{ end }}
       <p class="cr-meta">
@@ -139,9 +141,12 @@
 </section>
 
 <style>
-/* The pinned cluster: placed like Oeuvre's (oeuvre/list.html), fog and title colour from main.css. */
-.career-cluster { position: fixed; left: 8%; top: 50%; transform: translateY(-50%); z-index: 40; width: fit-content; max-width: min(40vw, 260px); }
-@media (max-width: 1100px) { .career-cluster { left: 16px; } }
+/* The resume is centred on the screen, and the pinned cluster (fog and title colour from main.css) sits a short gap
+   to its left (Louis, 2026-10-14: centred, and not far from the cluster). --cr-rx is where the resume starts: the
+   centre, unless the screen is too narrow for the cluster to fit beside it (then the cluster stays 16px from the edge). */
+#career-section { --cr-cl: 132px; --cr-gap: clamp(36px, 4vw, 80px); --cr-col: 760px;
+  --cr-rx: max(calc(16px + var(--cr-cl) + var(--cr-gap)), calc((100% - var(--cr-col)) / 2)); }
+.career-cluster { position: fixed; left: calc(var(--cr-rx) - var(--cr-gap) - var(--cr-cl)); top: 50%; transform: translateY(-50%); z-index: 40; width: var(--cr-cl); }
 .career-cluster h1 { margin-bottom: 1.1rem; }
 .career-toc { display: flex; flex-direction: column; gap: 0.45rem; }
 .career-toc a { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: inherit; text-decoration: none; opacity: 0.5; transition: opacity 0.2s; }
@@ -149,15 +154,16 @@
 .career-out { margin-top: 1.4rem; }
 .cr-ext { display: inline-block; vertical-align: 0.05em; margin-left: 0.15em; }
 
-/* The resume: one column, kept clear of the pinned cluster on the left. */
-#career-section { padding-top: 1rem; padding-bottom: 5rem; }
-@media (min-width: 801px) { #career-section { padding-left: calc(8% + 250px); padding-right: 4%; } }
-@media (min-width: 801px) and (max-width: 1100px) { #career-section { padding-left: 250px; } }
-.career-body { max-width: 760px; margin: 0 auto; }
+/* The resume: one column, right after the cluster. */
+#career-section { padding-top: 0.5rem; padding-bottom: 5rem; }
+@media (min-width: 801px) { #career-section { padding-left: var(--cr-rx); padding-right: 16px; } }
+.career-body { max-width: var(--cr-col); margin: 0 auto; }
+@media (min-width: 801px) { .career-body { margin-left: 0; } }
 .career-body p { margin: 0; }
 .cr-block, .cr-head { scroll-margin-top: 90px; }
 
-.cr-head { margin: 2rem 0 3.2rem; }
+.cr-head { margin: 1.5rem 0 3.2rem; }
+.cr-avatar { display: block; width: clamp(110px, 12vw, 150px); height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; margin: 0 0 1.4rem; }
 .cr-name { font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: 0.04em; font-weight: 600; margin: 0 0 0.6rem; }
 .cr-headline { font-size: clamp(0.8rem, 1.4vw, 0.9rem); letter-spacing: 0.04em; line-height: 1.7; opacity: 0.8; }
 .cr-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; margin-top: 0.9rem !important; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; }
@@ -177,7 +183,9 @@
 .cr-item:last-child { margin-bottom: 0; }
 
 /* Several roles at one place: a thin line joins them, a dot per role (LinkedIn's grouping). */
-.cr-org { margin: 0 0 2rem; }
+.cr-org { margin: 0; }
+/* one place after another: a clear break and a faint line between them (LinkedIn's divider) */
+.cr-org + .cr-org { margin-top: 3rem; padding-top: 2.6rem; border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent); }
 .cr-org-name { font-size: clamp(0.9rem, 1.6vw, 1rem); font-weight: 600; letter-spacing: 0.02em; }
 .cr-roles { list-style: none; margin: 1.4rem 0 0; padding: 0 0 0 1.4rem; border-left: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
 .cr-role { position: relative; margin: 0 0 2rem; }

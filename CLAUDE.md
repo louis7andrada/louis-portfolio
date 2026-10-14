@@ -251,16 +251,21 @@ legal name (`legal_name`, Luis R. P. Andrada) still stays in legal statements on
   standard resume, the version that got him his job at CIBC: keep his wording. Edit the .md, never the template.
   Current job (2026-10-14): CIBC, Test Analyst, IT Quality Engineering (start month not given yet; a role without
   `from` shows just "Present"). Its bullets are GENERAL test-analyst duties, at Louis's request (he didn't know the
-  job's specifics yet): replace them with his real ones when he gives them.
+  job's specifics yet): replace them with his real ones when he gives them. UofT (Research Coordinator) ended
+  Oct 2026; its bullets are in the past tense since.
 - NEVER on the page: phone, email, the references' names/contacts ("References available on request"). Contact →
   `/inquiry/` (the forms are the only way to reach him). LinkedIn (`params.profile_linkedin`) is the ONE visible
   profile link on the whole site, and only here. A smoke test fails on any phone number or email in the page.
-- Frame: `face-hero.html` with `"image"` (a face with no items: one picture, not a link) = his portrait
-  `static/images/luis/portrait.jpg` (from `profile2.jpeg`, kept by Louis; 1000px, Display P3 → sRGB, no metadata); then
-  `#career-section` (faces.html scrolls there; menus link `#career`) with the pinned cluster on the left (title, section
-  links that follow the scroll, LinkedIn, Contact; `.book-page-header` + `body.page-books` like the other faces; hidden
-  on phones, where the resume's own head carries the links). JSON-LD: `jsonld/career.html` (ProfilePage → `…/#person`
-  named Luis Andrada, jobTitle/worksFor from the role whose `to` is "Present", alumniOf, credentials, languages).
+- NO HERO (Louis, 2026-10-14): luis.andrada.one opens right on the resume, the menu only in the header (`plain = true`
+  in `params.faces.luis`; faces.html gives a plain face no hero behaviour, and menus link it without a #hash). A small
+  round portrait (`avatar`, `static/images/luis/portrait-small.jpg`, 360px) sits on top of his name; `image` (the
+  1000px `portrait.jpg`, from `profile2.jpeg`, kept by Louis; Display P3 → sRGB, no metadata) is for link previews.
+  The pinned cluster (title, section links that follow the scroll, LinkedIn, Contact; `.book-page-header` +
+  `body.page-books` like the other faces; hidden on phones, where the resume's head carries the links). The resume
+  is CENTRED on the screen and the cluster sits a short gap to its left (`--cr-rx/--cr-cl/--cr-gap/--cr-col`; Louis:
+  centred, and not far from the cluster); on narrow screens the resume moves right just enough for the cluster. JSON-LD: `jsonld/career.html` (ProfilePage → `…/#person`
+  named Luis Andrada, jobTitle/worksFor from the role whose `to` is "Present", alumniOf, credentials, languages)
+  + `face-site.html`.
   No RSS (`outputs: ["html"]`). No logo yet: luis. shows Jera Ansuz at once (`LOGOS.luis = "new"`).
 
 ## Dark mode only
@@ -282,7 +287,7 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 | `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi Andrada |
 | `l.andrada.one/` | `/vestments/` (+ `face-hero.html`), section `vestments` | L' |
 | `ny.andrada.one/` | `/production/` (+ `face-hero.html`), section `production` | Ny |
-| `luis.andrada.one/` | `/career/` (+ `face-hero.html` "image"), section `career` (a resume, no grid) | Luis Andrada |
+| `luis.andrada.one/` | `/career/` (NO hero: opens on the resume), section `career` | Luis Andrada |
 | `andrada.one/` | `/links/` (the hub: every name, every door) + the shared pages | ᛃᚨ Andrada |
 
 - Config: `params.faces` / `params.names` / `hub` / `face_domain` in `hugo.toml`. Helpers: `_partials/face-url.html`
@@ -360,6 +365,9 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 
 ## Discoverability, metadata
 
+- Link previews: a page without a picture of its own uses `params.share_image` = `images/og-photo106.jpg` (Odi's
+  photo106, top cut to 1200×630; Louis, 2026-10-14, replacing the orange painting `og-default.jpg`), alt
+  `share_image_alt`. Works (paintings, books, photos, vestments, tracks) and Career (his portrait) use their own.
 - Per-page `<title>`/description/`og:image` are computed in `baseof.html` from front
   matter (artworks get medium+size+year, books their subtitle+page count, photographs
   id+collection). Archive photos have NO text by Louis's choice (Oct 2026): no title/comment, only year and

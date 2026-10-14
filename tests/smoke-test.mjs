@@ -380,7 +380,7 @@ section("Navigation sanity");
   const home = readHtml("index.html");
   if (home) {
     // About/Inquiry/Archive stay relative; the faces and the hub are their own (sub)domains (Oct 2026).
-    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production", "https://luis.andrada.one/#career"]) {
+    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production", "https://luis.andrada.one/"]) {
       assert(home.includes(`href=${href}`) || home.includes(`href="${href}"`), `Home page links to ${href}`);
     }
   }

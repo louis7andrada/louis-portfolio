@@ -6,7 +6,8 @@ title: "Career"
 description: "Luis Andrada, Toronto: research coordinator, data analyst and programmer. Five years at the University of Toronto Faculty of Dentistry in data validation, quality control, REDCap, automation and analysis."
 headline: "Research Coordinator | Data Analyst | Quality Assurance | Computer Programming"
 location: "Toronto, ON"
-image: "/images/luis/portrait.jpg"
+image: "/images/luis/portrait.jpg"          # link previews (1000px)
+avatar: "/images/luis/portrait-small.jpg"   # the small round portrait on top of his name (360px)
 outputs: ["html"]
 
 # Newest first. Several roles at one place are grouped under it, as LinkedIn does.
@@ -32,17 +33,17 @@ experience:
     roles:
       - title: "Research Coordinator"
         from: "Jul 2025"
-        to: "Present"
+        to: "Oct 2026"   # ended Oct 2026 (Louis, 2026-10-14); bullets moved to the past tense
         points:
-          - "Design and execute data validation and quality-control procedures across active research studies; identify discrepancies, out-of-range values, and logic errors before reporting or downstream use."
-          - "Administer and maintain REDCap as the team's primary data-management platform; configure system logic and validation rules and test new instruments and system updates before deployment."
-          - "Provide first-line technical support for REDCap; investigate system and data issues, identify root causes, implement corrective actions, and escalate when appropriate."
-          - "Develop and maintain quality-control documentation, including procedures, issue records, corrective actions, and operational documentation."
-          - "Use Python scripting, Microsoft Power Automate, Microsoft PowerToys, Windows batch files, and AutoHotkey to automate repetitive data-processing, reminders, scheduling, application-launch, file-management, and desktop workflow tasks."
-          - "Coordinate participant booking and scheduling workflows, including automated email reminders and calendar notifications through Microsoft Power Automate; use PowerToys and desktop automation to reduce repetitive manual steps and improve day-to-day execution efficiency."
-          - "Collect, analyze, and report quantitative research data using IBM SPSS, R, and STATA; prepare summaries, visualizations, and briefing materials for senior researchers and institutional committees."
-          - "Coordinate with investigators, research staff, and external partner labs to resolve data-quality issues and communicate findings to technical and non-technical stakeholders."
-          - "Ensure activities adhere to UofT ethics, FIPPA, and OCAP requirements and maintain secure, confidential handling of participant data."
+          - "Designed and executed data validation and quality-control procedures across active research studies; identified discrepancies, out-of-range values, and logic errors before reporting or downstream use."
+          - "Administered and maintained REDCap as the team's primary data-management platform; configured system logic and validation rules and tested new instruments and system updates before deployment."
+          - "Provided first-line technical support for REDCap; investigated system and data issues, identified root causes, implemented corrective actions, and escalated when appropriate."
+          - "Developed and maintained quality-control documentation, including procedures, issue records, corrective actions, and operational documentation."
+          - "Used Python scripting, Microsoft Power Automate, Microsoft PowerToys, Windows batch files, and AutoHotkey to automate repetitive data-processing, reminders, scheduling, application-launch, file-management, and desktop workflow tasks."
+          - "Coordinated participant booking and scheduling workflows, including automated email reminders and calendar notifications through Microsoft Power Automate; used PowerToys and desktop automation to reduce repetitive manual steps and improve day-to-day execution efficiency."
+          - "Collected, analyzed, and reported quantitative research data using IBM SPSS, R, and STATA; prepared summaries, visualizations, and briefing materials for senior researchers and institutional committees."
+          - "Coordinated with investigators, research staff, and external partner labs to resolve data-quality issues and communicated findings to technical and non-technical stakeholders."
+          - "Ensured activities adhered to UofT ethics, FIPPA, and OCAP requirements and maintained secure, confidential handling of participant data."
       - title: "Data Analyst"
         from: "Oct 2023"
         to: "Jul 2025"

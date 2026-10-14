@@ -103,9 +103,9 @@
        (Louis, Oct 2026: every tab reads like the home page's). Single works keep the work first. */}}
   {{ $pageTitle := printf "%s — %s" $name .Title }}
   {{ $desc := index site.Params.taglines $nameKey }}
-  {{ $ogImage := "/images/og-default.jpg" | absURL }}
+  {{ $ogImage := site.Params.share_image | absURL }}
   {{ $ogType := "website" }}
-  {{ $imageAlt := printf "Artwork by %s" $name }}
+  {{ $imageAlt := site.Params.share_image_alt }}
 
   {{ if .IsHome }}
     {{ $pageTitle = printf "%s — Paintings" $name }}

@@ -1,16 +1,17 @@
-{{/* FACES — behaviour of the front pages of Han (Oeuvre), Odi (Photography), L' (Vestments), Ny (Production) and Luis (Career), which open on a
+{{/* FACES — behaviour of the front pages of Han (Oeuvre), Odi (Photography), L' (Vestments) and Ny (Production), which open on a
      home-page-style hero (face-hero.html); the artworks home has its own in header.html/index.html.
      Rendered right after the header, so the hiding below happens before the first paint.
      - The face's own menu entries (header, phone menu, hero menu; data-face) scroll down to the
-       grid on this page (Career: the resume, #career-section). Arriving with #oeuvre / #photography / #vestments / #production / #career (every menu link elsewhere carries
+       grid on this page. Arriving with #oeuvre / #photography / #vestments / #production (every menu link elsewhere carries
        it) opens the page already at the grid, like Artworks does for the home page.
      - While the hero is on screen, the header menu and the page's pinned title + filters wait
        (as the header menu does on the home page).
      - Clicking the hero image opens it in the page's own popup, like the same item in the grid.
-     - Menu entries of the face that owns this page are marked active; Links on the hub. */}}
+     - Menu entries of the face that owns this page are marked active; Links on the hub.
+     A "plain" face (params.faces, Luis's Career) has no hero: its page opens on its content, with the header as usual. */}}
 {{ $heroFace := "" }}{{ $owner := "" }}
 {{ range $k, $f := site.Params.faces }}
-  {{ if eq $.RelPermalink $f.page }}{{ $owner = $k }}{{ if ne $k "louis" }}{{ $heroFace = $k }}{{ end }}{{ end }}
+  {{ if eq $.RelPermalink $f.page }}{{ $owner = $k }}{{ if and (ne $k "louis") (not $f.plain) }}{{ $heroFace = $k }}{{ end }}{{ end }}
   {{ if and $f.section (eq $.Section $f.section) }}{{ $owner = $k }}{{ end }}
 {{ end }}
 {{ $isHub := eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}
@@ -33,7 +34,7 @@
 
       var main = document.querySelector("body > main");
       var hero = main && main.querySelector(".face-hero--" + heroFace);
-      var grid = main && main.querySelector("#books-section, #career-section");
+      var grid = main && main.querySelector("#books-section");
       if (!hero || !grid) {
         html.classList.remove("hero-in-view"); html.style.opacity = "";
         if (desktopNav) { desktopNav.style.opacity = ""; desktopNav.style.pointerEvents = ""; }

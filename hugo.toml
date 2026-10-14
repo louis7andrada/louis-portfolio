@@ -52,6 +52,13 @@ disableKinds = ["taxonomy", "term"]
   # Declared to search engines/AI in JSON-LD (sameAs) only — intentionally not
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"
+  # The picture in a link preview (og:image / twitter:image) for every page without one of its own (home, Links,
+  # About, Inquiry, the faces' front pages…). Louis, 2026-10-14: Odi's photo106 (cvi), replacing the orange painting
+  # (images/og-default.jpg): its top, where the bright cloud is, cut to 1200×630 (previews are wide; a centre cut
+  # of the tall photo was nearly all black). Works keep their own picture.
+  share_image = "/images/og-photo106.jpg"
+  # Its alt text (og:image:alt): the photo's own title, no name (a page carries only its own name).
+  share_image_alt = "cvi (Ambiguous), a photograph"
   # The one exception (Louis, 2026-10-14): Luis's page (Career, luis.andrada.one) shows LinkedIn as a
   # visible link, since that page is meant to be the same thing as his LinkedIn profile.
   profile_linkedin = "https://www.linkedin.com/in/louis7andrada/"
@@ -114,7 +121,7 @@ disableKinds = ["taxonomy", "term"]
   # hero: the image at the top. Odi: a photo id ("photo107"); empty = the newest Ambiguous photo.
   #       Han: a book id; empty = the newest book (highest order). L': a vestment id; empty = the newest.
   #       Ny: a track id ("omnipulse"); empty = the newest. Louis: set in index.html.
-  #       Luis: no items, the portrait in career/list.html.
+  #       plain = true: no hero at all, the page opens on its content (Luis, 2026-10-14).
   [params.faces.louis]
     page = "/"
     section = "artworks"
@@ -137,3 +144,4 @@ disableKinds = ["taxonomy", "term"]
   [params.faces.luis]
     page = "/career/"
     section = "career"
+    plain = true   # Louis: luis.andrada.one starts right on the resume, the menu only in the header
