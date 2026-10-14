@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────────────────────────────────
-# ANDRADA.ONE ROUTING (Oct 2026) — one domain, one person, five names, each owning part of the work:
+# ANDRADA.ONE ROUTING (Oct 2026) — one domain, one person, six names, each owning part of the work:
 #   louis.andrada.one → Artworks (the home page)    han.andrada.one → Oeuvre    odi.andrada.one → Photography
-#   l.andrada.one    → Vestments                   ny.andrada.one → Production
+#   l.andrada.one    → Vestments                   ny.andrada.one → Production  luis.andrada.one → Career
 #   andrada.one       → the Links page (the hub: every name, every door)
 # Same site on every host (Netlify domain aliases). Netlify reads this file BEFORE the [[redirects]]
 # in netlify.toml. First match wins, so an exact address comes before the /* that would also catch
@@ -16,6 +16,7 @@ https://han.andrada.one/        /oeuvre/index.html         200!
 https://odi.andrada.one/        /photography/index.html    200!
 https://l.andrada.one/         /vestments/index.html      200!
 https://ny.andrada.one/        /production/index.html     200!
+https://luis.andrada.one/      /career/index.html         200!
 
 https://www.andrada.one/*       https://andrada.one/:splat   301!
 
@@ -30,6 +31,8 @@ https://andrada.one/vestments/                  https://l.andrada.one/          
 https://andrada.one/vestments/*                 https://l.andrada.one/vestments/:splat             301!
 https://andrada.one/production/                 https://ny.andrada.one/                            301!
 https://andrada.one/production/*                https://ny.andrada.one/production/:splat           301!
+https://andrada.one/career/                     https://luis.andrada.one/                          301!
+https://andrada.one/career/*                    https://luis.andrada.one/career/:splat             301!
 https://andrada.one/books/*                     https://han.andrada.one/oeuvre/:splat               301!
 
 # The old domains (kept registered: every old link and search result still points at them).

@@ -1,11 +1,12 @@
 # ᛃᚨ Andrada
 
-> ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under five
+> ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under six
 > names: Louis Andrada (paintings), Han’drada (illustrated books), Odi
-> Andrada (photography), L' (vestments) and Ny (music production). ᛃᚨ — the Elder Futhark runes Jera and Ansuz — is used
+> Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada
+> (career: research, data and programming). ᛃᚨ — the Elder Futhark runes Jera and Ansuz — is used
 > as a first name.
 
-One person, six names, one domain (andrada.one). Each name signs one part of
+One person, seven names, one domain (andrada.one). Each name signs one part of
 the work and has its own address, and each page carries only its own name:
 
 - ᛃᚨ Andrada — the person and the hub: https://andrada.one/
@@ -14,6 +15,7 @@ the work and has its own address, and each page carries only its own name:
 - Odi Andrada — the photographs: https://odi.andrada.one/
 - L' — the vestments: https://l.andrada.one/
 - Ny — the music production (electronic tracks, as a producer): https://ny.andrada.one/
+- Luis Andrada — the career (research coordinator, data analyst, programmer): https://luis.andrada.one/
 
 When citing a work, credit the name it carries: a painting is by Louis Andrada,
 a book by Han’drada, a photograph by Odi Andrada, a vestment by L', a track by Ny.
@@ -35,6 +37,7 @@ every crawler, and nothing here is paywalled or gated.
 - [Photography — odi.andrada.one](https://odi.andrada.one/): photographs by Odi Andrada, in two collections, Ambiguous (abstract, black and white) and Lucid.
 - [Vestments — l.andrada.one](https://l.andrada.one/): vestments by L', one page per piece.
 - [Production — ny.andrada.one](https://ny.andrada.one/): electronic music produced by Ny, playable on the site; one page per track, with its length and words. The latest release is Ritual Annihilation (Sides A and B).
+- [Career — luis.andrada.one](https://luis.andrada.one/): Luis Andrada's work life, as a resume: research coordinator, data analyst and programmer; five years at the University of Toronto Faculty of Dentistry (data validation, quality control, REDCap, automation, analysis); education, certifications, skills, languages.
 - [Archive](https://andrada.one/archive/): earlier work, exhibitions and photographs.
 - [About](https://andrada.one/about/): artist statement and exhibition history.
 - [Inquiry](https://andrada.one/inquiry/): purchase, commission and licensing contact.

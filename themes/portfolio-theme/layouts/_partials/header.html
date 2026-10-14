@@ -7,7 +7,8 @@
 
   <!-- Left: Logo — always visible. Every page load shows the page's OWN logo first (louis. → Louis
        Andrada "old", han. → Han Andrada "ha", odi. → Odi Andrada "odi", l. → L' "l", ny. → Ny "ny", andrada.one → Andrada "andrada";
-       Nilo's logo "nilo" is ready for the day Nilo has pages; until then it appears in the intro door),
+       Nilo's logo "nilo" is ready for the day Nilo has pages; until then it appears in the intro door;
+       luis. has no logo of its own yet, so Luis's page shows Jera Ansuz at once),
        then it turns into Jera Ansuz ("new", lalogo.png) — see startHeaderLogoSequence below. -->
   {{- /* The logo owner as rendered: the face that owns this page's section or front page, "hub" on the
          Links page. In the browser a face subdomain (window.__face) wins, as it does for the name. */ -}}
@@ -56,7 +57,7 @@
 
       // The page's own logo: the face subdomain, else the page's owner as rendered, else the name the
       // visitor came in with (?name=, baseof.html), else the hub's Andrada.
-      var LOGOS = { louis: "old", han: "ha", odi: "odi", l: "l", ny: "ny", nilo: "nilo", ja: "andrada", hub: "andrada" };
+      var LOGOS = { louis: "old", han: "ha", odi: "odi", l: "l", ny: "ny", nilo: "nilo", luis: "new", ja: "andrada", hub: "andrada" }; // luis: no logo yet
       var who = window.__face || {{ $logoOwner }} || window.__nameKey || "hub";
       var pageLogo = LOGOS[who] || "andrada";
       wrap.setAttribute("data-page-logo", pageLogo);
@@ -78,6 +79,7 @@
       <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Odi</a>
       <a href="{{ partial "face-url.html" "l" }}#vestments" data-face="l" id="navVestmentsLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">L'</a>
       <a href="{{ partial "face-url.html" "ny" }}#production" data-face="ny" id="navProductionLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Ny</a>
+      <a href="{{ partial "face-url.html" "luis" }}#career" data-face="luis" id="navCareerLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Luis</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -93,6 +95,7 @@
       <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Odi</a>
       <a href="{{ partial "face-url.html" "l" }}#vestments" data-face="l" id="navVestmentsLinkHome" class="dark:text-gray-300 dark:hover:text-white">L'</a>
       <a href="{{ partial "face-url.html" "ny" }}#production" data-face="ny" id="navProductionLinkHome" class="dark:text-gray-300 dark:hover:text-white">Ny</a>
+      <a href="{{ partial "face-url.html" "luis" }}#career" data-face="luis" id="navCareerLinkHome" class="dark:text-gray-300 dark:hover:text-white">Luis</a>
       <a href="/about" class="dark:text-gray-300 dark:hover:text-white">About</a>
       <a href="/inquiry/" class="dark:text-gray-300 dark:hover:text-white">Inquiry</a>
       <a href="/archive" class="dark:text-gray-300 dark:hover:text-white">Archive</a>
@@ -130,6 +133,7 @@
   <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkMobile" class="block">Odi</a>
   <a href="{{ partial "face-url.html" "l" }}#vestments" data-face="l" id="navVestmentsLinkMobile" class="block">L'</a>
   <a href="{{ partial "face-url.html" "ny" }}#production" data-face="ny" id="navProductionLinkMobile" class="block">Ny</a>
+  <a href="{{ partial "face-url.html" "luis" }}#career" data-face="luis" id="navCareerLinkMobile" class="block">Luis</a>
   <a href="/about" class="block">About</a>
   <a href="/inquiry/" class="block">Inquiry</a>
   <a href="/archive" class="block">Archive</a>

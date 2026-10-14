@@ -1,0 +1,37 @@
+{{/* Luis's page (Career, luis.andrada.one) as a ProfilePage. Its mainEntity is the one …/#person
+     (the same entity as every other name; identity.html), named Luis Andrada here, as this page's one
+     name, with what his resume says: current job, schools, credentials, languages, skills, LinkedIn.
+     Everything comes from content/career/_index.md; "to: Present" marks a current role.
+     Usage: partial "jsonld/career.html" . */}}
+{{ $p := . }}
+{{ $name := index site.Params.names "luis" }}
+{{ $url := partial "canonical.html" $p }}
+{{ $jobTitle := "" }}{{ $worksFor := slice }}
+{{ range $p.Params.experience }}
+  {{ $org := .org }}
+  {{ range .roles }}
+    {{ if eq .to "Present" }}
+      {{ if not $jobTitle }}{{ $jobTitle = .title }}{{ end }}
+      {{ $worksFor = $worksFor | append (dict "@type" "Organization" "name" $org) }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $alumniOf := slice }}{{ $creds := slice }}
+{{ range $p.Params.education }}
+  {{ $school := dict "@type" "EducationalOrganization" "name" .school }}
+  {{ $alumniOf = $alumniOf | append $school }}
+  {{ $creds = $creds | append (dict "@type" "EducationalOccupationalCredential" "name" .credential "recognizedBy" $school) }}
+{{ end }}
+{{ range $p.Params.certifications }}
+  {{ $creds = $creds | append (dict "@type" "EducationalOccupationalCredential" "name" .name "recognizedBy" (dict "@type" "Organization" "name" .issuer)) }}
+{{ end }}
+{{ $langs := slice }}{{ range $p.Params.languages }}{{ $langs = $langs | append (dict "@type" "Language" "name" .name) }}{{ end }}
+{{ $skills := slice }}{{ range $p.Params.skills }}{{ range .items }}{{ $skills = $skills | append . }}{{ end }}{{ end }}
+{{ $person := dict "@type" "Person" "@id" (printf "%s#person" site.BaseURL) "name" $name "homeLocation" (dict "@type" "Place" "name" "Toronto, Canada") "knowsLanguage" $langs "knowsAbout" (uniq $skills) "alumniOf" $alumniOf "hasCredential" $creds }}
+{{ with $jobTitle }}{{ $person = merge $person (dict "jobTitle" .) }}{{ end }}
+{{ with $worksFor }}{{ $person = merge $person (dict "worksFor" .) }}{{ end }}
+{{ with $p.Params.image }}{{ $person = merge $person (dict "image" (absURL .)) }}{{ end }}
+{{ with site.Params.profile_linkedin }}{{ $person = merge $person (dict "sameAs" (slice .)) }}{{ end }}
+<script type="application/ld+json">
+{{ dict "@context" "https://schema.org" "@type" "ProfilePage" "@id" (printf "%s#profile" $url) "url" $url "name" (printf "%s — %s" $name $p.Title) "description" $p.Params.description "inLanguage" "en" "mainEntity" $person | jsonify | safeJS }}
+</script>

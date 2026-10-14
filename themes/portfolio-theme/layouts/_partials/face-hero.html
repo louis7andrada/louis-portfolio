@@ -1,12 +1,14 @@
 {{/* FACE HERO — the top of a face's front page (params.faces in hugo.toml): Oeuvre for Han
      (han.andrada.one), Photography for Odi (odi.andrada.one), Vestments for L' (l.andrada.one),
-     Production for Ny (ny.andrada.one).
+     Production for Ny (ny.andrada.one), Career for Luis (luis.andrada.one).
      Laid out exactly like the home page's
      hero (hero-style.html): one image on the left, the staggered menu on the right, the grid below.
      The face's own menu entry and scrolling down lead to the grid; clicking the image opens it in
      the page's own popup, like a grid item (behaviour: faces.html).
      Call: partial "face-hero.html" (dict "face" "odi" "items" $photos) — items in grid order.
-     "player": true gives the hero the music player under its image (Production). */}}
+     "player": true gives the hero the music player under its image (Production).
+     A face with no items (Luis) passes its own picture instead, shown as is (not a link):
+     partial "face-hero.html" (dict "face" "luis" "image" (dict "src" … "alt" … "width" … "height" …)). */}}
 {{ $face := .face }}
 {{ $cfg := index site.Params.faces $face }}
 {{ $pick := "" }}
@@ -15,25 +17,35 @@
   {{ with where $.items "Params.collection" "eq" "Ambiguous" }}{{ $pick = index . 0 }}{{ end }}
 {{ end }}
 {{ if not $pick }}{{ with $.items }}{{ $pick = index . 0 }}{{ end }}{{ end }}
+{{ $picture := .image }}
 
-{{ with $pick }}
+{{ if or $pick $picture }}
 {{ $src := "" }}{{ $dimsKey := "" }}{{ $alt := "" }}
-{{ if eq $face "odi" "l" "ny" }}
-  {{ $src = partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
-  {{ $dimsKey = .Params.image }}
-  {{ $alt = printf "%s, %s" .Title (index (dict "odi" "photograph" "l" "vestment" "ny" "cover") $face) }}
+{{ if $picture }}
+  {{ $src = $picture.src }}
+  {{ $alt = $picture.alt }}
+{{ else if eq $face "odi" "l" "ny" }}
+  {{ $src = partial "img-url.html" (dict "src" $pick.Params.image "width" 1600 "keep" true) }}
+  {{ $dimsKey = $pick.Params.image }}
+  {{ $alt = printf "%s, %s" $pick.Title (index (dict "odi" "photograph" "l" "vestment" "ny" "cover") $face) }}
 {{ else }}
-  {{ $src = printf "%s/cover.jpg" .Params.imageBase }}
+  {{ $src = printf "%s/cover.jpg" $pick.Params.imageBase }}
   {{ $dimsKey = $src }}
-  {{ $alt = .Title }}
+  {{ $alt = $pick.Title }}
 {{ end }}
 <section class="face-hero face-hero--{{ $face }} mb-14" data-face="{{ $face }}">
   <div class="homepage-wrapper">
     <div class="homepage-layout">
       <div class="hp-left">
-        <a href="{{ .RelPermalink }}" class="hp-image-link face-hero-link">
+        {{ if $picture }}
+        <div class="face-hero-picture">
+          <img src="{{ $src }}" alt="{{ $alt }}" class="hp-image"{{ with $picture.width }} width="{{ . }}"{{ end }}{{ with $picture.height }} height="{{ . }}"{{ end }} />
+        </div>
+        {{ else }}
+        <a href="{{ $pick.RelPermalink }}" class="hp-image-link face-hero-link">
           <img src="{{ $src }}" alt="{{ $alt }}" class="hp-image"{{ partial "imgdims.html" $dimsKey }} />
         </a>
+        {{ end }}
         {{/* Production (Ny): the player under the cover. It shows whatever plays (production/list.html
              swaps the cover, title and sides); before anything has played, this track, ready to start. */}}
         {{ if $.player }}

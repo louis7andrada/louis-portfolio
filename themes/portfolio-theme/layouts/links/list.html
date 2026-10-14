@@ -9,19 +9,20 @@
 <section class="links-page flex flex-col items-center pt-4 pb-4 px-4 sm:px-10">
 
   <div class="name-band w-full flex justify-between items-start mt-2">
-    <!-- One person, five names: each steps in from the one above (the About page's staircase),
+    <!-- One person, six names: each steps in from the one above (the About page's staircase),
          a little lighter, with the links' ink trailing off the last letters. Each name opens its
          own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography),
-         l.andrada.one (Vestments), ny.andrada.one (Production).
+         l.andrada.one (Vestments), ny.andrada.one (Production), luis.andrada.one (Career).
          The shared surname, Andrada, waits on the first line a little apart from Louis (on phones:
          centred a line below the first names, which sit in one row); clicking a name sends it over to that
          name before the page changes (script below). Andrada itself opens andrada.one, this page. -->
-    <div class="name-stack" aria-label="Louis Andrada, Han’drada, Odi Andrada, L' and Ny">
+    <div class="name-stack" aria-label="Louis Andrada, Han’drada, Odi Andrada, L', Ny and Luis Andrada">
       <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}">Andrada</a></div>
       <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
       <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
       <a href="{{ partial "face-url.html" "l" }}" class="ns ns-4" aria-label="{{ site.Params.names.l }}" title="{{ site.Params.names.l }}">L<span class="ink i4">'</span></a>
       <a href="{{ partial "face-url.html" "ny" }}" class="ns ns-5" aria-label="{{ site.Params.names.ny }}" title="{{ site.Params.names.ny }}">N<span class="ink i4">y</span></a>
+      <a href="{{ partial "face-url.html" "luis" }}" class="ns ns-6" aria-label="{{ site.Params.names.luis }}" title="{{ site.Params.names.luis }}">Lu<span class="ink i3">i</span><span class="ink i4">s</span></a>
     </div>
     <div class="flex gap-6 md:gap-10">
       <span>Polymath</span>
@@ -42,6 +43,7 @@
         <a href="{{ partial "face-url.html" "odi" }}#photography" class="tw-link">Ph<span class="ink i0">ot</span><span class="ink i1">o</span><span class="ink i2">gr</span><span class="ink i3">ap</span><span class="ink i4">hy</span></a>
         <a href="{{ partial "face-url.html" "l" }}#vestments" class="tw-link">Ve<span class="ink i0">s</span><span class="ink i1">t</span><span class="ink i2">m</span><span class="ink i3">en</span><span class="ink i4">ts</span></a>
         <a href="{{ partial "face-url.html" "ny" }}#production" class="tw-link">Pr<span class="ink i0">o</span><span class="ink i1">d</span><span class="ink i2">u</span><span class="ink i3">cti</span><span class="ink i4">on</span></a>
+        <a href="{{ partial "face-url.html" "luis" }}#career" class="tw-link">Ca<span class="ink i0">r</span><span class="ink i1">e</span><span class="ink i3">e</span><span class="ink i4">r</span></a>
         <a href="/inquiry/" class="tw-link">I<span class="ink i0">nq</span><span class="ink i1">u</span><span class="ink i2">i</span><span class="ink i3">r</span><span class="ink i4">y</span></a>
         <a href="/archive/" class="tw-link">Ar<span class="ink i0">c</span><span class="ink i1">h</span><span class="ink i2">i</span><span class="ink i3">v</span><span class="ink i4">e</span></a>
         <a href="/about/" class="tw-link">A<span class="ink i0">b</span><span class="ink i1">o</span><span class="ink i2">u</span><span class="ink i3">t-m</span><span class="ink i4">e</span></a>
@@ -117,6 +119,7 @@
   .name-stack .ns-3 { padding-left: 5.2ch; opacity: 0.58; }
   .name-stack .ns-4 { padding-left: 7.8ch; opacity: 0.42; }
   .name-stack .ns-5 { padding-left: 10.4ch; opacity: 0.3; }
+  .name-stack .ns-6 { padding-left: 13ch; opacity: 0.22; }
   /* Phones: the first names in one row of equal columns (as many as there are names, and each
      whole column is its name's tap target); then one empty line, where Andrada lands under the
      clicked name; then Andrada itself, centred; then Polymath / Toronto based. */

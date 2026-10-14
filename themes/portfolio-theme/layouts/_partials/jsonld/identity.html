@@ -11,11 +11,12 @@
      The person is ᛃᚨ Andrada (ᛃᚨ = the runes Jera + Ansuz, used as a first
      name; andrada.one). alternateName carries every other name and spelling —
      Louis Andrada (paintings), Han’drada / Han'drada / Handrada / Han Andrada
-     (books), Odi Andrada (photographs), L' (vestments), Ny (music production), Nilo — so all of them resolve to this one
+     (books), Odi Andrada (photographs), L' (vestments), Ny (music production), Luis Andrada (career), Nilo — so all of them resolve to this one
      person, while each page credits only its own name (hugo.toml NAMES).
 
      sameAs lists authoritative external profiles. These are declared to
-     machines only — deliberately not rendered as visible links anywhere. */}}
+     machines only — deliberately not rendered as visible links anywhere,
+     except LinkedIn on Luis's own page (Career; Louis, 2026-10-14). */}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -33,6 +34,7 @@
         "{{ site.Params.names.odi }}",
         "{{ site.Params.names.l }}",
         "{{ site.Params.names.ny }}",
+        "{{ site.Params.names.luis }}",
         "{{ site.Params.names.nilo }}"
       ],
       "familyName": "Andrada",
@@ -57,7 +59,8 @@
       "image": "{{ "/profile4.jpeg" | absURL }}",
       "url": "{{ "/about/" | absURL }}",
       "sameAs": [
-        "{{ site.Params.profile_imdb }}"
+        "{{ site.Params.profile_imdb }}",
+        "{{ site.Params.profile_linkedin }}"
       ],
       "mainEntityOfPage": {
         "@id": "{{ site.BaseURL }}#website"

@@ -1,0 +1,244 @@
+{{ define "main" }}
+
+<!--  All Rights Reserved - Louis Andrada - 2026 -->
+<!--   Webdesign by Jinah Park & Louis Andrada   -->
+<!--     AndradaMono Font by Louis Andrada       -->
+<!--       Codes by Louis Andrada                -->
+
+{{/* CAREER (Luis, luis.andrada.one, Oct 2026): Luis's work life, laid out like a resume / LinkedIn
+     profile (Louis: "this page is literally supposed to be the same thing" as his LinkedIn).
+     Everything comes from content/career/_index.md: experience (several roles at one place are grouped
+     under it, as LinkedIn does), education, certifications, skills, languages; its body is the About text.
+     The same frame as the other faces: a hero (his portrait + the staggered menu, face-hero.html), then
+     the page, with the pinned cluster on the left (.book-page-header, as on Oeuvre/Photography, so
+     main.css gives it the same fog island) holding the title, the section links, LinkedIn and Contact.
+     No phone, email or references' contacts: the forms are the only way to reach him (Contact → Inquiry).
+     LinkedIn is a visible link HERE only (Louis, 2026-10-14); elsewhere profiles are declared to machines only. */}}
+{{ $name := index site.Params.names "luis" }}
+{{ $p := .Params }}
+{{ $linkedin := site.Params.profile_linkedin }}
+{{ $arrow := `<svg class="cr-ext" width="9" height="9" viewBox="0 0 10 10" fill="none" aria-hidden="true"><path d="M3 1h6v6M9 1 1 9" stroke="currentColor" stroke-width="1.1"/></svg>` | safeHTML }}
+
+{{ partial "jsonld/career.html" . }}
+
+{{ partial "face-hero.html" (dict "face" "luis" "image" (dict "src" $p.image "alt" (printf "Portrait of %s" $name) "width" 1000 "height" 1000)) }}
+
+<section id="career-section" class="w-full px-4 py-12 relative">
+
+  <div class="book-page-header career-cluster">
+    <h1 class="text-2xl font-semibold mb-6 mt-8 text-left">Luis</h1>
+    <nav class="career-toc" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#skills">Skills</a>
+      <a href="#languages">Languages</a>
+    </nav>
+    <div class="career-toc career-out">
+      {{ with $linkedin }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer me">LinkedIn {{ $arrow }}</a>{{ end }}
+      <a href="/inquiry/">Contact</a>
+    </div>
+  </div>
+
+  <div class="career-body">
+
+    <div class="cr-head">
+      <h2 class="cr-name">{{ $name }}</h2>
+      {{ with $p.headline }}<p class="cr-headline">{{ . }}</p>{{ end }}
+      <p class="cr-meta">
+        {{ with $p.location }}<span>{{ . }}</span>{{ end }}
+        {{ with $linkedin }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer me">LinkedIn {{ $arrow }}</a>{{ end }}
+        <a href="/inquiry/">Contact</a>
+      </p>
+    </div>
+
+    <section class="cr-block" id="about">
+      <h3 class="cr-h">About</h3>
+      <div class="cr-about">{{ .Content }}</div>
+    </section>
+
+    <section class="cr-block" id="experience">
+      <h3 class="cr-h">Experience</h3>
+      {{ range $p.experience }}
+      {{ $roles := .roles }}
+      <div class="cr-org">
+        <p class="cr-org-name">{{ .org }}</p>
+        {{ $from := (index $roles (sub (len $roles) 1)).from }}
+        {{ $bits := slice }}{{ with .place }}{{ $bits = $bits | append . }}{{ end }}
+        {{ with $from }}{{ $bits = $bits | append (printf "%s – %s" . (index $roles 0).to) }}{{ end }}
+        {{ with $bits }}<p class="cr-dim">{{ delimit . " · " }}</p>{{ end }}
+        <ol class="cr-roles">
+          {{ range $roles }}
+          <li class="cr-role">
+            <p class="cr-title">{{ .title }}</p>
+            <p class="cr-dim">{{ with .from }}{{ . }} – {{ end }}{{ .to }}</p>
+            {{ with .points }}<ul class="cr-points">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+          </li>
+          {{ end }}
+        </ol>
+      </div>
+      {{ end }}
+    </section>
+
+    <section class="cr-block" id="education">
+      <h3 class="cr-h">Education</h3>
+      {{ range $p.education }}
+      <div class="cr-item">
+        <p class="cr-title">{{ .credential }}</p>
+        <p class="cr-sub">{{ .school }}{{ with .place }} – {{ . }}{{ end }}</p>
+        <p class="cr-dim">{{ .years }}{{ with .honours }} · {{ . }}{{ end }}</p>
+        {{ with .detail }}<p class="cr-detail">{{ . }}</p>{{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    <section class="cr-block" id="certifications">
+      <h3 class="cr-h">Certifications</h3>
+      {{ range $p.certifications }}
+      <div class="cr-item">
+        <p class="cr-title">{{ .name }}</p>
+        <p class="cr-sub">{{ .issuer }}</p>
+        <p class="cr-dim">{{ .year }}</p>
+        {{ with .detail }}<p class="cr-detail">{{ . }}</p>{{ end }}
+      </div>
+      {{ end }}
+    </section>
+
+    <section class="cr-block" id="skills">
+      <h3 class="cr-h">Skills</h3>
+      {{ with $p.competencies }}
+      <p class="cr-sub cr-subhead">Core competencies</p>
+      <ul class="cr-competencies">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+      {{ end }}
+      {{ with $p.skills }}
+      <p class="cr-sub cr-subhead">Technical skills</p>
+      <dl class="cr-skills">
+        {{ range . }}
+        <div class="cr-skill-row">
+          <dt>{{ .group }}</dt>
+          <dd>{{ range .items }}<span class="cr-chip">{{ . }}</span>{{ end }}</dd>
+        </div>
+        {{ end }}
+      </dl>
+      {{ end }}
+    </section>
+
+    <section class="cr-block" id="languages">
+      <h3 class="cr-h">Languages</h3>
+      <dl class="cr-langs">
+        {{ range $p.languages }}
+        <div class="cr-lang-row"><dt>{{ .name }}</dt><dd>{{ .level }}</dd></div>
+        {{ end }}
+      </dl>
+    </section>
+
+    <p class="cr-refs">References available on request. <a href="/inquiry/">Contact</a></p>
+
+  </div>
+</section>
+
+<style>
+/* The pinned cluster: placed like Oeuvre's (oeuvre/list.html), fog and title colour from main.css. */
+.career-cluster { position: fixed; left: 8%; top: 50%; transform: translateY(-50%); z-index: 40; width: fit-content; max-width: min(40vw, 260px); }
+@media (max-width: 1100px) { .career-cluster { left: 16px; } }
+.career-cluster h1 { margin-bottom: 1.1rem; }
+.career-toc { display: flex; flex-direction: column; gap: 0.45rem; }
+.career-toc a { font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: inherit; text-decoration: none; opacity: 0.5; transition: opacity 0.2s; }
+.career-toc a:hover, .career-toc a.is-current { opacity: 1; }
+.career-out { margin-top: 1.4rem; }
+.cr-ext { display: inline-block; vertical-align: 0.05em; margin-left: 0.15em; }
+
+/* The resume: one column, kept clear of the pinned cluster on the left. */
+#career-section { padding-top: 1rem; padding-bottom: 5rem; }
+@media (min-width: 801px) { #career-section { padding-left: calc(8% + 250px); padding-right: 4%; } }
+@media (min-width: 801px) and (max-width: 1100px) { #career-section { padding-left: 250px; } }
+.career-body { max-width: 760px; margin: 0 auto; }
+.career-body p { margin: 0; }
+.cr-block, .cr-head { scroll-margin-top: 90px; }
+
+.cr-head { margin: 2rem 0 3.2rem; }
+.cr-name { font-size: clamp(1.4rem, 2.6vw, 1.9rem); letter-spacing: 0.04em; font-weight: 600; margin: 0 0 0.6rem; }
+.cr-headline { font-size: clamp(0.8rem, 1.4vw, 0.9rem); letter-spacing: 0.04em; line-height: 1.7; opacity: 0.8; }
+.cr-meta { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; margin-top: 0.9rem !important; font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; }
+.cr-meta span { opacity: 0.5; }
+.cr-meta a, .cr-refs a { color: inherit; text-decoration: none; opacity: 0.75; transition: opacity 0.2s; }
+.cr-meta a:hover, .cr-refs a:hover { opacity: 1; }
+
+.cr-block { margin: 0 0 3.4rem; }
+.cr-h { font-size: clamp(0.78rem, 1.4vw, 0.86rem); letter-spacing: 0.14em; text-transform: uppercase; font-weight: 700; margin: 0 0 1.4rem; padding-bottom: 0.7rem; border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent); }
+.cr-about p { font-size: clamp(0.8rem, 1.4vw, 0.88rem); line-height: 1.9; opacity: 0.78; }
+
+.cr-title { font-size: clamp(0.84rem, 1.5vw, 0.94rem); font-weight: 600; letter-spacing: 0.02em; line-height: 1.5; }
+.cr-sub { font-size: clamp(0.78rem, 1.4vw, 0.86rem); line-height: 1.6; opacity: 0.8; margin-top: 0.2rem !important; }
+.cr-dim { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.45; margin-top: 0.3rem !important; }
+.cr-detail { font-size: clamp(0.76rem, 1.3vw, 0.84rem); line-height: 1.75; opacity: 0.62; margin-top: 0.5rem !important; }
+.cr-item { margin: 0 0 1.8rem; }
+.cr-item:last-child { margin-bottom: 0; }
+
+/* Several roles at one place: a thin line joins them, a dot per role (LinkedIn's grouping). */
+.cr-org { margin: 0 0 2rem; }
+.cr-org-name { font-size: clamp(0.9rem, 1.6vw, 1rem); font-weight: 600; letter-spacing: 0.02em; }
+.cr-roles { list-style: none; margin: 1.4rem 0 0; padding: 0 0 0 1.4rem; border-left: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+.cr-role { position: relative; margin: 0 0 2rem; }
+.cr-role:last-child { margin-bottom: 0; }
+.cr-role::before { content: ""; position: absolute; left: calc(-1.4rem - 3.5px); top: 0.5em; width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: 0.55; }
+.cr-points { margin: 0.8rem 0 0; padding-left: 1.1rem; }
+.cr-points, .cr-competencies { list-style: disc; }
+.cr-points li, .cr-competencies li { font-size: clamp(0.78rem, 1.4vw, 0.86rem); line-height: 1.8; opacity: 0.72; margin: 0 0 0.45rem; }
+
+.cr-subhead { text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.72rem; opacity: 0.55; margin: 0 0 0.9rem !important; }
+.cr-competencies { margin: 0 0 2.2rem; padding-left: 1.1rem; columns: 2; column-gap: 2.4rem; }
+.cr-competencies li { break-inside: avoid; }
+.cr-skills, .cr-langs { margin: 0; }
+.cr-skill-row, .cr-lang-row { display: grid; grid-template-columns: minmax(9rem, 13rem) 1fr; gap: 0.4rem 1.4rem; padding: 0.7rem 0; border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent); }
+.cr-skill-row:first-child, .cr-lang-row:first-child { border-top: 0; }
+.cr-skills dt, .cr-langs dt { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; padding-top: 0.25rem; }
+.cr-skills dd, .cr-langs dd { margin: 0; }
+.cr-skills dd { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.cr-chip { font-size: 0.76rem; letter-spacing: 0.02em; padding: 0.2rem 0.6rem; border: 1px solid color-mix(in srgb, currentColor 22%, transparent); border-radius: 999px; opacity: 0.82; }
+.cr-langs dd { font-size: clamp(0.78rem, 1.4vw, 0.86rem); line-height: 1.7; opacity: 0.75; }
+.cr-refs { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.6; }
+
+/* Phones: no cluster (pinned, it would sit on the text; and its title would only repeat the name
+   that opens the resume, which carries LinkedIn and Contact too). */
+@media (max-width: 800px) {
+  .career-cluster { display: none; }
+  .career-body { padding: 0 4px; }
+  .cr-head { margin-top: 1.4rem; }
+  .cr-competencies { columns: 1; }
+  .cr-skill-row, .cr-lang-row { grid-template-columns: 1fr; }
+  .cr-skills dt, .cr-langs dt { padding-top: 0; }
+}
+</style>
+
+<script>
+  /* The cluster's section links: a smooth scroll to the section (the address stays as it is), and the
+     section being read is marked. */
+  (function () {
+    var main = document.querySelector("body > main");
+    if (!main) return;
+    var links = main.querySelectorAll('.career-cluster nav a[href^="#"]');
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    links.forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        var target = main.querySelector(a.getAttribute("href"));
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      });
+    });
+    if (!("IntersectionObserver" in window)) return;
+    var current = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        current = en.target.id;
+        links.forEach(function (a) { a.classList.toggle("is-current", a.getAttribute("href") === "#" + current); });
+      });
+    }, { rootMargin: "-35% 0px -60% 0px" });
+    links.forEach(function (a) { var s = main.querySelector(a.getAttribute("href")); if (s) io.observe(s); });
+  })();
+</script>
+
+{{ end }}

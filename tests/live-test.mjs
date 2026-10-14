@@ -625,13 +625,39 @@ async function main() {
   await check("Menu links that open a face at its grid scroll there and leave no #hash in the address bar", async () => {
     const page = await browser.newPage();
     const problems = [];
-    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography", "/vestments/#vestments", "/production/#production"]) {
+    for (const path of ["/#artworks-section", "/oeuvre/#oeuvre", "/photography/#photography", "/vestments/#vestments", "/production/#production", "/career/#career"]) {
       await page.goto(BASE_URL + path);
       await page.waitFor(`!location.hash && scrollY > 200`, { timeout: 5000 });
       const r = await page.evaluate(`({ hash: location.hash, y: Math.round(scrollY) })`);
       if (r.hash) problems.push(`${path}: hash still in the address bar ("${r.hash}")`);
       if (r.y <= 200) problems.push(`${path}: didn't scroll to the grid (scrollY ${r.y})`);
     }
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  // Career (Luis, luis.andrada.one, Oct 2026): a resume under a portrait hero. The pinned cluster (title, section
+  // links, LinkedIn, Contact) waits while the hero shows; its section links scroll to their section and mark it.
+  await check("Career: the cluster waits on the hero, its section links scroll to their section and mark it", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/career/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/career/");
+    await new Promise((r) => setTimeout(r, 1200));
+    const problems = [];
+    const cluster = `document.querySelector('body > main .career-cluster')`;
+    if (!(await page.evaluate(`document.documentElement.classList.contains('hero-in-view') && getComputedStyle(${cluster}).visibility === 'hidden'`))) problems.push("the cluster shows on top of the hero");
+    await page.evaluate(`[].find.call(document.querySelectorAll('body > main .hp-nav a'), function (a) { return a.textContent.trim() === 'Luis'; }).click(); true`);
+    if (!(await page.waitFor(`scrollY > 200 && !document.documentElement.classList.contains('hero-in-view')`, { timeout: 4000 }))) problems.push("the hero's Luis entry didn't scroll down to the resume");
+    if (!(await page.waitFor(`getComputedStyle(${cluster}).visibility === 'visible'`, { timeout: 2000 }))) problems.push("the cluster didn't appear once the hero was gone");
+    await page.evaluate(`document.querySelector('body > main .career-cluster a[href="#skills"]').click(); true`);
+    const reached = await page.waitFor(`Math.abs(document.querySelector('body > main #skills').getBoundingClientRect().top) < 120`, { timeout: 4000 });
+    if (!reached) problems.push("Skills link didn't bring Skills to the top");
+    if (!(await page.waitFor(`document.querySelector('body > main .career-cluster a[href="#skills"]').classList.contains('is-current')`, { timeout: 2000 }))) problems.push("Skills isn't marked as the section being read");
+    if (await page.evaluate(`location.hash`)) problems.push("a section link put a #hash in the address bar");
+    const links = await page.evaluate(`JSON.stringify([].map.call(document.querySelectorAll('body > main .cr-meta a'), function (a) { return a.getAttribute('href'); }))`);
+    if (!/linkedin\.com\/in\//.test(links) || !/"\/inquiry\/"/.test(links)) problems.push(`the resume's head links are ${links}`);
     await page.close();
     if (problems.length) throw new Error(problems.join("; "));
     return true;
@@ -2023,7 +2049,7 @@ async function main() {
     });
   }
 
-  // Links page on phones (Louis, Oct 2026): Louis / Han / Odi / L' / Ny on top in one row of equal columns; an empty
+  // Links page on phones (Louis, Oct 2026): Louis / Han / Odi / L' / Ny / Luis on top in one row of equal columns; an empty
   // line under them where Andrada lands under the clicked name; Andrada itself centred below that line;
   // then Polymath / Toronto based. The list has no "Portfolio" any more.
   for (const motion of ["no-preference", "reduce"]) {
@@ -2040,10 +2066,10 @@ async function main() {
           return { text: a.textContent, l: r.left, r: r.right, t: r.top + pt }; });
         var sr = s.getBoundingClientRect(), mr = m.getBoundingClientRect(), tag = document.querySelector('body > main .name-band').children[1].getBoundingClientRect();
         return { names: names, s: { c: (sr.left + sr.right) / 2, t: sr.top, b: sr.bottom, h: sr.height }, mc: (mr.left + mr.right) / 2, tagTop: tag.top,
-          list: [].map.call(document.querySelectorAll('body > main .links-col nav .tw-link'), function (a) { return a.textContent; }).slice(0, 8),
+          list: [].map.call(document.querySelectorAll('body > main .links-col nav .tw-link'), function (a) { return a.textContent; }).slice(0, 9),
           vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth }; })()`);
       const bad = [];
-      if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi L' Ny") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
+      if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi L' Ny Luis") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
       if (Math.abs(lay.s.c - lay.mc) > 2) bad.push(`Andrada is ${Math.round(lay.s.c - lay.mc)}px off centre`);
       if (lay.names.some((n) => Math.abs(n.t - lay.names[0].t) > 1)) bad.push("the names aren't on one row");
       if (lay.s.t < lay.names[0].t + 2 * lay.s.h - 1) bad.push("Andrada doesn't rest below the names with an empty line between");
@@ -2051,7 +2077,7 @@ async function main() {
       if (Math.max(...widths) - Math.min(...widths) > 2) bad.push(`the columns aren't equal (${widths.map(Math.round).join("/")}px)`);
       if (lay.tagTop < lay.s.b) bad.push("Polymath / Toronto based isn't below Andrada");
       if (lay.sw > lay.vw) bad.push(`the page scrolls sideways (${lay.sw}px > ${lay.vw}px)`);
-      if (lay.list.join(" ") !== "Artworks Oeuvre Photography Vestments Production Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
+      if (lay.list.join(" ") !== "Artworks Oeuvre Photography Vestments Production Career Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
       if (bad.length) { await page.close(); throw new Error(bad.join(" | ")); }
       // record where Andrada is the moment both shine (sessionStorage survives the page change), then tap Odi
       await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); window.__t0 = performance.now();

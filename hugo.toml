@@ -52,12 +52,16 @@ disableKinds = ["taxonomy", "term"]
   # Declared to search engines/AI in JSON-LD (sameAs) only — intentionally not
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"
+  # The one exception (Louis, 2026-10-14): Luis's page (Career, luis.andrada.one) shows LinkedIn as a
+  # visible link, since that page is meant to be the same thing as his LinkedIn profile.
+  profile_linkedin = "https://www.linkedin.com/in/louis7andrada/"
 
-  # ANDRADA.ONE (Oct 2026): one domain, one person, five names. Each name owns a part of the work
+  # ANDRADA.ONE (Oct 2026): one domain, one person, six names. Each name owns a part of the work
   # and lives on its own subdomain, which opens on a home-page-style hero (one image + the staggered
   # menu, the grid below):
   #   louis.andrada.one → Artworks (the home page)   han.andrada.one → Oeuvre   odi.andrada.one → Photography
   #   l.andrada.one → Vestments (L', Oct 2026)        ny.andrada.one → Production (Ny, Oct 2026)
+  #   luis.andrada.one → Career (Luis, Oct 2026: his work life, a resume / LinkedIn-style page)
   #   andrada.one       → the Links page (the hub: every name, every door)
   # The menus jump between them (Photography → odi.andrada.one…, Links → andrada.one); shared pages
   # (About, Inquiry, Archive…) stay on whichever subdomain the visitor is on. netlify.toml serves each
@@ -66,7 +70,7 @@ disableKinds = ["taxonomy", "term"]
   #
   # NAMES (Louis, Oct 2026): every page carries ONE name, in its title, description, keywords, link
   # previews, author and JSON-LD credits: the owner of the page's section (louis. paintings, han. books,
-  # odi. photographs, l. vestments, ny. music production), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
+  # odi. photographs, l. vestments, ny. music production, luis. career), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
   # name) for andrada.one itself and the shared pages that live there. Never two names side by side.
   # In the browser a face subdomain always shows its own name; on andrada.one, ?name=<key> picks it
   # for the visit (removed from the address bar). Only the Person node lists every name (alternateName).
@@ -81,6 +85,7 @@ disableKinds = ["taxonomy", "term"]
     odi = "Odi Andrada"
     l = "L'"
     ny = "Ny"
+    luis = "Luis Andrada"   # career (Louis, 2026-10-14); NOT the legal name (legal_name), which stays in legal statements
     nilo = "Nilo"   # no section yet (Louis, 2026-10-13: "surprises soon"); in About, the intro door, alternateName
     ja = "ᛃᚨ Andrada"
 
@@ -91,7 +96,8 @@ disableKinds = ["taxonomy", "term"]
     odi = "Photographs by Odi Andrada, in two collections: Ambiguous (abstract, black and white) and Lucid."
     l = "Vestments by L'."
     ny = "Electronic music produced by Ny."
-    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under five names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments) and Ny (music production)."
+    luis = "Luis Andrada, Toronto: research coordinator, data analyst and programmer. Data validation, quality control, REDCap, automation and analysis."
+    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career: research, data and programming)."
 
   # Each name's keywords (meta keywords), its own name first.
   [params.keywords]
@@ -100,13 +106,15 @@ disableKinds = ["taxonomy", "term"]
     odi = "Odi Andrada, photography, photographs, black and white photography, abstract photography, fine art photography"
     l = "L', vestments, garments, clothing, shirts"
     ny = "Ny, music producer, music production, electronic music, tracks, listen online"
-    ja = "ᛃᚨ Andrada, Andrada, Louis Andrada, Han’drada, Odi Andrada, L', Ny, artist, painter, writer, photographer, music producer, Toronto artist, Brazilian artist"
+    luis = "Luis Andrada, research coordinator, data analyst, quality assurance, computer programming, Python, SQL, REDCap, data validation, automation, Toronto"
+    ja = "ᛃᚨ Andrada, Andrada, Louis Andrada, Han’drada, Odi Andrada, L', Ny, Luis Andrada, artist, painter, writer, photographer, music producer, Toronto artist, Brazilian artist"
 
   # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
   # section: the content section the face owns (its pages live on the face's subdomain).
   # hero: the image at the top. Odi: a photo id ("photo107"); empty = the newest Ambiguous photo.
   #       Han: a book id; empty = the newest book (highest order). L': a vestment id; empty = the newest.
   #       Ny: a track id ("omnipulse"); empty = the newest. Louis: set in index.html.
+  #       Luis: no items, the portrait in career/list.html.
   [params.faces.louis]
     page = "/"
     section = "artworks"
@@ -126,3 +134,6 @@ disableKinds = ["taxonomy", "term"]
     page = "/production/"
     section = "production"
     hero = "ritual-annihilation-a"   # the latest release, chosen by Louis 2026-10-12
+  [params.faces.luis]
+    page = "/career/"
+    section = "career"

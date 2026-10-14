@@ -81,6 +81,7 @@ const shouldNotHaveRecaptcha = {
   "photography/index.html": "Photography list",
   "vestments/index.html": "Vestments list",
   "production/index.html": "Production list",
+  "career/index.html": "Career (Luis)",
   "docs/index.html": "Docs",
   "privacy/index.html": "Privacy",
   "cv/index.html": "CV redirect",
@@ -303,18 +304,18 @@ section("Books/Oeuvre section");
 }
 
 // ── 7. Nav: the sections are shown by their owner names (Oct 2026) ───────
-// Artworks / Oeuvre / Photography / Vestments / Production read Louis / Han / Odi / L' / Ny in the menus, the
+// Artworks / Oeuvre / Photography / Vestments / Production / Career read Louis / Han / Odi / L' / Ny / Luis in the menus, the
 // section titles and the back links. Only the labels: URLs, folders and ids
 // keep the section names. The Links page keeps its own list as it was.
-section(`Nav — sections shown as "Louis", "Han", "Odi", "L'", "Ny"`);
+section(`Nav — sections shown as "Louis", "Han", "Odi", "L'", "Ny", "Luis"`);
 {
   const home = readHtml("index.html");
   if (home === null) {
     fail("Home page exists for nav-rename check");
   } else {
     assert(/<h1[^>]*>Louis</.test(home), "Home page's section heading says Louis");
-    for (const label of ["Louis", "Han", "Odi", "L'", "Ny"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
-    for (const label of ["Artworks", "Oeuvre", "Photography", "Vestments", "Production"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
+    for (const label of ["Louis", "Han", "Odi", "L'", "Ny", "Luis"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
+    for (const label of ["Artworks", "Oeuvre", "Photography", "Vestments", "Production", "Career"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
     assert(/href="?https:\/\/han\.andrada\.one\/#oeuvre/.test(home), "Home page's Han link opens han.andrada.one at the grid");
   }
 
@@ -379,9 +380,30 @@ section("Navigation sanity");
   const home = readHtml("index.html");
   if (home) {
     // About/Inquiry/Archive stay relative; the faces and the hub are their own (sub)domains (Oct 2026).
-    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production"]) {
+    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production", "https://luis.andrada.one/#career"]) {
       assert(home.includes(`href=${href}`) || home.includes(`href="${href}"`), `Home page links to ${href}`);
     }
+  }
+}
+
+// ── 11. Career (Luis, luis.andrada.one, Oct 2026) ──────────────────────
+// Luis's resume page. The forms are the only way to reach him: no phone, no email, no reference's
+// contact details on the page. LinkedIn is the one visible profile link (Louis, 2026-10-14).
+section("Career page (Luis)");
+{
+  const career = readHtml("career/index.html");
+  if (career === null) {
+    fail("Career page exists (career/index.html)");
+  } else {
+    assert(/<title>Luis Andrada — Career<\/title>/.test(career), `Career page's title is "Luis Andrada — Career"`);
+    for (const id of ["about", "experience", "education", "certifications", "skills", "languages"]) {
+      assert(career.includes(`id=${id}`) || career.includes(`id="${id}"`), `Career page has its "${id}" section`);
+    }
+    assert(career.includes("linkedin.com/in/"), "Career page links to LinkedIn");
+    assert(/href="?\/inquiry\/"?/.test(career), "Career page's Contact goes to the Inquiry form");
+    assert(!/(\+?1[-\s.]?)?\(?\d{3}\)?[-\s.]\d{3}[-\s.]\d{4}/.test(career.replace(/<script[\s\S]*?<\/script>/g, "")), "Career page shows no phone number");
+    assert(!/[\w.+-]+@[\w-]+\.(ca|com|org|edu)\b/i.test(career.replace(/<script[\s\S]*?<\/script>/g, "")), "Career page shows no email address");
+    assert(/"@type":"ProfilePage"/.test(career), "Career page declares a ProfilePage (JSON-LD)");
   }
 }
 

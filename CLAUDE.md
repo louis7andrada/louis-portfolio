@@ -239,13 +239,37 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
    `hugo server -D` (it picks a random port when 1313 is taken): look for any running hugo.exe before step 2, and
    never kill his; ask him to restart it after the upload.
 
+## Career section (Luis, Oct 2026)
+
+`/career/` (`content/career/_index.md`, `layouts/career/list.html`) is Louis's work life as a resume / LinkedIn-style
+page, owned by **Luis Andrada** (`params.names.luis`, face `luis` → `luis.andrada.one`; Louis chose the name, the
+subdomain, "public and indexed", and a visible LinkedIn link: "this page is literally supposed to be the same thing"
+as his LinkedIn, 2026-10-14). Menus say "Luis"; the tab "Luis Andrada — Career". Luis Andrada is a PUBLIC name; the
+legal name (`legal_name`, Luis R. P. Andrada) still stays in legal statements only.
+- ONE page, no items: everything (experience grouped by place, as LinkedIn does; education; certifications;
+  competencies + skills; languages) is front matter in `_index.md`, its body is the About text. The text is his
+  standard resume, the version that got him his job at CIBC: keep his wording. Edit the .md, never the template.
+  Current job (2026-10-14): CIBC, Test Analyst, IT Quality Engineering (start month not given yet; a role without
+  `from` shows just "Present"). Its bullets are GENERAL test-analyst duties, at Louis's request (he didn't know the
+  job's specifics yet): replace them with his real ones when he gives them.
+- NEVER on the page: phone, email, the references' names/contacts ("References available on request"). Contact →
+  `/inquiry/` (the forms are the only way to reach him). LinkedIn (`params.profile_linkedin`) is the ONE visible
+  profile link on the whole site, and only here. A smoke test fails on any phone number or email in the page.
+- Frame: `face-hero.html` with `"image"` (a face with no items: one picture, not a link) = his portrait
+  `static/images/luis/portrait.jpg` (from `profile2.jpeg`, kept by Louis; 1000px, Display P3 → sRGB, no metadata); then
+  `#career-section` (faces.html scrolls there; menus link `#career`) with the pinned cluster on the left (title, section
+  links that follow the scroll, LinkedIn, Contact; `.book-page-header` + `body.page-books` like the other faces; hidden
+  on phones, where the resume's own head carries the links). JSON-LD: `jsonld/career.html` (ProfilePage → `…/#person`
+  named Luis Andrada, jobTitle/worksFor from the role whose `to` is "Present", alumniOf, credentials, languages).
+  No RSS (`outputs: ["html"]`). No logo yet: luis. shows Jera Ansuz at once (`LOGOS.luis = "new"`).
+
 ## Dark mode only
 
 Since Oct 2026 the site is dark-only: `params.light_mode = false` in `hugo.toml` makes `baseof.html` always add
 `html.dark` (ignoring any saved `theme: light`) and leaves the toggle button out of the header. All the light-theme
 CSS and the toggle code in `main.ts` are kept on purpose: set `light_mode = true` to bring the toggle back.
 
-## Domain: andrada.one, one person, five faces (Oct 2026)
+## Domain: andrada.one, one person, six faces (Oct 2026)
 
 `andrada.one` is the one domain (`hugo.toml` `baseURL`). Louis, Han and Odi are one person; each name owns part
 of the work and has its own subdomain, which opens on a home-page-style hero (one image + the staggered menu,
@@ -258,6 +282,7 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 | `odi.andrada.one/` | `/photography/` (+ `face-hero.html`), section `photography` | Odi Andrada |
 | `l.andrada.one/` | `/vestments/` (+ `face-hero.html`), section `vestments` | L' |
 | `ny.andrada.one/` | `/production/` (+ `face-hero.html`), section `production` | Ny |
+| `luis.andrada.one/` | `/career/` (+ `face-hero.html` "image"), section `career` (a resume, no grid) | Luis Andrada |
 | `andrada.one/` | `/links/` (the hub: every name, every door) + the shared pages | ᛃᚨ Andrada |
 
 - Config: `params.faces` / `params.names` / `hub` / `face_domain` in `hugo.toml`. Helpers: `_partials/face-url.html`
@@ -301,12 +326,14 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   Andrada); on bare andrada.one `?name=<key>` picks it for the visit (sessionStorage `artist-name`).
 - The LEGAL entity is **Luis R. P. Andrada** (`params.legal_name`): only in legal statements (privacy controller,
   license copyright, JSON-LD `copyrightHolder`/`copyrightNotice`, RSS `<copyright>`). Never as a public name.
+  (**Luis Andrada**, the Career face since 2026-10-14, IS public: a name of its own, not the legal one.)
 - SEO audit (2026-10-02): build to a scratch dir (`hugo --minify -d …`), then check every
   page's head has only its own name, unique titles/descriptions (noindex pages may share) and valid JSON-LD.
 - Hero images: Odi's is `photo106` (cvi), chosen by Louis; Han's is empty = the newest book (`params.faces.<key>.hero`);
   Ny's is `ritual-annihilation-a`, the latest release (clicking it plays it).
 - Header logo (`header.html`): every page load shows the page's OWN logo — louis. → Louis Andrada (`old`, logoold.png),
-  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), ny. → Ny (`ny`, nylogo.png), andrada.one → Andrada (`andrada`,
+  han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), ny. → Ny (`ny`, nylogo.png),
+  luis. → none yet (Jera Ansuz at once), andrada.one → Andrada (`andrada`,
   andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's
   owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L' → Ny → Nilo. New logo from a
   black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
@@ -346,7 +373,7 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   flags a bare `{"@id"}` as "Invalid object type for creator". Every ImageObject needs both
   `license` (→ `/license/`, the terms page) and `acquireLicensePage` (→ `/inquiry/`). Identity facts and the
   declared `sameAs` profiles come from `[params]` in `hugo.toml` — the profiles are
-  intentionally NOT shown as visible links anywhere.
+  intentionally NOT shown as visible links anywhere, except LinkedIn on the Career page (Louis, 2026-10-14).
 - `static/robots.txt` allows every crawler (incl. AI) explicitly; `llms.txt` +
   `llms-full.txt` hand LLMs the whole corpus. Update the book list in `llms.txt` when
   books change (its links are absolute `https://han.andrada.one/oeuvre/...` URLs).
