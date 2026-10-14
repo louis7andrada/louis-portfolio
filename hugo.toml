@@ -49,6 +49,9 @@ disableKinds = ["taxonomy", "term"]
   # Everything public uses the names below. The Person node (JSON-LD) is "ᛃᚨ Andrada" with every
   # other name as an alternateName, so all of them resolve to one entity.
   legal_name = "Luis R. P. Andrada"
+  # The one line that tells machines WHICH Andrada this is (JSON-LD disambiguatingDescription on the Person), in
+  # Louis's own words (2026-10-14). Keep them exact; only he changes them.
+  one_line = "Andrada is a polymath Brazilian artist based in Toronto."
   # Declared to search engines/AI in JSON-LD (sameAs) only — intentionally not
   # rendered as visible links anywhere on the site.
   profile_imdb = "https://www.imdb.com/name/nm13775288/"

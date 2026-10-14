@@ -380,6 +380,10 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
 
 ## Discoverability, metadata
 
+- The one line (Louis, 2026-10-14): `params.one_line` = "Andrada is a polymath Brazilian artist based in Toronto.",
+  his own words, exact; only he changes them. It is the Person's `disambiguatingDescription` (`identity.html`): it
+  says WHICH Andrada this is (search results mixed him with older Andradas: a Jesuit writer, a theologian), not who
+  he is. Not a second Person: there is one, `…/#person`. The old domains already 301 (checked live that day).
 - Link previews: a page without a picture of its own uses `params.share_image` = `images/og-photo106.jpg` (Odi's
   photo106, top cut to 1200×630; Louis, 2026-10-14, replacing the orange painting `og-default.jpg`), alt
   `share_image_alt`. Works (paintings, books, photos, vestments, tracks) and Career (his portrait) use their own.
