@@ -151,11 +151,59 @@
 
   <hr class="about-rule" />
 
+  {{/* THE OTHER NAMES (Louis, 2026-10-14): after Louis's exhibitions, press and collections above, the sections
+       follow the names' order: Louis, Han, Odi, L', Ny, Nilo, Luis. They don't say whose they are. Only Luis has
+       any yet: his experience, education and certifications, read from content/career/_index.md (the Career
+       page's one source, so both pages always agree), in the same rows as above (when | name | kind | place).
+       A section for Han, Odi, L', Ny or Nilo goes HERE, before Luis's. */}}
+  {{ with site.GetPage "/career" }}
+  {{ $p := .Params }}
+  {{ $sections := slice }}
+
+  {{ $rows := slice }}
+  {{ range $p.experience }}
+    {{ $org := . }}
+    {{ range .roles }}
+      {{ $from := replaceRE `^.*(\d{4})$` "$1" (.from | default "") }}
+      {{ $to := cond (eq .to "Present") "Present" (replaceRE `^.*(\d{4})$` "$1" .to) }}
+      {{ $when := $to }}{{ if $from }}{{ $when = cond (eq $from $to) $from (printf "%s – %s" $from $to) }}{{ end }}
+      {{ $rows = $rows | append (dict "when" $when "cells" (slice $org.org .title ($org.place | default ""))) }}
+    {{ end }}
+  {{ end }}
+  {{ with $rows }}{{ $sections = $sections | append (dict "label" "Experience" "rows" .) }}{{ end }}
+
+  {{ $rows = slice }}
+  {{ range $p.education }}{{ $rows = $rows | append (dict "when" .years "cells" (slice .school .credential (.place | default ""))) }}{{ end }}
+  {{ with $rows }}{{ $sections = $sections | append (dict "label" "Education" "rows" .) }}{{ end }}
+
+  {{ $rows = slice }}
+  {{ range $p.certifications }}{{ $rows = $rows | append (dict "when" .year "cells" (slice .issuer .name (.place | default ""))) }}{{ end }}
+  {{ with $rows }}{{ $sections = $sections | append (dict "label" "Certifications" "rows" .) }}{{ end }}
+
+  {{ range $sections }}
+  <div class="about-table-section">
+    <div class="about-table-label">{{ .label }}</div>
+    <div class="about-table-rows">
+      {{ range .rows }}
+      <div class="about-collections-grid">
+        <div class="about-collections-title">{{ .when }}</div>
+        <div class="about-collections-items">
+          {{ range .cells }}<div>{{ replaceRE `, ON$` ", Canada" . }}</div>{{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+
+  <hr class="about-rule" />
+  {{ end }}
+  {{ end }}
+
   <!-- CONTACT -->
   <div class="about-contact">
-    <a href="/inquiry" class="about-contact-link">Contact-me & Artwork Inquiry</a>
+    <a href="/inquiry" class="about-contact-link">Contact me</a>
     <a href="/links" class="about-contact-link">Socials</a>
-    <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="about-contact-link">CV</a>
+    <a href="{{ with site.GetPage "docs/cv" }}{{ .Params.image }}{{ end }}" target="_blank" class="about-contact-link">Art CV</a>
   </div>
 
 </section>
@@ -283,7 +331,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    padding: 3rem 0 1rem;
+    padding: 3rem 0 6rem; /* a clear gap before the footer (Louis, 2026-10-14) */
   }
 
   .about-contact-link {
@@ -335,7 +383,7 @@
   }
 
   .about-contact {
-    padding: 4rem 0 3rem;
+    padding: 4rem 0 6rem;
     gap: 1rem;
   }
 

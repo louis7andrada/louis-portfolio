@@ -28,6 +28,12 @@ the domain, `baseof.html` scripts, reCAPTCHA or a form must be verified end to e
   score (< 0.5). Any failure of the check itself (ad-blocker, timeout, network, key/domain misconfiguration)
   lets the message through. Never make a form hard-fail on reCAPTCHA. (Moving the site to handrada.com, which
   the reCAPTCHA key wasn't registered for, made Google return `browser-error` and silently blocked every form.)
+- Contents (Louis, 2026-10-14: "the style is amazing but the contents are old"): Purchase = "Buy or License Existing
+  Work" (paintings for sale in the selector, any other work named under "Not listed?"); Commission = "Commission or
+  Hire" (kinds in the names' order: art, writing, photography, vestments, music, acting & performance, hire, brand,
+  other; two columns on wide screens so the panel fits one screen). Texts are in the first person ("I'll be in touch"),
+  no single name. The payload KEYS never change (the Apps Script isn't in this repo): new contents go in the existing
+  fields; comType is sent as the ticked labels' own text. Keep the test values `original` / `canvas`.
 - Tests: "Form works end to end - ..." in `tests/live-test.mjs` run every form under the real production CSP
   (read from `netlify.toml`) with a stub that redirects exactly like Apps Script, with the spam check both
   passing and failing. They must stay strict: webhook reached, reply read, success shown, no error/alert/CSP.
@@ -253,12 +259,14 @@ legal name (`legal_name`, Luis R. P. Andrada) still stays in legal statements on
   `from` shows just "Present"). Its bullets are GENERAL test-analyst duties, at Louis's request (he didn't know the
   job's specifics yet): replace them with his real ones when he gives them. UofT (Research Coordinator) ended
   Oct 2026; its bullets are in the past tense since.
+  About text: his resume summary as written, then a paragraph on working and developing in harmony with AI (Louis
+  asked for it, 2026-10-14): only facts (the site built with AI coding agents, the UofT AI workshop). Never the council.
 - NEVER on the page: phone, email, the references' names/contacts ("References available on request"). Contact →
   `/inquiry/` (the forms are the only way to reach him). LinkedIn (`params.profile_linkedin`) is the ONE visible
   profile link on the whole site, and only here. A smoke test fails on any phone number or email in the page.
 - NO HERO (Louis, 2026-10-14): luis.andrada.one opens right on the resume, the menu only in the header (`plain = true`
   in `params.faces.luis`; faces.html gives a plain face no hero behaviour, and menus link it without a #hash). A small
-  round portrait (`avatar`, `static/images/luis/portrait-small.jpg`, 360px) sits on top of his name; `image` (the
+  SQUARE portrait (`avatar`, `static/images/luis/portrait-small.jpg`, 360px) sits on top of his name; `image` (the
   1000px `portrait.jpg`, from `profile2.jpeg`, kept by Louis; Display P3 → sRGB, no metadata) is for link previews.
   The pinned cluster (title, section links that follow the scroll, LinkedIn, Contact; `.book-page-header` +
   `body.page-books` like the other faces; hidden on phones, where the resume's head carries the links). The resume
@@ -267,6 +275,13 @@ legal name (`legal_name`, Luis R. P. Andrada) still stays in legal statements on
   named Luis Andrada, jobTitle/worksFor from the role whose `to` is "Present", alumniOf, credentials, languages)
   + `face-site.html`.
   No RSS (`outputs: ["html"]`). No logo yet: luis. shows Jera Ansuz at once (`LOGOS.luis = "new"`).
+
+## About page timeline (Oct 2026)
+
+Below Louis's Exhibitions / Press & Publications / Collections, the About page lists the other names' sections in the
+names' order (Louis, Han, Odi, L', Ny, Nilo, Luis; Louis, 2026-10-14), without saying whose they are. Only Luis has any:
+Experience, Education, Certifications, read from `content/career/_index.md` (one source for both pages). A new
+name's section goes before Luis's (marked in `about/single.html`). Bottom links: "Contact me", "Socials", "Art CV".
 
 ## Dark mode only
 

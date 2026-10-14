@@ -10,6 +10,8 @@ image: "/images/luis/portrait.jpg"          # link previews (1000px)
 avatar: "/images/luis/portrait-small.jpg"   # the small round portrait on top of his name (360px)
 outputs: ["html"]
 
+# Also shown on the About page's timeline (experience, education, certifications), below Louis's exhibitions,
+# press and collections: edit here, both pages follow.
 # Newest first. Several roles at one place are grouped under it, as LinkedIn does.
 # "to: Present" = current (JSON-LD worksFor / jobTitle come from it; jobTitle = the first one listed).
 # Optional per place: "place"; per role: "from", "points" (left out = not shown).
@@ -84,7 +86,8 @@ certifications:
     issuer: "OISE, Ontario Institute for Studies in Education, University of Toronto"
     year: "2025"
   - name: "Fundamentals of OCAP"
-    issuer: "First Nations Information Governance Centre – Online, Canada"
+    issuer: "First Nations Information Governance Centre"
+    place: "Online, Canada"
     year: "2024"
     detail: "Data sovereignty, First Nations collective rights, and Indigenous information governance principles"
 
@@ -138,3 +141,5 @@ languages:
     level: "Conversational understanding"
 ---
 Research data professional and programmer with 5 years of progressive experience at the University of Toronto Faculty of Dentistry, specializing in data validation, quality control, system administration, process automation, and quantitative analysis. Experienced in configuring and testing electronic data-capture systems, investigating discrepancies and logic errors, documenting corrective actions, and communicating technical findings to technical and non-technical stakeholders. Advanced Diploma in Computer Programming and Analysis with programming experience in Python, Java, C#, C++, JavaScript, TypeScript, SQL/MySQL, and web technologies. Hands-on workflow automation using Microsoft Power Automate, Microsoft PowerToys, Windows batch scripting, and AutoHotkey. Uses Git/GitHub and AI tools including ChatGPT, Claude, and Microsoft Copilot to improve development, analysis, documentation, and operational efficiency.
+
+Passionate about working and developing in harmony with AI: treating AI as a collaborator, not a shortcut, with a human setting the direction and the standards, reviewing every change, and keeping the work tested and documented so people and AI can build on it together. Builds and maintains a personal website, andrada.one (six subdomains, automated end-to-end tests, a deploy pipeline that keeps GitHub and the live site identical, and scripts that prepare images, books and music for the web), in close collaboration with AI coding agents such as Claude Code. Applies large language models and prompt engineering to development, data analysis, and documentation, grounded in the University of Toronto's Applied AI in Medicine workshop series (large language models in healthcare, complex prompt engineering, cybersecurity best practices).

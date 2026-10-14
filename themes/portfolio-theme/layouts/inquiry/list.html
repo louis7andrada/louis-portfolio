@@ -40,22 +40,22 @@
 
         <!-- PURCHASE -->
         <div class="inq-panel" id="panel-purchase">
-          <h2 class="inq-ptitle">Buy Existing Artwork</h2>
-          <p class="inq-pdesc">Select one or more available artworks. Once the form is submitted Louis will reach out to you with the selected piece(s) information, price(s), and assist with finalizing your purchase.</p>
-          <div id="purchaseSuccessMessage" class="inq-success hidden">Thank you — your purchase request has been sent. Louis will contact you soon.</div>
+          <h2 class="inq-ptitle">Buy or License Existing Work</h2>
+          <p class="inq-pdesc">Choose one or more works. The paintings for sale are listed; for anything else on the site (a photograph, a track, a book, a vestment), name it under “Not listed?”. Once you send the form, I’ll reach out with the details, prices and next steps.</p>
+          <div id="purchaseSuccessMessage" class="inq-success hidden">Thank you — your request has been sent. I’ll be in touch soon.</div>
           <div id="purchaseErrorMessage" class="inq-error hidden">Something went wrong sending your request. Please check your information and try again.</div>
           <form id="purchaseForm">
             <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
             <textarea name="selectedArtworks" id="selectedArtworkIDs" class="hidden" readonly required></textarea>
             <div class="inq-top-block">
-              <button type="button" id="openArtworkSelector" class="inq-txt-btn">Select Artwork(s)* + </button>
+              <button type="button" id="openArtworkSelector" class="inq-txt-btn">Select Work(s)* + </button>
               <div id="selectedArtworksPreview" class="inq-preview"></div>
-              <p class="inq-sub-lbl">Artwork(s) format?*</p>
+              <p class="inq-sub-lbl">What would you like?*</p>
               <div class="inq-indent">
-                <label class="inq-opt"><input type="radio" name="artworkType" value="original" required> Original(s)</label>
-                <label class="inq-opt"><input type="radio" name="artworkType" value="print"> Print(s)</label>
-                <label class="inq-opt"><input type="radio" name="artworkType" value="license" id="artworkLicenseRadio"> Artwork(s) License</label>
-                <input type="text" name="artworkLicenseText" placeholder="Please specify" class="inq-field hidden" id="artworkLicenseInput">
+                <label class="inq-opt"><input type="radio" name="artworkType" value="original" required> The original(s)</label>
+                <label class="inq-opt"><input type="radio" name="artworkType" value="print"> Print(s) of a painting or photograph</label>
+                <label class="inq-opt"><input type="radio" name="artworkType" value="license" id="artworkLicenseRadio"> A license: a painting, photograph or track in your project</label>
+                <input type="text" name="artworkLicenseText" placeholder="Where and how will it be used?" class="inq-field hidden" id="artworkLicenseInput">
                 <label class="inq-opt"><input type="radio" name="artworkType" value="other" id="artworkOtherRadio"> Other</label>
                 <input type="text" name="artworkOtherText" placeholder="Please specify" class="inq-field hidden" id="artworkOtherInput">
               </div>
@@ -88,9 +88,9 @@
 
         <!-- COMMISSION -->
         <div class="inq-panel" id="panel-commission">
-          <h2 class="inq-ptitle">Commission New Artwork</h2>
-          <p class="inq-pdesc">Commissions are open. To commission a new artwork by Louis Andrada, please submit the form below. Once submitted, Louis will reach out with more information.<br><span class="inq-note">* The final composition, style, and artistic direction are determined by the artist. Requests for specific styles, replicas, or control over the creative process will not be accepted.</span></p>
-          <div id="commissionSuccessMessage" class="inq-success hidden">Thank you — your commission request has been sent. Louis will contact you soon.</div>
+          <h2 class="inq-ptitle">Commission or Hire</h2>
+          <p class="inq-pdesc">Commissions and collaborations are open across everything on this site: art, photography, music production, writing, vestments, acting and performance, and research, data and software work. Tell me what you have in mind and I’ll reach out with more information.<br><span class="inq-note">* For artistic work, the final composition, style and direction are mine. Requests for specific styles, replicas, or control over the creative process will not be accepted.</span></p>
+          <div id="commissionSuccessMessage" class="inq-success hidden">Thank you — your request has been sent. I’ll be in touch soon.</div>
           <div id="commissionErrorMessage" class="inq-error hidden">Something went wrong sending your request. Please check your information and try again.</div>
           <form id="commissionForm">
             <input type="hidden" name="g-recaptcha-response" class="recaptcha-token-field">
@@ -103,19 +103,24 @@
                   <input type="tel"   name="commissionPhone"   placeholder="Phone number"              class="inq-field" required>
                   <input type="text"  name="commissionCity"    placeholder="City"                      class="inq-field" required>
                   <input type="text"  name="commissionCountry" placeholder="Country"                   class="inq-field" required>
-                  <input type="text"  name="commissionSize"    placeholder="Preferred size (HxWxL in)" class="inq-field" required>
+                  <input type="text"  name="commissionSize"    placeholder="Size, length or format (optional)" class="inq-field">
                 </div>
               </div>
               <div>
-                <p class="inq-col-head">Commission Type*</p>
+                <p class="inq-col-head">What is it?*</p>
                 <p class="inq-col-sub">Select all that apply</p>
-                <div class="inq-indent">
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="canvas">    Physical painting</label>
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="digital">   Digital media, Tattoo, Print</label>
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="sculpture"> Sculpture, Object, Furniture, Mural</label>
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="clothing">  Clothing related</label>
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="brand">     Brand, Partnership or Event related</label>
-                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="other" id="commissionOtherCheckbox">     Other</label>
+                <div class="inq-indent inq-type-grid">
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="canvas"> Painting or drawing</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="digital"> Digital art or tattoo</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="sculpture"> Sculpture or mural</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="writing"> Writing or a book</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="photo"> Photography</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="clothing"> Vestments &amp; clothing</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="music"> Music or DJ set</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="performance"> Acting &amp; performance</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="hire"> Hire: data, QA &amp; code</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="brand"> Brand or partnership</label>
+                  <label class="inq-opt"><input type="checkbox" name="commissionType[]" value="other" id="commissionOtherCheckbox"> Other</label>
                   <input type="text" name="commissionOtherText" placeholder="Please specify" class="inq-field hidden" id="commissionOtherInput">
                 </div>
               </div>
@@ -123,16 +128,16 @@
             <div class="inq-two-col inq-grow">
               <div class="inq-flex-col">
                 <div class="inq-sub-block">
-                  <p class="inq-col-head">Your budget range*</p>
-                  <div class="inq-indent"><input type="text" name="commissionBudget" placeholder="Specify your budget range" class="inq-field" required></div>
+                  <p class="inq-col-head">Budget or rate*</p>
+                  <div class="inq-indent"><input type="text" name="commissionBudget" placeholder="Your budget range, or the rate you have in mind" class="inq-field" required></div>
                 </div>
                 <div class="inq-sub-block">
-                  <p class="inq-col-head">Concept</p>
-                  <div class="inq-indent"><textarea name="commissionConcept" placeholder="Describe your concept (optional)" class="inq-field inq-ta-sm"></textarea></div>
+                  <p class="inq-col-head">Your idea</p>
+                  <div class="inq-indent"><textarea name="commissionConcept" placeholder="Describe the idea, the role or the project (optional)" class="inq-field inq-ta-sm"></textarea></div>
                 </div>
                 <div class="inq-sub-block">
-                  <p class="inq-col-head">Intended space (home, office, etc.)</p>
-                  <div class="inq-indent"><input type="text" name="commissionSpace" placeholder="Describe the intended space (optional)" class="inq-field"></div>
+                  <p class="inq-col-head">Where and when</p>
+                  <div class="inq-indent"><input type="text" name="commissionSpace" placeholder="Home, film, stage, release, event; dates (optional)" class="inq-field"></div>
                 </div>
               </div>
               <div class="inq-flex-col">
@@ -152,8 +157,8 @@
 
         <!-- CONTACT -->
         <div class="inq-panel" id="panel-contact">
-          <h2 class="inq-ptitle">Contact-me</h2>
-          <p class="inq-pdesc">Please fill the form below for any inquiries unrelated to purchase or commission of my artworks.</p>
+          <h2 class="inq-ptitle">Contact me</h2>
+          <p class="inq-pdesc">For anything else: questions, press and interviews, or just to say hello.</p>
           <div class="inq-contact-wrap">
   {{ partial "contact-form.html" . }}
 
@@ -174,9 +179,9 @@
 <div id="artworkSelectorModal" class="inq-sel-overlay">
   <div class="inq-sel-inner">
   <div class="inq-sel-head">
-    <h2 class="inq-sel-title">Select Artwork(s)</h2>
+    <h2 class="inq-sel-title">Select Work(s)</h2>
     <div class="inq-sel-not-listed">
-    <input type="text" id="notListedInput" placeholder="Artwork not listed? Specify here" class="inq-not-listed-input">
+    <input type="text" id="notListedInput" placeholder="Not listed? Name the work (a photograph, track, book…)" class="inq-not-listed-input">
   </div>
     <div class="inq-sel-actions">
       <div class="inq-sel-action-group">
@@ -470,6 +475,12 @@ html.dark .inq-preview > div { background: #2a2a2a; color: #e0e0e0; }
 .inq-opt:hover { opacity: 1; }
 .inq-opt input { display: none !important; }
 .inq-opt.is-checked { opacity: 1; text-decoration: line-through; text-decoration-thickness: 1px; }
+/* Commission's list of kinds (art to hire, in the names' order): two short columns on wide screens, so the
+   panel still fits one screen; "Other"'s text box spans both. */
+@media (min-width: 901px) {
+  .inq-type-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1.4rem; align-items: start; max-width: 26rem; }
+  .inq-type-grid > .inq-field { grid-column: 1 / -1; }
+}
 
 /* ── CONTACT WRAP ── */
 .inq-contact-wrap input[type="hidden"], .inq-contact-wrap .hidden { display: none !important; }
@@ -1475,16 +1486,13 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function buildCommissionPayload(form) {
-    var typeLabels = {
-      canvas: "Physical painting",
-      digital: "Digital media, Tattoo, Print",
-      sculpture: "Sculpture, Object, Furniture, Mural",
-      clothing: "Clothing related",
-      brand: "Brand, Partnership or Event related",
-      other: "Other"
-    };
+    // Each type is sent as its visible label (what the client ticked), read from the checkbox itself,
+    // so the list above and what reaches the inbox can never disagree.
     var checkedBoxes  = Array.from(form.querySelectorAll('input[name="commissionType[]"]:checked'));
-    var checkedLabels = checkedBoxes.map(function(cb) { return typeLabels[cb.value] || cb.value; });
+    var checkedLabels = checkedBoxes.map(function(cb) {
+      var l = cb.closest("label");
+      return (l ? l.textContent.replace(/\s+/g, " ").trim() : "") || cb.value;
+    });
     var hasOther = checkedBoxes.some(function(cb) { return cb.value === "other"; });
     var otherSpec = hasOther && commissionOtherInput ? commissionOtherInput.value.trim() : "";
 
