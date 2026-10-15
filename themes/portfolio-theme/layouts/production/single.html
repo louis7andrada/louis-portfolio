@@ -1,6 +1,5 @@
 {{ define "main" }}
 {{ partial "jsonld/track.html" . }}
-{{ $audio := partial "audio-url.html" .Params.audio }}
 {{ $full := partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true) }}
 
 {{ $leftArrow := `<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>` }}
@@ -722,12 +721,17 @@ html.dark .lightbox-overlay {
 
 {{ partial "music-player.html" . }}
 <script>
-  /* This page plays its own track only (nothing follows it); the cover still opens fullscreen. */
+  /* This page's player plays its own track only (nothing follows it); the cover still opens fullscreen.
+     Music carried here from another page goes on (music-player.js, carryOn): another track in the now-playing
+     bar, this one in the page's own player. */
   document.addEventListener("DOMContentLoaded", function () {
-    var p = window.musicPlayer;
-    p.setTracks([{ id: {{ .Params.id }}, title: {{ .Title }}, side: {{ .Params.side | default "" }}, src: {{ $audio }},
-                   cover: {{ $full }}, duration: {{ .Params.duration | default 0 }} }], { artist: {{ index site.Params.names "ny" }} });
-    p.bind(document.getElementById("trackPlayer"), { id: {{ .Params.id }} });
+    var p = window.musicPlayer, id = {{ .Params.id }}, own = document.getElementById("trackPlayer");
+    p.setTracks(p.allTracks, { artist: {{ index site.Params.names "ny" }} });
+    p.bind(own, { id: id });
+    ["pointerdown", "click"].forEach(function (ev) { own.addEventListener(ev, function () { p.autoNext = false; }, true); });
+    p.miniBar({ isOpen: function () { var s = p.state(); return !!s.track && s.track.id === id; },
+                open: function (tid) { var t = p.allTracks.filter(function (x) { return x.id === tid; })[0]; if (t) location.href = t.href; } });
+    p.carryOn();
   });
 </script>
 

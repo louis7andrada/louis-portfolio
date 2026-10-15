@@ -359,6 +359,30 @@
   <div id="headerBleed" aria-hidden="true" inert><div class="edge-layer edge-core"></div><div class="edge-layer edge-mid"></div><div class="edge-layer edge-far"></div></div>
   {{ end }}
   {{ partial "zoom-controls.html" . }}
+  {{/* Ny's music goes on from page to page (music-player.js, "FROM PAGE TO PAGE"): every page but Production's
+       (which has the player inline) loads the player only while the shared cookie says a track is on, playing or
+       paused in the bar. Without it, nothing more is loaded.
+       html.mp-bar-on leaves a slot the now-playing bar's size above the footer, where the bar rests at the end of a
+       page (it covers nothing there). Decided here, as the page loads (Production pages always, others when music
+       comes along), never later: a page that grows while it runs makes the fog re-copy it, mid-popup. */}}
+  <style>html.mp-bar-on #footerWrap { margin-top: 84px; }</style>
+  {{ if eq .Type "production" }}<script>document.documentElement.classList.add("mp-bar-on");</script>
+  {{ else }}{{ with partialCached "music-assets.html" . "music-assets" }}
+  <script>
+  (function () {
+    function go() {
+      if (window.musicPlayer || !/(?:^|; )mp-now=[^;]/.test(document.cookie)) return;
+      document.documentElement.classList.add("mp-bar-on");
+      var c = document.createElement("link"); c.rel = "stylesheet"; c.href = {{ .css.RelPermalink }}; document.head.appendChild(c);
+      var s = document.createElement("script"); s.src = {{ .js.RelPermalink }};
+      s.onload = function () { if (window.musicPlayer) window.musicPlayer.everywhere(); };
+      document.head.appendChild(s);
+    }
+    go();
+    addEventListener("pageshow", function (e) { if (e.persisted) go(); }); // back to a page that had none
+  })();
+  </script>
+  {{ end }}{{ end }}
 
   <main class="flex-1 flex flex-col">
     {{ block "main" . }}{{ end }}

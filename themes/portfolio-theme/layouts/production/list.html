@@ -671,6 +671,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // Space plays/pauses, unless a button or the position line has the focus (they handle their own keys)
     if (e.key === " " && !e.target.closest("button, input, textarea, [role=slider]")) { e.preventDefault(); player.toggle(); }
   });
+
+  // music carried here from another page goes on (music-player.js, carryOn); on this page one track follows another
+  player.carryOn();
+  player.autoNext = true;
 });
 /* ── SCATTER GALLERY LAYOUT — identical algorithm to the Artworks grid ── */
 (function () {

@@ -89,8 +89,27 @@ async function waitForIntroDoorGone(page, timeout = 8000) {
   );
 }
 const ONLY = (process.argv.find((a) => a.startsWith("--only=")) || "").slice(7).toLowerCase();
+// Music still playing when a test closes its page would follow into the next test: music-player.js carries it
+// from page to page through the mp-now cookie, and every tab here shares one browser. Each check starts without it.
+let musicBrowser = null; // main()'s browser, once launched
+async function forgetMusic() {
+  const browser = musicBrowser;
+  if (!browser) return;
+  try {
+    const { cookies } = await browser.send("Storage.getCookies", {});
+    if (!cookies.some((c) => c.name === "mp-now")) return;
+    await browser.send("Storage.clearCookies", {});
+    const keep = cookies.filter((c) => c.name !== "mp-now").map((c) => ({
+      name: c.name, value: c.value, domain: c.domain, path: c.path, secure: c.secure, httpOnly: c.httpOnly,
+      ...(c.sameSite ? { sameSite: c.sameSite } : {}), ...(c.session ? {} : { expires: c.expires }),
+    }));
+    if (keep.length) await browser.send("Storage.setCookies", { cookies: keep });
+  } catch {}
+}
+
 async function check(label, fn) {
   if (ONLY && !label.toLowerCase().includes(ONLY)) return; // quick reruns: --only=text
+  await forgetMusic();
   try {
     const detail = await fn();
     if (detail === false) fail(label);
@@ -154,6 +173,7 @@ async function main() {
   let browser;
   try {
     browser = await Browser.launch({ headless: true });
+    musicBrowser = browser;
     ok("Headless browser launched");
   } catch (e) {
     fail("Headless browser launched", e.message);
@@ -617,6 +637,126 @@ async function main() {
     for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
       await page.browser.send("Input.dispatchMouseEvent", { type, x: p.x, y: p.y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
     if (!(await page.waitFor(`window.musicPlayer.audio.currentTime > 0.3 && window.musicPlayer.state().track.id === 'omnipulse'`, { timeout: 10000 }))) problems.push("the track page's play button didn't play it");
+    await page.close();
+    if (problems.length) throw new Error(problems.join("; "));
+    return true;
+  });
+
+  // From page to page (Louis, 2026-10-14: the music should go on while visitors explore). music-player.js writes what
+  // plays to the mp-now cookie at pagehide; the next page (any face) loads the player only while it exists and goes
+  // on at the same second, with the same volume. Where the browser refuses sound before a touch, the bar waits and
+  // the first key or click goes on (the test accepts either, and says which). A tab opened alongside shows it paused,
+  // never the same music twice; the bar steps aside for the footer (the newsletter form); its ✕ ends it everywhere.
+  await check("Production: the music goes on from page to page (another page, a track's own page) at the same second and volume; ✕ ends it everywhere", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900);
+    await page.enforceCsp(PROD_CSP, new URL(BASE_URL).origin);
+    const problems = [];
+    const mouse = async (x, y) => {
+      for (const type of ["mouseMoved", "mousePressed", "mouseReleased"])
+        await page.browser.send("Input.dispatchMouseEvent", { type, x, y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
+    };
+    const click = async (sel, i = 0) => {
+      await page.evaluate(`document.querySelectorAll(${JSON.stringify(sel)})[${i}].scrollIntoView({ block: 'center' }); true`);
+      await new Promise((r) => setTimeout(r, 200));
+      const p = await page.evaluate(`(function () { var b = document.querySelectorAll(${JSON.stringify(sel)})[${i}].getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2 }; })()`);
+      await mouse(p.x, p.y);
+    };
+    // leave the page the way a visitor does: their own click on a link
+    const follow = async (href) => {
+      await page.evaluate(`(function () { var a = document.createElement('a'); a.href = ${JSON.stringify(href)}; a.textContent = 'go';
+        a.style.cssText = 'position:fixed;left:0;top:0;width:60px;height:40px;z-index:99999;background:#888'; document.body.appendChild(a); return true; })()`);
+      const loaded = new Promise((resolve) => { const off = page.browser.on("Page.loadEventFired", () => { off(); resolve(); }, page.sessionId); setTimeout(resolve, 20000); });
+      await mouse(30, 20);
+      await loaded;
+    };
+    const st = `(function () { var p = window.musicPlayer; if (!p) return null; var s = p.state(); return { id: s.track && s.track.id, playing: s.playing,
+      t: p.audio.currentTime, vol: p.audio.volume, bar: !!document.querySelector('.mp-mini.show'), src: p.audio.currentSrc }; })()`;
+    const playing = `window.musicPlayer.state().playing && window.musicPlayer.audio.currentTime > 0`;
+    const goesOn = async (where, id, t0) => {
+      if (!(await page.waitFor(`!!window.musicPlayer && !!window.musicPlayer.state().track`, { timeout: 8000 }))) { problems.push(`${where}: the music wasn't picked up`); return null; }
+      let how = "on its own";
+      let played = await page.waitFor(playing, { timeout: 6000 });
+      if (!played) { // refused before a touch: the first key goes on with it
+        how = "after the first key";
+        for (const type of ["keyDown", "keyUp"])
+          await page.browser.send("Input.dispatchKeyEvent", { type, key: "m", code: "KeyM", text: type === "keyDown" ? "m" : undefined }, page.sessionId);
+        played = await page.waitFor(playing, { timeout: 6000 });
+      }
+      const s = await page.evaluate(st);
+      if (!played) problems.push(`${where}: the music didn't go on (${JSON.stringify(s)})`);
+      else console.log(`      ${where}: it went on ${how}`);
+      if (s.id !== id) problems.push(`${where}: ${s.id} came instead of ${id}`);
+      if (s.t < t0 - 0.5) problems.push(`${where}: it started over (at ${s.t.toFixed(1)} s, it had reached ${t0.toFixed(1)} s)`);
+      if (Math.abs(s.vol - 0.4) > 0.01) problems.push(`${where}: the volume came back at ${s.vol}, not 0.4`);
+      if (!/\/audio\/[^/]+\.mp3$/.test(s.src || "")) problems.push(`${where}: the MP3 isn't the site's own /audio/ (${s.src})`);
+      return s;
+    };
+
+    // a page with no music loads no player at all
+    await page.goto(BASE_URL + "/about/");
+    await page.evaluate(`sessionStorage.setItem('intro-seen','1'); true`);
+    await page.goto(BASE_URL + "/about/");
+    await new Promise((r) => setTimeout(r, 500));
+    if (await page.evaluate(`!!window.musicPlayer || !!document.querySelector('script[src*="/js/music"]')`)) problems.push("a page with no music loaded the player");
+
+    await page.goto(BASE_URL + "/production/");
+    await new Promise((r) => setTimeout(r, 1200));
+    await click("body > main #bookGallery .aw-item", 2);
+    if (!(await page.waitFor(`window.musicPlayer.audio.currentTime > 4`, { timeout: 15000 }))) problems.push("the track never got going on Production");
+    await page.evaluate(`window.musicPlayer.setVolume(0.4); true`);
+    await click("#photoModalClose");
+    const first = await page.evaluate(st);
+
+    // another page (the About page): on with the same track, from where it was
+    await follow("/about/");
+    const about = await goesOn("About", first.id, first.t);
+    if (about && !about.bar) problems.push("About: no now-playing bar");
+    // the footer stays reachable ("Join the List", the legal links): at the bottom of the page the bar rises above it
+    const clearOfFooter = `(function () { var m = document.querySelector('.mp-mini.show'), f = document.querySelector('#footerWrap > footer');
+      return !!m && m.getBoundingClientRect().bottom <= f.getBoundingClientRect().top + 1; })()`;
+    await page.evaluate(`window.scrollTo(0, document.documentElement.scrollHeight); true`);
+    if (!(await page.waitFor(clearOfFooter, { timeout: 3000 }))) problems.push("at the bottom of the About page the bar covers the footer");
+    await page.evaluate(`window.scrollTo(0, 0); true`);
+
+    // a tab opened alongside: the same track in its bar, paused (never the same music twice)
+    const other = await browser.newPage();
+    await other.goto(BASE_URL + "/links/");
+    await other.waitFor(`!!window.musicPlayer && !!window.musicPlayer.state().track`, { timeout: 8000 });
+    await new Promise((r) => setTimeout(r, 1000));
+    const o = await other.evaluate(st);
+    if (!o || o.playing || o.id !== first.id) problems.push(`a tab opened alongside: ${JSON.stringify(o)} (expected ${first.id}, paused)`);
+    await other.close();
+
+    // a track's own page, another track: the music goes on in the bar, the page's own player waits with its track
+    const ownId = first.id === "omnipulse" ? "no-return" : "omnipulse";
+    const t1 = await page.evaluate(`window.musicPlayer.audio.currentTime`);
+    await follow(`/production/${ownId}/`);
+    const own = await goesOn(`${ownId}'s page`, first.id, t1);
+    if (own && !own.bar) problems.push("a track's own page: no bar for the music carried there");
+    if (own && !(await page.evaluate(clearOfFooter))) problems.push("a track's own page: the bar covers the footer");
+    // on a phone, at the end of the page, the bar rests in its slot above the footer: it covers neither the footer nor
+    // the page's own player
+    await page.setViewport(390, 844, true);
+    await new Promise((r) => setTimeout(r, 400));
+    await page.evaluate(`window.scrollTo(0, document.documentElement.scrollHeight); true`);
+    await new Promise((r) => setTimeout(r, 600));
+    const covers = await page.evaluate(`(function () { var m = document.querySelector('.mp-mini.show'), o = document.getElementById('trackPlayer'), f = document.querySelector('#footerWrap > footer');
+      if (!m) return 'nothing: there is no bar'; var a = m.getBoundingClientRect(), b = o.getBoundingClientRect(), c = f.getBoundingClientRect();
+      return [a.bottom > c.top + 1 ? 'the footer' : '', a.top < b.bottom && a.bottom > b.top ? "the page's own player" : ''].filter(Boolean).join(' and '); })()`);
+    if (covers) problems.push(`phone, end of a track's page: the bar covers ${covers}`);
+    await page.setViewport(1440, 900);
+    await new Promise((r) => setTimeout(r, 400));
+    if (await page.evaluate(`document.getElementById('trackPlayer').classList.contains('is-playing')`)) problems.push("the track page's own player shows itself playing");
+
+    // ✕ ends it everywhere: the next page loads no player
+    await click(".mp-mini-x");
+    if (!(await page.waitFor(`!window.musicPlayer.state().track`, { timeout: 3000 }))) problems.push("the ✕ didn't stop the music");
+    await follow("/about/");
+    await new Promise((r) => setTimeout(r, 600));
+    if (await page.evaluate(`!!window.musicPlayer || !!document.querySelector('.mp-mini')`)) problems.push("after the ✕, the next page still loaded the player");
+    const csp = page.cspViolations.filter((t) => !/livereload/i.test(t));
+    if (csp.length) problems.push(`CSP: ${csp.join(" | ")}`);
     await page.close();
     if (problems.length) throw new Error(problems.join("; "));
     return true;

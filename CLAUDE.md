@@ -179,13 +179,30 @@ small y. Louis first said "Ky" (voice typing) and corrected it to Ny the same ni
 artist tag inside the MP3s is "nyandrada". A copy of
 Vestments (same ids/classes) without Filters; the search box finds titles, sides and words. Items are **tracks**
 ("Ritual Annihilation (Side A) — Track by Ny", JSON-LD `MusicRecording`, `jsonld/track.html`).
-- Player: `_partials/music-player.html` (`window.musicPlayer`, one `Audio` never in the DOM, Media Session for lock
-  screens) + `music-controls.html` (markup). Named for what they do so the singing section can reuse them. Clicking a
-  cover opens the popup AND plays it; the popup's arrows (and its ⏮ ⏭) change track and play; the popup always shows
-  the playing track; a track's end starts the next one (stops after the last); closing the popup keeps the music in a
-  now-playing bar built on `<body>` (outside `<main>`, so never in the fog copies), hidden while the footer shows
-  (the newsletter form must stay reachable). `play()` must run inside the visitor's own click: browsers block sound
-  otherwise. A track's own page plays only that track. Tests: "Production: …".
+- Player: `assets/js/music-player.js` + `assets/css/music-player.css` (`window.musicPlayer`, one `Audio` never in the
+  DOM, Media Session for lock screens) + `_partials/music-controls.html` (markup). `_partials/music-assets.html` builds
+  the file once (window.MP_CONF: cookie domain, Ny's name, EVERY side in the grid's play order, same logic as
+  production/list.html), Production pages put it inline (`music-player.html`). Named for what they do so the singing
+  section can reuse them. Clicking a cover opens the popup AND plays it; the popup's arrows (and its ⏮ ⏭) change
+  track and play; the popup always shows the playing track; a track's end starts the next one (stops after the last);
+  when no popup shows the music it plays on in a now-playing bar built on `<body>` (outside `<main>`, so never in the
+  fog copies), hidden while any popup is open (fog copies of popups don't count: they stay "open" while they fade);
+  while the footer shows, the bar rises above it, into an 84px slot above the footer (`html.mp-bar-on`, baseof.html)
+  where it covers nothing. The slot is decided AS THE PAGE LOADS (Production always, other pages when music comes
+  along), never later: a page that grows mid-popup makes the fog re-copy it (test "Popup fog (/production/)"). Until
+  2026-10-14 the bar "hid for the footer" through `body > footer`, which never matched: baseof wraps it in `#footerWrap`. `play()` must run inside the visitor's own click: browsers block sound otherwise. A
+  track's own page's player plays only that track. Tests: "Production: …".
+- FROM PAGE TO PAGE (Louis, 2026-10-14: the music should go on while visitors explore, at low cost): every page load
+  stops sound, and six subdomains rule out a single-page app, so `pagehide` writes what plays to a session cookie on
+  `domain=andrada.one` (`mp-now`: track, second, playing, autoNext, volume, handover time; local/session storage are
+  per subdomain). baseof.html's tiny bootstrap loads the player (16 KB + 6 KB CSS) on a non-Production page ONLY while
+  that cookie exists; it cues the track at the same second and plays. Chrome lets it play after the visitor's click
+  (tested); where a browser refuses (Safari/iPhone, a page the browser opened itself), the bar waits paused at the
+  spot and the first tap or key goes on. A handover counts once, within 30 s: a tab opened later shows it paused,
+  never the same music twice. ✕ ends it everywhere (cookie deleted); so does the last track ending. Paused music
+  follows too (the bar). The bar's title opens the track's page. No CSP change: script, CSS and /audio/ are 'self'.
+  tests/live-test.mjs clears `mp-now` before every check (`forgetMusic`), or music would follow from one test into
+  the next. The test Chrome runs with `--mute-audio` (Louis heard the tests through his speakers, 2026-10-14). Test: "Production: the music goes on from page to page …".
 - The hero (Louis, 2026-10-13): under the big cover, the same player (`face-hero.html` "player", bound with
   `fallback` = the hero track): before anything plays it shows Ritual Annihilation (Side A), ready; then it shows
   whatever plays (cover, title, `Side A · Side B` switch for records with sides, the link). Louis's line "go ahead..

@@ -1,0 +1,29 @@
+{{- /* The music player's two files, built once per build (partialCached): returns (dict "js" "css").
+       js = window.MP_CONF (the cookie domain, Ny's name, every track) + assets/js/music-player.js;
+       css = assets/css/music-player.css. Production pages put both inline (music-player.html); every other
+       page loads them only while music is carried from page to page (the bootstrap in baseof.html).
+       The tracks are every side in the Production grid's play order (production/list.html: records newest
+       first, then their sides A, B …), with the files the player needs: the MP3 (/audio/, the site's own
+       address on every face), the 1600px cover (lock screen, track page), a small one for the bar, and
+       the track page's one address (canonical.html: ny.andrada.one). */ -}}
+{{- $tracks := sort (where site.RegularPages "Section" "production") "Params.order" "desc" -}}
+{{- $list := slice -}}
+{{- range $tracks -}}
+  {{- if or (not .Params.side) (eq .Params.side "A") -}}
+    {{- $page := . -}}
+    {{- $sides := slice $page -}}
+    {{- with $page.Params.side }}{{ $sides = sort (where (where $tracks "Title" $page.Title) "Params.side" "!=" nil) "Params.side" }}{{ end -}}
+    {{- range $sides -}}
+      {{- $list = $list | append (dict "id" .Params.id "title" .Title "side" (.Params.side | default "")
+          "duration" (.Params.duration | default 0) "src" (partial "audio-url.html" .Params.audio)
+          "cover" (partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true))
+          "thumb" (partial "img-url.html" (dict "src" .Params.image "width" 120 "quality" 85))
+          "href" (partial "canonical.html" .)) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $conf := dict "domain" (site.Params.face_domain | default "") "artist" (index site.Params.names "ny") "tracks" $list -}}
+{{- $head := resources.FromString "js/music-conf.js" (printf "window.MP_CONF = %s;\n" (jsonify $conf)) -}}
+{{- $js := slice $head (resources.Get "js/music-player.js") | resources.Concat "js/music.js" | minify | fingerprint -}}
+{{- $css := resources.Get "css/music-player.css" | minify | fingerprint -}}
+{{- return (dict "js" $js "css" $css) -}}
