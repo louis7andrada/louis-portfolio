@@ -38,7 +38,10 @@ the domain, `baseof.html` scripts, reCAPTCHA or a form must be verified end to e
   (read from `netlify.toml`) with a stub that redirects exactly like Apps Script, with the spam check both
   passing and failing. They must stay strict: webhook reached, reply read, success shown, no error/alert/CSP.
 - After any deploy that touches the above, submit each form once on the live site (fake address, name
-  "TEST - please ignore") and confirm success.
+  "TEST - please ignore") and confirm success. Headless Chrome can't: Google scores it 0.1, a real bot verdict, so
+  the forms with a spam check (correctly) refuse it ("Verification failed"). A normal Chrome placed off-screen
+  (`--window-position=-3000,-3000 --mute-audio`, own profile, driven by tests/lib/browser.mjs's `Browser`) scores
+  0.9 and goes through (2026-10-14). Newsletter signup first, then unsubscribe the same address.
 
 ## Deploy and GitHub must stay identical
 
@@ -202,7 +205,11 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
   never the same music twice. ✕ ends it everywhere (cookie deleted); so does the last track ending. Paused music
   follows too (the bar). The bar's title opens the track's page. No CSP change: script, CSS and /audio/ are 'self'.
   tests/live-test.mjs clears `mp-now` before every check (`forgetMusic`), or music would follow from one test into
-  the next. The test Chrome runs with `--mute-audio` (Louis heard the tests through his speakers, 2026-10-14). Test: "Production: the music goes on from page to page …".
+  the next. The test Chrome runs with `--mute-audio` (Louis heard the tests through his speakers, 2026-10-14).
+  Checked live across faces (ny. → louis. → andrada.one → han.): Chrome went on by itself each time. Known, harmless:
+  the page reached from a playing one logs a CSP notice for the PREVIOUS face's favicon.ico (Chrome's media controls
+  fetch the old site's icon through the new page; pausing or clearing the metadata at pagehide doesn't stop it).
+  Only a console line; silencing it would mean an img-src change (= re-verify every form). Not worth it. Test: "Production: the music goes on from page to page …".
 - The hero (Louis, 2026-10-13): under the big cover, the same player (`face-hero.html` "player", bound with
   `fallback` = the hero track): before anything plays it shows Ritual Annihilation (Side A), ready; then it shows
   whatever plays (cover, title, `Side A · Side B` switch for records with sides, the link). Louis's line "go ahead..
