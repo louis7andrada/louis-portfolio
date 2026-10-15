@@ -3,7 +3,7 @@
 # The text is his standard resume (the version that got him the CIBC job, Louis 2026-10-14), kept as written.
 # No phone, email or references' contacts here on purpose: the site's forms are the only way to reach him.
 title: "Career"
-description: "Luis Andrada, Toronto: research coordinator, data analyst and programmer. Five years at the University of Toronto Faculty of Dentistry in data validation, quality control, REDCap, automation and analysis."
+description: "Luis Andrada, Toronto: Test Analyst at CIBC, previously Research Coordinator at the University of Toronto. Testing, data validation and quality control."
 headline: "Research Coordinator | Data Analyst | Quality Assurance | Computer Programming"
 location: "Toronto, ON"
 image: "/images/luis/portrait.jpg"          # link previews (1000px)

@@ -106,8 +106,8 @@ disableKinds = ["taxonomy", "term"]
     odi = "Photographs by Odi Andrada, in two collections: Ambiguous (abstract, black and white) and Lucid."
     l = "Vestments by L'."
     ny = "Electronic music produced by Ny."
-    luis = "Luis Andrada, Toronto: research coordinator, data analyst and programmer. Data validation, quality control, REDCap, automation and analysis."
-    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career: research, data and programming)."
+    luis = "Luis Andrada, Toronto: Test Analyst at CIBC, previously Research Coordinator at the University of Toronto. Testing, data validation and quality control."
+    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career: testing, data and programming)."
 
   # Each name's keywords (meta keywords), its own name first.
   [params.keywords]
@@ -116,7 +116,7 @@ disableKinds = ["taxonomy", "term"]
     odi = "Odi Andrada, photography, photographs, black and white photography, abstract photography, fine art photography"
     l = "L', vestments, garments, clothing, shirts"
     ny = "Ny, music producer, music production, electronic music, tracks, listen online"
-    luis = "Luis Andrada, research coordinator, data analyst, quality assurance, computer programming, Python, SQL, REDCap, data validation, automation, Toronto"
+    luis = "Luis Andrada, test analyst, software testing, quality engineering, CIBC, research coordinator, data analyst, quality assurance, computer programming, Python, SQL, REDCap, data validation, automation, Toronto"
     ja = "ᛃᚨ Andrada, Andrada, Louis Andrada, Han’drada, Odi Andrada, L', Ny, Luis Andrada, artist, painter, writer, photographer, music producer, Toronto artist, Brazilian artist"
 
   # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
