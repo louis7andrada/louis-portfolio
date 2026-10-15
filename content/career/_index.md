@@ -4,7 +4,7 @@
 # No phone, email or references' contacts here on purpose: the site's forms are the only way to reach him.
 title: "Career"
 description: "Luis Andrada, Toronto: Test Analyst at CIBC, previously Research Coordinator at the University of Toronto. Testing, data validation and quality control."
-headline: "Research Coordinator | Data Analyst | Quality Assurance | Computer Programming"
+headline: "Test Analyst | Research Coordinator | Data Analyst | Quality Assurance | Computer Programming"
 location: "Toronto, ON"
 image: "/images/luis/portrait.jpg"          # link previews (1000px)
 avatar: "/images/luis/portrait-small.jpg"   # the small round portrait on top of his name (360px)
