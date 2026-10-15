@@ -16,14 +16,17 @@ For every photo it writes:
                                        colour (4:4:4), converted to sRGB, NO
                                        metadata (iPhone photos carry GPS)
   content/archive/<category>/<id>.md   the page (id, slug, category, year, image,
-                                       source = the original file name)
+                                       source = the original file name, and the
+                                       caption `comment` when the page had one)
 
 Numbers continue after the highest one ever used in that category, counting the
 entries removed into private/archive-removed/: the images repo still holds those
 files, and Hugo caches remote images by URL forever, so a reused number would
 show the OLD photo. Within a run, new photos are numbered by date taken. Photos
-already in the archive (matched by `source`) keep their number. Archive photos
-carry no title or text (Louis's choice): only year and category.
+already in the archive (matched by `source`) keep their number and caption.
+Archive photos carry no title, only year, category and one short caption
+(`comment`, written by hand in an encyclopedia's voice): new photos get none, so
+write theirs after the run.
 
 Upload archive-images/<category>/* to archive/<category>/ in
 louis7andrada/louis-andrada-images, then run scripts/image-dims.py.
@@ -86,13 +89,15 @@ def used_numbers(category):
 
 
 def existing():
-    """original name -> (category, id), from the pages already written."""
+    """original name -> (category, id, comment line or ""), from the pages already written."""
     known = {}
     for md in glob.glob(os.path.join(CONTENT, "*", "*.md")):
         text = open(md, encoding="utf-8").read()
         src = re.search(r'^source:\s*"([^"]+)"', text, re.M)
         if src:
-            known[src.group(1)] = (os.path.basename(os.path.dirname(md)), os.path.splitext(os.path.basename(md))[0])
+            comment = re.search(r'^comment:.*\n', text, re.M)
+            known[src.group(1)] = (os.path.basename(os.path.dirname(md)), os.path.splitext(os.path.basename(md))[0],
+                                   comment.group(0) if comment else "")
     return known
 
 
@@ -125,11 +130,12 @@ def main():
     nxt = {c: max(used_numbers(c), default=0) + 1 for c in PREFIX}
     for _, name, path, date in photos:
         category = cats[name]
+        comment = known[name][2] if name in known else ""
         if name in known and known[name][0] == category:
             pid = known[name][1]
         else:
-            if name in known:  # moved to another category: drop the old page
-                os.remove(os.path.join(CONTENT, *known[name]) + ".md")
+            if name in known:  # moved to another category: drop the old page (its caption moves along)
+                os.remove(os.path.join(CONTENT, *known[name][:2]) + ".md")
             pid, nxt[category] = f"{PREFIX[category]}{nxt[category]}", nxt[category] + 1
         with Image.open(path) as im:
             icc = im.info.get("icc_profile")
@@ -145,7 +151,7 @@ def main():
         os.makedirs(os.path.join(CONTENT, category), exist_ok=True)
         with open(os.path.join(CONTENT, category, f"{pid}.md"), "w", encoding="utf-8", newline="\n") as f:
             f.write(f'---\nid: "{pid}"\nslug: "{pid}"\ncategory: "{category}"\nyear: {year}\n'
-                    f'source: "{name}"\nimage: "{IMAGE_BASE}/{category}/{pid}.jpg"\n---\n')
+                    f'source: "{name}"\nimage: "{IMAGE_BASE}/{category}/{pid}.jpg"\n{comment}---\n')
         print(f"{category:>11}  {pid:>14}  {name:<12}  {(date or 'no date')[:10]}  {year}")
 
 

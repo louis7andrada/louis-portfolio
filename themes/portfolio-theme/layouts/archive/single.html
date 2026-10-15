@@ -1,9 +1,9 @@
 {{ define "main" }}
 {{ partial "jsonld/archive-item.html" . }}
-{{/* Archive photos carry no text: the page shows only category and year (same labels as archive/list.html). */}}
+{{/* Category, year and the photo's one caption (`comment`), as in the archive/list.html popup. */}}
 {{ $catLabels := dict "photos" "Louis" "photography" "Photography" "studios" "Studios" "galleries" "Galleries & Exhibitions" }}
 {{ $cat := index $catLabels .Params.category | default .Params.category }}
-{{ $alt := printf "Archive photograph, %s, %v" $cat .Params.year }}
+{{ $alt := .Params.comment | default (printf "Archive photograph, %s, %v" $cat .Params.year) }}
 
 {{ $leftArrow := `<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="36" y1="5" x2="8" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="12,1 5,5 12,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>` }}
 {{ $rightArrow := `<svg width="34" height="10" viewBox="0 0 36 10" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="5" x2="28" y2="5" stroke="currentColor" stroke-width="1.2"/><polyline points="24,1 31,5 24,9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round"/></svg>` }}
@@ -42,6 +42,10 @@
 
         {{ with .Params.year }}
           <p>{{ . }}</p>
+        {{ end }}
+
+        {{ with .Params.comment }}
+          <p class="archive-comment">{{ . }}</p>
         {{ end }}
       </div>
 
@@ -265,7 +269,9 @@ html.dark .archive-back {
 
 .archive-comment {
   font-size: 0.83rem !important;
-  margin-top: 6px !important;
+  line-height: 1.6 !important;
+  margin-top: 14px !important;
+  opacity: 0.78 !important;
 }
 
 /* BODY */

@@ -5,4 +5,5 @@ category: "photos"
 year: 2026
 source: "IMG_2764"
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photos/photo23.jpg"
+comment: "Andrada painting fine white lines into a black canvas, February 2026."
 ---

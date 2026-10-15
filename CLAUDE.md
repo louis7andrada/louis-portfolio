@@ -273,8 +273,13 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
 
 `/archive/` (theme `layouts/archive/`, `content/archive/<category>/`, item pages at `/archive/<id>/`). Four categories:
 `photos` (photographs OF Louis; the filter calls it "Louis"), `photography` (photos he took), `studios` (studio, works in
-progress, sketchbooks), `galleries` ("Galleries & Exhibitions": shows, posters, Art Week). No titles or text, only year
-and category (Louis, Oct 2026).
+progress, sketchbooks), `galleries` ("Galleries & Exhibitions": shows, posters, Art Week). No titles: year, category and
+ONE caption, front matter `comment` (Louis, 2026-10-15, replacing the long old texts removed on Oct 2): "simpler and
+direct", at most ~3 short sentences, an encyclopedia's / documentary's voice, his name as "Andrada". Only facts: what
+the photo shows, the old texts (git `cd358e2^`), the About page's exhibitions, the date taken, work titles that match
+`content/artworks` by eye. Never guess a place or event ("no need to lie": the Chess Gallery got "some pieces", not
+"several"). The caption shows in the popup and on the photo's page and is its alt text, meta description and JSON-LD
+`description`/`caption`; the grid shows only year and category.
 1. Originals go in `private/archive-originals/` (gitignored), with a `categories.json` there: original name (no
    extension) → category or `"skip"`. Sorting them is a judgment call: LOOK at every photo, compare with what each
    category already holds, and skip duplicates of current entries (perceptual hash against the images repo's `archive/`).
@@ -285,6 +290,7 @@ and category (Louis, Oct 2026).
    remote images by URL forever, so a reused number would show the old photo.
 3. Upload `archive-images/*` to `archive/` in the images repo (sparse clone, `git sparse-checkout set archive`), wait for
    200s, then `python scripts/image-dims.py`.
+4. Write each new photo's caption (`comment`). The script keeps existing captions on re-runs but never writes one.
 
 ## Career section (Luis, Oct 2026)
 
@@ -430,8 +436,8 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   `share_image_alt`. Works (paintings, books, photos, vestments, tracks) and Career (his portrait) use their own.
 - Per-page `<title>`/description/`og:image` are computed in `baseof.html` from front
   matter (artworks get medium+size+year, books their subtitle+page count, photographs
-  id+collection). Archive photos have NO text by Louis's choice (Oct 2026): no title/comment, only year and
-  category are shown, and they're named by id (`studio1 (2024)`). Don't reintroduce a single hardcoded description — it made 146 artwork
+  id+collection). Archive photos have no title (named by id: `studio1 (2024)`); their one-line caption (`comment`, see
+  Archive) is the description. Don't reintroduce a single hardcoded description — it made 146 artwork
   pages identical to crawlers.
 - JSON-LD lives in `_partials/jsonld/`: `identity.html` (Person+WebSite `@graph`, the
   `…/#person` and `…/#website` nodes), `artwork.html`, `book.html`, `collection.html`

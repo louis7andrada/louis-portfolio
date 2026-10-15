@@ -4,4 +4,5 @@ slug: "studio14"
 category: "studios"
 year: 2025
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio14.jpeg"
+comment: "Untitled (Death), 2025, against the wall of the third studio, with a stepladder and work lights."
 ---

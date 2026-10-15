@@ -5,4 +5,5 @@ category: "studios"
 year: 2026
 source: "IMG_7168"
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio27.jpg"
+comment: "Andrada painting Ouro de Tolo (2026), oil on handmade velvet paper, July 2026."
 ---

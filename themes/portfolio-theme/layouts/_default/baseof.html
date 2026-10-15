@@ -170,13 +170,14 @@
 
   {{ else if and (eq .Type "archive") .IsPage }}
     {{ $ogType = "article" }}
-    {{/* Archive photos have no titles (only year + category are shown): name them by id. */}}
+    {{/* Archive photos have no titles (they're named by id); their one caption (`comment`) is the description. */}}
     {{ $t := .Title | default (printf "%s (%v)" .Params.id .Params.year) }}
     {{ $pageTitle = printf "%s — %s" $t $name }}
     {{ $desc = printf "%s — from the archive of %s, a Brazilian-born artist based in Toronto." $t $name }}
     {{ with .Params.comment }}{{ $desc = . }}{{ end }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s — archive photograph, %s" $t $name }}
+    {{ with .Params.comment }}{{ $imageAlt = . }}{{ end }}
 
   {{/* Luis's page (Career, luis.andrada.one): his portrait in link previews. */}}
   {{ else if eq .Type "career" }}

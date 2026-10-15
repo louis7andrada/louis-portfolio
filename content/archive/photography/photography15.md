@@ -4,4 +4,5 @@ slug: "photography15"
 category: "photography"
 year: 2026
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography15.jpeg"
+comment: "A narrow passage along a brick wall with graffiti, 13 April 2026."
 ---

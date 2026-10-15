@@ -4,4 +4,5 @@ slug: "gallery4"
 category: "galleries"
 year: 2026
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/galleries/gallery4.jpeg"
+comment: "Works still wrapped in plastic before the hanging at RCHIVE, June 2026."
 ---

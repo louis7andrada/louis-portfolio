@@ -11,8 +11,9 @@
 {{ end }}
 {{ $sorted := sort $clean "rand" "asc" }}
 {{ $sorted = sort $sorted "year" "desc" }}
-{{/* Archive photos carry no text: only year and category are shown (Louis's choice,
-     Oct 2026 — same spirit as Photography). Labels match CAT_LABELS in the script below. */}}
+{{/* The grid shows only year and category. Each photo's one caption (front matter `comment`, written in an
+     encyclopedia's voice; Louis, 2026-10-15) appears in the popup and on the photo's page, and is its alt text.
+     Labels match CAT_LABELS in the script below. */}}
 {{ $catLabels := dict "photos" "Louis" "photography" "Photography" "studios" "Studios" "galleries" "Galleries & Exhibitions" }}
 
 {{ partial "jsonld/collection.html" (dict "page" . "items" $raw) }}
@@ -70,8 +71,9 @@
          data-idx="{{ $i }}"
          data-year="{{ $it.year }}"
          data-cat="{{ $it.page.Params.category }}"
-         data-img="{{ $it.page.Params.image }}">
-      <img class="arch-img" src="{{ partial "img-url.html" (dict "src" $it.page.Params.image "width" 800) }}" alt="Archive photograph, {{ index $catLabels $it.page.Params.category | default $it.page.Params.category }}, {{ $it.year }}" loading="lazy"{{ partial "imgdims.html" $it.page.Params.image }}>
+         data-img="{{ $it.page.Params.image }}"
+         data-comment="{{ $it.page.Params.comment }}">
+      <img class="arch-img" src="{{ partial "img-url.html" (dict "src" $it.page.Params.image "width" 800) }}" alt="{{ $it.page.Params.comment | default (printf "Archive photograph, %s, %v" (index $catLabels $it.page.Params.category | default $it.page.Params.category) $it.year) }}" loading="lazy"{{ partial "imgdims.html" $it.page.Params.image }}>
     </div>
     {{ end }}
   </div>
@@ -94,6 +96,7 @@
     <div class="arch-popup-text-col">
       <h2   class="arch-popup-title"   id="archPopupTitle"></h2>
       <span class="arch-popup-year"    id="archPopupYear"></span>
+      <p    class="arch-popup-comment" id="archPopupComment"></p>
     </div>
   </div>
   <!-- Arrows are siblings of the pane so the pane's scale transform never affects their fixed position -->
@@ -283,7 +286,7 @@ html.dark .arch-f-drop {
    Only two, on fixed sides so they never overlap:
      year     → right or left vertical (seeded)
      category → the OPPOSITE vertical side
-   (.arch-lbl-b / -a, below/above, are unused since titles and comments were removed.)
+   (.arch-lbl-b / -a, below/above, are unused: captions show only in the popup.)
 ── */
 .arch-lbl {
   position: absolute;
@@ -401,6 +404,11 @@ html.dark .arch-popup-bg {
   font-size: 1.05rem; font-weight: 600;
   line-height: 1.35; letter-spacing: 0.02em; margin: 0;
 }
+.arch-popup-comment {
+  font-size: 0.8rem; line-height: 1.6; letter-spacing: 0.01em;
+  opacity: 0.78; margin: 0;
+}
+.arch-popup-comment:empty { display: none; }
 
 /* ── POPUP ARROWS ── */
 .arch-arrow {
@@ -555,6 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pImg  = document.getElementById('archPopupImg');
   const pTitle = document.getElementById('archPopupTitle');
   const pYear  = document.getElementById('archPopupYear');
+  const pComment = document.getElementById('archPopupComment');
   const pX     = document.getElementById('archPopupX');
   const desBt  = document.getElementById('archDeselect');
   const yearSelEl = document.getElementById('archYearSelected');
@@ -763,9 +772,10 @@ document.addEventListener('DOMContentLoaded', () => {
   function populatePopup(item) {
     const cat = fmtCat(item.dataset.cat || '');
     pImg.src           = item.dataset.img || '';
-    pImg.alt           = ['Archive photograph', cat, item.dataset.year].filter(Boolean).join(', ');
+    pImg.alt           = item.dataset.comment || ['Archive photograph', cat, item.dataset.year].filter(Boolean).join(', ');
     pTitle.textContent = cat;
     pYear.textContent  = item.dataset.year || '';
+    pComment.textContent = item.dataset.comment || '';
     updateNavArrows();
   }
 

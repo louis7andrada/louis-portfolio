@@ -5,4 +5,5 @@ category: "studios"
 year: 2026
 source: "IMG_7356"
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/studios/studio32.jpg"
+comment: "The café and tall-figure spread, scanned in high contrast."
 ---

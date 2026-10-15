@@ -5,4 +5,5 @@ category: "photography"
 year: 2026
 source: "IMG_2766"
 image: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/archive/photography/photography26.jpg"
+comment: "A bouquet in brown paper on a concrete floor, February 2026."
 ---
