@@ -31,6 +31,8 @@ photography-images/
 vestments-images/
 # Production (Ny): MP3s and covers, same (scripts/ingest-music.py)
 music-images/
+# Archive photos, same (scripts/ingest-archive.py)
+archive-images/
 
 # =========================
 # Private files — never publish (this repo is public)

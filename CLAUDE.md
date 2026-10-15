@@ -269,6 +269,23 @@ Vestments (same ids/classes) without Filters; the search box finds titles, sides
    `hugo server -D` (it picks a random port when 1313 is taken): look for any running hugo.exe before step 2, and
    never kill his; ask him to restart it after the upload.
 
+## Archive (adding photos)
+
+`/archive/` (theme `layouts/archive/`, `content/archive/<category>/`, item pages at `/archive/<id>/`). Four categories:
+`photos` (photographs OF Louis; the filter calls it "Louis"), `photography` (photos he took), `studios` (studio, works in
+progress, sketchbooks), `galleries` ("Galleries & Exhibitions": shows, posters, Art Week). No titles or text, only year
+and category (Louis, Oct 2026).
+1. Originals go in `private/archive-originals/` (gitignored), with a `categories.json` there: original name (no
+   extension) → category or `"skip"`. Sorting them is a judgment call: LOOK at every photo, compare with what each
+   category already holds, and skip duplicates of current entries (perceptual hash against the images repo's `archive/`).
+   Look for text in the photos: a business card with his email was left out (2026-10-15, Louis: "leave it out").
+2. `python scripts/ingest-archive.py private/archive-originals` → `archive-images/<category>/<id>.jpg` (1600px wide,
+   sRGB, no metadata) + the pages (`source` = original name, so re-runs keep numbers). Numbers continue after the
+   highest EVER used, counting `private/archive-removed/`: the images repo still holds removed files and Hugo caches
+   remote images by URL forever, so a reused number would show the old photo.
+3. Upload `archive-images/*` to `archive/` in the images repo (sparse clone, `git sparse-checkout set archive`), wait for
+   200s, then `python scripts/image-dims.py`.
+
 ## Career section (Luis, Oct 2026)
 
 `/career/` (`content/career/_index.md`, `layouts/career/list.html`) is Louis's work life as a resume / LinkedIn-style
