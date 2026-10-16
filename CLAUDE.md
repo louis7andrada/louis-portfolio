@@ -52,6 +52,16 @@ work, and GitHub had to be rebuilt from the downloaded Netlify deploy. Never rei
 reach Netlify without GitHub having the same commit. Never push the pre-Sep-30 laptop history (branch
 `backup/laptop-2026-09-30`, local only): it contains newsletter `.msg` files that were scrubbed from GitHub.
 
+- **Deploys without the laptop** (Oct 2026, Louis: "We can code everything directly at github including my website").
+  Netlify is linked to this repo's `main`; its builds were stopped (`build_settings.stop_builds`), so only laptop
+  uploads deployed. With builds active, every push or merge to `main` IS a production deploy (Netlify builds it:
+  `npm run build`, Hugo 0.157 from `netlify.toml`; checked 2026-10-16: a clean clone builds in ~2 min, the same pages
+  as the laptop's, minus ~270 untracked leftovers in `static/`). `deploy.ps1` asks Netlify which mode it is in: with
+  builds active it compiles the CSS before its one push, uploads nothing (a second deploy of the same commit costs
+  credits twice: 15 per production deploy, Personal plan 1000/month, keep auto-recharge off) and waits for Netlify's
+  deploy of that commit. A cloud session deploys by pushing to `main`, so "deploy only when asked" means "push to main
+  only when asked". Pages are dated by their last commit (`enableGitInfo`; a clone would date every file to the clone).
+  The live form check after risky changes still needs a real browser: from the cloud, Louis sends one test message.
 - Everything in `static/` is published by laptop deploys, gitignored or not. Private files go in `private/`
   (gitignored, not published). `static/images/docs/` is gitignored, but the docs the site links (CV, etc.)
   are force-tracked so Netlify builds from GitHub have them.

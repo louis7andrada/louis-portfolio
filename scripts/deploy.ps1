@@ -12,17 +12,33 @@
 # `npm run deploy` skips the deploy when the current commit is the one that
 # was last deployed (.last-deploy, gitignored). `npm run deploy -- -Force`
 # deploys anyway.
+#
+# Two ways the live site gets built (Oct 2026, so the site can be deployed
+# from the cloud, without this laptop):
+#   - Netlify builds from GitHub (its builds are active): every push to main
+#     IS the deploy. This script then builds and uploads nothing, which would
+#     be a second deploy of the same commit (Netlify credits, twice); it
+#     waits for Netlify's deploy of the pushed commit instead.
+#   - Netlify's builds are stopped: this laptop builds and uploads, as before.
 
 param([switch]$Force)
 
 $ErrorActionPreference = 'Continue'
 Set-Location (Split-Path $PSScriptRoot -Parent)
+$SiteId = 'louisandrada.netlify.app'
 
 function Stop-Deploy($msg) {
   Write-Host ""
   Write-Host "DEPLOY STOPPED: $msg" -ForegroundColor Red
   Write-Host "Nothing was deployed to the live site." -ForegroundColor Red
   exit 1
+}
+
+function Netlify-Api($method, $data) {
+  $json = ($data | ConvertTo-Json -Compress).Replace('"', '\"')
+  $out = netlify api $method --data $json 2>$null
+  if ($LASTEXITCODE -ne 0 -or -not $out) { return $null }
+  try { return ($out | Out-String) | ConvertFrom-Json } catch { return $null }
 }
 
 # 1. Right branch?
@@ -32,7 +48,18 @@ if ($branch -ne 'main') {
   Stop-Deploy "you are on branch '$branch'. Deploys must come from 'main' so GitHub and the live site stay identical. Switch with: git checkout main"
 }
 
-# 2. Commit local changes.
+# Who builds? Ask Netlify; if it can't be asked, deploy nothing (guessing wrong
+# would either deploy twice or not at all).
+$site = Netlify-Api 'getSite' @{ site_id = $SiteId }
+if (-not $site) { Stop-Deploy "couldn't ask Netlify how the site is built (check your internet / netlify login)." }
+$netlifyBuilds = -not $site.build_settings.stop_builds
+
+# 2. Commit local changes. When Netlify builds, compile the CSS first, so one
+#    push carries it (a second "compiled CSS" push would be a second deploy).
+if ($netlifyBuilds) {
+  npm run css
+  if ($LASTEXITCODE -ne 0) { Stop-Deploy "compiling the CSS failed." }
+}
 if (git status --porcelain) {
   git add .
   if ($LASTEXITCODE -ne 0) { Stop-Deploy "git add failed." }
@@ -55,6 +82,38 @@ $head = (git rev-parse HEAD).Trim()
 $last = if (Test-Path .last-deploy) { (Get-Content .last-deploy -Raw).Trim() } else { "" }
 if (-not $Force -and $head -eq $last) {
   Write-Output "No changes since the last deploy. Production deploy skipped. (npm run deploy -- -Force deploys anyway.)"
+  exit 0
+}
+
+# 5-6, when Netlify builds from GitHub: the push above started its deploy (or,
+# with -Force and nothing new to push, ask for one). Wait for it.
+if ($netlifyBuilds) {
+  $short = $head.Substring(0, 7)
+  if ($head -eq $last) {
+    if (-not (Netlify-Api 'createSiteBuild' @{ site_id = $SiteId })) { Stop-Deploy "couldn't ask Netlify to build again." }
+  }
+  Write-Output "Netlify builds from GitHub: waiting for its deploy of $short (a few minutes)..."
+  $state = 'not started'
+  $deadline = (Get-Date).AddMinutes(20)
+  while ((Get-Date) -lt $deadline) {
+    Start-Sleep -Seconds 15
+    $deploys = Netlify-Api 'listSiteDeploys' @{ site_id = $SiteId; per_page = 10 }
+    $d = @($deploys) | Where-Object { $_.commit_ref -eq $head -and $_.context -eq 'production' } | Select-Object -First 1
+    if ($d) { $state = $d.state }
+    if ($state -eq 'ready' -or $state -eq 'error') { break }
+  }
+  if ($state -ne 'ready') {
+    Write-Host ""
+    Write-Host "DEPLOY NOT CONFIRMED: Netlify's deploy of $short is '$state'. GitHub has the commit; see app.netlify.com -> Deploys." -ForegroundColor Red
+    exit 1
+  }
+  Set-Content -Path .last-deploy -Value $head -Encoding ascii
+  Write-Host ""
+  Write-Host "Deployed ${short}: Netlify built it from GitHub main." -ForegroundColor Green
+  # 7. Tell search engines about changed URLs (never fails the deploy), from the live sitemap.
+  New-Item -ItemType Directory -Force .\public | Out-Null
+  try { Invoke-WebRequest -UseBasicParsing 'https://andrada.one/sitemap.xml' -OutFile .\public\sitemap.xml } catch {}
+  if (Test-Path .\public\sitemap.xml) { npm run notify-search-engines }
   exit 0
 }
 

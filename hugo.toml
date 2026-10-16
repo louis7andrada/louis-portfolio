@@ -5,6 +5,10 @@ theme = "portfolio-theme"
 enableRobotsTXT = true
 # No tags/categories are used on this site; don't generate empty pages for them.
 disableKinds = ["taxonomy", "term"]
+# Pages are dated by their last commit, not by the file's time on disk: a fresh checkout (Netlify building from
+# GitHub, a cloud session) gives every file the time of the clone, so the sitemap would say every page changed on
+# every deploy. Netlify clones the whole history, which this needs.
+enableGitInfo = true
 
 [sitemap]
   changefreq = "monthly"
@@ -12,7 +16,7 @@ disableKinds = ["taxonomy", "term"]
   filename = "sitemap.xml"
 
 [frontmatter]
-  lastmod = ["lastmod", ":fileModTime", ":default"]
+  lastmod = ["lastmod", ":git", ":fileModTime", ":default"]
 
 [permalinks]
   artworks = "/artworks/:contentbasename/"

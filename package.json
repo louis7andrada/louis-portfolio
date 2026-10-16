@@ -9,7 +9,8 @@
     "test:live": "node tests/live-test.mjs",
     "rev": "concurrently \"npm run dev\" \"npm run hugo\"",
     "rev:test": "concurrently \"npm run dev\" \"npm run hugo\" \"node tests/live-test.mjs --always-pass\"",
-    "build": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./static/css/output.css --minify && hugo --gc --minify",
+    "css": "tailwindcss -i ./themes/portfolio-theme/assets/css/main.css -o ./static/css/output.css --minify",
+    "build": "npm run css && hugo --gc --minify",
     "notify-search-engines": "node scripts/ping-indexnow.mjs",
     "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/deploy.ps1",
     "deploy-draft": "powershell -Command \"if (Test-Path .\\public) { Remove-Item -Recurse -Force .\\public }; if (Test-Path .\\.hugo_build.lock) { Remove-Item -Force .\\.hugo_build.lock }; npm run build; if ($LASTEXITCODE -eq 0) { netlify deploy --dir=public }\""
