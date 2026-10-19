@@ -1144,6 +1144,3508 @@ Life is worth living.
 She thought: yes. And then, because she was human, and it was morning, and it was enough, she closed her eyes.
 
 ========================================================================
+Five Business Days — A Screenplay
+Han’drada, 2026
+https://han.andrada.one/oeuvre/five-business-days/
+========================================================================
+
+The first half of this story happened. On the evening of the nineteenth of October, in a small restaurant on the slope of Montmartre, a man looked at a woman at the next table, and she looked back, and a telephone that should have rung did not.
+The second half had not happened when these pages were written. They were written a few hours later, in a rented apartment in the same city, on a sofa bed, quietly, so as not to wake his parents, by a man whose phone was finally connected and whose request for a list of calls was waiting, unopened, in an inbox on the other side of the ocean.
+So this is a film made of two halves: one that was lived and one that was hoped. The reader may decide where the seam runs. It has been left visible on purpose. A good repair always is.
+Han’drada
+
+FADE IN:
+· · ·
+BLACK.
+Out of the dark, the hollow purr of a long-distance line. One ring that is not quite a ring. Then a woman's voice, synthetic and impeccably polite, first in English, then in French.
+RECORDED VOICE (V.O.)
+The Freedom Mobile customer you are calling is not available. Please try again later.
+Le client de Freedom Mobile que vous tentez de joindre n'est pas disponible. Veuillez réessayer plus tard.
+A click. Silence. It holds a beat too long.
+EXT. RUE DES ABBESSES, MONTMARTRE — EVENING
+Monday, October 19
+The last of the light is gold on the zinc roofs. Paris climbs the hill in crooked streets and hangs its laundry on the evening.
+Three Brazilians climb with it.
+RODRIGO (32) walks a step ahead, the way the shy walk when they are the only ones who know the way. Dark coat, a face that keeps more than it shows. He holds his phone like a compass.
+Behind him, ANTÔNIO (64), his father, broad as a doorway, breathing like a man who has opinions about stairs. Beside Antônio, CLARICE (58), his wife, silver bob, reading glasses pushed into her hair, a woman who has spent thirty years teaching mathematics to people who did not want it.
+
+ANTÔNIO
+(in Portuguese)
+Rodrigo. Quanto falta?
+Rodrigo. How much further?
+RODRIGO
+(in Portuguese)
+Duzentos metros, pai.
+Two hundred meters, Dad.
+ANTÔNIO
+(in Portuguese)
+Você falou duzentos metros há duzentos metros.
+You said two hundred meters two hundred meters ago.
+From here, the Portuguese is subtitled.
+CLARICE
+He's checking the map on that foreign chip. Let him concentrate.
+ANTÔNIO
+Foreign chip. In my time you had a map made of paper and a mouth to ask people.
+CLARICE
+In your time you got lost in Lisbon for three hours.
+ANTÔNIO
+I wasn't lost. I was visiting.
+Clarice catches up to Rodrigo, lowers her voice like a conspirator.
+CLARICE
+Did you turn off your Canadian line? Your father came back from Portugal with a bill of nine hundred reais. I still have nightmares.
+RODRIGO
+Turned it off at the airport. Everything's on the travel one.
+INSERT — RODRIGO'S PHONE
+A settings screen, glimpsed for a moment as he scrolls past it to the map.
+Freedom Mobile ........ Off
+Travel eSIM ........... On
+
+It is the most important image in the film, and nobody looks at it twice.
+BACK TO SCENE
+Antônio stops dead in front of a café menu taped to a window.
+ANTÔNIO
+Seven euros. For a coffee. In Minas I buy a cow for seven euros.
+RODRIGO
+You don't buy cows in Minas, Dad. You were a postman.
+ANTÔNIO
+I could have bought a cow. The option was there.
+Clarice takes his arm and walks him on. Rodrigo smiles at the pavement.
+EXT. CHEZ AURÈLE — CONTINUOUS
+A narrow restaurant wedged between a bakery and a shuttered antique shop. Green paint, gold letters, steamed glass. Through the window: candles, close tables, the low red heat of a room where strangers sit almost in each other's laps, the way only Paris allows.
+INT. CHEZ AURÈLE — EVENING
+Tight. Warm. Mirrors along one wall make the small room twice its size and show everyone everything.
+MAURICE (50s), the waiter, a long face built for disappointment, leads them to a two-top that has become a three-top by the addition of a stool. Antônio surveys the stool as if it has insulted his family.
+The table is wedged so close to its neighbor that the two might as well be one.
+At the next table: three people in the middle of a laugh.
+JULIEN (34), French, curly-haired, rolled sleeves, the easy face of a man who has lived in more countries than he can afford. XIMENA (31), Mexican, his girlfriend, gold hoops, laughing with her whole body.
+And between them, with her back half to the mirror —
+HANNAH (31).
+Red hair, loose, the color of something about to catch. Blue eyes. A stillness in her that is not shyness; it is attention. She is listening to Ximena with her chin on her hand, and when she laughs it arrives late and all at once, as if she had to decide first whether the joke deserved it.
+
+Rodrigo, halfway into his chair, stops.
+Holds.
+Sits down slower than gravity requires.
+Clarice notices. Clarice notices everything.
+LATER
+Bread. Water. Menus the size of newspapers. Antônio holds his at arm's length.
+ANTÔNIO
+Where are my glasses?
+CLARICE
+On the nightstand at the apartment. Where you left them so you would know where they were.
+Rodrigo is not reading his menu. He is reading the mirror.
+In it, at an angle, Hannah turns a wine glass by its stem and listens to Julien tell a story with his hands.
+She looks up. Into the mirror.
+Their eyes meet in the glass — not directly, but through it, which is somehow worse.
+Rodrigo looks down at the menu so fast that he reads the same word four times. Canard. Canard. Canard. Canard.
+RODRIGO
+(in Portuguese, very low)
+Pai. Não olha agora.
+Dad. Don't look now.
+Antônio turns his entire body around in his chair to look.
+RODRIGO (CONT'D)
+Pai!
+ANTÔNIO
+What? You said don't look now. I looked later.
+RODRIGO
+It was one second later!
+ANTÔNIO
+A second is later.
+
+CLARICE
+(not looking up from her menu)
+The redhead.
+Rodrigo stares at her.
+CLARICE (CONT'D)
+Rodrigo, I taught teenagers for thirty years. I can see a boy looking at a girl through a wall.
+RODRIGO
+I'm not a boy.
+CLARICE
+You are tonight.
+At the next table, Julien reaches for the bread. As he does, the smallest flicker crosses his face — a twitch at the corner of the mouth, gone before it lands. He glances at his phone, under the table. Types something.
+We will understand this later. For now it is only a man checking his phone.
+LATER
+Maurice stands over the table like a magistrate. Antônio points at the wine list without his glasses.
+ANTÔNIO
+(in his best English)
+This one. In the middle.
+MAURICE
+(in French)
+Le Pomerol. Excellent choix, monsieur.
+Maurice withdraws. Rodrigo, still watching the mirror, doesn't see where the finger landed.
+RODRIGO
+Which one did you order?
+ANTÔNIO
+The middle one. The middle is always fair. Too cheap, they insult you. Too expensive, they rob you. The middle is where honest people drink.
+CLARICE
+You couldn't see the middle.
+
+ANTÔNIO
+I can feel the middle.
+LATER — THE MAIN COURSE
+Duck for Antônio. Fish for Clarice. Something Rodrigo ordered by pointing and has not tasted.
+At the next table, Ximena is telling a story in Spanish-accented English, something about a taxi driver in Oaxaca and a goat. Hannah laughs her late, total laugh. Her eyes come up — and this time they find Rodrigo's directly. No mirror.
+One second. Two.
+She doesn't look away first.
+He does.
+RODRIGO
+(in Portuguese)
+Ela é linda.
+She's beautiful.
+CLARICE
+That's the third time.
+RODRIGO
+It's the first time.
+CLARICE
+It's the third. The first time was when we sat down. You said it to the bread.
+RODRIGO
+I didn't say anything to the bread.
+ANTÔNIO
+You said it to the bread. I heard. I thought you meant the bread. It's good bread.
+Rodrigo puts his fork down. Picks it up. Puts it down again with great care, aligning it with the knife, as if precision might help.
+RODRIGO
+I want to talk to her.
+ANTÔNIO
+Then talk.
+RODRIGO
+She's with friends. I can't just go there.
+
+ANTÔNIO
+Why not? It's one meter. I walked thirty-five years of mail routes in Belo Horizonte with a bag of eleven kilos. You can walk one meter.
+RODRIGO
+It's not the meter, Dad.
+ANTÔNIO
+It's always the meter.
+Antônio wipes his mouth, leans in. The seriousness of a general.
+ANTÔNIO (CONT'D)
+Listen to me. You go there. You say: "Excuse me. I'm sorry. But I need to tell you that you are very beautiful." And then you leave. You turn around and you leave.
+RODRIGO
+I leave?
+ANTÔNIO
+Mystery. Women love a mystery.
+CLARICE
+When you met me you didn't leave. You stayed three hours and explained the entire history of Clube Atlético Mineiro.
+ANTÔNIO
+And you married me.
+CLARICE
+In spite of the Atlético.
+ANTÔNIO
+Because of it. Deep down.
+Rodrigo isn't listening. In the mirror, Hannah tucks her hair behind her ear, and in doing so looks, once more, toward his table. Not at him. Near him. Close enough to count.
+RODRIGO
+I can't tell her she's beautiful in front of two strangers. I'd die.
+ANTÔNIO
+Then tell it to the strangers. They'll pass it along.
+
+RODRIGO
+Pai.
+ANTÔNIO
+What? This is how it worked in my time. You told the cousin, the cousin told the friend, the friend told the girl. It took a week. It was beautiful.
+CLARICE
+It was gossip.
+ANTÔNIO
+Gossip with a purpose is called romance.
+Rodrigo laughs despite himself. The laugh makes him braver for a moment. He sits up.
+RODRIGO
+Okay. I need a reason. A question. Something normal.
+CLARICE
+Ask her the time.
+RODRIGO
+Everyone has a phone, nobody asks the time anymore.
+ANTÔNIO
+Ask her where the bathroom is.
+RODRIGO
+It's right there, Dad, there's a sign.
+ANTÔNIO
+Ask her why the sign is in French.
+Rodrigo ignores this. He's thinking. His eyes go to the window — the dark street rising, and beyond it, unseen, the top of the hill.
+RODRIGO
+The basilica. Sacré-Cœur. I'll ask if it's worth climbing up to see the view.
+CLARICE
+You went yesterday.
+RODRIGO
+She doesn't need to know that.
+
+CLARICE
+You sent us forty-one photos. At six in the morning.
+RODRIGO
+She doesn't need to know that either.
+ANTÔNIO
+(delighted)
+It's a lie. Good. A small lie is the door. The truth can come in after.
+At the next table, Julien coughs into his napkin. Ximena pats his back. He waves her off, eyes watering, and types something under the table with the speed of a war correspondent.
+Hannah's phone, face-down by her glass, buzzes once.
+She turns it over. Reads. Her eyebrows move a millimeter.
+She turns it face-down again and drinks her wine, looking at nothing in particular, which is to say at Rodrigo.
+LATER
+Dessert menus arrive. Rodrigo hasn't moved.
+ANTÔNIO
+Well?
+RODRIGO
+I'm waiting for the right moment.
+CLARICE
+The right moment was during the duck.
+RODRIGO
+There was no moment during the duck. She was laughing.
+CLARICE
+That's the moment.
+ANTÔNIO
+You know what you were like at nine years old? There was a girl in your class. Patrícia. You made her a drawing. Three days of work. Crayons, watercolor, everything. And do you know what you did with it?
+RODRIGO
+Please don't.
+
+ANTÔNIO
+He gave it to her mother.
+CLARICE
+No.
+ANTÔNIO
+At the gate. "Please give this to Patrícia." And ran.
+RODRIGO
+It was a good drawing.
+ANTÔNIO
+It was an excellent drawing. Her mother put it on the refrigerator. Patrícia never saw it. For all I know it's still on that refrigerator and Patrícia thinks her mother painted a horse.
+RODRIGO
+It wasn't a horse. It was her.
+A silence. Antônio's grin softens into something else.
+ANTÔNIO
+I know, filho.
+At the next table, Julien raises a hand for the check.
+Rodrigo sees it. His stomach drops into the floor.
+CLARICE
+They're asking for the bill.
+RODRIGO
+I see them.
+ANTÔNIO
+Then go.
+RODRIGO
+I need — one minute.
+He stands, too fast; his chair scrapes; the stool beside his father wobbles.
+RODRIGO (CONT'D)
+(in Portuguese)
+Vou ao banheiro.
+I'm going to the bathroom.
+
+ANTÔNIO
+Now? The enemy is retreating and you go to the bathroom?
+CLARICE
+Let him go, Antônio. Everyone needs a bathroom before a war.
+Rodrigo squeezes between the tables. Passing Hannah's chair, he has to turn sideways. For a moment his coat brushes the back of it.
+She doesn't turn. But she sits very still, the way you sit when you know exactly where someone is.
+INT. CHEZ AURÈLE — WASHROOM — CONTINUOUS
+A closet with a sink. Wallpaper of faded birds. A gilt mirror too grand for the room, speckled at the edges like an old photograph.
+Rodrigo locks the door. Leans on the sink. Looks at himself.
+RODRIGO
+(to the mirror, in English)
+Excuse me. Sorry to interrupt. Is it worth it — climbing up — for the view?
+He winces.
+RODRIGO (CONT'D)
+(trying again)
+Hi. Sorry. Quick question. The basilica. Worth it?
+Worse. He tries French, which is worse still.
+RODRIGO (CONT'D)
+Bonsoir. Excusez-moi. La colline... est-ce que... elle vaut... la peine?
+He hears it. Closes his eyes.
+He puts his hands under the tap. The automatic dryer beside him detects them and erupts with the roar of a jet engine. He leaps back. The dryer roars on at nothing, triumphant, then stops.
+Silence.
+Rodrigo looks at the man in the mirror. Thirty-two years old. A man who cleans other people's numbers for a living, who paints faces at three in the morning and shows them to no one, who left one country to become quiet in another.
+
+RODRIGO (CONT'D)
+(in Portuguese, softly)
+Você tem trinta e dois anos.
+You are thirty-two years old.
+He breathes out.
+RODRIGO (CONT'D)
+Ela é só uma pessoa.
+She's just a person.
+He looks at himself a moment longer.
+RODRIGO (CONT'D)
+Uma pessoa linda.
+A beautiful person.
+A KNOCK. He jumps.
+VOICE (O.S.)
+(in French)
+C'est occupé?
+RODRIGO
+Non — sorry — désolé — finished.
+He unlocks the door. A small elderly WOMAN with a cane looks up at him.
+ELDERLY WOMAN
+(in French)
+Bonne chance.
+RODRIGO
+...Pardon?
+She just pats his arm and goes in. The door closes. The dryer roars.
+INT. CHEZ AURÈLE — CONTINUOUS
+Rodrigo comes back down the narrow aisle. At his table, Antônio gives him a thumbs-up so enormous that Maurice, passing with a tray, glances at it with distaste.
+Clarice mouths: Vai. Go.
+Hannah's table: Julien is signing the card receipt. Ximena has her coat half on. Hannah is reaching for her scarf.
+Now or never. Rodrigo stops beside them. Everything inside him goes white and silent, like the moment after a dropped plate before anyone moves.
+RODRIGO
+Sorry. Excuse me.
+
+Three faces turn up at him. Ximena's is radiant with an interest she makes no effort to hide. Julien's is perfectly, suspiciously neutral.
+Hannah's is simply open. Waiting.
+RODRIGO (CONT'D)
+Can I ask you something — a question for — for the table. Is it worth it? The climb up to the Sacré-Cœur? For the view?
+A pause.
+Ximena makes a small, strangled sound and drinks water to cover it.
+HANNAH
+(German accent, precise)
+Yes. Very worth it.
+RODRIGO
+Yeah?
+HANNAH
+Have you never been?
+He looks into her blue eyes and lies like a child.
+RODRIGO
+Never.
+Ximena chokes on the water. Julien thumps her on the back without taking his eyes off Rodrigo.
+JULIEN
+(in fluent Portuguese, with a Minas Gerais lilt)
+Vale muito a pena, cara. Principalmente de manhã cedo. Mas você já sabe disso, né?
+It's very worth it, man. Especially early in the morning. But you already know that, right?
+Rodrigo freezes.
+At the next table, Antônio freezes. Clarice closes her eyes like a woman watching a car slide toward a ditch in slow motion.
+RODRIGO
+(in Portuguese)
+Você... fala português?
+You... speak Portuguese?
+
+JULIEN
+(in Portuguese)
+Morei três anos em Belo Horizonte. Dava aula na Aliança Francesa.
+I lived three years in Belo Horizonte. I taught at the Alliance Française.
+A beat of perfect silence. Then, from the next table, unable to stop himself, Antônio:
+ANTÔNIO
+UAI!
+The whole restaurant turns. Two tourists by the window applaud without knowing why.
+Julien laughs. Ximena laughs. Hannah presses her lips together, eyes shining, and loses the battle by the smallest margin.
+Rodrigo stands in the wreckage of his privacy, every word of the last ninety minutes replaying behind his eyes. She's beautiful. She's beautiful. I'll ask about the hill. She doesn't need to know.
+RODRIGO
+(in English, carefully)
+So you... heard. Some things.
+JULIEN
+Me? I heard nothing. I was very busy eating.
+XIMENA
+He heard everything.
+JULIEN
+I heard some things. Not everything. The acoustics are terrible here.
+RODRIGO
+How much is some?
+JULIEN
+(considering)
+Don't worry. In Portuguese, everything sounds like a compliment.
+Rodrigo turns to Hannah, the last hope.
+HANNAH
+(innocent)
+I don't speak Portuguese.
+
+RODRIGO
+Good.
+HANNAH
+Nothing at all.
+She holds his look a moment longer than the sentence needs. He cannot tell — and never will, tonight — what she knows.
+He has two choices: retreat in disgrace, or continue as if dignity were still an option.
+He continues.
+RODRIGO
+I'm Rodrigo.
+HANNAH
+Hannah.
+RODRIGO
+Hannah. With an H?
+HANNAH
+Two. One at each end. It's the same in both directions.
+RODRIGO
+A palindrome.
+HANNAH
+Yes. It's very practical. I can't be read wrong.
+RODRIGO
+That's — a lot of confidence for a name.
+HANNAH
+I'm German. We build things to last.
+Ximena, coat now fully on, sits back down in it, settling in for the show. Julien gestures to the stool at his elbow — the one that matches the cursed stool at Antônio's table.
+JULIEN
+Sit. Please. Your father won't miss you. He's busy watching.
+Rodrigo looks back. Antônio and Clarice are watching with the naked attention of people at a football final. They both look away at once and become very interested in the dessert menu.
+Rodrigo sits.
+
+XIMENA
+Where are you from? Brazil, okay, we know — but where are you from from?
+RODRIGO
+I'm from Belo Horizonte. But I live in Toronto.
+JULIEN
+(in Portuguese, grinning)
+Mineiro!
+A man from Minas!
+RODRIGO
+Mineiro.
+HANNAH
+And what does a person from Belo Horizonte do in Toronto?
+RODRIGO
+Gets cold, mostly.
+She laughs — the late laugh, the total one. It goes into him like heat into a cold hand.
+RODRIGO (CONT'D)
+I work with data. At a hospital. Research. I clean the numbers.
+HANNAH
+You clean numbers.
+RODRIGO
+People think numbers are honest. They're not. Somebody types a nine instead of a four, somebody forgets a decimal, and suddenly a woman in Mississauga is three hundred years old. I find the ones that are lying.
+HANNAH
+So you are a detective of mistakes.
+RODRIGO
+That's a much better title than mine. And you?
+HANNAH
+I repair paper.
+
+RODRIGO
+Paper.
+HANNAH
+Old paper. Letters, maps, documents. At the State Archive in Hamburg. People tear things, or time tears them, and I put them back. This week I am at the national library here, a workshop. Twelve conservators from eleven countries arguing about glue.
+RODRIGO
+Is it a good argument?
+HANNAH
+It's the best argument. The French use one starch, the Japanese use another, the Germans think everyone is wrong.
+JULIEN
+The Germans always think everyone is wrong.
+HANNAH
+And usually we are correct.
+XIMENA
+(to Rodrigo, conspiratorial)
+She says that, but she cried at a movie on the plane. A cartoon. About a fish.
+HANNAH
+It was a very well-made fish.
+XIMENA
+And you? Only numbers?
+Rodrigo hesitates. This is a thing he doesn't say.
+RODRIGO
+I paint. At night.
+HANNAH
+What do you paint?
+RODRIGO
+Faces. People say they're a little — scary.
+HANNAH
+Are they?
+
+RODRIGO
+Only the honest ones.
+She looks at him. Not the polite look. A look like she is checking a document for the date.
+HANNAH
+I would like to see one.
+RODRIGO
+I don't have Instagram. I don't have anything. I deleted it all.
+JULIEN
+A Brazilian without Instagram? Is that legal?
+RODRIGO
+I wanted to only be somewhere when I'm actually there.
+HANNAH
+(quietly)
+And are you? Actually here?
+RODRIGO
+Right now? Very much.
+Ximena kicks Julien under the table. Julien kicks back. Under the table, it is a war.
+Ximena leans toward Hannah and murmurs in Spanish:
+XIMENA
+(in Spanish)
+Pídele el número. O dáselo tú. Ya.
+Ask for his number. Or give him yours. Now.
+HANNAH
+I don't speak Spanish either.
+XIMENA
+You speak it perfectly when I'm talking about men.
+Rodrigo takes a breath that goes all the way down. The washroom. The mirror. She's just a person.
+RODRIGO
+Hannah. Can I — would you give me your number? So that if — if you're ever — or if I'm —
+He has run out of sentence.
+
+RODRIGO (CONT'D)
+— if the hill.
+HANNAH
+If the hill.
+RODRIGO
+If the hill.
+She considers him for exactly one second — a German second, measured and complete.
+Then, instead of reciting her number, she unlocks her phone, opens a new contact, and hands it to him.
+HANNAH
+Put yours.
+He takes it like something that could break. Her phone is warm from her hand. The screen says NEW CONTACT, cursor blinking.
+He types RODRIGO. Then, with enormous care, digit by digit, his Canadian number.
++1 (647) 555-0142
+He checks it twice. Hands it back.
+HANNAH (CONT'D)
+I'll call you. Then you have mine also.
+She presses CALL. Raises the phone to her ear.
+She watches him, waiting for his pocket to buzz. He waits too, smiling, a hand already moving toward his coat —
+And from the next table, a single word detonates like a dropped tray.
+ANTÔNIO (O.S.)
+QUANTO?!
+INT. CHEZ AURÈLE — CONTINUOUS
+Every head in the room swivels toward Antônio, who is on his feet holding the bill at arm's length, squinting at it without his glasses as if it were written in a hostile alphabet.
+Maurice stands beside him, hands clasped behind his back, serene as a cathedral.
+Rodrigo half-rises from the stool.
+RODRIGO
+Sorry — I'm so sorry — my father —
+
+HANNAH
+(phone still at her ear)
+Go.
+He goes.
+AT THE TABLE
+ANTÔNIO
+(in Portuguese, to the room)
+Cento e quarenta e oito euros! Num vinho! Isso é um assalto!
+A hundred and forty-eight euros! For one wine! This is a robbery!
+MAURICE
+(in French, pleasant as ice)
+Le Pomerol, monsieur. C'est écrit sur la carte.
+The Pomerol, sir. It is written on the list.
+RODRIGO
+Pai, calma —
+ANTÔNIO
+Calm? I pointed at the middle! The middle was forty-eight! Tell him, Rodrigo, tell him in English, tell him in French, tell him I am Brazilian but I am not an idiot!
+RODRIGO
+I'm not going to say that.
+ANTÔNIO
+(in his best French)
+Je suis brésilien! Mais pas... pas...
+He looks to Rodrigo for the word.
+RODRIGO
+Please sit down.
+INTERCUT — HANNAH'S TABLE
+Hannah, phone pressed to her ear, watching the scene with one eye. In the phone: the hollow purr. Then the voice we heard in the dark.
+RECORDED VOICE (V.O.)
+(filtered)
+The Freedom Mobile customer you are calling is not available. Please try again later. Le
+
+client de Freedom Mobile que vous tentez de joindre n'est pas disponible —
+Hannah frowns slightly. Holds on.
+RECORDED VOICE (V.O.) (CONT'D)
+The mailbox of the customer you are calling has not been set up. La boîte vocale du client —
+She lowers the phone and looks at the screen as if it might explain itself.
+Rodrigo
+0:07
+XIMENA
+(in Spanish)
+¿Qué pasó?
+What happened?
+HANNAH
+A robot answered. In two languages.
+JULIEN
+That's Canada. Everything there happens twice.
+Hannah looks at Rodrigo across the narrow gap — standing at his father's elbow, hands up like a man calming a horse — and she does not call again.
+BACK TO ANTÔNIO'S TABLE
+Clarice has put on her reading glasses — the only pair the family brought — and taken the wine list from Maurice with the polite firmness of a woman confiscating a phone in class.
+She lays it on the table. Rodrigo leans in.
+INSERT — THE WINE LIST
+Saint-Émilion Grand Cru, 2016 ............... 48
+Pomerol, 2015 .............................. 148
+The two lines sit close, one above the other.
+BACK TO SCENE
+CLARICE
+Antônio. Show me where you pointed.
+Antônio lowers a thick finger onto the page. It lands, with great confidence, exactly on the hairline space between the two wines.
+Clarice takes out her phone and lays its edge against the list like a ruler. Studies it.
+
+CLARICE (CONT'D)
+(in Portuguese)
+Matematicamente, você pediu os dois.
+Mathematically, you ordered both.
+ANTÔNIO
+Then they should charge me the average.
+RODRIGO
+(to Maurice, in English)
+I'm sorry. He can't read without his glasses. He pointed between them. He thought he was ordering the forty-eight.
+MAURICE
+(in English, at last, each word a small coin)
+Monsieur. Your father pointed. I brought what the finger said.
+RODRIGO
+The finger was confused.
+Maurice looks at the finger. The finger looks back.
+The room is silent. Somewhere in it, the two tourists by the window have their phones raised, filming.
+Maurice inhales through his nose — the long, aristocratic inhalation of a man who has worked twenty-six years in a room where everyone is always right. He takes the bill from Antônio's hand. Crosses something out. Writes something in.
+He places it back on the table.
+MAURICE
+(in French)
+Pour la paix.
+For peace.
+Antônio picks it up. Squints. Smiles enormously.
+MAURICE (CONT'D)
+(in English)
+But you drank a Pomerol, monsieur. Remember it.
+He leaves. It is the best exit line anyone delivers all night, and he knows it.
+
+ANTÔNIO
+(in Portuguese, triumphant, to the whole room)
+Viu? Trinta e cinco anos nos Correios. Eu sei ler um endereço!
+You see? Thirty-five years at the Post Office. I know how to read an address!
+CLARICE
+You couldn't read the menu.
+ANTÔNIO
+An address is different.
+Rodrigo exhales. Then remembers —
+He turns.
+INT. CHEZ AURÈLE — HANNAH'S TABLE — MOMENTS LATER
+He slides back onto the cursed stool. Ximena and Julien are pretending to talk to each other. They are not talking to each other.
+RODRIGO
+I'm so sorry. That was —
+HANNAH
+Very entertaining.
+RODRIGO
+My father has a complicated relationship with prices.
+HANNAH
+He won.
+RODRIGO
+He always wins. Nobody knows how.
+She holds up her phone.
+HANNAH
+I called you. So now you have my number.
+Rodrigo takes out his phone. Wakes it. Looks.
+INSERT — RODRIGO'S PHONE
+The lock screen: a photograph of the view from Sacré-Cœur at dawn. No notifications. Nothing.
+
+BACK TO SCENE
+RODRIGO
+I didn't get anything.
+HANNAH
+No?
+RODRIGO
+Nothing came.
+HANNAH
+Your robot answered.
+RODRIGO
+My robot?
+HANNAH
+A lady. Very polite. English and then French. She said you are not available and your mailbox is not set up.
+RODRIGO
+(laughing)
+That's just Canada. That's what Canada sounds like.
+HANNAH
+Maybe I should write it for you —
+RODRIGO
+It'll come through. Canadian phones are polite. They take their time. They say sorry first.
+She smiles. Lets it go.
+And this — right here — is the moment.
+He could hand her his phone. She could type four seconds of digits. Either of them could send a single text. The whole film could end here, in a warm little room, with a happy ordinary ending.
+Instead, he leans his elbows on the table, and she rests her chin on her hand, and they keep talking.
+HANNAH (CONT'D)
+So. Toronto.
+RODRIGO
+Toronto.
+
+HANNAH
+What is it like?
+RODRIGO
+Cold. Clean. Polite. Everyone apologizes, even the buses. When I first arrived, I bumped into a man on the subway and he apologized to me for being in the place where I bumped.
+HANNAH
+And you like it?
+RODRIGO
+I like it. In Brazil, I was the quiet one. In Canada, everyone is quiet. So I'm normal.
+HANNAH
+Normal.
+RODRIGO
+Almost normal.
+HANNAH
+(considering him)
+I don't think you are normal.
+RODRIGO
+Is that good or bad in German?
+HANNAH
+In German it's a compliment. We have too much normal.
+He laughs. Then, before he can stop it, the brave thing comes out.
+RODRIGO
+If you ever come to Toronto. You have a guide now.
+HANNAH
+Do I.
+RODRIGO
+I'll show you everything. The lake that looks like an ocean. The coffee shop that never has milk. The street where nothing happens, very beautifully.
+HANNAH
+Very tempting.
+
+RODRIGO
+And I want — someday — I want to move to Europe. I've been thinking about it for years. Maybe — if you don't mind — you could be my guide here.
+HANNAH
+I'm a very strict guide.
+RODRIGO
+How strict?
+HANNAH
+I'll tell you exactly where you went wrong. With maps. And documentation.
+RODRIGO
+That sounds — amazing, actually.
+JULIEN
+(not looking up)
+She's not joking.
+XIMENA
+She made us a schedule for this week. Laminated.
+HANNAH
+It's in a plastic sleeve. It's not laminated. There's a difference.
+They laugh. For a moment, it is easy. The distances — Hamburg, Toronto, Belo Horizonte — are only things to talk about across a little table in Paris. Small as salt cellars.
+From behind Rodrigo:
+ANTÔNIO (O.S.)
+(in Portuguese)
+Rodrigo! Vamos, filho!
+Rodrigo! Let's go, son!
+Rodrigo turns. His father is in his coat. Clarice holds out Rodrigo's scarf like a flag of surrender.
+He turns back. Hannah is already looking at him.
+RODRIGO
+I have to go.
+HANNAH
+Yes.
+
+RODRIGO
+The hill. You said it's worth it.
+HANNAH
+It's very worth it.
+RODRIGO
+Then I'll go.
+HANNAH
+For the first time.
+A flicker. Is that a joke? He can't tell. He stands.
+RODRIGO
+It was —
+HANNAH
+(smiling)
+It was very lovely meeting you.
+RODRIGO
+Very lovely. Meeting you.
+He goes. At the door he looks back, once. She is watching. She raises one hand from the table — not a wave, just a hand lifted, like someone stopping a clock.
+The door closes. The little bell above it rings.
+INT. CHEZ AURÈLE — CONTINUOUS
+Hannah turns her glass by its stem.
+JULIEN
+So.
+HANNAH
+So.
+JULIEN
+He said you were beautiful six times.
+XIMENA
+Seven. You missed the bread.
+HANNAH
+Thank you, both of you, for your service.
+She turns her phone over in her hand. The call log glows.
+Rodrigo
+0:07
+
+She doesn't press it again.
+EXT. RUE LEPIC — NIGHT
+The street spills downhill in a long curve, cobbles shining. Antônio walks like a general returning from a war he single-handedly won.
+ANTÔNIO
+Forty-eight euros! You see? You have to fight. They see a Brazilian, they think, here comes a fool with money. Then they meet Antônio.
+CLARICE
+They met your finger.
+ANTÔNIO
+My finger and I are a team.
+Clarice slips her arm through Rodrigo's. He's floating half a meter above the cobbles.
+CLARICE
+And?
+RODRIGO
+Hannah.
+CLARICE
+Hannah.
+RODRIGO
+Two H's. One at each end.
+ANTÔNIO
+Did you get the number?
+RODRIGO
+She has mine.
+Antônio stops. Turns.
+ANTÔNIO
+She has yours.
+RODRIGO
+She called me. So I'd have hers.
+ANTÔNIO
+Then you have hers.
+
+RODRIGO
+Yes.
+He takes out his phone to show them. Opens RECENT CALLS.
+INSERT — RECENT CALLS
+Yesterday. Yesterday. Saturday. Nothing from tonight.
+BACK TO SCENE
+He scrolls. Scrolls back. Pulls the screen down to refresh, as if a call were something that could load.
+RODRIGO
+It's — it said it would come through. It must be a delay.
+ANTÔNIO
+A delay. A phone call with a delay.
+RODRIGO
+Sometimes —
+And then he remembers.
+FLASH — EXT. ABBESSES METRO STEPS — THAT AFTERNOON
+Daylight. Rodrigo on the green iron stairs of the old metro entrance, typing with his thumb.
+To: Priya (work)
+Landed fine! Can you resend the access form?
+Mine expired. Back on the 23rd.
+He sends it. A small red exclamation mark appears.
+Not Delivered
+He frowns. Shrugs. Puts the phone away. Paris is waiting.
+BACK TO RUE LEPIC — NIGHT
+Rodrigo stands absolutely still in the middle of the street.
+RODRIGO
+(in Portuguese, barely audible)
+Não.
+No.
+He goes into Settings. His thumb knows the way and is shaking anyway.
+INSERT — SETTINGS
+Freedom Mobile ........ Off
+
+BACK TO SCENE
+RODRIGO (CONT'D)
+Não, não, não, não —
+CLARICE
+What?
+RODRIGO
+My line was off.
+ANTÔNIO
+What line?
+RODRIGO
+My Canadian line. My number. The number I gave her. It's been off since the airport. She called a phone that doesn't exist.
+Silence on the cobbles. A scooter whines past.
+CLARICE
+Oh, Rodrigo.
+RODRIGO
+I had her phone. In my hand. I had it in my hand, Clarice.
+He toggles the line ON.
+A pause. Then, almost instantly, cheerfully, a notification slides down.
+FREEDOM MOBILE
+Welcome to France! Roam Beyond rates apply:
+$16/day when you use your phone. Enjoy your trip!
+ANTÔNIO
+(reading over his shoulder)
+Sixteen dollars! A day! Turn it off!
+CLARICE
+Antônio.
+ANTÔNIO
+Sixteen dollars to be welcomed!
+RODRIGO
+I don't care, Pai.
+He stands in the middle of Rue Lepic holding the phone up slightly, as if a missed call were a radio signal that could still be caught out of the air, if he held it high enough.
+
+Nothing comes.
+Calls that were never received are not stored anywhere. They do not wait. They do not come back.
+Antônio looks at his son's face, and something in the general goes quiet.
+ANTÔNIO
+(softly)
+Foi o vinho.
+It was the wine.
+RODRIGO
+It wasn't the wine.
+ANTÔNIO
+It was the wine. If I didn't shout —
+RODRIGO
+Pai. It wasn't the wine. It was me. I turned it off. I had her phone in my hand and I said "it'll come through."
+Clarice takes Antônio's arm on one side and Rodrigo's on the other, and walks them both downhill like two boys after a lost match.
+EXT. RUE DURANTIN — APARTMENT BUILDING — NIGHT
+A tall old doorway, the paint peeling a little, a brass digicode panel. Antônio taps the code. The heavy door clicks.
+INT. STAIRWELL — CONTINUOUS
+Four flights of wooden stairs that creak in every language. A timer light that clicks off halfway up. Antônio swears in the dark. Clarice laughs. Rodrigo hits the switch.
+INT. AIRBNB APARTMENT — NIGHT
+Two small rooms under the roof. Exposed beams, a kitchenette, a window over the courtyard. A sofa bed has been pulled out in the living room for Rodrigo. The bedroom is his parents'.
+Antônio locks the apartment door behind them with a single heavy key on a wooden fob that says, in faded marker, DURANTIN 4G.
+He puts the key into the breast pocket of his pajamas, already laid out on the chair, and pats it.
+
+ANTÔNIO
+The key sleeps with me. Thirty-five years, I never lost one key.
+CLARICE
+You lost your glasses tonight.
+ANTÔNIO
+Glasses are not keys.
+He looks at Rodrigo, sitting on the edge of the sofa bed in his coat, phone in both hands.
+ANTÔNIO (CONT'D)
+Filho.
+Rodrigo doesn't look up.
+ANTÔNIO (CONT'D)
+She'll call again.
+RODRIGO
+You don't know that.
+ANTÔNIO
+No. I don't.
+He kisses the top of his son's head, the way he did when Rodrigo was nine and had given a drawing to the wrong person. Then he goes to bed.
+Clarice lingers in the doorway.
+CLARICE
+The Wi-Fi password is on the refrigerator. Under the magnet of the Eiffel Tower. Of course.
+The door closes. A sliver of light under it. Then that goes too.
+INT. AIRBNB APARTMENT — LIVING ROOM — LATER
+Dark, except for the phone. Rodrigo lies on the sofa bed, fully dressed, the screen lighting his face from below like a man telling a ghost story to himself.
+He opens an AI assistant. Types.
+RODRIGO: my canadian sim was off all night. a girl
+called me and i never got it. i turned it on but
+nothing came. how do i make sure if she calls again
+it reaches me
+
+ASSISTANT: Calls made while your line was off don't
+get stored, so they won't arrive late. To be reachable
+now without paying roaming: Airplane Mode on, Wi-Fi on,
+your Freedom line on, and Wi-Fi Calling enabled. Then
+any call to your number reaches you over the apartment's
+Wi-Fi.
+He follows it, step by step. We see each toggle.
+INSERT — THE PHONE
+An airplane icon.
+Wi-Fi .................... DURANTIN_4G_5GHz
+Freedom Mobile ........... On
+Wi-Fi Calling ............ On
+A small new word appears at the top of the screen, next to the signal bars: Fi.
+BACK TO SCENE
+He opens Messages. Nothing.
+Recent Calls. Nothing.
+He taps Voicemail. The phone dials his own mailbox. He puts it to his ear.
+RECORDED VOICE (V.O.)
+(filtered)
+The mailbox of the customer you are calling has not been set up. La boîte vocale du client que vous tentez de joindre n'est pas configurée.
+He lowers the phone slowly.
+This is the voice. This is exactly what she heard, at her table, while his father shouted about a Pomerol. Polite. Empty. In two languages.
+He calls his voicemail again, just to hear it again. Listens to the whole thing. English. French.
+It is the loneliest sound in the film.
+He goes back to the assistant.
+RODRIGO: be honest. what are the chances she calls
+again. give me a percentage
+The dots pulse.
+
+ASSISTANT: If you want a number: maybe 30 to 40
+percent. But hold that number loosely. It's a guess
+wearing a lab coat. I can't calculate the intentions of
+a woman I've never met.
+What I can tell you isn't a probability: she called.
+She handed you her phone and she called. That part
+happened.
+He reads it twice. On the second read, at "lab coat," something in his face almost smiles.
+RODRIGO: she called
+ASSISTANT: She called.
+He puts the phone on his chest and looks at the beams.
+LATER
+2:11 a.m. on the microwave clock. Rodrigo sits up, wide awake, laptop open on his knees. He has logged into his carrier account.
+INSERT — LAPTOP SCREEN — USAGE HISTORY
+A dull grey table. Dates. Times. Toronto time zone.
+Oct 19 15:09 Incoming +1 (647) 555-0178 0:00
+BACK TO SCENE
+His heart jumps. A number. A real number, at the right time. 15:09 in Toronto is 21:09 in Paris. The exact minute his father discovered the Pomerol.
+He grabs his phone and dials it. Holds his breath.
+RECORDED VOICE (V.O.)
+(filtered)
+Welcome to Freedom Mobile voicemail. Please enter your —
+He hangs up. Sits back.
+It is not her. It is the machine she passed through. He has found the corridor, not the person who walked down it.
+LATER
+The laptop's support chat window, blinking.
+KARIM (Freedom Support): Hi Rodrigo! Thanks for
+waiting. I see you're roaming in France. How can I
+help tonight?
+
+RODRIGO: someone called my number on oct 19 around
+3pm toronto time. my line was off. the usage page only
+shows the voicemail number. is there any way to see
+the original number that called me
+KARIM (Freedom Support): I can't see the originating
+number from my side, I'm sorry. But you can request
+your call detail records from our back office. They
+sometimes include the original caller info. I'll send
+you the template.
+The template arrives. Rodrigo fills it in, slowly, carefully, a man cleaning the most important numbers of his life.
+Customer name: Rodrigo [REDACTED]
+Account number: ••••••4471
+Phone number: +1 (647) 555-0142
+Date range: October 19, 2026
+Time: approx. 20:00–22:00 Paris / 14:00–16:00 Toronto
+Records requested: Incoming voice calls. Original
+caller information, if available.
+He reads it over. Sends it.
+KARIM (Freedom Support): Sent! Processing time is
+usually 5 business days.
+RODRIGO: i fly home on friday
+KARIM (Freedom Support): Ah.
+KARIM (Freedom Support): I'll add a note asking them
+to prioritize. Can't promise anything.
+RODRIGO: thank you
+KARIM (Freedom Support): Can I ask? You don't have
+to answer.
+RODRIGO: it's a girl
+KARIM (Freedom Support): I figured. Nobody requests
+call records at 2am for a pizza place. Good luck,
+man.
+Rodrigo closes the laptop.
+Five business days.
+LATER
+He's on his back. The phone glows on his chest. He opens a browser. Types slowly:
+hannah paper conservator hamburg
+His thumb hovers over SEARCH.
+
+He looks at the words a long time. Then he deletes them, letter by letter, until the box is empty.
+She gave him a phone. Not an address. Not a last name. Not a door. She gave him the one thing she decided to give, and he lost it, and that does not make the rest of her his to go looking for.
+He puts the phone face-down. Then face-up again. Then down.
+THE IFS — A SEQUENCE
+Rodrigo stares at the ceiling, and the evening replays itself in small alternatives, each one a branch that grows for a moment and is cut.
+INT. CHEZ AURÈLE — NIGHT — (IMAGINED)
+Hannah hands him her phone. Put yours. He types his number — and then, in this version, holds out his own phone. And yours. She types. He saves it. They both smile.
+SNAP — back to the ceiling.
+INT. CHEZ AURÈLE — NIGHT — (IMAGINED)
+Hannah presses CALL — and in his pocket, the phone buzzes. He takes it out. Her number glows on the screen. He saves it as HANNAH (TWO H'S) and she laughs, and a full second later his father shouts QUANTO, and it doesn't matter anymore.
+SNAP — the ceiling.
+EXT. RUE LEPIC — NIGHT — (IMAGINED)
+Walking downhill, his phone buzzes. A text. Hi it's Hannah from the restaurant. Your robot was very polite.
+SNAP.
+The ceiling. The beams. The silence.
+There is another version, and it whispers too. The one where she was only being polite. Where she never called at all.
+He knows that one is false. She told him. She held the phone up. I called you.
+Whatever else is unknown, the attempt was real.
+He closes his eyes.
+INT. JULIEN AND XIMENA'S APARTMENT — RUE LEPIC — SAME NIGHT
+Three hundred meters away. Up one street and around one corner.
+
+A bigger apartment, full of plants and books and a guitar no one can play. The guest room is a study with a fold-out bed, a window on the street.
+Hannah sits on the deep windowsill in an old T-shirt, knees up, phone on her knees. The street below is empty and wet.
+Ximena appears in the doorway in a robe, holding two cups of tea, and hands her one.
+XIMENA
+Text him.
+HANNAH
+I called him.
+XIMENA
+It didn't go through.
+HANNAH
+He said it would arrive.
+XIMENA
+(in Spanish)
+Los hombres dicen que muchas cosas van a llegar.
+Men say a lot of things are going to arrive.
+HANNAH
+He has my number. Or he will. If he wants to call, he can call.
+XIMENA
+He doesn't have it. Your robot said so.
+HANNAH
+It wasn't my robot. It was his robot.
+Ximena sits on the end of the fold-out bed.
+XIMENA
+You liked him.
+Hannah looks out the window.
+HANNAH
+He asked if the hill was worth it.
+XIMENA
+He climbed it yesterday. Julien told you.
+HANNAH
+I know.
+
+XIMENA
+And?
+HANNAH
+And he asked anyway. With his whole face. Like it mattered what I answered.
+A pause.
+HANNAH (CONT'D)
+Men who lie well don't lie like that.
+Julien appears behind Ximena, in socks, eating cereal out of the box.
+JULIEN
+Six times. He said it six times.
+XIMENA
+Seven.
+JULIEN
+The bread doesn't count.
+HANNAH
+Goodnight, Julien.
+JULIEN
+His father is a legend. I want to be adopted.
+HANNAH
+Goodnight, Julien.
+He goes. Ximena squeezes Hannah's foot and follows him.
+Hannah looks at the phone. Opens Messages. Types:
+Hi, it's Hannah from the restaurant. Your robot was very polite.
+She looks at it.
+She thinks about her grandmother, maybe, or about a train station, or about nothing; it is impossible to say. Whatever she thinks, she decides.
+She deletes it. Letter by letter.
+HANNAH
+(in German, to the empty street)
+Wenn er will, ruft er an.
+If he wants to, he'll call.
+She puts the phone face-down on the sill.
+
+EXT. MONTMARTRE — NIGHT — HIGH ANGLE
+The camera rises from Hannah's window, up over the wet roofs, over the chimneys and the crooked streets, and finds, three hundred meters away, a dark skylight in Rue Durantin where a phone glows faintly through the glass and goes out.
+Two windows. One hill. Each phone face-down. Each person certain the next move belongs to the other.
+Above them both, white and enormous and indifferent, the basilica floats on its hill in the floodlights.
+FADE TO BLACK.
+INT. AIRBNB APARTMENT — MORNING
+Tuesday, October 20
+Grey light through the skylight. The microwave clock says 7:02.
+Rodrigo is sitting on the sofa bed exactly where we left him, only now the phone is plugged into the wall and his eyes look like two thumbprints.
+INSERT — THE PHONE
+Wi-Fi Calling
+No new messages. No missed calls.
+BACK TO SCENE
+The bedroom door opens. Antônio emerges in his pajamas, the key still in the breast pocket, and looks at his son.
+ANTÔNIO
+You slept?
+RODRIGO
+Yes.
+ANTÔNIO
+Liar. You have your mother's face when you lie. Your whole forehead tells the truth.
+He goes to the kitchenette and begins the sacred ritual of making coffee badly in a foreign machine.
+LATER
+Breakfast on the tiny table under the skylight. Croissants in a paper bag going translucent with butter. Clarice has a paper map of Paris spread out like a general staff.
+
+CLARICE
+Orsay this morning. Lunch near the river. Then the Marais, if your father's knees agree.
+ANTÔNIO
+My knees agree with everything. It's my back that is in the opposition.
+Rodrigo stares at his phone.
+CLARICE
+Rodrigo. If you leave the Canadian line on outside, will it still work?
+RODRIGO
+It should. Sixteen dollars a day. I don't care.
+ANTÔNIO
+Sixteen dollars —
+CLARICE
+(not looking up)
+Antônio.
+ANTÔNIO
+— is a very fair price for love. That's what I was going to say.
+EXT. RUE DES ABBESSES — DAY
+The family walks toward the metro. Rodrigo, phone in hand: Freedom line ON, eSIM data ON. Airplane mode OFF.
+The top of the screen flickers.
+INSERT — THE PHONE
+Freedom ........ Searching...
+eSIM ........... 4G
+Then:
+Freedom ........ Searching...
+eSIM ........... No Service
+BACK TO SCENE
+RODRIGO
+Come on.
+The map on his screen freezes, a blue dot stuck in the middle of a building.
+
+INT. ABBESSES METRO STATION — CONTINUOUS
+The deepest station in Paris. A spiral staircase painted with murals winds down and down and down.
+Clarice studies the paper map. Antônio studies the stairs.
+ANTÔNIO
+How many steps?
+RODRIGO
+I don't know.
+ANTÔNIO
+The phone doesn't know?
+RODRIGO
+The phone doesn't know anything right now.
+INSERT — THE PHONE
+Freedom ........ Searching...
+eSIM ........... Searching...
+FREEDOM MOBILE
+You've been charged $16 for Roam Beyond today.
+BACK TO SCENE
+RODRIGO
+It's charging me and it's not even working. It's fighting itself. Two lines, and it can't decide which one to be.
+CLARICE
+Like you.
+He shoots her a look. She smiles over the map.
+INT. METRO PLATFORM — LATER
+A train screams in. Doors bang open. People pour out. Antônio, holding Clarice's hand, plunges into the wrong car with total confidence.
+CLARICE
+Antônio, this is the wrong direction!
+ANTÔNIO
+There's no wrong direction in Paris! Everything is beautiful!
+The doors close. Through the glass, Antônio's face slowly understands.
+
+INT. METRO CAR — MOVING — LATER
+Rodrigo, Clarice, and Antônio, three stops in the wrong direction, standing in the swaying car. Rodrigo looks at the phone. Searching. Searching. The battery at 41%.
+ANTÔNIO
+How do we get back?
+RODRIGO
+I can't open the map.
+CLARICE
+The paper map works.
+ANTÔNIO
+I can't read the paper map.
+CLARICE
+Because your glasses —
+ANTÔNIO
+— are on the nightstand, yes, thank you, everyone knows where my glasses are except my face.
+Rodrigo looks at the phone. The two lines. One of them is a road home. The other is a road to a woman who might call, or might not.
+He knows what he has to do. He hates it.
+He opens Settings. His thumb rests on the toggle.
+RODRIGO
+(in Portuguese, quietly)
+Só um pouquinho.
+Just for a little while.
+He switches the Freedom line OFF.
+Instantly, the eSIM bars bloom to full. The map unfreezes. The blue dot leaps to their real position under Paris, three stops in the wrong direction.
+INSERT — THE PHONE CLOCK
+14:52
+BACK TO SCENE
+RODRIGO (CONT'D)
+I'll turn it back on every time there's Wi-
+Fi. Every café. Every museum. I'll ask every waiter in Paris for the password.
+
+CLARICE
+That's a lot of waiters.
+RODRIGO
+I'll ask them all.
+SERIES OF SHOTS — WI-FI
+— A café counter. Rodrigo, breathless:
+RODRIGO
+Le code wifi, s'il vous plaît?
+The BARMAN points at a chalkboard: PAS DE WIFI. PARLEZ-VOUS. (No Wi-Fi. Talk to each other.)
+— A bakery. A WOMAN behind the counter laughs at him and hands him a baguette instead.
+— A bench outside a tabac. Rodrigo holds his phone toward the window of the building next door, chasing a network called FREEBOX_8A2C, password-
+protected.
+— Antônio and Clarice, watching him from a bench, sharing a crêpe.
+ANTÔNIO
+He looks like your cousin when he was trying to get TV signal on the farm.
+CLARICE
+That was you.
+ANTÔNIO
+It was a long time ago.
+INT. BIBLIOTHÈQUE NATIONALE DE FRANCE — SITE RICHELIEU — CONSERVATION WORKSHOP — SAME DAY
+Silence of a different kind. High windows. Long tables under daylight lamps. Twelve conservators in white coats bent over twelve wounded documents, as quiet as surgeons.
+Hannah sits at a lightbox. On it, a letter from 1794, torn almost in half along a fold, its ink the brown of dried tea.
+Beside her, MADAME BÉRANGER (60s), French, steel-grey hair in a knot, magnifying visor pushed up on her forehead, watches her work.
+Hannah lays a strip of Japanese tissue, thin as breath, across the tear. Brushes wheat-starch paste through it with a brush of three hairs. The tissue darkens, becomes nearly invisible, holds.
+
+MADAME BÉRANGER
+(in French)
+Pas trop. Il faut qu'on la voie encore.
+Not too much. We must still be able to see it.
+HANNAH
+(in French, with a German accent)
+Je sais. Une bonne réparation se voit.
+I know. A good repair can be seen.
+MADAME BÉRANGER
+(in French)
+Et?
+And?
+HANNAH
+(in French)
+Et se défait.
+And can be undone.
+MADAME BÉRANGER
+(in English, now, for emphasis)
+Never hide the tear. And never make a repair that can't be taken back. We are not here to make things look like nothing happened. Something happened. We are here so it can be read.
+Hannah's brush hesitates above the paper. A tiny tremor.
+MADAME BÉRANGER (CONT'D)
+You are somewhere else today, Hannah.
+HANNAH
+I'm here.
+MADAME BÉRANGER
+Your hands are here.
+Hannah sets the brush down.
+HANNAH
+Can I take my break now?
+EXT. JARDIN DU PALAIS-ROYAL — CONTINUOUS
+The long gravel garden behind the library, rows of clipped lime trees turning gold, an old fountain spraying into a stone basin. Office workers on the green iron chairs, faces tilted at a weak October sun.
+
+Hannah walks to a chair at the fountain's edge and sits with her coat over her white workshop jacket.
+Her phone buzzes.
+XIMENA: ¿Ya le llamaste?
+She looks at the message for a long time.
+HANNAH: no
+XIMENA: Llámale. O me muero.
+XIMENA: (Call him. Or I'll die.)
+XIMENA: Esto no es una amenaza. Es medicina.
+Hannah laughs despite herself. Opens her contacts. Rodrigo.
+She looks up at the trees. Takes a breath that is almost a decision and almost not.
+She presses call.
+INSERT — HANNAH'S PHONE
+Calling Rodrigo...
+15:07
+INT. MUSÉE D'ORSAY — FIFTH FLOOR — THE GREAT CLOCK — SAME MOMENT
+A cathedral of iron and glass that was once a railway station. On the top floor, behind an enormous clock face of clear glass, visitors stand in silhouette against the city.
+Through the clock's transparent numerals, across the river, across the roofs, far away on its hill: the white domes of the Sacré-Cœur.
+Rodrigo stands behind the clock, very close to the glass, a small dark figure inside the face of time. He is looking at the hill.
+His phone is in his hand. On its screen, the museum's Wi-Fi login page, a long form demanding his email, his country, his consent.
+Please accept the terms and conditions.
+He scrolls.
+Behind him, through the glass, the great black minute hand of the clock moves forward one notch. Clunk.
+INTERCUT — PALAIS-ROYAL / ORSAY
+Hannah, phone at her ear. The purr. The voice.
+
+RECORDED VOICE (V.O.)
+(filtered)
+The Freedom Mobile customer you are calling is not available —
+Rodrigo, behind the clock, typing his email address letter by letter with a careful thumb.
+RECORDED VOICE (V.O.) (CONT'D)
+— Le client de Freedom Mobile que vous tentez de joindre n'est pas disponible —
+Hannah closes her eyes. Doesn't hang up.
+Rodrigo, behind the clock, scrolling to the bottom of thirty-one paragraphs of terms.
+RECORDED VOICE (V.O.) (CONT'D)
+— The mailbox of the customer you are calling has not been set up. La boîte vocale du client —
+Hannah listens to the whole thing. English, then French. She listens to it the way you listen to a train announcement when you already know the train has been cancelled.
+At the very end: a long electronic tone. Then silence. She lowers the phone.
+Rodrigo taps ACCEPT.
+INSERT — RODRIGO'S PHONE
+Connecting...
+BACK TO HANNAH
+She looks at the screen.
+Rodrigo
+0:31
+She opens the contact. Taps EDIT. Her thumb moves to the end of his name.
+She adds a question mark.
+Rodrigo?
+She saves it. Puts the phone in her coat pocket.
+HANNAH
+(in German, quietly)
+Na gut.
+Well. Fine.
+
+She sits a moment longer by the fountain, watching the water fall into the stone and leave no mark on it. Then she stands and goes back to work.
+BACK TO RODRIGO
+INSERT — RODRIGO'S PHONE
+Connected: ORSAY_VISITEURS
+15:09
+He opens Settings. Flicks Wi-Fi Calling. Flicks Freedom ON. The little word appears: Wi-Fi.
+Nothing comes. Nothing ever comes from the minutes that have already passed.
+He doesn't know. He will never know what those two minutes held.
+He looks out through the clock face at the far white hill, unaware that someone has just stopped calling, unaware that the one thing he is waiting for has come and gone like a train through a station where he stood on the wrong platform.
+Behind him, the minute hand moves again. Clunk.
+Antônio appears at his shoulder, out of breath from the stairs, and looks through the clock with him.
+ANTÔNIO
+Is that your hill?
+RODRIGO
+That's the hill.
+ANTÔNIO
+From here it looks small.
+RODRIGO
+Everything looks small from far away, Dad.
+ANTÔNIO
+No. Not everything.
+They stand together inside the clock.
+INT. AIRBNB APARTMENT — NIGHT
+The window over the courtyard is open. Rodrigo sits on the sill with his legs inside and his back to the cold. Phone on Wi-Fi. Nothing.
+Antônio comes out of the bedroom in his pajamas with two small glasses and a bottle of cachaça he swore he wasn't bringing. He climbs, with great complaint, onto the other end of the sill.
+
+ANTÔNIO
+Don't tell Clarice.
+RODRIGO
+She's watching us from the bed.
+CLARICE (O.S.)
+I'm asleep.
+Antônio pours. They drink. Antônio makes a face like the cachaça has personally betrayed him.
+ANTÔNIO
+Nothing?
+RODRIGO
+Nothing.
+A long pause. The courtyard below. Someone's television through a wall. A woman laughing in another window.
+ANTÔNIO
+Did I ever tell you how I met your mother?
+RODRIGO
+At a party.
+ANTÔNIO
+That's what we told people. It was a bakery. Padaria São Jorge, on Rua Pernambuco. My first route. Every morning at seven I passed with the bag. And every morning at seven, there she was, buying bread. Two pão francês and a coffee, standing at the counter, reading a book.
+RODRIGO
+You never told me that.
+ANTÔNIO
+You never needed it before.
+He refills.
+ANTÔNIO (CONT'D)
+I didn't say anything. Not one word. I was too afraid. So the next day I came back at seven. And the next day. Eleven days. I bought so much bread, my mother thought I had a second family.
+Rodrigo laughs.
+
+ANTÔNIO (CONT'D)
+On the twelfth day, she closed her book, she turned around, and she said: "Are you going to buy bread, or are you going to say something?"
+RODRIGO
+What did you say?
+ANTÔNIO
+I said, "Bread."
+Rodrigo laughs harder. Antônio is pleased with this.
+ANTÔNIO (CONT'D)
+And she laughed, like you, just like this, like an idiot, and that was it. The rest was easy. The first word is the only heavy one.
+RODRIGO
+You? Shy?
+ANTÔNIO
+Why do you think I talk so loud? Shy men talk loud. We put the volume up so nobody can hear how scared we are.
+Rodrigo looks at his father. Really looks.
+RODRIGO
+I didn't know that.
+ANTÔNIO
+Now you know. Your stubbornness came from her. Your shyness came from me. I apologize for that one. It's not a good inheritance. It doesn't even come with land.
+He drinks.
+ANTÔNIO (CONT'D)
+Go back.
+RODRIGO
+Where?
+ANTÔNIO
+The restaurant. Same hour. Same table. The bakery method. You can't find the girl? Go back where the girl was.
+
+RODRIGO
+She won't be there, Pai. It was one dinner. They were celebrating something.
+ANTÔNIO
+Maybe she won't. Maybe she will. The bakery doesn't care. You go because it's seven o'clock.
+Rodrigo turns the little glass in his hand, the way Hannah turned her wine glass by its stem.
+RODRIGO
+Tomorrow. Eight o'clock.
+ANTÔNIO
+Good.
+CLARICE (O.S.)
+And tomorrow is Versailles. All day. Your father will be dead by six.
+ANTÔNIO
+I will be alive by six. Asleep, but alive.
+He pats his pajama pocket. The key.
+ANTÔNIO (CONT'D)
+And the key sleeps with me.
+RODRIGO
+Then how do I get back in?
+ANTÔNIO
+You ring. I wake up. I open. I go back to sleep. I've done it for thirty-two years.
+RODRIGO
+I'm not going to wake you at midnight on your vacation.
+ANTÔNIO
+Then make another key.
+He says it as a joke. Rodrigo doesn't hear it as one.
+INT. CHÂTEAU DE VERSAILLES — HALL OF MIRRORS — DAY
+Wednesday, October 21
+Gold. Chandeliers. Three hundred and fifty-seven mirrors. A river of tourists flowing under the painted ceiling, every one of them holding up a phone.
+
+Antônio walks with his hands behind his back like a king inspecting his own palace.
+ANTÔNIO
+This is what you can do with a lot of wine money.
+Rodrigo stands in front of one tall mirror, checking his phone.
+In the mirror, he is multiplied — reflection inside reflection, a corridor of Rodrigos receding into gold, a hundred men holding a hundred phones, and every screen empty.
+Clarice appears beside him in the glass. A hundred Clarices.
+CLARICE
+The king built this so he could look at himself forever.
+RODRIGO
+He must have been very lonely.
+CLARICE
+Everyone who looks at a mirror too long is lonely. Put the phone away for one room. It's a famous room.
+He puts the phone away. For one room.
+EXT. RUE DES ABBESSES — LATE AFTERNOON
+The same street as the first scene, the light going gold again, two days later.
+Antônio and Clarice, destroyed by Versailles, shuffle toward the apartment. Rodrigo walks beside them, scanning shopfronts.
+He stops at a narrow door.
+A tiny shop, older than everything around it. A painted sign: CORDONNERIE — CLÉS MINUTE — SERRURERIE. In the window, resoled shoes, a stuffed owl wearing a tiny key on a chain, and a hand-lettered card: On fait les clés depuis 1971. (Making keys since 1971.)
+RODRIGO
+Pai. The key.
+ANTÔNIO
+What key?
+RODRIGO
+The one that sleeps with you.
+
+Antônio understands. A slow grin spreads over his tired face. He fishes the key with the wooden fob out of his coat — DURANTIN 4G — and holds it up between two fingers like evidence.
+ANTÔNIO
+I was joking.
+RODRIGO
+I wasn't.
+INT. CORDONNERIE — CONTINUOUS
+A cave of brass and leather. A single bulb. A wall of blank keys hanging on hooks, hundreds of them, silver and gold, arranged like the pipes of an organ. A radio on a shelf plays an old chanson, crackling.
+The three of them barely fit. Antônio has to stand sideways between a shoe-
+stretcher and a rack of laces.
+Behind the counter, MONSIEUR PELLETIER (78), a small man in a grey work coat, fingertips black with brass dust, half-moon glasses, the face of a man who has been listening to locks for fifty years.
+RODRIGO
+Bonjour. Une... copie? S'il vous plaît.
+He holds up the key. Pelletier takes it. Turns it in the light. Reads its teeth like a palm.
+MONSIEUR PELLETIER
+(in French)
+Une clé d'appartement. Rue Durantin?
+An apartment key. Rue Durantin?
+RODRIGO
+(surprised)
+Oui.
+MONSIEUR PELLETIER
+(in French)
+J'ai fait la serrure. En quatre-vingt-dix-
+huit.
+I made the lock. In ninety-eight.
+He selects a blank from the wall without looking, the way a pianist finds a note in the dark. Clamps the original and the blank side by side in an old machine. Switches it on.
+The cutting wheel shrieks. Brass sparks fly, small and gold, a tiny fireworks show in the dark shop. Clarice steps back. Antônio leans in, fascinated, a postman's respect for any man who makes things that open doors.
+
+Rodrigo's eye wanders. On a pegboard by the counter hang padlocks — small brass ones, heavy steel ones, a few heart-shaped ones in red that look embarrassed to be there.
+Pelletier switches the machine off. Blows the dust from the new key. Files a burr. Tests it in the air with a little twist of the wrist, as if the lock were there.
+He lays it on the counter. Bright, sharp, nameless. No fob.
+MONSIEUR PELLETIER (CONT'D)
+(in French)
+Vingt-quatre euros.
+Twenty-four euros.
+A beat.
+ANTÔNIO
+(in Portuguese)
+Quanto?
+How much?
+RODRIGO
+Twenty-four.
+Antônio stares at the key. Then at Rodrigo. Then at the key. And then he laughs — not the angry laugh of the Pomerol, but a big, helpless, delighted laugh that fills the tiny shop and makes the stuffed owl in the window seem to blink.
+ANTÔNIO
+Twenty-four euros! For a key! We leave on Friday! It's a key for two days!
+CLARICE
+Antônio —
+ANTÔNIO
+Twelve euros a day to open a door! In Minas, with twenty-four euros, I buy three cows!
+RODRIGO
+You've never bought a cow in your life.
+ANTÔNIO
+Three! With the option of a fourth!
+Pelletier watches this without understanding a word of it, and smiles anyway, because laughter is the same in every language and he has heard a lot of it in fifty years.
+Rodrigo counts out the euros onto the counter. Picks up the new key. It is still warm from the cutting.
+
+RODRIGO
+Then it'll be my souvenir.
+ANTÔNIO
+A souvenir!
+RODRIGO
+My memory of France. Some people buy a little Eiffel Tower. I bought a key to an apartment I'm leaving on Friday.
+ANTÔNIO
+(wiping his eyes)
+The most expensive souvenir in Paris. After the Pomerol.
+Rodrigo slips it into his pocket. He means it as a joke.
+He has no idea yet.
+Pelletier looks at Rodrigo over his half-moon glasses, and switches to a slow, careful English.
+MONSIEUR PELLETIER
+You come back late, yes? To not wake somebody.
+RODRIGO
+How do you know?
+MONSIEUR PELLETIER
+A man copies a key in a holiday apartment for two reasons. He is coming back late. Or he is coming back.
+He nods toward Rodrigo's pocket.
+MONSIEUR PELLETIER (CONT'D)
+(in French)
+Une clé, c'est une promesse de retour.
+A key is a promise to return.
+Rodrigo's eye drifts again to the padlocks.
+MONSIEUR PELLETIER (CONT'D)
+(not looking up, in French)
+Pas pour les ponts, hein. La mairie les coupe.
+Not for the bridges, eh. The city cuts them off.
+
+RODRIGO
+No — no. Just looking.
+MONSIEUR PELLETIER
+(in French)
+Tout le monde regarde.
+Everybody looks.
+EXT. RUE DES ABBESSES — CONTINUOUS
+The bell over the shop door jingles behind them. Antônio is still laughing, one hand on Clarice's shoulder for support.
+ANTÔNIO
+Twenty-four euros.
+CLARICE
+Leave him alone. It's romantic.
+ANTÔNIO
+It's a key. To our apartment. Where I live. The romance is with me.
+Rodrigo walks ahead of them with his hand in his pocket, closed around it.
+INT. CHEZ AURÈLE — NIGHT
+20:00. The same green paint, the same candles, the same mirror wall showing everyone everything.
+Rodrigo enters alone. The little bell over the door rings.
+Maurice, at the bar polishing a glass, looks up. A beat of recognition. His face does not move, but somewhere behind it, a door closes.
+MAURICE
+(in French)
+Ah. Le Brésilien.
+Ah. The Brazilian.
+RODRIGO
+Hello. Bonsoir.
+MAURICE
+(in English)
+The Pomerol.
+RODRIGO
+The Pomerol. Yes. Sorry about that.
+
+MAURICE
+Your father was very —
+He searches for the word.
+RODRIGO
+Loud.
+MAURICE
+Convinced.
+Rodrigo glances at the room. Table seven, beside the mirror, by the stool, is empty. A RESERVED card sits on it.
+RODRIGO
+Can I sit there? Table six?
+Maurice regards him for a long moment. Then he leads him to the little two-top beside the empty table and pulls out the chair — the chair, not the stool — with a gesture that is almost courtesy.
+LATER
+Rodrigo sits alone. A bowl of soup he hasn't touched. Table seven is still empty. Every time the bell above the door rings, he looks up.
+The bell rings. A couple in raincoats.
+The bell rings. Three Americans.
+The bell rings. A man with a dog.
+He looks at the mirror. In it, table seven is empty, and he is alone, and the room is full.
+Maurice comes to clear the soup. Hesitates.
+MAURICE
+(in English)
+You are waiting.
+RODRIGO
+Is it that obvious?
+MAURICE
+Monsieur, I have been a waiter for twenty-six years. Everybody in this room is eating. You are waiting.
+Rodrigo takes a breath. The first word is the heavy one.
+
+RODRIGO
+On Monday. The table next to us. Table seven. There was a woman. Red hair. German. With a French man and a Mexican woman.
+MAURICE
+I know who you mean.
+RODRIGO
+Did they — do you know their names? Did they reserve? Is there a phone number?
+Maurice's face closes like a shutter on a shop.
+MAURICE
+(in French)
+Monsieur. Je ne peux pas.
+Sir. I cannot.
+RODRIGO
+I know. I know. I'm sorry. I'd never — I just thought —
+MAURICE
+This is a restaurant. Not a post office.
+RODRIGO
+(a sad laugh)
+My father was a postman. Thirty-five years.
+Something in Maurice shifts. Barely.
+RODRIGO (CONT'D)
+She gave me her phone and I typed my number and she called me. And my phone was off. My Canadian line. I didn't know. She called, and it went nowhere. And she must think — I don't know what she thinks. That I gave her a fake number. That I'm a liar. And I'm leaving on Friday.
+Maurice says nothing.
+RODRIGO (CONT'D)
+Could I just — leave a note? If she ever comes back? You don't have to do anything. You don't have to give me anything. Just — if she comes in, you give her the note. That's all.
+Maurice looks at the empty table seven for a long time.
+
+MAURICE
+Write.
+He places a pen beside Rodrigo's plate and leaves.
+INSERT — A SHEET FROM A WAITER'S ORDER PAD
+Rodrigo's handwriting. Careful. Capital letters, like a man writing to a stranger he is afraid of misreading him.
+HANNAH —
+(red hair. Hamburg. table 7. Monday.)
+My line was off. I never got your call.
+I'm so sorry. I didn't lie to you. Not about the number.
+RODRIGO +1 (647) 555-0142
+(It works now. I promise.)
+BACK TO SCENE
+He folds it once. Then unfolds it and adds, at the bottom:
+P.S. I lied about the hill.
+He folds it again.
+LATER
+Maurice reappears with a glass of red wine. Sets it down.
+RODRIGO
+I didn't order this.
+MAURICE
+The Pomerol.
+RODRIGO
+I can't — that's a hundred and forty-eight euros —
+MAURICE
+(in French)
+Un verre. Ce soir. C'est la bouteille d'hier, elle meurt demain.
+One glass. Tonight. It's yesterday's bottle. It dies tomorrow.
+RODRIGO
+How much?
+MAURICE
+Do not ask. Your father would shout.
+He takes the folded note from the table. Turns it over in his long fingers.
+
+MAURICE (CONT'D)
+I will keep it.
+He walks to the old brass cash register at the end of the bar. Behind it, taped to the mirror, are the treasures of twenty-six years: a yellowed photograph of a cat, a 1987 hundred-franc note, a postcard from Lisbon, a child's drawing of a waiter with a very long face.
+Maurice tapes the note among them. Smooths it flat with his thumb.
+Rodrigo watches. Then, finally, he lifts the Pomerol and drinks.
+LATER — 23:30
+Chairs on tables. The candles out except one. Table seven, empty all night, the RESERVED card gone.
+Rodrigo is the last customer. He stands, puts on his coat.
+RODRIGO
+Thank you. For this.
+MAURICE
+(in French)
+Bonne chance, monsieur.
+Good luck, sir.
+The bell rings as he goes.
+EXT. RUE LEPIC — NIGHT
+Rodrigo walks downhill alone, hands in his pockets. In the right pocket, his fingers close around the new key, its teeth still sharp.
+INT. JULIEN AND XIMENA'S APARTMENT — SAME NIGHT — EARLIER
+Dinner's ruins on the table. Candle stubs. An empty bottle of mezcal that was nearly full at the start.
+Ximena has her laptop open.
+XIMENA
+Rodrigo. Toronto. Brazilian. Painter.
+She hits enter. Scrolls.
+XIMENA (CONT'D)
+A dentist. A soccer player. A man who sells pools in Mississauga.
+JULIEN
+Try "scary faces."
+
+XIMENA
+Rodrigo Toronto scary faces painter.
+She scrolls.
+XIMENA (CONT'D)
+A Halloween store.
+JULIEN
+He said he deleted everything.
+XIMENA
+A man without Instagram is either a criminal or a saint.
+JULIEN
+Or a Brazilian with a bad phone plan.
+Hannah sits on the floor with her back against the sofa, holding a glass she hasn't drunk.
+HANNAH
+Stop.
+XIMENA
+We're helping.
+HANNAH
+You're searching for a man who doesn't want to be found.
+JULIEN
+Or a man who doesn't know he's lost.
+HANNAH
+I called twice. Twice. The robot. Both times. Nothing.
+JULIEN
+(gently, teasing)
+Maybe he gave you a fake number. In Brazil, it's a national sport. Football, carnival, fake numbers.
+XIMENA
+Julien.
+JULIEN
+I'm joking.
+HANNAH
+He didn't seem like a sportsman.
+
+But it lands. They can see it land.
+HANNAH (CONT'D)
+It was a fun evening for him. The German in Paris. The father, the wine, the story. It's a good story. He tells it in Toronto. "And then I gave her my number, and she believed it."
+XIMENA
+You don't believe that.
+HANNAH
+I don't know what I believe. That's the problem with only having one evening. You can't check it against anything.
+She sets the glass down. Stands.
+HANNAH (CONT'D)
+I need air.
+EXT. RUE LEPIC — NIGHT — 23:50
+Hannah walks uphill alone in her long coat, hair loose. The street is wet and empty. A single scooter, far away.
+She passes a dark green restaurant. CHEZ AURÈLE. Chairs on the tables. One candle still burning at the back of the room where Maurice, a silhouette, counts the till.
+She does not look in.
+But the camera does.
+Through the dark glass, past the chairs, past the bar: the old brass cash register, the mirror behind it, the yellowed cat, the hundred-franc note, the postcard from Lisbon — and a folded sheet from an order pad, taped flat, with HANNAH written across the top in capital letters.
+Hannah's reflection passes over it in the window. For one moment her own face lies exactly across her own name.
+Then she is gone, up the hill.
+The candle at the back goes out.
+EXT. RUE DURANTIN — APARTMENT BUILDING — SAME MOMENT
+Three streets away. Rodrigo taps the digicode. Climbs the four flights in the dark without touching the timer light.
+
+INT. AIRBNB APARTMENT — CONTINUOUS
+The new key slides into the lock. It turns — smooth, perfect, Pelletier's work. The door opens without a sound.
+Through the bedroom door, Antônio's snoring, deep and steady as a ship's engine.
+Rodrigo smiles in the dark. He did not wake him. He sits on the edge of the sofa bed and holds the key in his open palm, looking at it in the light from the courtyard.
+A key. A promise to return.
+EXT. SACRÉ-CŒUR — THE STEPS — NIGHT — SAME MOMENT
+Hannah has climbed all the way. She sits alone on the great stone steps beneath the white basilica, near the top, knees up, coat wrapped around them.
+Below her: all of Paris, spread out to the horizon in a sea of small gold lights. The view.
+The view he said he'd never seen.
+She takes out her phone. Opens the contact.
+Rodrigo?
+Her thumb rests on the call button. She doesn't press it.
+She looks out at the city. Somewhere down there, among ten million lights, one of them is his. She doesn't know which. She doesn't know he is three streets away.
+HANNAH
+(in German, to the city)
+Du hast gesagt, du warst nie hier.
+You said you had never been here.
+A small sad smile.
+HANNAH (CONT'D)
+Lügner.
+Liar.
+She puts the phone away and sits with the view, alone, until she's cold.
+
+INT. AIRBNB APARTMENT — DAWN
+Thursday, October 22
+Blue light. The skylight is a square of slate. On the floor by the sofa bed, Rodrigo's suitcase lies open, half-packed, a shirt folded over its edge like a flag at half-mast.
+Rodrigo is asleep, finally, one arm over his eyes, still in yesterday's shirt. The phone lies on the pillow beside his head, plugged in, on Wi-Fi.
+It buzzes once. A short, ordinary buzz. An email.
+He doesn't wake.
+It buzzes again — a reminder.
+His eyes open. He fumbles for it. Squints.
+INSERT — THE PHONE
+06:12
+Freedom Mobile Records
+RE: Request for Call Detail Records — Ticket #4471-CDR
+BACK TO SCENE
+He sits straight up so fast the sofa bed's springs shriek.
+He opens it. His hands are not steady.
+INSERT — THE EMAIL
+Dear Rodrigo,
+Please find below the call detail records for your
+line, +1 (647) 555-0142, for the requested period.
+DATE TIME (ET) TYPE FROM DUR.
+Oct 19 15:09 Incoming +49 15• •••• 1873 0:00 (VM fwd)
+Oct 20 09:07 Incoming +49 15• •••• 1873 0:00 (VM fwd)
+The camera never lets us read the number whole. It is hers, not ours.
+BACK TO SCENE
+He reads it. Reads it again.
+Two lines.
+Two calls.
+Not one. Two. The second on Tuesday. 09:07 in Toronto. 15:07 in Paris.
+He knows exactly where he was at 15:07 on Tuesday. He was standing inside a clock.
+
+He puts his hand over his mouth.
+INSERT — THE EMAIL, CONTINUED
+Please note this request was processed in 3 business
+days rather than the standard 5. One of our support
+agents flagged it as time-sensitive.
+Regards,
+Danielle O.
+Records & Compliance, Toronto
+P.S. Karim says hi. We all hope she picks up.
+BACK TO SCENE
+Rodrigo laughs — a short, wet, astonished sound — and then his eyes fill, and he presses the heel of his hand against them, a grown man crying at 6 a.m. over a spreadsheet sent by a stranger in a back office in Toronto.
+Two strangers. Karim. Danielle. People he will never meet, in fluorescent rooms on the other side of the ocean, who moved his request to the top of a pile.
+He looks at the number.
+The bedroom door is closed. His father snores. The clock on the microwave says 6:14.
+He stands. Barefoot. Phone in hand. Goes to the door — then remembers his parents — and takes the bright twenty-four-euro key from his jacket so the lock won't clank when he lets himself back in.
+He slips out.
+INT. STAIRWELL — CONTINUOUS
+He sits on the wooden stairs between the third and fourth floors, in the dark. The timer light is off. He doesn't turn it on.
+The phone lights his face.
+He taps the number. His thumb hovers over CALL.
+RODRIGO
+(in Portuguese, a whisper)
+Ela vai estar dormindo.
+She's going to be asleep.
+He looks at it.
+
+RODRIGO (CONT'D)
+(in Portuguese)
+Liga, Rodrigo.
+Call, Rodrigo.
+He presses it.
+The phone rings. Not a purr this time. A real ring. A German ring, long and flat.
+Once.
+Twice.
+Three times.
+INT. JULIEN AND XIMENA'S APARTMENT — GUEST ROOM — CONTINUOUS
+Dark. Hannah asleep on the fold-out bed, face in the pillow, red hair everywhere.
+On the floor beside her, the phone lights up and buzzes against the wooden boards.
++1 (647) 555-0142
+She gropes for it without lifting her head. Holds it against her ear upside down. Rights it.
+HANNAH
+(in German, thick with sleep)
+Ja?
+Yes?
+INTERCUT — STAIRWELL / GUEST ROOM
+RODRIGO
+Hannah?
+A silence on the line. The kind of silence that has a shape.
+RODRIGO (CONT'D)
+It's Rodrigo. From the restaurant. Monday. The — the hill.
+Hannah opens her eyes.
+She takes the phone from her ear and looks at the screen — the Canadian number she has called twice into nothing — and puts it back.
+HANNAH
+(in English, carefully)
+Rodrigo.
+
+RODRIGO
+I'm so sorry. I'm so sorry, I know it's six in the morning, I'm sorry, I couldn't wait, please let me explain, please just let me —
+HANNAH
+Rodrigo —
+RODRIGO
+— my line was off. My Canadian line. The number I gave you. I turned it off at the airport so I wouldn't pay roaming and I forgot, I completely forgot, and I was using another chip, a travel chip, for data, and when you called me at the restaurant it didn't ring because it couldn't ring because the phone didn't exist —
+He takes a breath like a swimmer.
+RODRIGO (CONT'D)
+— and then my father shouted about the wine, and then you said you called, and I said it would come through, which was the stupidest sentence I've ever said in my life, and I walked out with my family and then halfway down the street I realized —
+Hannah is sitting up now. One hand over her mouth.
+RODRIGO (CONT'D)
+— and I turned it on and Freedom welcomed me to France and charged me sixteen dollars, and nothing came, and I asked an AI for a percentage, and I called my own voicemail and I heard the robot, the same robot you heard, and I found a number in my usage that was just the voicemail, and I talked to a man called Karim at two in the morning, and I sent a form to the back office, and they said five business days, and I leave tomorrow — and then on Tuesday I had to turn the line off again because the phone was fighting with itself and we were lost in the metro, and I swear I turned it back on in every café in Paris but there was no Wi-Fi anywhere, there's a café that says talk to each other —
+
+HANNAH
+(muffled, behind her hand)
+Rodrigo.
+RODRIGO
+— and yesterday I went back to the restaurant and sat at the table next to yours all night like an idiot, and the waiter gave me the Pomerol, and then this morning, ten minutes ago, the back office sent me your number. They did it in three days. A woman called Danielle. She wrote a P.S.
+A pause.
+RODRIGO (CONT'D)
+And I saw you called twice. On Tuesday too. At 15:07. And I'm so sorry. I'm so sorry, Hannah. I didn't lie to you. I would never give you a fake —
+And then he hears it.
+She's laughing.
+Not politely. Not a little. Hannah is laughing the late, total laugh, bent over her own knees on a fold-out bed in the dark, laughing so hard she has to hold the phone away from her face.
+RODRIGO (CONT'D)
+...Hannah?
+HANNAH
+(laughing, wiping her eyes)
+You — called the phone company.
+RODRIGO
+I requested the records.
+HANNAH
+You requested the records.
+RODRIGO
+It was the only —
+HANNAH
+That is the most German thing a Brazilian has ever done.
+He starts laughing too. On the dark stairs. Helplessly. A door on the third floor opens a crack and an old man in a hairnet glares up at him, and Rodrigo waves sorry, sorry, and keeps laughing with his hand over his mouth.
+
+HANNAH (CONT'D)
+(catching her breath)
+I thought you gave me a fake number.
+RODRIGO
+I know.
+HANNAH
+I thought, it was a fun evening for him. The German. The father. A good story for Brazil. "And then I gave her a number and she believed it." Julien said in Brazil it's a sport.
+RODRIGO
+Julien is a terrible person.
+HANNAH
+Julien is a terrible person.
+RODRIGO
+I would never.
+HANNAH
+I know.
+RODRIGO
+How do you know?
+HANNAH
+(a beat)
+Because I heard the robot twice. A man who gives a fake number doesn't have a robot. He has a pizza place, or a stranger, or nothing. You had a robot that said your name was not available, in two languages. Only a real person can be that unavailable.
+He laughs again.
+HANNAH (CONT'D)
+And I changed your name.
+RODRIGO
+To what?
+HANNAH
+Rodrigo, with a question mark.
+RODRIGO
+That's fair.
+
+HANNAH
+It was very fair.
+A silence. A good one now. On the third floor, the man in the hairnet closes his door.
+HANNAH (CONT'D)
+When do you leave?
+RODRIGO
+Tomorrow. Early. Seven o'clock flight.
+HANNAH
+Tomorrow.
+RODRIGO
+Yes.
+HANNAH
+So. Today.
+RODRIGO
+Today.
+HANNAH
+I have the workshop. Twelve conservators and the glue.
+RODRIGO
+Of course. I understand. I just wanted you to know —
+HANNAH
+I've never skipped anything in my life. Not one class. Not one day. When I had pneumonia I took the train to the archive with a fever of thirty-nine and fixed a map of Lübeck.
+RODRIGO
+...Is that a no?
+She looks at the window. Grey light. A pigeon on the sill, offended by something.
+HANNAH
+Where?
+He closes his eyes, smiling, on the dark stairs.
+
+RODRIGO
+Well. I heard there's a hill. With a church on top. White. People say the view is worth it. I've never been.
+A long pause on the line.
+HANNAH
+(very dry)
+I heard that too.
+They both know. They both know the other knows.
+HANNAH (CONT'D)
+Two o'clock. At the bottom. By the carousel.
+RODRIGO
+Two o'clock.
+HANNAH
+I'll be the one who's on time.
+RODRIGO
+I'll be the one who's already there.
+HANNAH
+Rodrigo?
+RODRIGO
+Yes?
+HANNAH
+Is your line on?
+RODRIGO
+My line will never be off again for the rest of my life.
+HANNAH
+Good.
+She hangs up. Sits there in the half-dark. Opens his contact.
+Rodrigo?
+She taps EDIT. Her thumb goes to the question mark.
+And stops. Not yet.
+She saves it as it is, and falls back onto the pillow, and stares at the ceiling with a face that cannot decide whether it is about to laugh or cry, and settles on both.
+
+HANNAH (CONT'D)
+(in German, to the ceiling)
+Die Akten. Er hat die Akten angefordert.
+The records. He requested the records.
+INT. STAIRWELL — CONTINUOUS
+Rodrigo sits on the stairs in the dark, phone pressed to his chest.
+The timer light clicks on above him.
+He looks up. His father and Clarice are standing on the landing above in their pajamas. Antônio has his finger on the light switch. They have clearly been there for some time.
+ANTÔNIO
+(in Portuguese)
+E aí?
+So?
+Rodrigo can't speak. He holds up two fingers.
+CLARICE
+Two o'clock?
+He nods.
+Antônio punches the air so hard his pajama pocket flaps open and the original key falls out and bounces down the stairs, clank, clank, clank, past Rodrigo, and lands on the landing below.
+Nobody picks it up for a while. They're all laughing.
+INT. BNF RICHELIEU — CONSERVATION WORKSHOP — MORNING
+Madame Béranger answers her phone at the lightbox, magnifying visor down.
+MADAME BÉRANGER
+(in French)
+Oui?
+INTERCUT — HANNAH, ON THE WINDOWSILL, DRESSED, COAT ON, HAIR WET
+HANNAH
+(in French)
+Madame. C'est Hannah. Je suis... malade.
+Madame. It's Hannah. I am... sick.
+
+MADAME BÉRANGER
+(in French)
+Malade de quoi?
+Sick with what?
+Hannah opens her mouth. Closes it.
+A long pause on the line. Béranger slowly pushes up her visor.
+MADAME BÉRANGER (CONT'D)
+(in French)
+Ah. Celle-là.
+Ah. That one.
+HANNAH
+(in French)
+Oui.
+MADAME BÉRANGER
+(in French)
+Allez-y. La colle attendra.
+Go. The glue will wait.
+EXT. SQUARE LOUISE-MICHEL — THE CARROUSEL — DAY
+The foot of the hill. Above, tier after tier of lawns and stairways rise toward the white basilica, which sits at the top like a cloud that decided to stay.
+At the bottom: an old double-decker carousel, painted horses rising and falling to an organ waltz, lights blinking in the daylight. A few children. A bored attendant.
+Rodrigo stands beside it. Clean shirt. The good coat. He has been here a long time. He checks his phone.
+13:41
+He checks the line.
+Freedom Mobile ........ On
+He checks it again.
+LATER
+13:58
+He's walked around the carousel four times. The attendant is starting to watch him with professional suspicion.
+13:59
+
+Above them, high on the hill, the great bell of the basilica begins to toll the hour. Deep, slow, bronze.
+On the first stroke of two —
+Hannah comes around the corner of the square.
+Long dark coat. Red hair loose in the wind. A scarf the blue of her eyes. She is walking quickly, then sees him, and slows, and he sees her slow, and something in both of them recognizes the other's nervousness and is relieved by it.
+The bell strikes two. She stops in front of him.
+HANNAH
+On time.
+RODRIGO
+Exactly on time.
+HANNAH
+You?
+RODRIGO
+Forty minutes early.
+HANNAH
+That's very un-Brazilian.
+RODRIGO
+I've been Canadian for six years. It's spreading.
+They stand there. Without the table, without the family, without the friends and the father and the wine, they are suddenly just two people in the open air, and neither knows what to do with their hands.
+RODRIGO (CONT'D)
+Hi.
+HANNAH
+Hi.
+A beat. Then she takes out her phone. Turns the screen toward him.
+Rodrigo?
+He looks at it.
+RODRIGO
+Ouch.
+
+HANNAH
+I told you.
+She turns the phone back. Taps EDIT. And in front of him, deliberately, with one finger, she deletes the question mark.
+Rodrigo
+She saves it. Puts the phone away.
+It is a small thing. It is the biggest thing anyone has done for him in a long time.
+HANNAH (CONT'D)
+So. The hill.
+RODRIGO
+The hill.
+HANNAH
+There's a funicular.
+She points to it: a little glass cabin sliding up its rail on the side of the slope.
+RODRIGO
+No. I want to walk. It's my first time. I want the full experience.
+HANNAH
+(the driest voice in Europe)
+Of course. Your first time.
+EXT. SACRÉ-CŒUR — THE GREAT STAIRS — CONTINUOUS
+Two hundred and twenty steps, give or take. They climb.
+Around them: tourists, a man selling bracelets, a busker murdering a guitar, couples taking photos, a schoolgroup in matching orange caps.
+HANNAH
+Can I tell you something?
+RODRIGO
+Is it bad?
+HANNAH
+It's very funny.
+RODRIGO
+For who?
+
+HANNAH
+For me.
+She takes out her phone again. Opens WhatsApp. Scrolls up — far up — to Monday night. Hands it to him.
+HANNAH (CONT'D)
+Julien. Under the table. All night.
+He reads. We see it over his shoulder.
+INSERT — WHATSAPP — FROM JULIEN TO HANNAH — MONDAY
+JULIEN: the guy at the next table thinks you are beautiful
+JULIEN: he told his father
+JULIEN: he told his father again
+JULIEN: his father says go now
+JULIEN: the stepmother says he has been saying this for 40 min
+JULIEN: she says he said it to the bread
+JULIEN: his plan is to ask you if the sacré-coeur is worth it
+JULIEN: he climbed it yesterday at 6am and sent them 41 photos
+JULIEN: "she doesn't need to know that"
+JULIEN: the father says a small lie is the door and the truth comes in after
+JULIEN: I love this man
+JULIEN: (the father)
+JULIEN: the son also ok
+JULIEN: he gave a drawing to a girl's MOTHER when he was 9
+JULIEN: he is going to the toilet to be brave
+JULIEN: !!!! he's coming
+BACK TO SCENE
+Rodrigo stops climbing. Stands on the stairs with the phone in both hands. People flow around him like water around a stone.
+RODRIGO
+Oh, no.
+HANNAH
+Yes.
+RODRIGO
+Everything?
+HANNAH
+Everything.
+RODRIGO
+The bread?
+HANNAH
+The bread.
+
+RODRIGO
+The drawing?
+HANNAH
+I want to see the drawing. I think about it all the time. The mother on the refrigerator.
+RODRIGO
+(covering his face)
+I'm going to walk down these stairs and go to the airport.
+HANNAH
+You can't. Your flight is tomorrow.
+RODRIGO
+I'll wait there.
+He hands the phone back. She takes it, delighted.
+RODRIGO (CONT'D)
+So when I came to your table —
+HANNAH
+I knew you would ask about the hill. I knew you had climbed the hill. I knew you went to the bathroom to be brave.
+RODRIGO
+And you let me ask anyway.
+HANNAH
+Yes.
+RODRIGO
+Why?
+They climb a few steps. She considers the question as if it deserves an exact answer, because to her, questions do.
+HANNAH
+Because I wanted to see if you would really do it. Men say a lot of things to their fathers. Then they finish their dessert and go home. I wanted to see if you would stand up.
+RODRIGO
+And I stood up.
+
+HANNAH
+You stood up. And then you lied to my face, very badly, about a church.
+RODRIGO
+I lied very badly.
+HANNAH
+It was the worst lie I have ever seen. Ximena almost died.
+RODRIGO
+She choked on her water.
+HANNAH
+Twice.
+They climb.
+RODRIGO
+Can I ask you something now?
+HANNAH
+It's fair.
+RODRIGO
+Why did you look back? At dinner. Before Julien told you anything. The first time, in the mirror.
+She doesn't answer right away. A few more steps.
+HANNAH
+Most men, when they look at a woman in a restaurant, look like they're trying to decide if they want to buy something.
+RODRIGO
+And me?
+HANNAH
+You looked like you were trying to remember something. Like I was a word you used to know.
+He has nothing to say to that. So he doesn't.
+EXT. SACRÉ-CŒUR — THE PARVIS — CONTINUOUS
+The top. The white stone terrace before the basilica. The wind is stronger here.
+
+They turn.
+And there it is.
+All of Paris, laid out beneath them in the afternoon light, grey and gold and endless, roofs on roofs on roofs, the river hidden somewhere in the folds, the tower far off to the right like a pin holding the city to the earth. Clouds moving slowly, their shadows sliding across whole neighborhoods.
+Rodrigo looks at it.
+Hannah looks at Rodrigo looking at it.
+HANNAH
+Well?
+RODRIGO
+I've never seen it.
+HANNAH
+Liar.
+RODRIGO
+I've never seen it — with you.
+A pause.
+He hears it. Winces with his entire body.
+RODRIGO (CONT'D)
+That was terrible.
+HANNAH
+That was very terrible.
+RODRIGO
+Please forget I said that.
+HANNAH
+No.
+RODRIGO
+No?
+HANNAH
+I'm keeping it. I'm an archivist. It's evidence.
+RODRIGO
+Of what?
+
+HANNAH
+That you're the kind of man who says terrible things when he means them.
+She looks out at the city again. The wind moves her hair across her face and she doesn't push it away.
+HANNAH (CONT'D)
+It's true, though. It's different with someone. I came here alone last night. At midnight.
+RODRIGO
+You came here?
+HANNAH
+I needed air. I walked up. I sat there.
+She points to a spot on the steps, near the top.
+HANNAH (CONT'D)
+I thought: he said he never saw this. Liar. And I was angry. Not at the lie. At the fact that I liked the lie.
+He looks at the spot on the steps. Then at her.
+RODRIGO
+I was three streets away. Last night. At midnight. I'd just come back from the restaurant.
+HANNAH
+(slowly)
+Three streets.
+RODRIGO
+Rue Durantin.
+HANNAH
+Julien lives on Rue Lepic.
+They look at each other. Then they look down at the hill, at the crooked streets, at the tiny scale of the distance that has been between them for three days.
+HANNAH (CONT'D)
+That's —
+RODRIGO
+Three hundred meters.
+
+HANNAH
+That's very stupid.
+RODRIGO
+That's the most stupid thing that has ever happened.
+HANNAH
+No. You requested the records. That's still the most stupid.
+EXT. PLACE DU TERTRE — DAY
+The old village square behind the basilica, crammed with easels and red umbrellas. Painters at work on canvases of Paris rooftops and grinning tourists. The smell of crêpes and turpentine.
+They wander through it. A PORTRAIT PAINTER (60s), beret, charcoal-black fingers, steps into Hannah's path with a practiced flourish.
+PORTRAIT PAINTER
+(in French)
+Un portrait, mademoiselle? Vingt euros. Dix minutes. Vous êtes faite pour le fusain.
+A portrait, miss? Twenty euros. Ten minutes. You were made for charcoal.
+HANNAH
+(in French)
+Non, merci —
+RODRIGO
+(in French, terrible)
+Monsieur. Je peux... emprunter? Votre... charbon?
+Sir. Can I... borrow? Your... coal?
+The painter looks at him like he's asked to borrow his wife.
+RODRIGO (CONT'D)
+(in English)
+I'll pay you the twenty euros. For the chair, and the paper, and the charcoal. I'll draw her myself.
+PORTRAIT PAINTER
+(in English, amused)
+You are a painter?
+
+RODRIGO
+At night.
+The painter studies him. Shrugs a great Gallic shrug. Gestures to his stool with a bow. Be my guest.
+Hannah stares at Rodrigo.
+HANNAH
+You're going to draw me.
+RODRIGO
+If you sit.
+HANNAH
+In front of all these people.
+RODRIGO
+You saw the WhatsApp. I have no dignity left. I'm free.
+She laughs. And sits.
+LATER
+A small crowd has gathered. Tourists, two other painters, a little girl with a balloon. The portrait painter stands behind Rodrigo, arms crossed, frowning professionally.
+Rodrigo draws. Fast. Intent. The charcoal hisses on the paper. He looks at her, looks down, looks at her. When he draws, the shyness is gone — there is only attention, total and unembarrassed, the way she listens.
+HANNAH
+Can I talk?
+RODRIGO
+Yes. Just don't smile.
+HANNAH
+Why not?
+RODRIGO
+Because you're going to smile at the end. I want the moment before.
+She holds very still. Something in her face changes, becomes what he asked for.
+HANNAH
+What do you see?
+
+RODRIGO
+Someone who doesn't skip things.
+HANNAH
+I skipped today.
+RODRIGO
+I know. I can see that too.
+The charcoal moves. The crowd is silent. Even the busker has stopped.
+LATER
+He blows the dust from the paper. Hesitates. Turns it around.
+We see it.
+It is her — unmistakably her, but more than a likeness. The eyes are very direct. The mouth is about to do something. There is a shadow under the cheekbone like the edge of a tear in old paper. It is beautiful, and a little frightening, the way true things are.
+She looks at it a long time.
+HANNAH
+I look like I'm about to cry.
+RODRIGO
+You look like someone who's about to leave.
+HANNAH
+That's the same thing.
+RODRIGO
+Not always.
+The portrait painter leans over his shoulder. Looks. A grunt. He reaches into his pocket, takes out the twenty-euro note Rodrigo gave him, and tucks it back into Rodrigo's coat.
+PORTRAIT PAINTER
+(in French)
+Gardez-le. C'est mieux que les miens.
+Keep it. It's better than mine.
+He walks away to his next customer, muttering.
+Hannah rolls the portrait carefully, the way she would roll a map of Lübeck. She slides it into the inside of her coat.
+HANNAH
+You said your faces are scary.
+
+RODRIGO
+People say that.
+HANNAH
+It's not scary. It's just honest with the lights off.
+He looks at her. She has said, in one sentence, a thing he has been trying to say about his own work for ten years.
+EXT. RUE DE L'ABREUVOIR — DAY
+A sloping cobbled lane, lined with low houses and gardens. The pink house on the corner. Ivy. A cat on a wall, disapproving of everybody.
+They walk downhill, slowly, side by side, close but not touching.
+HANNAH
+Tell me about Toronto. The real one. Not the guide.
+RODRIGO
+The real one?
+HANNAH
+Why did you leave Brazil?
+He thinks about it.
+RODRIGO
+In Brazil, everybody is loud. My father, my uncles, the neighbors, the television, the buses. Everyone talks at the same time and that's how you know they love you. And I was always — the quiet one at the end of the table. Drawing on the napkin. Everyone thought something was wrong with me.
+HANNAH
+Was it?
+RODRIGO
+No. I just heard everything. When nobody is listening, you hear everything.
+HANNAH
+And in Canada?
+
+RODRIGO
+In Canada, everybody is the quiet one at the end of the table. It's a whole country of napkins.
+She laughs.
+RODRIGO (CONT'D)
+And I work with numbers all day, and at night I paint, and I go to sleep very late, and in the morning I clean the numbers again. It's a good life. It's a small life. It's very — tidy.
+HANNAH
+You say tidy like it's a disease.
+RODRIGO
+Sometimes it is.
+HANNAH
+And the social media? Why delete everything?
+RODRIGO
+Because I was everywhere and nowhere. I'd be at dinner and also on my phone looking at other people's dinners. I wanted to only be where I am. If I'm in Paris, I'm in Paris. If I'm with you, I'm with you.
+HANNAH
+And if you leave?
+RODRIGO
+Then I'm somewhere else.
+HANNAH
+(gently)
+That's the same as being gone, Rodrigo.
+He stops walking.
+She stops too. They stand in the middle of the sloping lane.
+RODRIGO
+Is it?
+HANNAH
+For the person who stays, yes.
+A tourist couple squeezes past them, apologizing. Neither notices.
+
+RODRIGO
+And you? The real Hamburg.
+HANNAH
+Rain. Water. Ships. Red bricks. My apartment has a window on a canal and a radiator that sings at night. I work in a building full of letters nobody has read in two hundred years. I like it. It's quiet, like Canada, but wetter.
+RODRIGO
+Do you live alone?
+HANNAH
+(a beat, precise)
+Since March.
+He understands, and doesn't ask.
+HANNAH (CONT'D)
+That's why I said yes to the phone. Probably. On Monday. Before March, I would never give a number to a man in a restaurant. After March, I thought — why not. What's the worst? He doesn't call.
+RODRIGO
+And then I didn't call.
+HANNAH
+And then you didn't call.
+RODRIGO
+I'm sorry.
+HANNAH
+You said that already. Forty times on the phone.
+RODRIGO
+I'll say it forty more.
+HANNAH
+Please don't.
+They start walking again. Downhill. Toward Abbesses.
+
+EXT. SQUARE JEHAN-RICTUS — LE MUR DES JE T'AIME — DAY
+A small walled garden off the Place des Abbesses. Benches, a few trees, pigeons.
+And along one side, an entire wall of dark blue tiles, forty square meters of them, each covered in white handwriting — the words I love you, written over and over, in hundreds of languages, in hundreds of hands. Scattered across the blue, like spilled paint, are small irregular red shapes: pieces of a broken heart, scattered so that anyone can take one.
+Tourists pose in front of it. A girl kisses a boy for a photo; her friend counts three-two-one.
+Rodrigo and Hannah stand a little back, looking at it.
+HANNAH
+Do you know this?
+RODRIGO
+No.
+HANNAH
+(a small smile)
+Your first time?
+RODRIGO
+Actually my first time. I promise. Look, my face. My forehead is telling the truth.
+She looks at his forehead. Nods, satisfied.
+HANNAH
+"I love you." In — two hundred and fifty languages, maybe more. And the red pieces. A heart broken into pieces, so that everybody gets a piece.
+RODRIGO
+That's very sad.
+HANNAH
+Is it? I think it's practical. A whole heart is too heavy for one person to carry.
+They step closer. Their eyes move across the wall, searching. Neither says what for.
+He finds it first. Low on the left. In a round, sloping hand.
+eu te amo
+He doesn't point. He doesn't say anything. He just looks at it.
+
+A moment later, her eyes stop too. Higher up, to the right. In a straight, upright hand.
+ich liebe dich
+She doesn't point either.
+They stand there side by side in front of the wall, each looking at a different square meter of it, each knowing exactly what the other is looking at.
+Neither of them says anything for a long time.
+The pigeons. The tourists. Three-two-one. A camera clicking.
+HANNAH (CONT'D)
+(finally)
+Do you know what's missing?
+RODRIGO
+What?
+HANNAH
+There's no wall for "I'll call you."
+RODRIGO
+There should be.
+HANNAH
+It would be much bigger.
+RODRIGO
+In two hundred and fifty languages.
+HANNAH
+And in every one of them, half of them are lies.
+RODRIGO
+Not all of them.
+HANNAH
+No. Not all of them.
+EXT. RUE DES ABBESSES — DAY — CONTINUOUS
+They walk out of the little garden onto the street. And there, a few doors down: the narrow shopfront. CORDONNERIE — CLÉS MINUTE — SERRURERIE. The stuffed owl in the window with its tiny key.
+Rodrigo stops. Laughs.
+
+RODRIGO
+That's my key man.
+HANNAH
+Your key man?
+RODRIGO
+Yesterday. I made a copy of the apartment key there. So I could come back late from the restaurant without waking my father.
+He takes it from his pocket: the bright, nameless, twenty-four-euro key. Holds it up in the afternoon light.
+RODRIGO (CONT'D)
+Twenty-four euros. My father laughed so hard the owl nearly fell over. "A key for two days! In Minas I could buy three cows!" I told him it was my souvenir. My memory of France.
+Hannah takes the key from his fingers. She looks at it closely, the way she looks at a document — turning it, reading its edge, its teeth.
+HANNAH
+A key to a door that won't be yours tomorrow.
+RODRIGO
+That's why it's a souvenir.
+HANNAH
+(still looking at it)
+In the archive we have a box. Keys. Hundreds. From houses that were bombed in 1943. People brought them in after the war. The doors were gone, the houses were gone, the streets were gone. But they kept the keys.
+RODRIGO
+Why?
+HANNAH
+Because a key isn't only for a door. It's proof that there was a place you could come back to.
+She looks up at the shop. At the padlocks hanging on the pegboard visible through the glass. Small brass ones. Steel ones. A few embarrassed red hearts.
+Something passes over her face — a decision being made, the way she makes them, completely.
+
+HANNAH (CONT'D)
+Come.
+INT. CORDONNERIE — CONTINUOUS
+The bell. The single bulb. The radio crackling an old chanson.
+Monsieur Pelletier looks up from a boot he's resoling. Sees Rodrigo. Sees Hannah. Looks at Rodrigo again over his half-moon glasses, and the corner of his mouth moves about one millimeter.
+MONSIEUR PELLETIER
+(in French)
+Ah. Il est revenu.
+Ah. He came back.
+HANNAH
+(in fluent, careful French)
+Monsieur. Ce cadenas-là. Le petit, en laiton. Est-ce que vous pouvez faire qu'il s'ouvre avec cette clé?
+Sir. That padlock there. The small brass one. Can you make it open with this key?
+She lays Rodrigo's key on the counter.
+Rodrigo stares at her.
+Pelletier picks up the key. He doesn't need to look at it — he cut it yesterday — but he looks anyway, a long time, the way you look at a question you like.
+MONSIEUR PELLETIER
+(in French)
+La clé de la rue Durantin. J'ai fait la serrure en quatre-vingt-dix-huit. J'ai encore les goupilles dans un tiroir.
+The Rue Durantin key. I made that lock in ninety-eight. I still have the pins in a drawer.
+He takes the little brass padlock down from the pegboard. Weighs it in his palm.
+MONSIEUR PELLETIER (CONT'D)
+(in French)
+Vingt minutes.
+Twenty minutes.
+He looks at them over his glasses.
+
+MONSIEUR PELLETIER (CONT'D)
+(in French)
+Pas pour les ponts.
+Not for the bridges.
+HANNAH
+(in French)
+Pas pour les ponts. Quelque part où personne ne le trouvera.
+Not for the bridges. Somewhere no one will find it.
+Pelletier considers this. Then nods slowly, as if this is the correct answer to a test he's been giving for fifty years and almost no one passes.
+MONSIEUR PELLETIER
+(in French)
+Alors il sera là pour toujours.
+Then it will be there forever.
+LATER
+The shop is very quiet. Pelletier sits at his bench under the bulb with the padlock open in a small vise, its tiny brass pins laid out on a square of green felt like the parts of a watch. Tweezers. A loupe in his eye. The radio playing low.
+Rodrigo and Hannah sit side by side on the only bench, between a rack of shoelaces and a shelf of boots waiting for their owners. Their shoulders almost touch.
+RODRIGO
+(quietly)
+You speak French.
+HANNAH
+Of course I speak French. I've been in Paris all week.
+RODRIGO
+On Monday you said you only speak German.
+HANNAH
+On Monday I said I don't speak Portuguese. And Spanish. I never said anything about French.
+RODRIGO
+You're very precise.
+
+HANNAH
+I told you. Two H's. I can't be read wrong.
+He watches Pelletier work. The tweezers. The tiny pins, each a different length, dropping one by one into the cylinder.
+RODRIGO
+Why?
+HANNAH
+Why what?
+RODRIGO
+The lock.
+She watches the old man's hands for a while before she answers.
+HANNAH
+You know what people do with the bridges. They put a lock, they throw the key in the river. Forever. Very romantic. Then the city comes with a big cutter and takes them all away. Tons of them. They melt them.
+RODRIGO
+So it's not forever.
+HANNAH
+It's never forever when you throw away the key. Throwing away the key is saying: this is finished. Closed. Nobody can change it now.
+She turns to him.
+HANNAH (CONT'D)
+I don't want to throw away the key.
+He looks at her for a long moment.
+RODRIGO
+Neither do I.
+MONSIEUR PELLETIER
+(without turning around, in French)
+Une deuxième clé?
+A second key?
+They both look at him. He hasn't turned. He's been listening the whole time, the way locksmiths and waiters and fathers always are.
+Hannah looks at Rodrigo. Then back at the old man's back.
+
+HANNAH
+(in French)
+Oui. Une deuxième.
+Yes. A second one.
+LATER
+The cutting wheel shrieks. Gold sparks fly in the dark shop for the second time in two days.
+Pelletier lays three things on the felt square on the counter: the little brass padlock, closed. Rodrigo's key. And a second key, identical, new, still warm.
+He takes Rodrigo's key. Slides it into the padlock. Turns it.
+Click.
+The shackle springs open.
+He closes it. Takes the second key. Slides it in. Turns.
+Click.
+He sets them down without ceremony.
+MONSIEUR PELLETIER
+(in French)
+Vingt-quatre euros. La deuxième clé.
+Twenty-four euros. The second key.
+Hannah is already reaching into her coat.
+RODRIGO
+No — let me —
+HANNAH
+A German pays for her own key.
+She counts out the euros. Pelletier takes them. Then he picks up a tiny engraving tool from the bench — a steel point with a wooden handle — and holds it out to them without a word.
+Hannah takes it. Turns the padlock over. On its smooth brass back, slowly, carefully, in the straight upright letters of an archivist, she scratches:
+R · H
+She hands the tool to Rodrigo. He takes the lock, and beneath her letters, in his sloping round hand, he scratches:
+19.10 — 22.10
+Pelletier looks at it through his loupe. Nods once.
+
+He wraps nothing. He gives them no bag. He simply pushes the lock and the second key across the counter toward Hannah, and the first key toward Rodrigo.
+MONSIEUR PELLETIER
+(in English, slowly)
+A key is a promise to return.
+He looks at the second key in Hannah's hand.
+MONSIEUR PELLETIER (CONT'D)
+Two keys is two promises.
+He goes back to his boot.
+EXT. RUE DES ABBESSES — CONTINUOUS
+They come out of the shop into the late light. The bell rings behind them. Hannah holds her new key up in front of her face, in the sun.
+HANNAH
+So now I have a key to your apartment.
+RODRIGO
+Until tomorrow at eleven. Then it's somebody else's apartment.
+HANNAH
+Then I'll have a key to a stranger's apartment in Paris. Forever.
+RODRIGO
+That sounds illegal.
+HANNAH
+It's archival.
+She puts her key on her own keyring — between a key to an apartment on a canal in Hamburg and a small brass key to a filing cabinet at the State Archive. It hangs there, new and bright among the old ones.
+Rodrigo does the same: his key goes on his ring beside the key to a basement apartment in Toronto.
+The little padlock goes into the inside pocket of Hannah's coat, next to the rolled portrait.
+RODRIGO
+So where?
+HANNAH
+Somewhere nobody will find it.
+
+RODRIGO
+In Paris? There are tourists in every centimeter.
+HANNAH
+Not every centimeter.
+RODRIGO
+How do you know?
+HANNAH
+I don't. You're the one who climbed the hill at six in the morning on Sunday.
+He looks at her. And then he remembers something — and slowly smiles.
+RODRIGO
+Later. When it's dark.
+HANNAH
+You know a place?
+RODRIGO
+I got lost on Sunday. On the way down. There was a place.
+HANNAH
+A place.
+RODRIGO
+I didn't take a photo of it. It was the only thing I didn't photograph.
+She looks at him, curious.
+HANNAH
+Why?
+RODRIGO
+I don't know. It felt like — it wasn't mine to take.
+HANNAH
+(after a moment)
+Then it's the right place.
+INT. ABBESSES METRO — SPIRAL STAIRCASE — DAY
+Down and down the painted spiral, the deepest station in Paris, their footsteps echoing. Hannah goes first. Rodrigo follows a step behind, watching the red of her hair turn through the murals like a flame going down a well.
+
+It will be, he will understand later, one of the most beautiful days of his life. He doesn't know it yet. That is the only way such days are ever given.
+INT. METRO CAR — MOVING — DAY
+Packed. They stand in the swaying aisle, holding the same pole, her hand above his.
+HANNAH
+Five business days.
+RODRIGO
+Three.
+HANNAH
+They told you five.
+RODRIGO
+They did it in three. Karim flagged it.
+HANNAH
+Who is Karim?
+RODRIGO
+A man in a chat window at two in the morning. He said nobody requests call records at 2 a.m. for a pizza place.
+HANNAH
+He's right.
+RODRIGO
+He's very wise. For a chat window.
+The train lurches. She sways. He steadies the pole, not her. She notices that.
+HANNAH
+What is a business day?
+RODRIGO
+A day when people are working.
+HANNAH
+So what is today?
+RODRIGO
+Thursday.
+HANNAH
+No. For you. Are you working today?
+
+RODRIGO
+No.
+HANNAH
+I'm not working. I called in sick for the first time in my life. So for us, today is a non-business day.
+RODRIGO
+Nobody's working.
+HANNAH
+Nobody.
+RODRIGO
+(looking at the dark tunnel rushing past)
+Not even the universe.
+She looks at him.
+HANNAH
+The universe always works. That's the problem with the universe. No holidays.
+RODRIGO
+Then it owes us one.
+EXT. ÎLE SAINT-LOUIS — RUE SAINT-LOUIS-EN-L'ÎLE — LATE AFTERNOON
+The little island in the middle of the river, its one long street of grey stone and old shopfronts. A queue outside an ice-cream parlor with a famous name.
+They stand in the queue.
+RODRIGO
+I didn't know you could eat ice cream in October.
+HANNAH
+I'm from Hamburg. We eat ice cream in the rain. If we waited for good weather, we would die without ice cream.
+LATER
+They walk out with cones. Hers: one precise scoop of something pale. His: two scoops that do not belong together.
+HANNAH
+What is that?
+
+RODRIGO
+Salted caramel and wild strawberry.
+HANNAH
+That's not a combination. That's an accident.
+RODRIGO
+All the best combinations are accidents. Brazil is an accident. My father and Clarice are an accident.
+HANNAH
+Monday was an accident.
+RODRIGO
+Monday was a sequence of accidents.
+She takes his cone out of his hand, bites into the place where the two flavors meet, and gives it back.
+HANNAH
+(chewing, considering)
+...It works. Don't tell anyone.
+EXT. QUAI D'ORLÉANS — BENCH — LATE AFTERNOON
+A bench on the edge of the island facing the back of Notre-Dame: the flying buttresses like the ribs of an enormous animal, the new spire sharp and pale against the sky.
+They sit. The river slides past below them, green-brown, a tourist boat churning upstream with a voice through a loudspeaker announcing history in four languages.
+RODRIGO
+It burned. I remember. I watched it on my phone in Toronto at eleven in the morning, in the lab, and everybody stopped working.
+HANNAH
+Five years. Everybody said it would take twenty. Thirty. They said it was impossible to repair. And now look.
+RODRIGO
+Some things are faster than people say.
+HANNAH
+Like your back office.
+
+RODRIGO
+Like my back office.
+She finishes her cone. Folds the napkin into a tiny precise square.
+HANNAH
+Can I tell you something about my grandmother?
+RODRIGO
+Please.
+HANNAH
+Her name was Liesel. She met my grandfather at the Hamburg train station in 1961. She was nineteen. He was a sailor, going to his ship. She was waiting for a train to her aunt's. His train was late. They talked for forty minutes on a bench. Forty minutes.
+RODRIGO
+And?
+HANNAH
+He wrote his address on the back of her ticket. His mother's address, in Kiel, because he didn't have one. He was going to sea for two years.
+RODRIGO
+Two years.
+HANNAH
+There were no phones on ships. Only letters. They took weeks. Sometimes months. Sometimes they came in the wrong order, so she would read that he was sick before she read that he was well again, or the other way. She kept every one. One hundred and twelve letters.
+RODRIGO
+And when he came back?
+HANNAH
+He came to the station. The same bench. She was there.
+Rodrigo looks at her.
+
+HANNAH (CONT'D)
+They were married fifty-eight years. She died last year. In February.
+RODRIGO
+I'm sorry.
+HANNAH
+After, my mother gave me the box. The letters. Because I'm the one who repairs paper. Many of them were torn from being read so many times. The folds were broken. And one — one was torn in half. On purpose.
+RODRIGO
+On purpose?
+HANNAH
+They had a fight. By letter. It took six weeks to have one fight. She tore it in half and then she taped it back together the same night. With that yellow tape, you know, that destroys everything. The tape was sixty years old. It had turned brown and eaten into the paper.
+RODRIGO
+What did you do?
+HANNAH
+I took the tape off. Very slowly. It took two days. Then I repaired the tear with Japanese tissue. Wheat paste. Very thin.
+RODRIGO
+And now you can't see it.
+HANNAH
+No. You can see it. You must always see it. That's the rule. A good repair is visible. And reversible. You don't pretend nothing happened. Something happened. You just make it so it can be read again.
+The boat's loudspeaker fades downstream.
+RODRIGO
+Can I tell you a theory?
+
+HANNAH
+Is it a data theory?
+RODRIGO
+Half. Half data, half — something else.
+HANNAH
+Those are the dangerous ones.
+RODRIGO
+I think time is like a web. Not a line. Every choice, every small accident, spins a thread. The past is fixed — it's already woven, you can walk on it. But the future is still being made. And somewhere, there's another thread. Where my phone rang on Monday.
+HANNAH
+And in that thread?
+RODRIGO
+In that thread, I saved your number. I texted you that night. "It was lovely meeting you." You texted back. "Likewise." Maybe a smiley. Maybe not, because you're German.
+HANNAH
+Definitely not.
+RODRIGO
+And then maybe we met for a coffee on Tuesday. An hour. And it was nice. And I flew home. And we texted a few times. And then less. And then —
+HANNAH
+And then nothing.
+RODRIGO
+Maybe.
+She looks at the cathedral, at its visible new stone among the old.
+HANNAH
+So in that thread, the phone worked, and we had less.
+RODRIGO
+That's what I keep thinking. The broken version gave us more.
+
+HANNAH
+The broken version gave us a man requesting records from a back office. Nobody forgets that. In the other thread, I would have forgotten you by Christmas.
+RODRIGO
+Would you?
+She doesn't answer. Which is an answer.
+EXT. SQUARE DU VERT-GALANT — SUNSET
+The very tip of the Île de la Cité, where the island ends in a little triangular garden at water level, like the prow of a stone ship heading downstream. A great weeping willow trails its branches in the river. The Pont Neuf arches overhead.
+The sun is going down straight ahead of them, at the end of the river, turning the water copper and the stone of the bridges pink.
+They sit at the very point, on the stone edge, their feet above the water.
+Neither speaks for a while. The light changes every second.
+HANNAH
+Rodrigo.
+RODRIGO
+Yes.
+HANNAH
+What is this?
+He knows exactly what she means. He takes his time.
+RODRIGO
+I don't know.
+HANNAH
+Good. If you said you knew, I would push you in the river.
+RODRIGO
+It's one day.
+HANNAH
+It's one day. And one evening on Monday. Fourteen hours, maybe, in total. I counted.
+RODRIGO
+You counted.
+
+HANNAH
+Of course I counted.
+RODRIGO
+Is that enough?
+HANNAH
+For what?
+RODRIGO
+To matter.
+She thinks. The sun touches the water.
+HANNAH
+My grandmother had forty minutes.
+RODRIGO
+My father bought bread for eleven days.
+HANNAH
+And you had three days of a robot.
+RODRIGO
+And one dinner. And one hill.
+HANNAH
+It's not about the hours.
+RODRIGO
+No?
+HANNAH
+It's about whether you would request the records.
+He laughs. She doesn't, quite.
+HANNAH (CONT'D)
+I'm not going to pretend, Rodrigo. You live in Toronto. I live in Hamburg. I have a job I love in a building full of letters. You have numbers and paintings and a whole country of napkins. Tomorrow at seven you get on a plane. I'm not going to say we'll be together. I'm not going to say we won't. I don't make promises I can't document.
+RODRIGO
+Me neither.
+
+HANNAH
+Good.
+RODRIGO
+But I'm not going to pretend either.
+HANNAH
+Pretend what?
+RODRIGO
+That this was nothing. That I'll forget by Christmas. I'm a data analyst. I don't forget numbers. And you're — you're the only number I ever had to request from a back office.
+She looks at him sideways, in the copper light, and her face does the thing he drew: the moment before.
+The sun goes under the water. Gone. The sky goes from copper to rose to a deep clear blue, and the lights along the quays come on, one by one, all along the river, as if someone were walking ahead of them lighting candles.
+HANNAH
+The sun went down.
+RODRIGO
+It does that.
+HANNAH
+I wanted to see if it would wait.
+RODRIGO
+For what?
+HANNAH
+For us.
+He has no answer to that. There isn't one. The willow moves in the dark water.
+EXT. PONT NEUF — DUSK
+They walk across the oldest bridge in Paris, slowly, eating a crêpe from a cart between them, passing it back and forth like a secret.
+RODRIGO
+Can I ask you something stupid?
+HANNAH
+Everything you ask is stupid. I like it.
+
+RODRIGO
+If the back office never sent the email. What would you have done?
+HANNAH
+Nothing. Gone home on Saturday. Told the story to my colleagues. "There was a Brazilian with a robot." Maybe called once more, from Hamburg, in December, after wine.
+RODRIGO
+And it would have rung.
+HANNAH
+Would it?
+RODRIGO
+In December? I'm in Toronto. My line is on. It would have rung.
+She stops on the bridge.
+HANNAH
+(slowly)
+It would have rung.
+RODRIGO
+And I would have answered.
+HANNAH
+In December.
+RODRIGO
+In December. After wine.
+She starts walking again. Thinks about this for twenty steps.
+HANNAH
+And you? If the email never came?
+RODRIGO
+I would have come back.
+HANNAH
+To Paris?
+RODRIGO
+To the restaurant. Next year. Every night at eight. Table six.
+HANNAH
+That's insane.
+
+RODRIGO
+It's the bakery method. My father's. You go back to where the girl was, at the same hour, until the girl comes, or until you're old.
+HANNAH
+That's completely insane.
+RODRIGO
+He bought bread for eleven days. My mother finally turned around and said, "Are you going to buy bread, or are you going to say something?"
+HANNAH
+And what did he say?
+RODRIGO
+"Bread."
+Hannah stops on the bridge and laughs so hard she has to hold the parapet. A man walking a dog crosses to the other side of the bridge.
+EXT. RUE LEPIC — NIGHT
+Montmartre again, the long curve of the street going up. Later. The cafés closing. Their steps slow now, the slowness of two people who don't want to arrive anywhere.
+They pass a dark green restaurant. CHEZ AURÈLE. Chairs on tables. A single light at the back.
+Rodrigo walks faster.
+HANNAH
+Wait.
+RODRIGO
+It's closed.
+HANNAH
+That's the place.
+She stops at the window. Looks in. The candles out. Maurice at the far end, counting the till, his long face lit from below by the cash drawer.
+Then she sees it.
+Behind the register, taped to the mirror among the yellowed cat and the hundred-franc note and the postcard from Lisbon: a folded sheet from an order pad.
+
+HANNAH, in capital letters.
+She goes very still.
+HANNAH (CONT'D)
+(not turning)
+Is that my name?
+Rodrigo closes his eyes.
+RODRIGO
+I can explain.
+HANNAH
+Is that my name, Rodrigo?
+RODRIGO
+...The bakery method.
+Inside, Maurice looks up. Sees them through the glass. A long, unreadable look.
+Then he walks to the door, unlocks it, and opens it. The little bell rings into the night.
+MAURICE
+(in French)
+Mademoiselle.
+He goes back to the register without a word. Peels the note carefully from the mirror. Returns. Holds it out to her, formally, the way a waiter presents a bottle for inspection.
+MAURICE (CONT'D)
+(in English)
+He was here all night. Yesterday. Table six. He ordered the Pomerol.
+RODRIGO
+You gave me the Pomerol.
+MAURICE
+(ignoring him)
+He waited until I put the chairs up. I have been a waiter twenty-six years, mademoiselle. Nobody waits until the chairs.
+Hannah takes the note. Unfolds it. Reads, in the light from the doorway.
+
+INSERT — THE NOTE
+HANNAH —
+(red hair. Hamburg. table 7. Monday.)
+My line was off. I never got your call.
+I'm so sorry. I didn't lie to you. Not about the number.
+RODRIGO +1 (647) 555-0142
+(It works now. I promise.)
+P.S. I lied about the hill.
+BACK TO SCENE
+She reads it twice. Her mouth is pressed tight. Her eyes are shining. She laughs once, a small broken laugh that is mostly something else.
+HANNAH
+(reading)
+"P.S. I lied about the hill."
+RODRIGO
+I wanted to be honest. In case.
+HANNAH
+In case of what?
+RODRIGO
+In case it was the last thing you read from me.
+She folds the note very carefully along its original fold. Puts it in her inside pocket, with the portrait and the padlock.
+HANNAH
+(to Maurice, in French)
+Merci, monsieur.
+Maurice looks at them both. Then he takes down two chairs from table seven. Sets them on the floor. Disappears behind the bar. Returns with a bottle with two fingers of wine left in it, and two glasses.
+MAURICE
+(in French)
+La bouteille meurt ce soir.
+The bottle dies tonight.
+He pours. Sets the glasses on table seven.
+RODRIGO
+Is that —
+MAURICE
+Do not ask.
+
+He goes into the kitchen. A moment later, from back there, a radio comes on. Low. An old chanson.
+INT. CHEZ AURÈLE — TABLE SEVEN — CONTINUOUS
+They sit at table seven, in the dark restaurant, chairs upturned on every other table around them like a forest of legs. One candle. The mirror wall shows them back to themselves: two people at a little table, alone in a room built for forty.
+HANNAH
+This is where it started.
+MAURICE (O.S.)
+(from the kitchen, in French)
+Non. Ça a commencé à la table six.
+No. It started at table six.
+They both laugh. They clink glasses.
+RODRIGO
+To the finger.
+HANNAH
+To the finger?
+RODRIGO
+My father's finger. It pointed between two wines. If it had pointed at one, there's no fight. No fight, my phone is in my hand when you call. I see the robot. I check. I fix it.
+HANNAH
+And then?
+RODRIGO
+And then the other thread.
+HANNAH
+(raising her glass)
+To the finger.
+They drink. It is, they both agree in silence, an extraordinary wine.
+EXT. THE NORTH SIDE OF THE HILL — NIGHT
+Away from the basilica, away from the floodlights and the stairs and the tourists, on the quiet side where Montmartre is still a village.
+
+A narrow stone stairway drops steeply between two old walls. A single iron lamp halfway down, its light yellow and weak. No one. Not a sound but a television somewhere, and their footsteps.
+Rodrigo leads. He walks slowly, looking at the left-hand wall.
+HANNAH
+You're sure?
+RODRIGO
+Sunday. Six in the morning. I came down the wrong side. I thought I was lost. I stopped here to look at the map.
+He stops beside the lamp. The wall here is thick with ivy, dark and glossy and old, falling over the stone like a curtain.
+RODRIGO (CONT'D)
+And I put my hand on the wall.
+He reaches into the ivy. Parts it carefully with both hands, the way you'd part a child's hair.
+Behind it, set deep into the old stone, black with age and rust: an iron ring. Heavy. Hand-forged. The kind that was once used to tie a horse or a cart, a hundred years ago or more, when this hill was windmills and vineyards. The ivy has grown around it and over it and nearly swallowed it.
+Hannah steps closer. Touches it with one finger, the way she'd touch a document.
+HANNAH
+Nobody has touched this in a hundred years.
+RODRIGO
+I touched it on Sunday.
+HANNAH
+Nobody but you.
+She takes the little brass padlock from her coat. Holds it in her palm between them. In the lamplight the engraving catches: R · H. 19.10 — 22.10.
+HANNAH (CONT'D)
+You do it.
+RODRIGO
+Together.
+She opens the shackle. They hold the lock between them, four hands on a thing the size of a matchbox. Together they slide the shackle through the old iron ring.
+
+They look at each other.
+They close it.
+Click.
+It is the smallest sound in the film. It is louder than the bill, louder than the bell, louder than the dryer in the washroom on Monday.
+They let go. The lock hangs from the iron ring, small and bright against the black iron.
+Hannah lets the ivy fall.
+It closes over the ring like water. The lock is gone. There is only a wall with ivy on it, under a weak lamp, on a staircase no one uses.
+They stand there.
+Rodrigo takes out his phone.
+RODRIGO
+I should drop a pin. The coordinates. So we can —
+HANNAH
+Don't you dare.
+RODRIGO
+I'm a data analyst.
+HANNAH
+Some things shouldn't have a record.
+He looks at her. Then at the phone. He puts it back in his pocket.
+RODRIGO
+Then how do we find it?
+HANNAH
+We remember.
+RODRIGO
+What if we forget?
+HANNAH
+Then it's still here. That's the point of a lock, Rodrigo. It doesn't need us. It doesn't need anyone to remember it. It will be here when the ivy is twice as thick. It will be here when Monsieur Pelletier is gone, and the shop is a phone store. It will be here when
+
+we're old. It will be here when nobody alive knows what R and H mean.
+RODRIGO
+And the keys?
+She takes out her keyring. The bright new key among the old ones.
+HANNAH
+The keys are the only part that can come back.
+He takes out his. The twenty-four-euro key. His father's joke. His memory of France.
+He looks at it now as if he's never seen it before.
+RODRIGO
+(quietly)
+I told my father it was a souvenir.
+HANNAH
+It is a souvenir.
+RODRIGO
+I didn't know of what.
+They stand on the stairs under the lamp, each holding a key, in front of a wall of ivy that hides nothing at all.
+EXT. SACRÉ-CŒUR — THE STEPS — NIGHT
+The great steps, almost empty now. A few couples. A man playing a soft trumpet somewhere far below. And all of Paris at their feet — not grey and gold now but black and gold, an ocean of small lights reaching every horizon, the tower blinking white on the hour.
+They sit near the top, in the spot where she sat alone last night.
+For a while they just look.
+HANNAH
+Now you've seen it.
+RODRIGO
+I saw it on Sunday. Forty-one photos.
+HANNAH
+I know. Julien told me.
+RODRIGO
+But I didn't see it.
+
+HANNAH
+And now?
+RODRIGO
+Now I see it.
+She doesn't call that terrible. She lets it be.
+HANNAH
+Can I tell you where I was? On Tuesday? When I called the second time?
+RODRIGO
+The Palais-Royal. On a green chair. By the fountain. At 15:07.
+She turns to him, startled.
+HANNAH
+How do you know that?
+RODRIGO
+I didn't know the place. I know the time. 15:07. It's in the records.
+HANNAH
+And where were you?
+He looks out at the city. Points far to the south-west, across the dark river, to a long black building with two great lit circles in its roof.
+RODRIGO
+There. The Musée d'Orsay. The top floor. There's a clock, a giant clock you can see through. At 15:07, I was standing behind the glass, inside the clock. Filling in a form for the Wi-Fi.
+A pause.
+RODRIGO (CONT'D)
+And looking at this hill. Thinking about you.
+Hannah stares at him.
+HANNAH
+You were looking at the hill.
+RODRIGO
+I was looking at the hill.
+HANNAH
+While I was calling.
+
+RODRIGO
+While you were calling. And the phone was off. And I didn't know.
+She looks at the far lit building. At the hill beneath her. At him.
+HANNAH
+That's the saddest thing I've ever heard.
+And she laughs — and the laugh breaks open in the middle, and becomes the other thing, and she puts her face in her hands on the steps of the Sacré-Cœur and cries, not loudly, the way she does everything: completely, and briefly, and precisely.
+He doesn't say anything. He puts his arm around her. She leans into him.
+After a while she sits up. Wipes her eyes with the end of the blue scarf.
+HANNAH (CONT'D)
+I'm German. We don't cry.
+RODRIGO
+You cried at a fish.
+HANNAH
+It was a very well-made fish.
+LATER
+They sit close. Her head on his shoulder. Two keys on two keyrings in two hands.
+HANNAH
+Do you know what a tessera is?
+RODRIGO
+No.
+HANNAH
+In the archive we have a Roman one. A little piece of bone. The Romans had a custom. When a host and a guest said goodbye, they broke a small token in two. Each one kept a half. The tessera hospitalis.
+RODRIGO
+Why?
+HANNAH
+So that one day — years later, maybe after they were both dead — their children, or grandchildren, could meet, and put the two
+
+halves together. And if the edges matched, they knew. You are the family of my family's friend. Come in. Sit. There's a bed for you.
+RODRIGO
+Two halves.
+HANNAH
+Two halves.
+He looks at the key in his palm.
+RODRIGO
+We didn't break anything.
+HANNAH
+No. We made two.
+RODRIGO
+Two keys and one lock.
+HANNAH
+That's better. A broken thing only fits one other broken thing. A key fits a lock forever.
+RODRIGO
+(softly)
+Tessera.
+She closes her hand over his, over the key.
+LATER
+The trumpet player below has gone home. The steps are nearly empty. It's very late.
+HANNAH
+You have no Instagram.
+RODRIGO
+No.
+HANNAH
+No Facebook.
+RODRIGO
+I'm thirty-two, Hannah, not seventy.
+HANNAH
+No anything.
+
+RODRIGO
+Nothing.
+HANNAH
+So how do I find you?
+RODRIGO
+You have my number.
+HANNAH
+I had your number before.
+They both laugh. It echoes off the white stone.
+RODRIGO
+My line will be on. Always. I'm never turning it off again. Freedom can charge me sixteen dollars a day until I die. I'll put it in my will.
+HANNAH
+That's not a plan. That's a phone bill.
+He turns to face her properly.
+RODRIGO
+Okay. A plan.
+HANNAH
+A plan.
+RODRIGO
+I'm going to come back to Europe. I don't know when. I've been saying it for years and I never did it. But I'm going to. And the day I land — wherever I land, Lisbon, Berlin, here — before I leave the airport, before I even get my suitcase, I'll call you.
+HANNAH
+Before the suitcase.
+RODRIGO
+Before the suitcase.
+HANNAH
+And if I come to Canada?
+RODRIGO
+Then you call me. And I'll answer.
+
+HANNAH
+In two languages?
+RODRIGO
+In every language on that wall.
+She studies him. Checking the document for the date.
+HANNAH
+Don't make me wait two years like my grandmother.
+RODRIGO
+I'm not a sailor.
+HANNAH
+No. You're worse. You're a data analyst.
+He laughs. And she leans in, and kisses him — once, simply, without hurry, on the steps above the whole lit city, as if it were the most practical thing in the world.
+The tower, far off, begins to blink. It's the hour.
+She pulls back. Looks at him.
+HANNAH (CONT'D)
+That was not terrible.
+RODRIGO
+No?
+HANNAH
+No. That was —
+She searches for the word. In German. In French. In English.
+HANNAH (CONT'D)
+— very worth it.
+EXT. RUE LEPIC — JULIEN AND XIMENA'S DOOR — NIGHT
+2:40 a.m.
+A heavy green door with a brass knocker in the shape of a hand. One streetlamp. The street climbing away into dark.
+They stand at the door. Neither reaches for the code.
+HANNAH
+Seven o'clock.
+
+RODRIGO
+Seven-oh-five.
+HANNAH
+You'll sleep on the plane.
+RODRIGO
+I won't sleep.
+HANNAH
+No.
+A long silence. Everything has been said, and nothing has.
+RODRIGO
+Hannah.
+HANNAH
+Rodrigo.
+RODRIGO
+Two H's.
+HANNAH
+One at each end.
+RODRIGO
+Same in both directions.
+HANNAH
+I can't be read wrong.
+RODRIGO
+I know.
+She reaches up and touches his face once — her fingertips on the cheekbone, the place where, in the charcoal portrait, he put a shadow like a tear in old paper.
+Then she steps back. Taps the code. The heavy door clicks.
+She pushes it open. Stops on the threshold. Turns around.
+And says the same words she said on Monday, at a little table, before any of this —
+HANNAH
+It was very lovely meeting you.
+He smiles. It hurts.
+RODRIGO
+Very lovely.
+
+She almost goes in. Then, as the door is closing:
+HANNAH
+(through the gap)
+Again.
+The door closes.
+He stands alone in the street.
+Above him, a window lights up on the third floor. Two silhouettes press against the glass: Julien holding up his phone, filming; Ximena slapping the phone down out of his hand. The light goes out.
+Rodrigo laughs, alone, in the empty street. Then he turns and walks down the hill, three hundred meters, toward Rue Durantin.
+EXT. RUE DURANTIN — NIGHT
+He taps the digicode. The door clicks.
+INT. STAIRWELL — CONTINUOUS
+Four flights in the dark. He doesn't turn on the light.
+INT. AIRBNB APARTMENT — CONTINUOUS
+The twenty-four-euro key slides into the lock. Turns without a sound. Pelletier's work. He opens the door so slowly, so carefully, so as not to wake his parents —
+And they're awake.
+Both of them. At the tiny table under the skylight, in their pajamas, in the light of a single lamp. Clarice with a cup of chamomile. Antônio with the bottle of cachaça he swore he didn't bring. Two suitcases packed and standing by the door like patient dogs.
+They look at him.
+ANTÔNIO
+(in Portuguese)
+E aí?
+So?
+Rodrigo opens his mouth. Nothing comes out.
+He sits down on the edge of the sofa bed. Puts his hands on his knees.
+And then something happens to his face that none of them is ready for. He starts to laugh — and in the middle of the laugh, he starts to cry — and he
+
+can't stop either one, and he sits there in his good coat at three in the morning doing both at once, helplessly, like a boy.
+Clarice puts her cup down. Watches him with enormous tenderness. Then she turns to her husband.
+CLARICE
+(in Portuguese)
+Olha ele. Caiu da bicicleta.
+Look at him. He fell off his bike.
+ANTÔNIO
+(in Portuguese, softly)
+Caiu feio.
+He fell hard.
+ANTÔNIO (CONT'D)
+Praça da Liberdade. He was seven. The red bicycle. He fell, and he sat on the ground, and he laughed and cried at the same time, and he didn't know which one he was doing.
+CLARICE
+You've told me that story a hundred times.
+ANTÔNIO
+And he still doesn't know.
+RODRIGO
+(wiping his face, laughing)
+I don't know.
+Antônio gets up. Crosses the tiny room. Sits down on the sofa bed beside his son, and the springs shriek under them both, and he puts a big arm around Rodrigo's shoulders.
+For a while, nobody says anything.
+ANTÔNIO
+Did she come?
+RODRIGO
+She came.
+ANTÔNIO
+On time?
+RODRIGO
+Exactly on time.
+
+ANTÔNIO
+Good woman.
+A silence.
+RODRIGO
+Pai. I don't know if I'll ever see her again.
+Antônio nods slowly. He looks at the suitcases by the door. At the skylight. At his son.
+ANTÔNIO
+Thirty-five years I delivered letters, filho. Rain, sun, dogs. Thirty-five years.
+He holds up a thick finger. The finger that pointed between two wines.
+ANTÔNIO (CONT'D)
+Do you know how many arrived late?
+Rodrigo shakes his head.
+ANTÔNIO (CONT'D)
+Almost all of them.
+He lets that sit.
+ANTÔNIO (CONT'D)
+And do you know how many arrived?
+Rodrigo looks at him.
+ANTÔNIO (CONT'D)
+Almost all of them.
+Rodrigo puts his head on his father's shoulder, like when he was nine, and closes his eyes.
+Clarice switches off the lamp.
+INT. AIRBNB APARTMENT — DAWN
+Friday, October 23
+4:30 a.m. The skylight black. The suitcases at the door. Coats on.
+On the wall by the door, a small grey lockbox. Antônio opens it. Takes the original key, with its wooden fob — DURANTIN 4G — and drops it in, as the host's instructions require. Closes the box.
+He turns. Rodrigo is putting on his coat. On his keyring, beside the key to a basement apartment in Toronto: the bright, nameless twenty-four-euro copy.
+Antônio sees it. Opens his mouth to make the joke.
+
+He doesn't make the joke.
+ANTÔNIO
+You're keeping it.
+RODRIGO
+It's my souvenir.
+Antônio looks at the key for a long moment. Then at his son. He doesn't laugh this time. He puts his big hand on the back of Rodrigo's neck, the way he did when Rodrigo was small and crossing a street.
+ANTÔNIO
+(in Portuguese)
+Vinte e quatro euros.
+Twenty-four euros.
+A beat.
+ANTÔNIO (CONT'D)
+(in Portuguese)
+Barato.
+Cheap.
+Rodrigo pulls the door shut behind them. It locks itself with a soft click. For the first time all week, nobody needs a key to get back in.
+INT. AIRPLANE — CHARLES DE GAULLE — MORNING
+Grey dawn on the tarmac. Rain on the window. The cabin full of yawning people.
+Rodrigo has the window seat. Antônio is beside him, already asleep, mouth open. Clarice across the aisle, reading glasses on, doing a sudoku in pen.
+FLIGHT ATTENDANT (V.O.)
+Ladies and gentlemen, please make sure your devices are switched to airplane mode.
+Rodrigo looks at his phone.
+INSERT — THE PHONE
+Freedom Mobile ........ On
+06:58
+BACK TO SCENE
+His thumb hovers over the little airplane.
+For the first time in four days, turning something off doesn't frighten him. He knows exactly what is on, and what is off, and why. He knows that when the wheels touch down in Toronto, the line will wake, and it will be his, and it will ring.
+
+He switches on airplane mode.
+He puts the phone in his pocket. His fingers find the key there instead. He closes his hand around it.
+The plane turns onto the runway. Engines rise.
+Through the wet window, as they climb — far off, for one second, through a break in the cloud — a small white shape on a hill.
+Then cloud. Then nothing but white.
+EXT. TORONTO — DECEMBER — NIGHT
+December
+Snow. Lots of it. The city hushed under it, streetcars sliding past with their lights blurred, everybody apologizing to everybody on the slippery sidewalks.
+INT. RODRIGO'S BASEMENT APARTMENT — TORONTO — NIGHT
+Small. Warm. A window at the level of the street, where boots go by in the snow. Canvases leaning against every wall — faces, dark and strange and honest, the kind people call scary.
+At the easel: a new one. A woman with red hair, a blue scarf, eyes very direct, mouth about to do something.
+It is not scary.
+Rodrigo stands in front of it with paint on his hands. He has been working on it for six weeks.
+On the table beside him, his keyring. A key to this apartment. A key to the lab. And a bright brass key to a door in Paris that is no longer his.
+His phone lies next to the keys.
+INSERT — THE PHONE
+Freedom Mobile ........ On
+It has not been off since October.
+INT. STATE ARCHIVE — CONSERVATION WORKSHOP — HAMBURG — DAY
+Rain on high windows. Red brick. The grey light of a northern winter.
+Hannah at her lightbox, white coat, a letter from 1802 laid open before her, torn along its fold. Japanese tissue. Wheat paste. A brush with three hairs.
+
+On the shelf above her desk: a sheet of drawing paper, charcoal, framed now in simple pale wood. Her own face, about to leave.
+On the edge of the lightbox, her keyring. A key to an apartment on a canal. A brass key to a filing cabinet. And one more key, bright, new, foreign.
+A COLLEAGUE (40s) leans over from the next bench, curious.
+COLLEAGUE
+(in German)
+Was ist das für ein Schlüssel?
+What is that key?
+Hannah doesn't look up from the tear.
+HANNAH
+(in German)
+Für ein Schloss in Paris.
+For a lock in Paris.
+COLLEAGUE
+(in German)
+Und wo ist das Schloss?
+And where is the lock?
+Hannah lays the tissue across the tear. It darkens. Becomes nearly invisible. Holds.
+You can still see it.
+HANNAH
+(in German)
+Das weiß niemand.
+Nobody knows.
+She smiles — the moment after the moment before — and goes back to work.
+EXT. THE NORTH SIDE OF THE HILL — PARIS
+The narrow stone stairway. The weak iron lamp. The wall of ivy.
+Winter. Snow on the steps. Snow resting in the ivy leaves. Nobody passes.
+Spring. New leaves, pale green, spilling over the old dark ones. Rain.
+Summer. Heat. A cat asleep on the step below the lamp. Nobody passes.
+Autumn. The ivy turns, here and there, to red and gold. Leaves on the steps.
+Behind the ivy, unseen, the little brass padlock hangs from the iron ring, darkening slowly, the way brass does — the engraving softening, R · H, 19.10 — 22.10, letters that fewer and fewer people alive will ever be able to read.
+
+The ivy grows thicker.
+Then —
+Footsteps on the stairs.
+Slow. Coming down. We don't see who. We stay on the wall.
+The footsteps stop at the lamp.
+A hand enters the frame. It parts the ivy, carefully, the way you'd part a child's hair.
+The iron ring. The brass lock, dark now, still there. Exactly where it was.
+The hand holds a key. Bright, worn smooth from years in a pocket.
+We do not see whose hand it is.
+We do not see whether anyone stands beside it.
+The key moves toward the lock —
+CUT TO BLACK.
+Over black, silence.
+Then, very faintly, from somewhere — the sound we heard at the very beginning of the film. The hollow purr of a long-distance line.
+But this time no robot answers.
+It rings. A real ring.
+It rings again.
+THE END
+
+========================================================================
 Jera'Ansuz — On God, Existence, and Experience
 Han’drada, 2026
 https://han.andrada.one/oeuvre/jera-ansuz/
