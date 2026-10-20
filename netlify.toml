@@ -59,9 +59,9 @@ directory = "netlify/functions"
 # script.google.com, and Apps Script answers with a redirect to
 # script.googleusercontent.com, where the "OK" reply is read. Without that
 # host in connect-src the browser blocks the reply and every form shows an
-# error (the message may still have been delivered). Cloudflare, which sits in
-# front of the site, injects its analytics beacon from static.cloudflareinsights.com, and
-# Netlify's real-user monitoring reports to ingesteer.services-prod.nsvcs.net.
+# error (the message may still have been delivered). Google Analytics is the only
+# visitor statistics (Louis, 2026-10-20): Cloudflare Web Analytics and Netlify's
+# real-user monitoring are switched off in their dashboards, so their hosts are gone.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -72,11 +72,11 @@ directory = "netlify/functions"
     Strict-Transport-Security = "max-age=63072000; includeSubDomains; preload"
     Content-Security-Policy = """\
       default-src 'self'; \
-      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google.com https://www.gstatic.com https://static.cloudflareinsights.com; \
+      script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google.com https://www.gstatic.com; \
       style-src 'self' 'unsafe-inline'; \
       img-src 'self' data: https://raw.githubusercontent.com https://www.google.com https://www.googletagmanager.com; \
       font-src 'self' data:; \
-      connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google.com https://www.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://cloudflareinsights.com https://ingesteer.services-prod.nsvcs.net; \
+      connect-src 'self' https://script.google.com https://script.googleusercontent.com https://www.google.com https://www.gstatic.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com; \
       frame-src https://www.google.com https://www.recaptcha.net; \
       object-src 'none'; \
       base-uri 'self'; \

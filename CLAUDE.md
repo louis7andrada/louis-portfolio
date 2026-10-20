@@ -408,6 +408,9 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L' → Ny → Nilo. New logo from a
   black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
   Louis also wants a white copy of each new one (`static/<name>invert.png`: same alpha, white ink; for his own use).
+  The page loads `static/logo-sm/<name>.png`, not the full-size file (2026-10-20, for the Lighthouse score): every logo
+  scaled by the same 384/1440 (`convert static/<name>.png -filter Lanczos -resize 26.6667% -strip
+  static/logo-sm/<name>.png`), 4x the largest size the intro draws (~216x96 CSS px). Remake it when a logo changes.
   Size: L' and Ny fill more of their canvas, so `.logo-l` / `.logo-ny` scale them down (0.62 / 0.574, the same ink
   height; Louis found L' at 0.72 still too big, 2026-10-13); Nilo 0.60, same ink height.
 - **Nilo** (2026-10-13): a name with NO section yet ("surprises soon"). It is in About, the intro door, the

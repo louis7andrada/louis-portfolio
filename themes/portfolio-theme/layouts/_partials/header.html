@@ -17,14 +17,14 @@
   {{ if eq (strings.TrimSuffix "/" .RelPermalink) (strings.TrimSuffix "/" site.Params.hub) }}{{ $logoOwner = "hub" }}{{ end }}
   <a href="/" id="headerLogo" class="flex items-center">
     <div id="logoMorphWrap" class="logo-morph-wrap" data-active="old">
-      <img src="/logoold.png" alt="Louis Andrada Logo" id="logoOld" class="logo-img logo-old active" data-logo="old">
-      <img src="/lalogo.png" alt="ᛃᚨ Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
-      <img src="/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
-      <img src="/odiandradalogo.png" alt="Odi Andrada Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
-      <img src="/llogo.png" alt="L' Logo" id="logoL" class="logo-img logo-l" data-logo="l">
-      <img src="/nylogo.png" alt="Ny Logo" id="logoNy" class="logo-img logo-ny" data-logo="ny">
-      <img src="/nilologo.png" alt="Nilo Logo" id="logoNilo" class="logo-img logo-nilo" data-logo="nilo">
-      <img src="/andradalogo.png" alt="Andrada Logo" id="logoAndrada" class="logo-img logo-andrada" data-logo="andrada">
+      <img src="/logo-sm/logoold.png" alt="Louis Andrada Logo" id="logoOld" class="logo-img logo-old active" data-logo="old">
+      <img src="/logo-sm/lalogo.png" alt="ᛃᚨ Logo" id="logoNew" class="logo-img logo-new" data-logo="new">
+      <img src="/logo-sm/halogo.png" alt="Han'drada Logo" id="logoHa" class="logo-img logo-ha" data-logo="ha">
+      <img src="/logo-sm/odiandradalogo.png" alt="Odi Andrada Logo" id="logoOdi" class="logo-img logo-odi" data-logo="odi">
+      <img src="/logo-sm/llogo.png" alt="L' Logo" id="logoL" class="logo-img logo-l" data-logo="l">
+      <img src="/logo-sm/nylogo.png" alt="Ny Logo" id="logoNy" class="logo-img logo-ny" data-logo="ny">
+      <img src="/logo-sm/nilologo.png" alt="Nilo Logo" id="logoNilo" class="logo-img logo-nilo" data-logo="nilo">
+      <img src="/logo-sm/andradalogo.png" alt="Andrada Logo" id="logoAndrada" class="logo-img logo-andrada" data-logo="andrada">
     </div>
   </a>
 
@@ -73,7 +73,7 @@
 
     <!-- Desktop Navigation — non-home pages -->
     {{ if not .IsHome }}
-    <nav id="desktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
+    <nav id="desktopNav" aria-label="Main" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]">
       <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Louis</a>
       <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Han</a>
       <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkDesktop" class="dark:text-gray-300 dark:hover:text-white">Odi</a>
@@ -89,7 +89,7 @@
 
     <!-- HOME desktop nav — hidden while home section is visible -->
     {{ if .IsHome }}
-    <nav id="homeDesktopNav" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
+    <nav id="homeDesktopNav" aria-label="Main (home)" class="hidden md:flex gap-8 text-[12px] lg:text-[14px]" style="opacity:0;pointer-events:none;transition:opacity 0.4s ease;">
       <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkHome" class="dark:text-gray-300 dark:hover:text-white nav-link-active">Louis</a>
       <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkHome" class="dark:text-gray-300 dark:hover:text-white">Han</a>
       <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkHome" class="dark:text-gray-300 dark:hover:text-white">Odi</a>
@@ -127,7 +127,7 @@
 </header>
 
 <!-- FULLSCREEN MOBILE MENU — outside header to avoid backdrop-filter stacking context conflict -->
-<nav id="mobileMenu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
+<nav id="mobileMenu" aria-label="Site menu" class="fixed inset-0 flex flex-col items-center justify-center gap-10 text-3xl font-medium">
   <a href="{{ partial "face-url.html" "louis" }}#artworks-section" data-scroll="artworks" data-face="louis" id="navArtworksLinkMobile" class="block">Louis</a>
   <a href="{{ partial "face-url.html" "han" }}#oeuvre" data-face="han" id="navOeuvreLinkMobile" class="block">Han</a>
   <a href="{{ partial "face-url.html" "odi" }}#photography" data-face="odi" id="navPhotographyLinkMobile" class="block">Odi</a>
@@ -148,15 +148,15 @@
      ══════════════════════════════════════════════════════ -->
 <div id="intro-door">
   <div id="introLogoWrap" class="intro-logo-wrap">
-    <img src="/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new active" data-logo="new" alt="ᛃᚨ"
+    <img src="/logo-sm/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new active" data-logo="new" alt="ᛃᚨ"
          onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
-    <img src="/andradalogo.png" id="introLogoAndrada" class="intro-logo-img intro-logo-andrada" data-logo="andrada" alt="Andrada" />
-    <img src="/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
-    <img src="/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
-    <img src="/odiandradalogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi Andrada" />
-    <img src="/llogo.png" id="introLogoL" class="intro-logo-img intro-logo-l" data-logo="l" alt="L'" />
-    <img src="/nylogo.png" id="introLogoNy" class="intro-logo-img intro-logo-ny" data-logo="ny" alt="Ny" />
-    <img src="/nilologo.png" id="introLogoNilo" class="intro-logo-img intro-logo-nilo" data-logo="nilo" alt="Nilo" />
+    <img src="/logo-sm/andradalogo.png" id="introLogoAndrada" class="intro-logo-img intro-logo-andrada" data-logo="andrada" alt="Andrada" />
+    <img src="/logo-sm/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
+    <img src="/logo-sm/halogo.png" id="introLogoHa" class="intro-logo-img intro-logo-ha" data-logo="ha" alt="Han'drada" />
+    <img src="/logo-sm/odiandradalogo.png" id="introLogoOdi" class="intro-logo-img intro-logo-odi" data-logo="odi" alt="Odi Andrada" />
+    <img src="/logo-sm/llogo.png" id="introLogoL" class="intro-logo-img intro-logo-l" data-logo="l" alt="L'" />
+    <img src="/logo-sm/nylogo.png" id="introLogoNy" class="intro-logo-img intro-logo-ny" data-logo="ny" alt="Ny" />
+    <img src="/logo-sm/nilologo.png" id="introLogoNilo" class="intro-logo-img intro-logo-nilo" data-logo="nilo" alt="Nilo" />
     <span id="introLogoFallback" class="intro-logo-fallback">Louis Andrada</span>
   </div>
 </div>
