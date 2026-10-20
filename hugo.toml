@@ -122,7 +122,7 @@ disableKinds = ["taxonomy", "term"]
   # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
   # section: the content section the face owns (its pages live on the face's subdomain).
   # hero: the image at the top. Odi: a photo id ("photo107"); empty = the newest Ambiguous photo.
-  #       Han: a book id; empty = the newest book (highest order). L': a vestment id; empty = the newest.
+  #       Han: a book id; empty = the first book in the list (highest order, listLast books aside). L': a vestment id; empty = the newest.
   #       Ny: a track id ("omnipulse"); empty = the newest. Louis: set in index.html.
   #       plain = true: no hero at all, the page opens on its content (Luis, 2026-10-14).
   [params.faces.louis]
