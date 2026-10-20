@@ -17,7 +17,7 @@
          centred a line below the first names, which sit in one row); clicking a name sends it over to that
          name before the page changes (script below). Andrada itself opens andrada.one, this page. -->
     <div class="name-stack" aria-label="Louis Andrada, Han’drada, Odi Andrada, L', Ny and Luis Andrada">
-      <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}">Andrada</a></div>
+      <div class="ns-row"><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}"><h1 class="ns-h1">Andrada</h1></a></div>
       <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
       <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
       <a href="{{ partial "face-url.html" "l" }}" class="ns ns-4" aria-label="{{ site.Params.names.l }}" title="{{ site.Params.names.l }}">L<span class="ink i4">'</span></a>
@@ -111,6 +111,10 @@
   /* Andrada rests on Louis's line, a little more than a space away (~4 characters). It is a link
      too: andrada.one, this very page. */
   .name-stack .ns-surname { display: inline-block; margin-left: 2.5em; }
+  /* The page's one h1 (Louis, 2026-10-20) is the word Andrada inside its link, drawn exactly as before: the
+     site's h1 rules (weight 425 and the dark-mode colour, both !important) must not reach it, so it inherits
+     everything from the link and stays inline. */
+  html .name-stack .ns-h1 { display: inline; margin: 0; font: inherit !important; color: inherit !important; }
   /* the names are links to the faces, but read as the names they were
      (main.css colours every .links-page link blue with !important) */
   html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover,
