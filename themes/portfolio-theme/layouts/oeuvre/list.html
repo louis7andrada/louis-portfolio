@@ -2,9 +2,9 @@
 
 {{ partial "book-viewer-style.html" . }}
 {{ partial "book-viewer-engine.html" . }}
-{{ partial "jsonld/collection.html" (dict "page" . "items" (sort (where (where .Site.RegularPages "Section" "oeuvre") "Params.pageCount" "!=" nil) "Params.order" "desc")) }}
+{{ partial "jsonld/collection.html" (dict "page" . "items" (partial "oeuvre-sort.html" (where (where .Site.RegularPages "Section" "oeuvre") "Params.pageCount" "!=" nil))) }}
 
-{{ partial "face-hero.html" (dict "face" "han" "items" (sort (where (where .Site.RegularPages "Section" "oeuvre") "Params.pageCount" "!=" nil) "Params.order" "desc")) }}
+{{ partial "face-hero.html" (dict "face" "han" "items" (partial "oeuvre-sort.html" (where (where .Site.RegularPages "Section" "oeuvre") "Params.pageCount" "!=" nil))) }}
 
 <section id="books-section" class="w-full px-4 py-12 relative">
 
@@ -59,7 +59,7 @@
     {{ if not .Params.pageCount }}{{ continue }}{{ end }}
     {{ $clean = $clean | append . }}
   {{ end }}
-  {{ $sorted := sort $clean "Params.order" "desc" }}
+  {{ $sorted := partial "oeuvre-sort.html" $clean }}
 
   <div id="bookGallery" class="aw-grid">
     {{ range $i, $page := $sorted }}

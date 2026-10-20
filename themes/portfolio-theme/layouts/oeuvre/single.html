@@ -4,7 +4,7 @@
 {{ $raw := where .Site.RegularPages "Section" "oeuvre" }}
 {{ $clean := slice }}
 {{ range $raw }}{{ if .Params.pageCount }}{{ $clean = $clean | append . }}{{ end }}{{ end }}
-{{ $sorted := sort $clean "Params.order" "desc" }}
+{{ $sorted := partial "oeuvre-sort.html" $clean }}
 {{ $currentIndex := -1 }}
 {{ range $i, $p := $sorted }}{{ if eq $p.RelPermalink $.RelPermalink }}{{ $currentIndex = $i }}{{ end }}{{ end }}
 {{ $prev := cond (gt $currentIndex 0) (index $sorted (sub $currentIndex 1)) nil }}
