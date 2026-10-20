@@ -787,11 +787,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window._artworkLayout = layout;
 
+  // An image's load can change the layout only when the image has no declared size
+  // (every gallery image has one today), so loads finishing together share one run
+  // in the next frame, still before it is painted (Lighthouse: these reruns were the
+  // page's heaviest script).
+  let layoutQueued = false;
+  function queueLayout() {
+    if (layoutQueued) return;
+    layoutQueued = true;
+    requestAnimationFrame(() => { layoutQueued = false; layout(); });
+  }
+
   let loaded = 0;
   Array.from(grid.querySelectorAll('img')).forEach(img => {
     const done = () => {
       loaded++;
-      if (loaded <= 8 || loaded % 4 === 0) layout();
+      if (loaded <= 8 || loaded % 4 === 0) queueLayout();
     };
     if (img.complete) done();
     else { img.onload = done; img.onerror = done; }
