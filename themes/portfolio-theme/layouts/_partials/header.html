@@ -292,8 +292,8 @@
     display: flex; align-items: center; justify-content: center;
   }
   html.dark #intro-door { background: #0c0c0c; }
-  /* Nothing in the door is text to select: on Louis's iPhone (Firefox, 2026-10-24) a tap to speed it up left the
-     browser's purple text cursor standing at a logo's right edge. */
+  /* Nothing in the door is text to select. Louis's iPhone (Firefox, 2026-10-24) showed a purple line at a logo's right
+     edge; our guess, not established, is the browser's text cursor or selection after a tap. If it persists, look elsewhere. */
   #intro-door, #intro-door * { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; caret-color: transparent; -webkit-tap-highlight-color: transparent; }
   #intro-door.dissolving { opacity: 0; pointer-events: none; }
 
