@@ -67,6 +67,7 @@ Each is readable page-by-page in the site's viewer, as text on its own page
 thermodynamics, consciousness and machine minds, mortality, memory, faith,
 folklore and occult symbolism.
 
+- [I and I](https://han.andrada.one/oeuvre/i-and-i/) — Seven Tellings, 2026 · [text](https://han.andrada.one/oeuvre/i-and-i.txt)
 - [Five Business Days](https://han.andrada.one/oeuvre/five-business-days/) — A Screenplay, 2026 · [text](https://han.andrada.one/oeuvre/five-business-days.txt)
 - [Aster](https://han.andrada.one/oeuvre/aster/) — Eight Tellings, 2026 · [text](https://han.andrada.one/oeuvre/aster.txt)
 - [Cairn](https://han.andrada.one/oeuvre/cairn/) — Eight Tellings, 2026 · [text](https://han.andrada.one/oeuvre/cairn.txt)
