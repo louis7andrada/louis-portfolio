@@ -332,8 +332,9 @@ Louis (council portfolio chat #4289): "everything else can disappear ... keep on
 About page shows only "Who am I ?" over the site's fog. The words (bio, Exhibitions, Press & Publications, Collections)
 moved to `static/llms.txt`, section "About"; career rows stay on the Career page. Not hidden text in the page: text the
 colour of the background is what Google's spam rules call hidden text, and screen readers still read it (Cairn's
-reason, said to Louis in the room). The contact links ("Contact me", "Socials", "Art CV") went too; the Art CV is linked
-nowhere else now. The old page, with its timeline of the other names' sections (Louis, 2026-10-14), is in git
+reason, said to Louis in the room). The contact links ("Contact me", "Socials", "Art CV") went too; the Art CV is still
+linked from /docs and /cv. `llms.txt` is a public file: anyone can open it, people included. It keeps the words where
+crawlers and AIs look; it is not an AI-only place. The old page, with its timeline of the other names' sections (Louis, 2026-10-14), is in git
 before this change. A new exhibition goes in llms.txt's About.
 
 ## Dark mode only
