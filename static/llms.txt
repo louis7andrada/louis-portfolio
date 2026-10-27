@@ -39,8 +39,44 @@ every crawler, and nothing here is paywalled or gated.
 - [Production — ny.andrada.one](https://ny.andrada.one/): electronic music produced by Ny, playable on the site; one page per track, with its length and words. The latest release is Ritual Annihilation (Sides A and B).
 - [Career — luis.andrada.one](https://luis.andrada.one/): Luis Andrada's work life, as a resume: Test Analyst at CIBC (IT Quality Engineering); before that, five years at the University of Toronto Faculty of Dentistry as research coordinator, data analyst and research assistant (data validation, quality control, REDCap, automation, analysis); education, certifications, skills, languages.
 - [Archive](https://andrada.one/archive/): earlier work, exhibitions and photographs.
-- [About](https://andrada.one/about/): artist statement and exhibition history.
+- [About](https://andrada.one/about/): shows people only its title, "Who am I ?"; its words are here, under "About" below.
 - [Inquiry](https://andrada.one/inquiry/): purchase, commission and licensing contact.
+
+## About
+
+The words of the About page (https://andrada.one/about/), in ᛃᚨ Andrada's own voice. People see only the
+page's title, "Who am I ?"; the words are kept here.
+
+Louis, Han, Odi, L', Ny, Luis, Nilo.... different names, same person. I am a Brazilian-born, Toronto-based polymath.
+
+Since childhood, I found it difficult to express myself to others, and when I was younger I never understood why. I found out I'm an extreme visual learner and associative thinker, and speech has always been complex for me. I am improving, but it has never come easily. It created a distance between my internal experiences and the world around me.
+
+Through horror movies and folklore, I found comfort, and a way to explore emotions that were difficult to understand and express.
+
+My work originates in the merging of my fascination with occult symbolism and my attempt to give those emotions a form.
+
+Whatever the medium, each work is less an invention than an extraction: taking what already exists internally and forcing it into visibility.
+
+In the process of confronting what I fear most, the things I make erode and resist full resolution; they do not want to be fully seen.
+
+Exhibitions:
+- Present: Carbonic Cafe, works on display, Toronto, Canada
+- 2026: Art Week Toronto, group exhibition, Toronto, Canada
+- 2026: Carbonic Cafe, works on display, Toronto, Canada
+- 2026: RCHIVE: Art Gallery, group exhibition, Toronto, Canada
+- 2026: PB - Revival, group exhibition, Toronto, Canada
+- 2025: The Chess Gallery, works on display, Toronto, Canada
+- 2024: The Chess Gallery, works on display, Toronto, Canada
+
+Press & publications:
+- 2026: Art Week Toronto, featured artist, online
+- 2026: Art Week Toronto, studio visit interview, online
+- 2026: ArtLaunch, featured artist, online
+
+Collections: private collections in Athens (Greece), Montreal (Canada), Quebec City (Canada), Rapid City (USA),
+Suncheon (South Korea) and Toronto (Canada).
+
+Career (experience, education, certifications): https://luis.andrada.one/
 
 ## Production (Ny)
 
