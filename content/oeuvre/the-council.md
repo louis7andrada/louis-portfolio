@@ -12,4 +12,5 @@ pageCount: 52
 framesPerFlip: 8
 fps: 18
 comment: ""
+listFirst: true
 ---

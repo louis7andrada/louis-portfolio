@@ -1,10 +1,12 @@
-{{- /* The books in display order: highest `order` first, then any book with `listLast: true` at the very end
-     (in its own `order`, highest first). `order` stays the book's number ("No. 13"); `listLast` only moves it
-     down the list, and so also keeps it out of the Han hero, which shows the first book (Louis, 2026-10-20:
-     Five Business Days after ᛃᚨ, not the main book displayed).
+{{- /* The books in display order: any book with `listFirst: true` at the very top, then highest `order` first,
+     then any book with `listLast: true` at the very end (each group in its own `order`, highest first). `order`
+     stays the book's number ("No. 13"); `listFirst` and `listLast` only move a book up or down the list, and so
+     also decide the Han hero, which shows the first book. `listLast`: Louis, 2026-10-20, Five Business Days after
+     ᛃᚨ, not the main book displayed. `listFirst`: Louis, 2026-10-27, The Council stays the top book even when
+     newer books come after it.
      Call: partial "oeuvre-sort.html" $books — returns the same pages, reordered. */ -}}
 {{- $sorted := sort . "Params.order" "desc" -}}
-{{- $last := where $sorted "Params.listLast" true -}}
-{{- $result := where $sorted "Params.listLast" "!=" true -}}
-{{- range $last }}{{ $result = $result | append . }}{{ end -}}
+{{- $result := where $sorted "Params.listFirst" true -}}
+{{- range where (where $sorted "Params.listFirst" "!=" true) "Params.listLast" "!=" true }}{{ $result = $result | append . }}{{ end -}}
+{{- range where (where $sorted "Params.listFirst" "!=" true) "Params.listLast" true }}{{ $result = $result | append . }}{{ end -}}
 {{- return $result -}}
