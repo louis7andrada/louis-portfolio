@@ -48,7 +48,7 @@ the domain, `baseof.html` scripts, reCAPTCHA or a form must be verified end to e
 **A push (or merged PR) to `main` on GitHub deploys the site**: Netlify builds `main` itself (`netlify.toml`), no
 laptop step (Louis, council #4589, #4592, 2026-10-27: "No, i havent need to do that for a while. please deploy it to
 github"; "You have been deploying to the website for a while now without me needing to do that"). Checked: PR #7
-merged 18:01 UTC, live by about 18:10. A Git build has only what is committed, so a file must be in GitHub to be
+merged 18:01 UTC, its page answered 200 at 18:05. A Git build has only what is committed, so a file must be in GitHub to be
 published. Check the live page after a merge; Netlify's edge may serve a stale 404 for a minute.
 The laptop deploy below still exists and still must never get ahead of GitHub:
 
