@@ -326,12 +326,16 @@ legal name (`legal_name`, Luis R. P. Andrada) still stays in legal statements on
   + `face-site.html`.
   No RSS (`outputs: ["html"]`). No logo yet: luis. shows Jera Ansuz at once (`LOGOS.luis = "new"`).
 
-## About page timeline (Oct 2026)
+## About page: the title only (Oct 27, 2026)
 
-Below Louis's Exhibitions / Press & Publications / Collections, the About page lists the other names' sections in the
-names' order (Louis, Han, Odi, L', Ny, Nilo, Luis; Louis, 2026-10-14), without saying whose they are. Only Luis has any:
-Experience, Education, Certifications, read from `content/career/_index.md` (one source for both pages). A new
-name's section goes before Luis's (marked in `about/single.html`). Bottom links: "Contact me", "Socials", "Art CV".
+Louis (council portfolio chat #4289): "everything else can disappear ... keep only the background the fogs". The
+About page shows only "Who am I ?" over the site's fog. The words (bio, Exhibitions, Press & Publications, Collections)
+moved to `static/llms.txt`, section "About"; career rows stay on the Career page. Not hidden text in the page: text the
+colour of the background is what Google's spam rules call hidden text, and screen readers still read it (Cairn's
+reason, said to Louis in the room). The contact links ("Contact me", "Socials", "Art CV") went too; the Art CV is still
+linked from /docs and /cv. `llms.txt` is a public file: anyone can open it, people included. It keeps the words where
+crawlers and AIs look; it is not an AI-only place. The old page, with its timeline of the other names' sections (Louis, 2026-10-14), is in git
+before this change. A new exhibition goes in llms.txt's About.
 
 ## Dark mode only
 
