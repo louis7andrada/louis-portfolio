@@ -126,8 +126,8 @@ one photograph in a popup (prev/next, click the image for fullscreen + zoom). It
 One `.md` per photo, `photoN.md`: `id` is `photoN` (also the image file name and the URL), the visible `title` is
 the same number in lowercase roman numerals (photo1 = `i`, photo4 = `iv`; photo1 = oldest). Louis doesn't want to
 describe them. `source` is the original file name (lets re-runs keep each photo's number and collection). `collection` is `Ambiguous` (abstract, black and white) or `Lucid` (everything else).
-The page opens filtered to Ambiguous on the first visit of each session; the visitor's later choice (Lucid, All,
-Deselect all) is kept for the session (`sessionStorage photo-collection`, applied by an inline script before first paint).
+The page opens on All on the first visit of each session (Louis, 2026-10-28, council #4865: it used to open on Ambiguous);
+the visitor's later choice (Ambiguous, Lucid, Deselect all) is kept for the session (`sessionStorage photo-collection`, applied by an inline script before first paint).
 
 ### Adding photos
 

@@ -86,12 +86,13 @@
 
   <script>
   /* Collection filter: the first Photography visit of a session opens on
-     Ambiguous; after that the visitor's own choice (Lucid, All, Deselect all)
-     is kept for the rest of the session (sessionStorage "photo-collection").
+     All (Louis, 2026-10-28; it used to open on Ambiguous); after that the
+     visitor's own choice (Ambiguous, Lucid, Deselect all) is kept for the rest
+     of the session (sessionStorage "photo-collection").
      Runs right here, before the first paint and before the fog copies of the
      page are made, so the full grid never flashes up and collapses. */
   (function () {
-    var c = "ambiguous";
+    var c = "all";
     try { var s = sessionStorage.getItem("photo-collection"); if (s === "all" || s === "ambiguous" || s === "lucid") c = s; } catch (e) {}
     window.__photoCollection = c;
     if (c === "all") return;
