@@ -319,7 +319,7 @@ legal name (`legal_name`, Luis R. P. Andrada) still stays in legal statements on
 - NO HERO (Louis, 2026-10-14): luis.andrada.one opens right on the resume, the menu only in the header (`plain = true`
   in `params.faces.luis`; faces.html gives a plain face no hero behaviour, and menus link it without a #hash). A small
   SQUARE portrait (`avatar`, `static/images/luis/portrait-small.jpg`, 360px) sits on top of his name; `image` (the
-  1000px `portrait.jpg`; both from the B&W photo Louis sent 2026-10-28 (council picture #37, 1367×2048), cut square at full width from 60px down, no metadata) is for link previews.
+  1000px `portrait.jpg`; both from the B&W photo Louis sent 2026-10-28 (council picture #37, 1367×2048), cut square around the face, 1080px from (60, 110), no arms: Louis #5001, no metadata) is for link previews.
   The pinned cluster (title, section links that follow the scroll, LinkedIn, Contact; `.book-page-header` +
   `body.page-books` like the other faces; hidden on phones, where the resume's head carries the links). The resume
   is CENTRED on the screen and the cluster sits a short gap to its left (`--cr-rx/--cr-cl/--cr-gap/--cr-col`; Louis:
