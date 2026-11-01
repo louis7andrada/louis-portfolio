@@ -485,7 +485,22 @@
     filter: blur(10px);
     pointer-events: none;
     transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+    /* Ten names must fit on any phone (Louis, Nov 1: the first and last were cut off, untappable,
+       on an iPhone 13 and SE). Size and spacing follow the screen's height, below the header's
+       button; if a screen is still too short, the menu scrolls instead of cutting names off
+       (auto margins centre it and, unlike justify-content: center, never push a name above the top). */
+    justify-content: flex-start !important;
+    gap: min(2.5rem, 3.2vh) !important;
+    gap: min(2.5rem, 3.2dvh) !important;
+    font-size: clamp(1.25rem, 4.6vh, 1.875rem) !important;
+    font-size: clamp(1.25rem, 4.6dvh, 1.875rem) !important;
+    line-height: 1.2 !important;
+    padding: calc(env(safe-area-inset-top, 0px) + 64px) 0 calc(env(safe-area-inset-bottom, 0px) + 24px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
+  #mobileMenu > a:first-child { margin-top: auto; }
+  #mobileMenu > a:last-child { margin-bottom: auto; }
   #mobileMenu.open {
     opacity: 1;
     transform: scale(1);

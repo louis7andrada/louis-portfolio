@@ -383,7 +383,7 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   laptop's Windows reports reduce-motion, so Louis sees the fade here. Andrada is itself a link to andrada.one (this
   page): a click moves nothing, it shines and the page reopens. Phones (≤640px): the first names on top in ONE row of
   equal columns (any number of names); an empty line under them where Andrada lands under the clicked name; Andrada
-  itself centred below that line; then Polymath / Toronto based. The list has no "Portfolio" (removed Oct 2026). Tests:
+  itself centred below that line. ("Polymath" and "Toronto based" removed, Louis, Nov 1 2026.) The list has no "Portfolio" (removed Oct 2026). Tests:
   "Links page …". The footer's logo and its "<name> © 2026 — All Rights Reserved" line lead to andrada.one on every page.
   `faces.html` = the Han/Odi front-page behaviour (scroll to grid, header menu and
   the pinned title+filters wait while the hero shows, hero image opens in the popup).
