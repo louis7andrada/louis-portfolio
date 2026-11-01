@@ -24,10 +24,6 @@
       <a href="{{ partial "face-url.html" "ny" }}" class="ns ns-5" aria-label="{{ site.Params.names.ny }}" title="{{ site.Params.names.ny }}">N<span class="ink i4">y</span></a>
       <a href="{{ partial "face-url.html" "luis" }}" class="ns ns-6" aria-label="{{ site.Params.names.luis }}" title="{{ site.Params.names.luis }}">Lu<span class="ink i3">i</span><span class="ink i4">s</span></a>
     </div>
-    <div class="flex gap-6 md:gap-10">
-      <span>Polymath</span>
-      <span>Toronto based</span>
-    </div>
   </div>
 
   <!-- On mobile: large top margin is fine (page scrolls).
@@ -126,7 +122,7 @@
   .name-stack .ns-6 { padding-left: 13ch; opacity: 0.22; }
   /* Phones: the first names in one row of equal columns (as many as there are names, and each
      whole column is its name's tap target); then one empty line, where Andrada lands under the
-     clicked name; then Andrada itself, centred; then Polymath / Toronto based. */
+     clicked name; then Andrada itself, centred. (Polymath / Toronto based removed, Louis Nov 1.) */
   @media (max-width: 640px) {
     .links-page .name-band { flex-direction: column; align-items: center; row-gap: 0.5rem; }
     .name-stack { flex-direction: row; flex-wrap: wrap; align-items: flex-start; width: 100%; }

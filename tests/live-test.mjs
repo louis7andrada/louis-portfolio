@@ -1780,6 +1780,32 @@ async function main() {
   }
 
   // ── Small screens: burger menu + popups lock the page and keep their blur ──
+  // Every name in the burger menu fits on the screen and can be tapped (Louis, Nov 1: the items weren't shrunk to allow
+  // users to click them), from a small phone's viewport (SE, 320x568) to a tall one.
+  for (const [w, h] of [[320, 568], [375, 667], [390, 664], [430, 932]]) {
+    await check(`Phone burger menu at ${w}x${h}: all ten names on screen, below the close button, each one tappable`, async () => {
+      const page = await browser.newPage();
+      await page.setViewport(w, h, true);
+      await page.goto(BASE_URL + "/archive/");
+      await waitForIntroDoorGone(page);
+      await new Promise((r) => setTimeout(r, 800));
+      await page.evaluate(`document.getElementById('mobileMenuBtn').click()`);
+      await new Promise((r) => setTimeout(r, 900));
+      const r = await page.evaluate(`(() => { const btn = document.getElementById('mobileMenuBtn').getBoundingClientRect();
+        return { btnBottom: btn.bottom, vh: innerHeight, links: [].map.call(document.querySelectorAll('#mobileMenu a'), (a) => { const q = a.getBoundingClientRect();
+          const hit = document.elementFromPoint(q.left + q.width / 2, q.top + q.height / 2);
+          return { t: a.textContent.trim(), top: q.top, bottom: q.bottom, hit: !!hit && a.contains(hit) }; }) }; })()`);
+      await page.close();
+      const bad = [];
+      if (r.links.length !== 10) bad.push(`${r.links.length} names, not 10`);
+      for (const l of r.links) {
+        if (l.top < r.btnBottom - 1 || l.bottom > r.vh + 1) bad.push(`${l.t} is off screen or under the button (${Math.round(l.top)}-${Math.round(l.bottom)}px)`);
+        else if (!l.hit) bad.push(`${l.t} can't be tapped`);
+      }
+      if (bad.length) throw new Error(bad.join(" | "));
+    });
+  }
+
   await check("Phone burger menu opened after scrolling: header + close (-) button stay in view, page behind is locked, and the - shows", async () => {
     const page = await browser.newPage();
     await page.setViewport(390, 844, true);
@@ -2204,7 +2230,7 @@ async function main() {
 
   // Links page on phones (Louis, Oct 2026): Louis / Han / Odi / L' / Ny / Luis on top in one row of equal columns; an empty
   // line under them where Andrada lands under the clicked name; Andrada itself centred below that line;
-  // then Polymath / Toronto based. The list has no "Portfolio" any more.
+  // no "Polymath" / "Toronto based" (removed, Louis Nov 1). The list has no "Portfolio" any more.
   for (const motion of ["no-preference", "reduce"]) {
     await check(`Links page on a phone (${motion} motion): the names in one row, Andrada centred a line below, a click brings Andrada under the name`, async () => {
       const page = await browser.newPage();
@@ -2217,8 +2243,8 @@ async function main() {
       const lay = await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'), s = m.querySelector('.ns-surname');
         var names = [].slice.call(m.querySelectorAll('a.ns')).map(function (a) { var r = a.getBoundingClientRect(), pt = parseFloat(getComputedStyle(a).paddingTop) || 0;
           return { text: a.textContent, l: r.left, r: r.right, t: r.top + pt }; });
-        var sr = s.getBoundingClientRect(), mr = m.getBoundingClientRect(), tag = document.querySelector('body > main .name-band').children[1].getBoundingClientRect();
-        return { names: names, s: { c: (sr.left + sr.right) / 2, t: sr.top, b: sr.bottom, h: sr.height }, mc: (mr.left + mr.right) / 2, tagTop: tag.top,
+        var sr = s.getBoundingClientRect(), mr = m.getBoundingClientRect(), band = document.querySelector('body > main .name-band');
+        return { names: names, s: { c: (sr.left + sr.right) / 2, t: sr.top, b: sr.bottom, h: sr.height }, mc: (mr.left + mr.right) / 2, bandText: band.textContent,
           list: [].map.call(document.querySelectorAll('body > main .links-col nav .tw-link'), function (a) { return a.textContent; }).slice(0, 9),
           vw: document.documentElement.clientWidth, sw: document.documentElement.scrollWidth }; })()`);
       const bad = [];
@@ -2228,7 +2254,7 @@ async function main() {
       if (lay.s.t < lay.names[0].t + 2 * lay.s.h - 1) bad.push("Andrada doesn't rest below the names with an empty line between");
       const widths = lay.names.map((n) => n.r - n.l);
       if (Math.max(...widths) - Math.min(...widths) > 2) bad.push(`the columns aren't equal (${widths.map(Math.round).join("/")}px)`);
-      if (lay.tagTop < lay.s.b) bad.push("Polymath / Toronto based isn't below Andrada");
+      if (/polymath|toronto based/i.test(lay.bandText)) bad.push("Polymath / Toronto based is still shown");
       if (lay.sw > lay.vw) bad.push(`the page scrolls sideways (${lay.sw}px > ${lay.vw}px)`);
       if (lay.list.join(" ") !== "Artworks Oeuvre Photography Vestments Production Career Inquiry Archive About-me") bad.push(`the list reads "${lay.list.join(" ")}"`);
       if (bad.length) { await page.close(); throw new Error(bad.join(" | ")); }
