@@ -9,7 +9,7 @@
 <section class="links-page flex flex-col items-center pt-4 pb-4 px-4 sm:px-10">
 
   <div class="name-band w-full flex justify-between items-start mt-2">
-    <!-- One person, six names: each steps in from the one above (the About page's staircase),
+    <!-- One person, six names: scattered under the first, each at its own spot (Louis, Nov 1; once the About page's staircase),
          a little lighter, with the links' ink trailing off the last letters. Each name opens its
          own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography),
          l.andrada.one (Vestments), ny.andrada.one (Production), luis.andrada.one (Career).
@@ -86,8 +86,14 @@
     .links-page {
       min-height: calc(100vh - 155px);
     }
-    .content-block {
+    /* Computers and wide screens (Louis, Nov 1): the names block, exactly as it is, moves to the centre, right on top of
+       the picture and the Areas; the two are centred together in the space, one column. Phones are unchanged. */
+    .name-band {
+      justify-content: center;
       margin-top: auto;
+    }
+    .content-block {
+      margin-top: 2.5rem;
       margin-bottom: auto;
     }
   }
@@ -100,7 +106,7 @@
   }
   .dark .name-band { color: #ececec; }
 
-  /* Louis / Han / Odi / L': a staircase, each name a step in and a shade lighter. Each link is only as
+  /* Louis / Han / Odi / L': each name a shade lighter than the one above. Each link is only as
      wide as its name (flex-start), so the script can put Andrada right after it. */
   .name-stack { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.18; }
   .name-stack .ns, .name-stack .ns-row { white-space: nowrap; }
@@ -115,11 +121,13 @@
      (main.css colours every .links-page link blue with !important) */
   html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover,
   html .links-page .name-stack a.ns-surname, html .links-page .name-stack a.ns-surname:hover { color: inherit !important; text-decoration: none; }
-  .name-stack .ns-2 { padding-left: 2.6ch; opacity: 0.78; }
-  .name-stack .ns-3 { padding-left: 5.2ch; opacity: 0.58; }
-  .name-stack .ns-4 { padding-left: 7.8ch; opacity: 0.42; }
-  .name-stack .ns-5 { padding-left: 10.4ch; opacity: 0.3; }
-  .name-stack .ns-6 { padding-left: 13ch; opacity: 0.22; }
+  /* Scattered (Louis, Nov 1, his choice "A", then "a little more height between them, a little closer to the previous one"):
+     each name at its own fixed, irregular spot, some under Andrada; the same fading. Phones keep their row (rules below). */
+  .name-stack .ns-2 { padding-left: 4ch; margin-top: 0.3em; opacity: 0.78; }
+  .name-stack .ns-3 { padding-left: 1ch; margin-top: 0.45em; opacity: 0.58; }
+  .name-stack .ns-4 { padding-left: 6ch; margin-top: 0.25em; opacity: 0.42; }
+  .name-stack .ns-5 { padding-left: 3ch; margin-top: 0.5em; opacity: 0.3; }
+  .name-stack .ns-6 { padding-left: 7ch; margin-top: 0.3em; opacity: 0.22; }
   /* Phones: the first names in one row of equal columns (as many as there are names, and each
      whole column is its name's tap target); then one empty line, where Andrada lands under the
      clicked name; then Andrada itself, centred. (Polymath / Toronto based removed, Louis Nov 1.) */
@@ -351,7 +359,9 @@
       flex-direction: column-reverse;
       align-items: center;
       gap: 1.5rem;
-      margin-top: 2rem;
+      /* Louis (Nov 1, council #5860): with the Polymath / Toronto based line gone, the space between Andrada and the
+         photo looked too wide; about the same as the landing line above Andrada now (it was 2rem, 39 px measured). */
+      margin-top: 1.25rem;
       width: 100% !important;
     }
     .links-col { align-items: center; width: 100% !important; }
