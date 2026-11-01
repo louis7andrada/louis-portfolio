@@ -1780,8 +1780,8 @@ async function main() {
   }
 
   // ── Small screens: burger menu + popups lock the page and keep their blur ──
-  // Every name in the burger menu fits on the screen and can be tapped (Louis, Nov 1: on an iPhone the first and last were
-  // cut off), from a small phone (SE, 320x568) to a tall one.
+  // Every name in the burger menu fits on the screen and can be tapped (Louis, Nov 1: the items weren't shrunk to allow
+  // users to click them), from a small phone's viewport (SE, 320x568) to a tall one.
   for (const [w, h] of [[320, 568], [375, 667], [390, 664], [430, 932]]) {
     await check(`Phone burger menu at ${w}x${h}: all ten names on screen, below the close button, each one tappable`, async () => {
       const page = await browser.newPage();
