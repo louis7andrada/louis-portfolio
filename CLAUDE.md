@@ -377,13 +377,16 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   the sections themselves may come one day). The Links page keeps its own Artworks/Oeuvre/Photography list.
   Tab titles put the name first on section/shared pages ("Odi Andrada — Photography", "ᛃᚨ Andrada — About");
   single works keep the work first ("cxlvii (Ambiguous) — Photograph by Odi Andrada").
-- Links page (`layouts/links/list.html`): hovers shine like the header (no underline, no bold). The name stack is
-  Louis / Han / Odi with **Andrada** resting apart on Louis's line; clicking a name sends Andrada to sit after it (a fast,
-  faded drift; a plain fade under reduce motion, the site's rule), both shine, then the page opens (~0.75 s). This
+- Links page (`layouts/links/list.html`): hovers shine like the header (no underline, no bold). Since Nov 3 2026 (Louis,
+  council #6288, #6313, #6318), on computers: **Andrada** alone on the first line; the six names (Louis Han Odi L' Ny Luis)
+  in one row under it, each a shade lighter, the group moved right so the row's middle sits a quarter into the picture (`AT` in the
+  script, measured, so it keeps its place as the window narrows); one empty line; then the Areas and the picture. Clicking a name sends
+  Andrada down to that empty line, centred under the name (a fast, faded drift; a plain fade under reduce motion, the
+  site's rule), both shine, then the page opens (~0.75 s). (Before: a stair down to the left on computers, Nov 2.) This
   laptop's Windows reports reduce-motion, so Louis sees the fade here. Andrada is itself a link to andrada.one (this
-  page): a click moves nothing, it shines and the page reopens. Phones (≤640px): the first names on top in ONE row of
-  equal columns (any number of names); an empty line under them where Andrada lands under the clicked name; Andrada
-  itself centred below that line. ("Polymath" and "Toronto based" removed, Louis, Nov 1 2026.) The list has no "Portfolio" (removed Oct 2026). Tests:
+  page): a click moves nothing, it shines and the page reopens. Phones (≤640px), the same order (Louis #6318, "put
+  andrada first"), centred: Andrada, then the names in ONE row of equal columns (any number of names), then the empty
+  landing line. (Before Nov 3 the phone had the names first and Andrada a line below them.) ("Polymath" and "Toronto based" removed, Louis, Nov 1 2026.) The list has no "Portfolio" (removed Oct 2026). Tests:
   "Links page …". The footer's logo and its "<name> © 2026 — All Rights Reserved" line lead to andrada.one on every page.
   `faces.html` = the Han/Odi front-page behaviour (scroll to grid, header menu and
   the pinned title+filters wait while the hero shows, hero image opens in the popup).
