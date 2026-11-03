@@ -85,7 +85,7 @@ disableKinds = ["taxonomy", "term"]
   # In the browser a face subdomain always shows its own name; on andrada.one, ?name=<key> picks it
   # for the visit (removed from the address bar). Only the Person node lists every name (alternateName).
   # Off andrada.one (hugo server, any other baseURL) all of this falls back to plain local paths.
-  name_default = "ja"
+  name_default = "andrada"
   face_domain = "andrada.one"
   hub = "/links/"
 
@@ -98,14 +98,15 @@ disableKinds = ["taxonomy", "term"]
     luis = "Luis Andrada"   # career (Louis, 2026-10-14); NOT the legal name (legal_name), which stays in legal statements
     nilo = "Nilo Andrada"   # no section yet (Louis, 2026-10-13: "surprises soon"); in About, the intro door, alternateName
     ja = "ᛃᚨ Andrada"
+    andrada = "Andrada"
 
   # Each name's own description (meta description where a page has none of its own, WebSite JSON-LD).
   [params.taglines]
     louis = "Paintings by Louis Andrada, a Brazilian-born painter based in Toronto: dark, existentialist figurative work."
-    han = "Illustrated artist books by Han’drada: philosophical tellings on entropy, consciousness, mortality, memory and faith, readable in full online."
+    han = "Books by Han’drada: philosophical tellings on entropy, consciousness, mortality, memory and faith, readable in full online."
     odi = "Photographs by Odi Andrada, in two collections: Ambiguous (abstract, black and white) and Lucid."
-    l = "Vestments by L'."
-    ny = "Electronic music produced by Ny."
+    l = "Vestments by L' Andrada."
+    ny = "Electronic music produced by Ny Andrada."
     luis = "Luis Andrada, Toronto: Test Analyst at CIBC, previously Research Coordinator at the University of Toronto. Testing, data validation and quality control."
     ja = "Andrada is a Brazilian-born artist based in Toronto who works under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career: testing, data and programming)."
 
