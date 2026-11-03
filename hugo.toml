@@ -1,6 +1,6 @@
 baseURL = "https://andrada.one/"
 languageCode = "en-us"
-title = "ᛃᚨ Andrada"
+title = "Andrada"
 theme = "portfolio-theme"
 enableRobotsTXT = true
 # No tags/categories are used on this site; don't generate empty pages for them.
@@ -46,7 +46,7 @@ disableKinds = ["taxonomy", "term"]
   # Identity, in one place — used by the <head> metadata and every JSON-LD
   # block, so the name and profiles never drift between pages.
   # legal_name: the legal entity, used ONLY in legal statements (copyright notices, license, privacy).
-  # Everything public uses the names below. The Person node (JSON-LD) is "ᛃᚨ Andrada" with every
+  # Everything public uses the names below. The Person node (JSON-LD) is "ᛃAndrada" with every
   # other name as an alternateName, so all of them resolve to one entity.
   legal_name = "Luis R. P. Andrada"
   # The one line that tells machines WHICH Andrada this is (JSON-LD disambiguatingDescription on the Person), in
@@ -93,10 +93,10 @@ disableKinds = ["taxonomy", "term"]
     han = "Han’drada"
     louis = "Louis Andrada"
     odi = "Odi Andrada"
-    l = "L'"
-    ny = "Ny"
+    l = "L' Andrada"
+    ny = "Ny Andrada"
     luis = "Luis Andrada"   # career (Louis, 2026-10-14); NOT the legal name (legal_name), which stays in legal statements
-    nilo = "Nilo"   # no section yet (Louis, 2026-10-13: "surprises soon"); in About, the intro door, alternateName
+    nilo = "Nilo Andrada"   # no section yet (Louis, 2026-10-13: "surprises soon"); in About, the intro door, alternateName
     ja = "ᛃᚨ Andrada"
 
   # Each name's own description (meta description where a page has none of its own, WebSite JSON-LD).
@@ -107,7 +107,7 @@ disableKinds = ["taxonomy", "term"]
     l = "Vestments by L'."
     ny = "Electronic music produced by Ny."
     luis = "Luis Andrada, Toronto: Test Analyst at CIBC, previously Research Coordinator at the University of Toronto. Testing, data validation and quality control."
-    ja = "ᛃᚨ Andrada is a Brazilian-born artist based in Toronto who works under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career: testing, data and programming)."
+    ja = "Andrada is a Brazilian-born artist based in Toronto who works under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career: testing, data and programming)."
 
   # Each name's keywords (meta keywords), its own name first.
   [params.keywords]
