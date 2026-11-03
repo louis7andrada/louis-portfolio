@@ -148,7 +148,7 @@
      ══════════════════════════════════════════════════════ -->
 <div id="intro-door">
   <div id="introLogoWrap" class="intro-logo-wrap">
-    <img src="/logo-sm/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new active" data-logo="new" alt="ᛃᚨ"
+    <img src="/logo-sm/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new" data-logo="new" alt="ᛃᚨ"
          onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
     <img src="/logo-sm/andradalogo.png" id="introLogoAndrada" class="intro-logo-img intro-logo-andrada" data-logo="andrada" alt="Andrada" />
     <img src="/logo-sm/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
@@ -780,8 +780,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showIntroLogo(INTRO_STEPS[0]);
         later(advance, FIRST_HOLD);
       }
-      // Hide the first logo until it has arrived, so nothing pops in half-drawn.
-      if (!ALL_STEPS.every((name) => loaded(logoOf(name)))) showIntroLogo(null);
+      // No logo is active in the HTML (Tessera, PR #15): the first one shows only from start(), once loaded.
       Promise.all(ALL_STEPS.map((name) => whenReady(logoOf(name)))).then(start, start);
       setTimeout(start, WAIT_CAP);
 
