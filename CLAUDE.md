@@ -414,7 +414,9 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   han. → Han Andrada (`ha`), odi. → Odi Andrada (`odi`, odiandradalogo.png), l. → L' (`l`, llogo.png), ny. → Ny (`ny`, nylogo.png),
   luis. → none yet (Jera Ansuz at once), andrada.one → Andrada (`andrada`,
   andradalogo.png) — then morphs into Jera Ansuz (`new`, lalogo.png) and stays. Rule: face subdomain, else the page's
-  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L' → Ny → Nilo. New logo from a
+  owner, else `?name=`, else Andrada. The intro door plays Jera → Andrada → Louis → Han → Odi → L' → Ny → Nilo. Since Nov 3 2026 (Louis, council #6296) it
+  plays only once its logos are loaded and decoded (plain door until then; after 2.5 s it plays with those that have
+  arrived and skips the rest), and a little faster (logos 3.3 s, dissolve 1.1 s; was 3.95 s and 1.3 s). New logo from a
   black-on-white drawing: `python scripts/make-logo.py <drawing.png> static/<name>.png` (originals in `private/logo-drawings/`).
   Louis also wants a white copy of each new one (`static/<name>invert.png`: same alpha, white ink; for his own use).
   The page loads `static/logo-sm/<name>.png`, not the full-size file (2026-10-20, for the Lighthouse score): every logo
