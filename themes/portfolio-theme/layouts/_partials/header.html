@@ -148,7 +148,7 @@
      ══════════════════════════════════════════════════════ -->
 <div id="intro-door">
   <div id="introLogoWrap" class="intro-logo-wrap">
-    <img src="/logo-sm/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new active" data-logo="new" alt="ᛃᚨ"
+    <img src="/logo-sm/lalogo.png" id="introLogoNew" class="intro-logo-img intro-logo-new" data-logo="new" alt="ᛃᚨ"
          onerror="this.style.display='none'; var f=document.getElementById('introLogoFallback'); if(f) f.style.display='block';" />
     <img src="/logo-sm/andradalogo.png" id="introLogoAndrada" class="intro-logo-img intro-logo-andrada" data-logo="andrada" alt="Andrada" />
     <img src="/logo-sm/logoold.png" id="introLogoOld" class="intro-logo-img intro-logo-old" data-logo="old" alt="Louis Andrada" />
@@ -288,7 +288,7 @@
     position: fixed; inset: 0; background: #ffffff; z-index: 999;
     /* --ds is the door's speed multiplier (set by JS when the visitor
        clicks to speed it up); every duration below divides by it. */
-    transition: opacity calc(1.3s / var(--ds, 1)) ease;
+    transition: opacity calc(1.1s / var(--ds, 1)) ease; /* = DISSOLVE_TRANSITION in the door script */
     display: flex; align-items: center; justify-content: center;
   }
   html.dark #intro-door { background: #0c0c0c; }
@@ -339,7 +339,7 @@
   /* Final stage: whichever logo is active morphs away (bigger blur/scale,
      slower) as the door dissolves underneath it, instead of a flat fade */
   #intro-door.dissolving .intro-logo-img.active {
-    transition: opacity calc(1.3s / var(--ds, 1)) ease, transform calc(1.3s / var(--ds, 1)) ease, filter calc(1.3s / var(--ds, 1)) ease;
+    transition: opacity calc(1.1s / var(--ds, 1)) ease, transform calc(1.1s / var(--ds, 1)) ease, filter calc(1.1s / var(--ds, 1)) ease;
     opacity: 0;
     transform: translate(-50%, -50%) scale(1.18);
     filter: var(--logo-invert, ) blur(7px) var(--fog-off);
@@ -673,19 +673,26 @@ document.addEventListener("DOMContentLoaded", () => {
       // dissolve), so each new logo makes every step a little quicker instead
       // of making the door longer. To add a logo: add its <img> above and its
       // name to INTRO_STEPS; the timings below rescale themselves.
-      const INTRO_STEPS         = ["new", "andrada", "old", "ha", "odi", "l", "ny", "nilo"];
+      const ALL_STEPS           = ["new", "andrada", "old", "ha", "odi", "l", "ny", "nilo"];
       // The 3-logo door's timings (1100 first hold, 900 morphs, 350 between,
-      // 700 final hold = 3950ms) set the proportions and the budget.
-      const LOGO_BUDGET         = 3950;
-      const pace = LOGO_BUDGET / (1100 + (INTRO_STEPS.length - 1) * 900 + (INTRO_STEPS.length - 2) * 350 + 700);
+      // 700 final hold = 3950ms) set the proportions; the budget is a little
+      // shorter since Nov 3 2026 (Louis, council #6296: "a tiny bit faster").
+      const LOGO_BUDGET         = 3300;
+      // The door plays only once its logos are loaded and decoded (Louis #6296: on a slow connection
+      // "it plays as soon as it loads", instead of logos popping in late mid-morph). Until then the
+      // door is plain; after WAIT_CAP it plays with whichever logos have arrived, skipping the rest.
+      const WAIT_CAP            = 2500;
+      let INTRO_STEPS           = ALL_STEPS;
+      // The timings are computed for every logo, and stay so if one is skipped (a slightly shorter door then).
+      const pace = LOGO_BUDGET / (1100 + (ALL_STEPS.length - 1) * 900 + (ALL_STEPS.length - 2) * 350 + 700);
       const FIRST_HOLD          = Math.round(1100 * pace); // first logo shows on its own before anything starts morphing
       const MORPH_TRANSITION    = Math.round(900 * pace);  // also drives .intro-logo-img's transition (--morph), so a logo has fully arrived before the next step
       const HOLD_BETWEEN        = Math.round(350 * pace);  // each middle logo sits visible before morphing again
       const HOLD_AFTER_FINAL    = Math.round(700 * pace);  // final logo sits visible before the door dissolves
-      const DISSOLVE_TRANSITION = 1300; // matches #intro-door's opacity transition & the dissolving-stage logo transition
+      const DISSOLVE_TRANSITION = 1100; // matches #intro-door's opacity transition & the dissolving-stage logo transition
       door.style.setProperty("--morph", MORPH_TRANSITION + "ms");
       // Whole default run, used to judge how early a click came.
-      const DEFAULT_TOTAL = FIRST_HOLD + (INTRO_STEPS.length - 1) * MORPH_TRANSITION + (INTRO_STEPS.length - 2) * HOLD_BETWEEN + HOLD_AFTER_FINAL + DISSOLVE_TRANSITION;
+      const DEFAULT_TOTAL = FIRST_HOLD + (ALL_STEPS.length - 1) * MORPH_TRANSITION + (ALL_STEPS.length - 2) * HOLD_BETWEEN + HOLD_AFTER_FINAL + DISSOLVE_TRANSITION;
 
       let step      = 0; // index into INTRO_STEPS of whichever logo is currently shown
       let dissolved = false;
@@ -693,7 +700,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let timer     = null;
       let nextAt    = 0;    // when the pending step fires (ms, performance.now clock)
       let nextFn    = null;
-      const t0      = performance.now();
+      let started   = false;
+      let t0        = performance.now();
 
       // Everything is timed in "default-speed" milliseconds and divided by
       // the current speed, so speeding up mid-run just rescales what's left
@@ -752,13 +760,40 @@ document.addEventListener("DOMContentLoaded", () => {
         later(advance, MORPH_TRANSITION + (isFinal ? HOLD_AFTER_FINAL : HOLD_BETWEEN));
       }
 
-      later(advance, FIRST_HOLD);
+      const logoOf = (name) => door.querySelector('.intro-logo-img[data-logo="' + name + '"]');
+      // A logo counts as ready only once it has loaded AND its decode has finished (Aster, PR #15): the
+      // cap below picks from this set, never from "complete", which can be true while decoding is pending.
+      const ready = new Set();
+      function whenReady(name) {
+        const img = logoOf(name);
+        if (!img) return Promise.resolve();
+        const decode = () => (img.decode ? img.decode() : Promise.resolve())
+          .then(() => { if (img.naturalWidth > 0) ready.add(name); }, () => {});
+        if (img.complete) return decode();
+        return new Promise((done) => {
+          img.addEventListener("load", () => decode().then(done), { once: true });
+          img.addEventListener("error", done, { once: true });
+        });
+      }
+      function start() {
+        if (started) return; // runs once: a late load or decode after the cap changes nothing
+        started = true;
+        INTRO_STEPS = ALL_STEPS.filter((name) => ready.has(name));
+        t0 = performance.now();
+        if (!INTRO_STEPS.length) { dissolve(); return; } // no logo ready: open the door rather than show it empty
+        showIntroLogo(INTRO_STEPS[0]);
+        // it fades in now (no longer visible from the HTML), so its hold starts after the fade (Tessera, PR #15)
+        later(advance, MORPH_TRANSITION + FIRST_HOLD);
+      }
+      // No logo is active in the HTML (Tessera, PR #15): the first one shows only from start(), once loaded.
+      Promise.all(ALL_STEPS.map(whenReady)).then(start, start);
+      setTimeout(start, WAIT_CAP);
 
       // A click doesn't skip — it speeds the whole door up. The earlier in
       // the default run the click lands, the bigger the boost (x2.5 right at
       // the start, x1.5 near the end), and clicks stack, up to x6.
       door.addEventListener("click", () => {
-        if (dissolved) return;
+        if (dissolved || !started) return;
         const now = performance.now();
         const earliness = 1 - Math.min(1, (now - t0) / DEFAULT_TOTAL);
         const remainingDefault = Math.max(0, nextAt - now) * speed;

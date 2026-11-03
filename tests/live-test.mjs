@@ -2173,11 +2173,11 @@ async function main() {
     return true;
   });
 
-  // Links page (Louis, Oct 2026): hover shines like the header (no underline, no bold). Louis / Han / Odi,
-  // with Andrada resting apart on Louis's line; a click sends Andrada right after the name (a drift, or a
-  // plain fade under reduce motion), both shine, then the page changes.
+  // Links page (Louis, Oct 2026; layout Nov 3, council #6288): hover shines like the header (no underline, no bold).
+  // Andrada alone on the first line; the names in one row under it, the group moved right over the picture; a click sends Andrada down to the
+  // empty line under the name, centred (a drift, or a plain fade under reduce motion), both shine, then the page changes.
   for (const motion of ["no-preference", "reduce"]) {
-    await check(`Links page (${motion} motion): header-style hover, and a click brings Andrada to the name, both shine, then it opens`, async () => {
+    await check(`Links page (${motion} motion): Andrada over the names' row, both over the picture, header-style hover, and a click brings Andrada under the name, both shine, then it opens`, async () => {
       const page = await browser.newPage();
       await page.browser.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: motion }] }, page.sessionId);
       await page.goto(BASE_URL + "/links/");
@@ -2187,12 +2187,22 @@ async function main() {
       const mouse = async (type, x, y) => page.browser.send("Input.dispatchMouseEvent",
         { type, x, y, button: type === "mouseMoved" ? "none" : "left", clickCount: type === "mouseMoved" ? 0 : 1 }, page.sessionId);
       const centre = (sel) => page.evaluate(`(function(){ var b = document.querySelector('body > main ${sel}').getBoundingClientRect(); return [b.right - 6, b.top + b.height / 2]; })()`);
-      const rest = await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); var s = m && m.querySelector('.ns-surname'), l = m && m.querySelector('.ns-1');
-        if (!s || !l) return null; var a = s.getBoundingClientRect(), b = l.getBoundingClientRect(); return { text: l.textContent, gap: a.left - b.right, ch: a.width / 7, dy: a.top - b.top }; })()`);
-      if (!rest) throw new Error("no Louis link / Andrada in the name stack");
-      if (rest.text !== "Louis") throw new Error(`first name reads "${rest.text}", not "Louis"`);
-      if (Math.abs(rest.dy) > 1 || rest.gap < rest.ch * 1.5) throw new Error(`Andrada doesn't rest on Louis's line a little apart (gap ${rest.gap.toFixed(1)}px, one character ${rest.ch.toFixed(1)}px, dy ${rest.dy})`);
+      const rest = await page.evaluate(`(function(){ var m = document.querySelector('body > main .name-stack'); var s = m && m.querySelector('.ns-surname');
+        if (!s) return null; var a = s.getBoundingClientRect(), mr = m.getBoundingClientRect();
+        var names = [].map.call(m.querySelectorAll('a.ns'), function (n) { var r = n.getBoundingClientRect(); return { text: n.textContent, l: r.left, r: r.right, t: r.top }; });
+        var ph = document.querySelector('body > main .links-photo').getBoundingClientRect();
+        return { names: names, sc: (a.left + a.right) / 2, sb: a.bottom, pl: ph.left, pc: (ph.left + ph.right) / 2,
+          rc: (names[0].l + names[names.length - 1].r) / 2 }; })()`);
+      if (!rest) throw new Error("no Andrada in the name stack");
+      if (rest.names.map((n) => n.text).join(" ") !== "Louis Han Odi L' Ny Luis") throw new Error(`names read "${rest.names.map((n) => n.text).join(" ")}"`);
+      if (rest.names.some((n) => Math.abs(n.t - rest.names[0].t) > 1)) throw new Error("the names aren't on one row");
+      if (rest.sb > rest.names[0].t + 1) throw new Error("Andrada isn't on its own line above the names");
+      if (Math.abs(rest.sc - rest.rc) > 2) throw new Error(`Andrada isn't centred over the names' row (${Math.round(rest.sc - rest.rc)}px off)`);
+      // moved right to balance over the picture (Louis #6313): the row's middle over the picture, from its left edge to its middle
+      if (rest.rc < rest.pl - 2 || rest.rc > rest.pc + 2) throw new Error(`the names' row (middle ${Math.round(rest.rc)}px) isn't over the picture (${Math.round(rest.pl)}-${Math.round(rest.pc)}px)`);
+      // waits (up to 1.5 s) for the hover's 0.25 s transition to end: a slow headless run can still be mid-fade at 400 ms
       const hoverStyle = async (sel) => { const p = await centre(sel); await mouse("mouseMoved", p[0], p[1]); await new Promise((r) => setTimeout(r, 400));
+        for (let i = 0; i < 11 && await page.evaluate(`getComputedStyle(document.querySelector('body > main ${sel}')).opacity !== "1"`); i++) await new Promise((r) => setTimeout(r, 100));
         return page.evaluate(`(function(){ var e = document.querySelector('body > main ${sel}'), cs = getComputedStyle(e), af = getComputedStyle(e, '::after');
           return { deco: cs.textDecorationLine, weight: cs.fontWeight, shadow: cs.textShadow, opacity: cs.opacity, after: af.content + ' ' + af.display }; })()`); };
       for (const sel of [".links-col nav .tw-link", ".name-stack .ns-3", ".name-stack .ns-surname"]) {
@@ -2210,7 +2220,7 @@ async function main() {
         new MutationObserver(function(){ var s = m.querySelector('.ns-surname'), l = m.querySelector('.ns-2');
           if (!s.classList.contains('ns-shine') || !l.classList.contains('ns-shine') || sessionStorage.getItem('__nsTest')) return;
           var a = s.getBoundingClientRect(), b = l.getBoundingClientRect();
-          sessionStorage.setItem('__nsTest', JSON.stringify({ gap: a.left - b.right, ch: a.width / 7, dy: a.top - b.top, ms: performance.now() - window.__t0 })); })
+          sessionStorage.setItem('__nsTest', JSON.stringify({ dx: (a.left + a.right) / 2 - (b.left + b.right) / 2, dy: a.top - b.bottom, ms: performance.now() - window.__t0 })); })
           .observe(m, { subtree: true, attributes: true, attributeFilter: ['class'] }); return true; })()`);
       const han = await centre(".name-stack .ns-2");
       await mouse("mouseMoved", han[0], han[1]);
@@ -2221,18 +2231,18 @@ async function main() {
       await page.close();
       if (listWeight !== "400") throw new Error(`list links are weight ${listWeight} at rest`);
       if (!after.rec) throw new Error("Andrada and Han never shone together before the page changed");
-      if (Math.abs(after.rec.gap - after.rec.ch) > 2 || Math.abs(after.rec.dy) > 1) throw new Error(`Andrada didn't land one space after Han (gap ${after.rec.gap.toFixed(1)}px vs ${after.rec.ch.toFixed(1)}px, dy ${after.rec.dy})`);
+      if (Math.abs(after.rec.dx) > 2 || Math.abs(after.rec.dy) > 1.5) throw new Error(`Andrada didn't land centred under Han (dx ${after.rec.dx.toFixed(1)}px, dy ${after.rec.dy.toFixed(1)}px)`);
       if (after.rec.ms < 300) throw new Error(`no visible move: both shone ${Math.round(after.rec.ms)}ms after the click`);
       if (after.path !== "/oeuvre/") throw new Error(`the click didn't open Han's page (now at ${after.path})`);
       return true;
     });
   }
 
-  // Links page on phones (Louis, Oct 2026): Louis / Han / Odi / L' / Ny / Luis on top in one row of equal columns; an empty
-  // line under them where Andrada lands under the clicked name; Andrada itself centred below that line;
+  // Links page on phones (Louis, Oct 2026; Nov 3, #6318): Andrada centred on top; Louis / Han / Odi / L' / Ny / Luis under
+  // it in one row of equal columns; an empty line under them where Andrada lands under the clicked name;
   // no "Polymath" / "Toronto based" (removed, Louis Nov 1). The list has no "Portfolio" any more.
   for (const motion of ["no-preference", "reduce"]) {
-    await check(`Links page on a phone (${motion} motion): the names in one row, Andrada centred a line below, a click brings Andrada under the name`, async () => {
+    await check(`Links page on a phone (${motion} motion): Andrada centred above the names in one row, a click brings Andrada under the name`, async () => {
       const page = await browser.newPage();
       await page.setViewport(390, 844, true);
       await page.browser.send("Emulation.setEmulatedMedia", { features: [{ name: "prefers-reduced-motion", value: motion }] }, page.sessionId);
@@ -2251,7 +2261,7 @@ async function main() {
       if (lay.names.map((n) => n.text).join(" ") !== "Louis Han Odi L' Ny Luis") bad.push(`names read "${lay.names.map((n) => n.text).join(" ")}"`);
       if (Math.abs(lay.s.c - lay.mc) > 2) bad.push(`Andrada is ${Math.round(lay.s.c - lay.mc)}px off centre`);
       if (lay.names.some((n) => Math.abs(n.t - lay.names[0].t) > 1)) bad.push("the names aren't on one row");
-      if (lay.s.t < lay.names[0].t + 2 * lay.s.h - 1) bad.push("Andrada doesn't rest below the names with an empty line between");
+      if (lay.s.b > lay.names[0].t + 1) bad.push("Andrada isn't on its own line above the names");
       const widths = lay.names.map((n) => n.r - n.l);
       if (Math.max(...widths) - Math.min(...widths) > 2) bad.push(`the columns aren't equal (${widths.map(Math.round).join("/")}px)`);
       if (/polymath|toronto based/i.test(lay.bandText)) bad.push("Polymath / Toronto based is still shown");

@@ -8,23 +8,25 @@
 
 <section class="links-page flex flex-col items-center pt-4 pb-4 px-4 sm:px-10">
 
-  <div class="name-band w-full flex justify-between items-start mt-2">
-    <!-- Computers (Louis, Nov 2, council #5916, #5956, #5959): Andrada first and Louis opposite it, on the right over the
-         picture; the other names a stair going down to the left, ending where the word Areas starts (script below).
-         Before that: one person, six names: scattered under the first, each at its own spot (Louis, Nov 1; once the About page's staircase),
-         a little lighter, with the links' ink trailing off the last letters. Each name opens its
-         own face: louis.andrada.one (Artworks), han.andrada.one (Oeuvre), odi.andrada.one (Photography),
-         l.andrada.one (Vestments), ny.andrada.one (Production), luis.andrada.one (Career).
-         The shared surname, Andrada, waits on the first line a little apart from Louis (on phones:
-         centred a line below the first names, which sit in one row); clicking a name sends it over to that
-         name before the page changes (script below). Andrada itself opens andrada.one, this page. -->
+  <div class="name-band w-full flex justify-center items-start mt-2">
+    <!-- Every screen (Louis, Nov 3, council #6288, #6313, #6318): Andrada alone on the first line; the six names in one
+         row under it; then one empty line, where Andrada lands under the name clicked; then the Areas and the picture.
+         On computers the group is moved right, over the picture (his choice of three); on phones it is centred.
+         (Before: a stair going down to the left on computers, Nov 2, #5956; scattered names, Nov 1; on phones the
+         names first and Andrada a line below them.) Each name opens its own face: louis.andrada.one (Artworks), han.andrada.one
+         (Oeuvre), odi.andrada.one (Photography), l.andrada.one (Vestments), ny.andrada.one (Production), luis.andrada.one
+         (Career). Andrada itself opens andrada.one, this page. -->
     <div class="name-stack" aria-label="Louis Andrada, Han’drada, Odi Andrada, L', Ny and Luis Andrada">
-      <div class="ns-row"><a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}"><h1 class="ns-h1">Andrada</h1></a><a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a></div>
-      <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
-      <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
-      <a href="{{ partial "face-url.html" "l" }}" class="ns ns-4" aria-label="{{ site.Params.names.l }}" title="{{ site.Params.names.l }}">L<span class="ink i4">'</span></a>
-      <a href="{{ partial "face-url.html" "ny" }}" class="ns ns-5" aria-label="{{ site.Params.names.ny }}" title="{{ site.Params.names.ny }}">N<span class="ink i4">y</span></a>
-      <a href="{{ partial "face-url.html" "luis" }}" class="ns ns-6" aria-label="{{ site.Params.names.luis }}" title="{{ site.Params.names.luis }}">Lu<span class="ink i3">i</span><span class="ink i4">s</span></a>
+      <a href="{{ partial "face-url.html" "hub" }}" class="ns-surname" aria-label="{{ site.Params.names.ja }}"><h1 class="ns-h1">Andrada</h1></a>
+      <div class="ns-names">
+        <a href="{{ partial "face-url.html" "louis" }}" class="ns ns-1" aria-label="{{ site.Params.names.louis }}">Louis</a>
+        <a href="{{ partial "face-url.html" "han" }}" class="ns ns-2" aria-label="{{ site.Params.names.han }}" title="{{ site.Params.names.han }}">Ha<span class="ink i2">n</span></a>
+        <a href="{{ partial "face-url.html" "odi" }}" class="ns ns-3" aria-label="{{ site.Params.names.odi }}" title="{{ site.Params.names.odi }}">Od<span class="ink i4">i</span></a>
+        <a href="{{ partial "face-url.html" "l" }}" class="ns ns-4" aria-label="{{ site.Params.names.l }}" title="{{ site.Params.names.l }}">L<span class="ink i4">'</span></a>
+        <a href="{{ partial "face-url.html" "ny" }}" class="ns ns-5" aria-label="{{ site.Params.names.ny }}" title="{{ site.Params.names.ny }}">N<span class="ink i4">y</span></a>
+        <a href="{{ partial "face-url.html" "luis" }}" class="ns ns-6" aria-label="{{ site.Params.names.luis }}" title="{{ site.Params.names.luis }}">Lu<span class="ink i3">i</span><span class="ink i4">s</span></a>
+      </div>
+      <div class="ns-landing" aria-hidden="true"></div>
     </div>
   </div>
 
@@ -88,27 +90,12 @@
     .links-page {
       min-height: calc(100vh - 155px);
     }
-    /* Computers and wide screens (Louis, Nov 1): the names block, exactly as it is, moves to the centre, right on top of
-       the picture and the Areas; the two are centred together in the space, one column. Phones are unchanged. */
-    .name-band {
-      justify-content: flex-end;
-      margin-top: auto;
-    }
-    .content-block {
-      margin-top: 1.9rem; /* a little less space between Luis and Areas (Louis #5959: "a bit", "not too much") */
-      margin-bottom: auto;
-    }
-    /* The stair (Louis #5956, #5959): right-aligned, Andrada then Louis on the first line; each name below a step
-       further left. The steps' exact size is measured by the script below so the last one starts where Areas does;
-       these are only what shows without it. (.links-page: these come before the general rules below.) */
-    .links-page .name-stack { align-items: flex-end; }
-    .links-page .name-stack .ns-surname { margin-left: 0; margin-right: 2.5em; }
-    .links-page .name-stack .ns-2, .links-page .name-stack .ns-3, .links-page .name-stack .ns-4, .links-page .name-stack .ns-5, .links-page .name-stack .ns-6 { padding-left: 0; }
-    .links-page .name-stack .ns-2 { margin-right: 3ch; }
-    .links-page .name-stack .ns-3 { margin-right: 6ch; }
-    .links-page .name-stack .ns-4 { margin-right: 9ch; }
-    .links-page .name-stack .ns-5 { margin-right: 12ch; }
-    .links-page .name-stack .ns-6 { margin-right: 15ch; }
+    /* Computers: the names block and the two columns are centred together in the space (Louis, Nov 1). */
+    .name-band { margin-top: auto; }
+    /* moved right to balance over the picture (Louis #6313); --ns-shift is measured by the script below. The fog's copies
+       of this markup get it too, since it is set on the root. */
+    .name-stack { transform: translateX(var(--ns-shift, 0px)); }
+    .content-block { margin-top: 0.75rem; margin-bottom: auto; } /* Areas right under the landing line (#6288) */
   }
 
   .name-band {
@@ -119,13 +106,13 @@
   }
   .dark .name-band { color: #ececec; }
 
-  /* Louis / Han / Odi / L': each name a shade lighter than the one above. Each link is only as
-     wide as its name (flex-start), so the script can put Andrada right after it. */
-  .name-stack { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.18; }
-  .name-stack .ns, .name-stack .ns-row { white-space: nowrap; }
-  /* Andrada rests on Louis's line, a little more than a space away (~4 characters). It is a link
-     too: andrada.one, this very page. */
-  .name-stack .ns-surname { display: inline-block; margin-left: 2.5em; }
+  /* Andrada, then the names' row, then the empty landing line, all centred. Each name a shade lighter than the one
+     before it. Each link is only as wide as its name, so Andrada can land centred under it. */
+  .name-stack { display: flex; flex-direction: column; align-items: center; line-height: 1.18; width: 100%; }
+  .name-stack .ns, .name-stack .ns-surname { white-space: nowrap; }
+  .name-stack .ns-surname { display: inline-block; }
+  .name-stack .ns-names { display: flex; justify-content: center; column-gap: 2.5ch; margin-top: 0.3em; }
+  .name-stack .ns-landing { height: 1.18em; }
   /* The page's one h1 (Louis, 2026-10-20) is the word Andrada inside its link, drawn exactly as before: the
      site's h1 rules (weight 425 and the dark-mode colour, both !important) must not reach it, so it inherits
      everything from the link and stays inline. */
@@ -134,23 +121,15 @@
      (main.css colours every .links-page link blue with !important) */
   html .links-page .name-stack a.ns, html .links-page .name-stack a.ns:hover,
   html .links-page .name-stack a.ns-surname, html .links-page .name-stack a.ns-surname:hover { color: inherit !important; text-decoration: none; }
-  /* Scattered (Louis, Nov 1, his choice "A", then "a little more height between them, a little closer to the previous one"):
-     each name at its own fixed, irregular spot, some under Andrada; the same fading. Phones keep their row (rules below). */
-  .name-stack .ns-2 { padding-left: 4ch; margin-top: 0.22em; opacity: 0.78; }
-  .name-stack .ns-3 { padding-left: 1ch; margin-top: 0.34em; opacity: 0.58; }
-  .name-stack .ns-4 { padding-left: 6ch; margin-top: 0.19em; opacity: 0.42; }
-  .name-stack .ns-5 { padding-left: 3ch; margin-top: 0.38em; opacity: 0.3; }
-  .name-stack .ns-6 { padding-left: 7ch; margin-top: 0.22em; opacity: 0.22; }
-  /* (Nov 2: the gaps a quarter smaller than Nov 1's, Louis #5959) */
-  /* Phones: the first names in one row of equal columns (as many as there are names, and each
-     whole column is its name's tap target); then one empty line, where Andrada lands under the
-     clicked name; then Andrada itself, centred. (Polymath / Toronto based removed, Louis Nov 1.) */
+  .name-stack .ns-2 { opacity: 0.78; }
+  .name-stack .ns-3 { opacity: 0.58; }
+  .name-stack .ns-4 { opacity: 0.42; }
+  .name-stack .ns-5 { opacity: 0.3; }
+  .name-stack .ns-6 { opacity: 0.22; }
+  /* Phones (Louis #6318: "put andrada first"): the same order, Andrada centred on top; the names' row is one row of
+     equal columns (as many as there are names), each whole column its name's tap target. */
   @media (max-width: 640px) {
-    .links-page .name-band { flex-direction: column; align-items: center; row-gap: 0.5rem; }
-    .name-stack { flex-direction: row; flex-wrap: wrap; align-items: flex-start; width: 100%; }
-    .name-stack .ns-row { display: contents; }
-    .name-stack .ns-surname { order: 2; margin: 0 auto; }
-    .name-stack::before { content: ""; order: 1; flex: 0 0 100%; height: 1.18em; } /* the line break + the empty landing line */
+    .name-stack .ns-names { width: 100%; column-gap: 0; }
     .name-stack .ns { flex: 1 1 0; text-align: center; padding: 0.35em 0; margin: -0.35em 0; }
   }
   .name-stack .ink { font-weight: inherit; color: inherit; }
@@ -402,32 +381,27 @@
 
 <script>
 (function () {
-  /* The names' stair on computers (Louis #5956, #5959): the first line ends on the picture's right edge, and the five
-     names below step evenly to the left so the last one (Luis) starts where the word Areas starts. Measured, because
-     the picture's width and the Areas column change with the screen. Phones: nothing here (their row, in the CSS). */
+  /* Computers (Louis #6313): the names group (Andrada and the names' row) is moved right so the middle of the names' row
+     sits over a fixed point of the picture, AT of its width from its left edge (a quarter: Louis's pick, #6318); measured, because the picture and the
+     Areas column change with the screen, so it keeps that place as the window narrows. Never past the window's right
+     edge (16px kept). Phones: nothing here (their own layout, in the CSS). */
+  var AT = 0.25;
   var wide = window.matchMedia && matchMedia('(min-width: 641px)');
-  function stair() {
+  var root = document.documentElement;
+  function place() {
     var main = document.querySelector('body > main') || document;
-    var band = main.querySelector('.name-band'), photo = main.querySelector('.links-photo'), areas = main.querySelector('.links-header');
-    var names = [2, 3, 4, 5, 6].map(function (i) { return main.querySelector('.name-stack .ns-' + i); });
-    if (!band || !photo || !areas || names.some(function (n) { return !n; })) return;
-    if (!wide || !wide.matches) {
-      band.style.paddingRight = '';
-      names.forEach(function (n) { n.style.marginRight = ''; });
-      return;
-    }
-    band.style.paddingRight = '0px';
-    var right = photo.getBoundingClientRect().right;
-    band.style.paddingRight = Math.max(0, band.getBoundingClientRect().right - right) + 'px';
-    var last = names[4].getBoundingClientRect().width;
-    var span = right - (areas.getBoundingClientRect().left + last);
-    if (!(span > 0)) return; // too narrow for a stair: the CSS's steps stay
-    names.forEach(function (n, i) { n.style.marginRight = (span * (i + 1) / 5) + 'px'; });
+    var row = main.querySelector('.name-stack .ns-names'), photo = main.querySelector('.links-photo');
+    if (!row || !photo || !wide || !wide.matches) { root.style.removeProperty('--ns-shift'); return; }
+    root.style.setProperty('--ns-shift', '0px');
+    var r = row.getBoundingClientRect(), ph = photo.getBoundingClientRect();
+    var shift = ph.left + ph.width * AT - (r.left + r.right) / 2;
+    shift = Math.max(0, Math.min(shift, root.clientWidth - 16 - r.right));
+    root.style.setProperty('--ns-shift', shift + 'px');
   }
-  stair();
-  requestAnimationFrame(stair); // after the column's width is locked (below)
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(stair);
-  window.addEventListener('resize', stair);
+  place();
+  requestAnimationFrame(place); // after the column's width is locked (below)
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  window.addEventListener('resize', place);
 })();
 </script>
 
@@ -443,7 +417,7 @@
 
 <script>
 (function () {
-  /* Clicking Louis / Han / Odi / L': Andrada drifts over to sit after that name (on phones: under it),
+  /* Clicking a name: Andrada drifts down to sit centred under that name (Louis, Nov 3, #6288),
      fast and faded, like a cloud; diagonal for Han, Odi and L'. Both shine, then the page changes.
      Clicking Andrada: nothing moves, it shines, and andrada.one (this page) opens again. Hover only
      brightens the name (CSS). New-tab clicks are left alone. "Reduce motion" keeps it as a plain
@@ -452,7 +426,6 @@
   var stack = document.querySelector('body > main .name-stack');
   var surname = stack && stack.querySelector('.ns-surname');
   if (!surname || !surname.animate) return;
-  var phone = window.matchMedia && matchMedia('(max-width: 640px)'); // the CSS's phone layout
   var busy = false;
 
   function reset() {
@@ -483,17 +456,10 @@
       busy = true;
       var href = link.href;
       setTimeout(function () { location.href = href; }, 1200); // the click always gets there, whatever the animation does
+      // centred under the name, on the empty line below the names' row (a phone link's padding only widens its tap target)
       var a = link.getBoundingClientRect(), s = surname.getBoundingClientRect();
-      var dx, dy;
-      if (phone && phone.matches) {
-        // centred under the name, one line down (the link's padding only widens the tap target)
-        dx = a.left + a.width / 2 - (s.left + s.width / 2);
-        dy = a.top + (parseFloat(getComputedStyle(link).paddingTop) || 0) + s.height - s.top;
-      } else {
-        var ch = s.width / surname.textContent.length; // one character: the font is monospaced
-        dx = a.right + ch - s.left;
-        dy = (link.closest('.ns-row') || link).getBoundingClientRect().top - surname.parentNode.getBoundingClientRect().top;
-      }
+      var dx = a.left + a.width / 2 - (s.left + s.width / 2);
+      var dy = stack.querySelector('.ns-names').getBoundingClientRect().bottom - s.top;
       var to = 'translate(' + dx + 'px, ' + dy + 'px)';
       var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var drift = surname.animate(reduce ? [
