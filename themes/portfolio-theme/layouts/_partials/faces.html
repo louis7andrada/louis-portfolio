@@ -29,7 +29,7 @@
 
     document.addEventListener("DOMContentLoaded", function () {
       if (owner) document.querySelectorAll('#siteHeader a[data-face="' + owner + '"], #mobileMenu a[data-face="' + owner + '"]').forEach(function (a) { a.classList.add("nav-link-active"); });
-      if (isHub) document.querySelectorAll('#siteHeader nav a, #mobileMenu a').forEach(function (a) { if (/^Links$/.test(a.textContent.trim())) a.classList.add("nav-link-active"); });
+      if (isHub) document.querySelectorAll('#siteHeader nav a, #mobileMenu a').forEach(function (a) { if (/^Andrada$/.test(a.textContent.trim())) a.classList.add("nav-link-active"); });
       if (!heroFace) return;
 
       var main = document.querySelector("body > main");
