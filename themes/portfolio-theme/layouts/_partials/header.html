@@ -761,10 +761,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const logoOf = (name) => door.querySelector('.intro-logo-img[data-logo="' + name + '"]');
-      const loaded = (img) => !!(img && img.complete && img.naturalWidth > 0);
-      function whenReady(img) {
+      // A logo counts as ready only once it has loaded AND its decode has finished (Aster, PR #15): the
+      // cap below picks from this set, never from "complete", which can be true while decoding is pending.
+      const ready = new Set();
+      function whenReady(name) {
+        const img = logoOf(name);
         if (!img) return Promise.resolve();
-        const decode = () => (img.decode ? img.decode().catch(() => {}) : Promise.resolve());
+        const decode = () => (img.decode ? img.decode() : Promise.resolve())
+          .then(() => { if (img.naturalWidth > 0) ready.add(name); }, () => {});
         if (img.complete) return decode();
         return new Promise((done) => {
           img.addEventListener("load", () => decode().then(done), { once: true });
@@ -772,16 +776,16 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
       function start() {
-        if (started) return;
+        if (started) return; // runs once: a late load or decode after the cap changes nothing
         started = true;
-        INTRO_STEPS = ALL_STEPS.filter((name) => loaded(logoOf(name)));
+        INTRO_STEPS = ALL_STEPS.filter((name) => ready.has(name));
         t0 = performance.now();
-        if (!INTRO_STEPS.length) { dissolve(); return; } // no logo arrived: open the door rather than show it empty
+        if (!INTRO_STEPS.length) { dissolve(); return; } // no logo ready: open the door rather than show it empty
         showIntroLogo(INTRO_STEPS[0]);
         later(advance, FIRST_HOLD);
       }
       // No logo is active in the HTML (Tessera, PR #15): the first one shows only from start(), once loaded.
-      Promise.all(ALL_STEPS.map((name) => whenReady(logoOf(name)))).then(start, start);
+      Promise.all(ALL_STEPS.map(whenReady)).then(start, start);
       setTimeout(start, WAIT_CAP);
 
       // A click doesn't skip — it speeds the whole door up. The earlier in
