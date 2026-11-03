@@ -690,13 +690,18 @@ document.addEventListener("DOMContentLoaded", () => {
       const HOLD_BETWEEN        = Math.round(350 * pace);  // each middle logo sits visible before morphing again
       const HOLD_AFTER_FINAL    = Math.round(700 * pace);  // final logo sits visible before the door dissolves
       const DISSOLVE_TRANSITION = 1100; // matches #intro-door's opacity transition & the dissolving-stage logo transition
+      // The whole door, dissolve included, plays this much faster than the timings above (Louis, council #6379,
+      // Nov 3 2026: "maybe 1.75x faster than currently"). Clicks speed it up from here. WAIT_CAP is not scaled:
+      // it is how long the door waits for its logos, not part of the animation.
+      const BASE_SPEED          = 1.75;
       door.style.setProperty("--morph", MORPH_TRANSITION + "ms");
-      // Whole default run, used to judge how early a click came.
-      const DEFAULT_TOTAL = FIRST_HOLD + (ALL_STEPS.length - 1) * MORPH_TRANSITION + (ALL_STEPS.length - 2) * HOLD_BETWEEN + HOLD_AFTER_FINAL + DISSOLVE_TRANSITION;
+      door.style.setProperty("--ds", String(BASE_SPEED));
+      // Whole default run in real ms (at BASE_SPEED), used to judge how early a click came.
+      const DEFAULT_TOTAL = (FIRST_HOLD + (ALL_STEPS.length - 1) * MORPH_TRANSITION + (ALL_STEPS.length - 2) * HOLD_BETWEEN + HOLD_AFTER_FINAL + DISSOLVE_TRANSITION) / BASE_SPEED;
 
       let step      = 0; // index into INTRO_STEPS of whichever logo is currently shown
       let dissolved = false;
-      let speed     = 1; // door-wide speed multiplier; every click raises it
+      let speed     = BASE_SPEED; // door-wide speed multiplier; every click raises it
       let timer     = null;
       let nextAt    = 0;    // when the pending step fires (ms, performance.now clock)
       let nextFn    = null;
