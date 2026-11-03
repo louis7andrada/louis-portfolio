@@ -782,7 +782,8 @@ document.addEventListener("DOMContentLoaded", () => {
         t0 = performance.now();
         if (!INTRO_STEPS.length) { dissolve(); return; } // no logo ready: open the door rather than show it empty
         showIntroLogo(INTRO_STEPS[0]);
-        later(advance, FIRST_HOLD);
+        // it fades in now (no longer visible from the HTML), so its hold starts after the fade (Tessera, PR #15)
+        later(advance, MORPH_TRANSITION + FIRST_HOLD);
       }
       // No logo is active in the HTML (Tessera, PR #15): the first one shows only from start(), once loaded.
       Promise.all(ALL_STEPS.map(whenReady)).then(start, start);
