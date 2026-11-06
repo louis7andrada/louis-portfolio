@@ -2,7 +2,7 @@
   THE WALL (Louis, council #6873, #6880, Nov 6 2026): a "404" door in front of every page.
   The site stays whole underneath; nothing here can be clicked, scrolled or closed. The only way in is
   to remove #wall in the browser's code: the scroll lock is tied to the wall's presence (html:has(#wall)),
-  so taking it out gives the page back, scroll and all.
+  so taking it out gives the page back, scroll, clicks and keyboard.
   Built from the site's own layers, as on Inquiry with everything visible removed: the inverted, flipped,
   blurred mirror (Inquiry's brightness), the dark frost, the three ink-bleed copies with the same noise
   masks, the film grain, and the 404 on top. Values copied from main.css (#siteMirror*).
@@ -11,6 +11,10 @@
 {{- if site.Params.wall -}}
 <style>
   html:has(#wall), html:has(#wall) body { overflow: hidden !important; overscroll-behavior: none; }
+  /* Keyboard too, with or without scripts (Aster, council #6890, #6897): while the wall stands, everything behind it is
+     hidden (it's covered anyway), and hidden things can't be focused, so Tab and Enter reach nothing. The door and the
+     site keep running underneath; removing #wall makes them visible and reachable again. */
+  html:has(#wall) body > :not(#wall), html:has(#wall) body > :not(#wall) * { visibility: hidden !important; }
   #wall { position: fixed; inset: 0; z-index: 2147483647; background: #0c0c0c; overflow: hidden; isolation: isolate;
     -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
   #wall > div { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
@@ -39,25 +43,4 @@
   <div class="w-grain" aria-hidden="true"></div>
   <div class="w-front" aria-hidden="true"><span class="w404">404</span></div>
 </div>
-<script>
-  /* Keyboard too (Aster, council #6890): while the wall stands, everything behind it is inert, so Tab and Enter
-     can't reach the hidden links. Removing the wall gives them back (only the ones the wall made inert). */
-  (function () {
-    var wall = document.getElementById("wall");
-    function lock() {
-      if (!document.body.contains(wall)) return;
-      Array.prototype.forEach.call(document.body.children, function (n) {
-        if (n === wall || n.hasAttribute("inert")) return;
-        n.setAttribute("inert", ""); n.setAttribute("data-wall-inert", "");
-      });
-    }
-    function unlock() {
-      document.querySelectorAll("[data-wall-inert]").forEach(function (n) { n.removeAttribute("inert"); n.removeAttribute("data-wall-inert"); });
-    }
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", lock); else lock();
-    if ("MutationObserver" in window) new MutationObserver(function () {
-      if (document.body.contains(wall)) lock(); else unlock();
-    }).observe(document.body, { childList: true });
-  })();
-</script>
 {{- end -}}
