@@ -65,6 +65,7 @@
     } catch (e) {}
   }
   function isOpen() {
+    if (window.name === "door=open") return true; // this tab, when storage is refused (Aster #6954)
     try { if (localStorage.getItem("door") === "open") return true; } catch (e) {}
     try { return /(?:^|; )door=open(?:;|$)/.test(document.cookie); } catch (e) { return false; }
   }
@@ -80,11 +81,11 @@
   function open() {
     try { localStorage.setItem("door", "open"); } catch (e) {}
     cookie("door", "open", 34560000);
+    if (!isOpen()) window.name = "door=open"; // no storage: the tab itself remembers, across this face's pages
     // The logo door played unseen behind the wall; forget it, so it plays for real on the page you enter.
     try { sessionStorage.removeItem("intro-seen"); } catch (e) {}
     cookie("intro-seen", "", 0);
-    if (on404 && isOpen()) goBack(); // storage refused: open where you stand, no loop back to the lock
-    else wall.remove();
+    if (on404) goBack(); else wall.remove();
   }
   var pressed = {}, count = 0;
   wall.querySelector(".w-keys").addEventListener("pointerdown", function (e) {
