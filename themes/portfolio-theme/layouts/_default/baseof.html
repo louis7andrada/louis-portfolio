@@ -11,7 +11,7 @@
        code, so it can be broken (turn off JavaScript, or stop this script). The 404 page itself never redirects.
        Once the nine keys are pressed (partials/wall.html), the door stays open for that visit only (Louis #6975: "just during
        that session"): a session cookie "door-session=open" with no expiry, shared by the faces, which the browser drops when it
-       closes. The page you came for is kept in sessionStorage "door-to". With storage refused, window.name "door-session=open"
+       closes (browsers that restore the session on reopening may keep it). The page you came for is kept in sessionStorage "door-to". With storage refused, window.name "door-session=open"
        keeps the tab open instead (Aster #6954). Yesterday's lasting memory (the 400-day cookie "door" and localStorage "door")
        is deleted on every page, and the old window.name "door=open" no longer opens it (Tessera #6980, Aster #6981).
        Call it back: params.wall_redirect = false in hugo.toml. */ -}}
