@@ -9,9 +9,10 @@
   Call it back: params.wall = false in hugo.toml (and params.wall_redirect = false for the second lock).
   THE NINE KEYS (Louis, council #6924, Nov 6 2026): the door is cut into nine invisible slices, three by three. Press all
   nine, in any order (pressing one twice counts once), and the door opens: "no real password", "pressing the button like a
-  child". Same on phone and desktop. Open, it stays open in that browser while its saved data remains ("opened once in my
-  phone forever like cookies", #6935; Aster #6952): localStorage "door" plus a cookie asking for 400 days (the longest
-  browsers keep; they may clear it sooner), shared by the faces. A new browser or a private window starts closed. On /404 you're sent to the page you came for (same site only, never
+  child". Same on phone and desktop. Open, it stays open for that visit only (Louis #6975, which replaced #6935's "forever":
+  "as soon as they close that browser ... It's gonna go back to being locked"): a session cookie "door-session=open" with no
+  expiry, shared by the faces, so every tab and face stays open until the browser closes. Browsers that restore tabs on
+  reopening may keep it. A new browser or a private window starts closed. On /404 you're sent to the page you came for (same site only, never
   /404 again, no backslashes, same origin; Aster #6936, #6952) or home, and the logo door plays there as usual.
 */ -}}
 {{- if site.Params.wall -}}
@@ -58,16 +59,18 @@
   if (!wall) return;
   var on404 = {{ eq .Kind "404" }};
   var dom = {{ site.Params.face_domain | default "" }};
-  function cookie(k, v, age) { // shared by the faces, like the logo door's storageSet (header.html)
+  function cookie(k, v, age) { // shared by the faces, like the logo door's storageSet (header.html); no age: until the browser closes
     try {
       var h = location.hostname, shared = dom && (h === dom || h.endsWith("." + dom)) ? "; domain=" + dom : "";
-      document.cookie = k + "=" + v + "; path=/; SameSite=Lax" + shared + "; max-age=" + age;
+      document.cookie = k + "=" + v + "; path=/; SameSite=Lax" + shared + (age == null ? "" : "; max-age=" + age);
     } catch (e) {}
   }
-  function isOpen() {
-    if (window.name === "door=open") return true; // this tab, when storage is refused (Aster #6954)
-    try { if (localStorage.getItem("door") === "open") return true; } catch (e) {}
-    try { return /(?:^|; )door=open(?:;|$)/.test(document.cookie); } catch (e) { return false; }
+  // Yesterday's lasting memory goes (Louis #6975): the 400-day cookie "door" (host and faces) and localStorage "door".
+  try { localStorage.removeItem("door"); } catch (e) {}
+  try { if (/(?:^|; )door=/.test(document.cookie)) { document.cookie = "door=; path=/; max-age=0"; cookie("door", "", 0); } } catch (e) {}
+  function isOpen() { // open for this visit only (Louis #6975: "just during that session")
+    if (window.name === "door-session=open") return true; // this tab, when storage is refused (Aster #6954); the old "door=open" no longer counts (Aster #6981)
+    try { return /(?:^|; )door-session=open(?:;|$)/.test(document.cookie); } catch (e) { return false; }
   }
   function goBack() { // the page the lock sent you away from: same site, never /404, query and fragment kept
     var to = null;
@@ -79,9 +82,8 @@
   }
   if (isOpen()) { if (on404) goBack(); else wall.remove(); return; }
   function open() {
-    try { localStorage.setItem("door", "open"); } catch (e) {}
-    cookie("door", "open", 34560000);
-    if (!isOpen()) window.name = "door=open"; // no storage: the tab itself remembers, across this face's pages
+    cookie("door-session", "open");
+    if (!isOpen()) window.name = "door-session=open"; // no storage: the tab itself remembers, across this face's pages
     // The logo door played unseen behind the wall; forget it, so it plays for real on the page you enter.
     try { sessionStorage.removeItem("intro-seen"); } catch (e) {}
     cookie("intro-seen", "", 0);
