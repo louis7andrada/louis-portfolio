@@ -36,6 +36,10 @@ disableKinds = ["taxonomy", "term"]
   section = ["HTML", "RSS"]
 
 [params]
+  # THE WALL (Louis, council #6873-#6880, Nov 6 2026): a "404" door in front of every page (partials/wall.html),
+  # and every page sends you to /404 (the redirect in baseof.html's head). Set both to false to call it back.
+  wall = true
+  wall_redirect = true
   # Dark mode only (Oct 2026). false = always dark, no toggle button for visitors.
   # true brings back the light/dark toggle exactly as it was (the code is all kept).
   light_mode = false

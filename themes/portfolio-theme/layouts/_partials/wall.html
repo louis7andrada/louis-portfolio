@@ -1,0 +1,63 @@
+{{- /*
+  THE WALL (Louis, council #6873, #6880, Nov 6 2026): a "404" door in front of every page.
+  The site stays whole underneath; nothing here can be clicked, scrolled or closed. The only way in is
+  to remove #wall in the browser's code: the scroll lock is tied to the wall's presence (html:has(#wall)),
+  so taking it out gives the page back, scroll and all.
+  Built from the site's own layers, as on Inquiry with everything visible removed: the inverted, flipped,
+  blurred mirror (Inquiry's brightness), the dark frost, the three ink-bleed copies with the same noise
+  masks, the film grain, and the 404 on top. Values copied from main.css (#siteMirror*).
+  Call it back: params.wall = false in hugo.toml (and params.wall_redirect = false for the second lock).
+*/ -}}
+{{- if site.Params.wall -}}
+<style>
+  html:has(#wall), html:has(#wall) body { overflow: hidden !important; overscroll-behavior: none; }
+  #wall { position: fixed; inset: 0; z-index: 2147483647; background: #0c0c0c; overflow: hidden; isolation: isolate;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
+  #wall > div { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  #wall .w404 { font-family: 'AndradaMono', 'Courier New', Courier, monospace; color: #e8e8e8; font-size: 28px; line-height: 1;
+    letter-spacing: .18em; transform: scaleY(1.7) scaleX(.8); }
+  #wall .w-mirror { background: #0c0c0c; transform: scaleY(-1); filter: invert(1) blur(72px) saturate(0.35) brightness(0.25); }
+  #wall .w-frost { background: rgba(6, 6, 6, 0.6); -webkit-backdrop-filter: blur(26px) brightness(0.4); backdrop-filter: blur(26px) brightness(0.4); }
+  #wall .w-core { filter: blur(6.7px); transform: translateY(3px); opacity: 0.95; }
+  #wall .w-mid, #wall .w-far {
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0045' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1130' height='1130'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0045' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1130' height='1130'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    -webkit-mask-size: 700px 700px, 1130px 1130px; mask-size: 700px 700px, 1130px 1130px;
+    -webkit-mask-composite: source-in; mask-composite: intersect; }
+  #wall .w-mid { filter: blur(20.9px); transform: translateY(9px); opacity: 0.65; }
+  #wall .w-far { filter: blur(39.6px); transform: translateY(18px); opacity: 0.46;
+    -webkit-mask-position: 320px 210px, 90px 480px; mask-position: 320px 210px, 90px 480px; }
+  #wall .w-grain { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 140px 140px; opacity: 0.035; mix-blend-mode: overlay; }
+</style>
+<div id="wall" role="img" aria-label="404">
+  <div class="w-mirror" aria-hidden="true"><span class="w404">404</span></div>
+  <div class="w-frost" aria-hidden="true"></div>
+  <div class="w-far" aria-hidden="true"><span class="w404">404</span></div>
+  <div class="w-mid" aria-hidden="true"><span class="w404">404</span></div>
+  <div class="w-core" aria-hidden="true"><span class="w404">404</span></div>
+  <div class="w-grain" aria-hidden="true"></div>
+  <div class="w-front" aria-hidden="true"><span class="w404">404</span></div>
+</div>
+<script>
+  /* Keyboard too (Aster, council #6890): while the wall stands, everything behind it is inert, so Tab and Enter
+     can't reach the hidden links. Removing the wall gives them back (only the ones the wall made inert). */
+  (function () {
+    var wall = document.getElementById("wall");
+    function lock() {
+      if (!document.body.contains(wall)) return;
+      Array.prototype.forEach.call(document.body.children, function (n) {
+        if (n === wall || n.hasAttribute("inert")) return;
+        n.setAttribute("inert", ""); n.setAttribute("data-wall-inert", "");
+      });
+    }
+    function unlock() {
+      document.querySelectorAll("[data-wall-inert]").forEach(function (n) { n.removeAttribute("inert"); n.removeAttribute("data-wall-inert"); });
+    }
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", lock); else lock();
+    if ("MutationObserver" in window) new MutationObserver(function () {
+      if (document.body.contains(wall)) lock(); else unlock();
+    }).observe(document.body, { childList: true });
+  })();
+</script>
+{{- end -}}
