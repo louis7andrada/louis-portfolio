@@ -9,9 +9,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   {{- /* THE SECOND LOCK (Louis, council #6879): every page sends the visitor to the door, /404 (the 404 page, layouts/404.html), in the page's own
        code, so it can be broken (turn off JavaScript, or stop this script). The 404 page itself never redirects.
+       Once the nine keys are pressed (partials/wall.html), the door stays open in that browser (Louis #6935): localStorage
+       "door" plus a cookie asking for 400 days across the faces, while the browser keeps them. The page you came for is kept in sessionStorage "door-to". With storage refused, window.name
+       "door=open" keeps the tab open instead (Aster #6954).
        Call it back: params.wall_redirect = false in hugo.toml. */ -}}
   {{- if and site.Params.wall_redirect (ne .Kind "404") }}
-  <script id="lock">location.replace("/404");</script>
+  <script id="lock">(function(){var o=window.name==="door=open";if(!o)try{o=localStorage.getItem("door")==="open"}catch(e){}if(!o)try{o=/(?:^|; )door=open(?:;|$)/.test(document.cookie)}catch(e){}if(o)return;try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")})();</script>
   {{- end }}
   <!-- The font is only discovered once the stylesheet is parsed; preloading it
        starts the download immediately, so text usually paints in AndradaMono
