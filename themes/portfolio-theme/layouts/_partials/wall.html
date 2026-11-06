@@ -7,6 +7,12 @@
   blurred mirror (Inquiry's brightness), the dark frost, the three ink-bleed copies with the same noise
   masks, the film grain, and the 404 on top. Values copied from main.css (#siteMirror*).
   Call it back: params.wall = false in hugo.toml (and params.wall_redirect = false for the second lock).
+  THE NINE KEYS (Louis, council #6924, Nov 6 2026): the door is cut into nine invisible slices, three by three. Press all
+  nine, in any order (pressing one twice counts once), and the door opens: "no real password", "pressing the button like a
+  child". Same on phone and desktop. Open, it stays open in that browser while its saved data remains ("opened once in my
+  phone forever like cookies", #6935; Aster #6952): localStorage "door" plus a cookie asking for 400 days (the longest
+  browsers keep; they may clear it sooner), shared by the faces. A new browser or a private window starts closed. On /404 you're sent to the page you came for (same site only, never
+  /404 again, no backslashes, same origin; Aster #6936, #6952) or home, and the logo door plays there as usual.
 */ -}}
 {{- if site.Params.wall -}}
 <style>
@@ -18,8 +24,9 @@
   #wall { position: fixed; inset: 0; z-index: 2147483647; background: #0c0c0c; overflow: hidden; isolation: isolate;
     -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; touch-action: none; }
   #wall > div { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  /* Unstretched, in the font's own shape, and "404." with the dot (Louis #6942, #6943, #6946). */
   #wall .w404 { font-family: 'AndradaMono', 'Courier New', Courier, monospace; color: #e8e8e8; font-size: 28px; line-height: 1;
-    letter-spacing: .18em; transform: scaleY(1.7) scaleX(.8); }
+    letter-spacing: .18em; }
   #wall .w-mirror { background: #0c0c0c; transform: scaleY(-1); filter: invert(1) blur(72px) saturate(0.35) brightness(0.25); }
   #wall .w-frost { background: rgba(6, 6, 6, 0.6); -webkit-backdrop-filter: blur(26px) brightness(0.4); backdrop-filter: blur(26px) brightness(0.4); }
   #wall .w-core { filter: blur(6.7px); transform: translateY(3px); opacity: 0.95; }
@@ -33,14 +40,59 @@
     -webkit-mask-position: 320px 210px, 90px 480px; mask-position: 320px 210px, 90px 480px; }
   #wall .w-grain { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 140px 140px; opacity: 0.035; mix-blend-mode: overlay; }
+  #wall > .w-keys { display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
 </style>
-<div id="wall" role="img" aria-label="404">
-  <div class="w-mirror" aria-hidden="true"><span class="w404">404</span></div>
+<div id="wall" role="img" aria-label="404.">
+  <div class="w-mirror" aria-hidden="true"><span class="w404">404.</span></div>
   <div class="w-frost" aria-hidden="true"></div>
-  <div class="w-far" aria-hidden="true"><span class="w404">404</span></div>
-  <div class="w-mid" aria-hidden="true"><span class="w404">404</span></div>
-  <div class="w-core" aria-hidden="true"><span class="w404">404</span></div>
+  <div class="w-far" aria-hidden="true"><span class="w404">404.</span></div>
+  <div class="w-mid" aria-hidden="true"><span class="w404">404.</span></div>
+  <div class="w-core" aria-hidden="true"><span class="w404">404.</span></div>
   <div class="w-grain" aria-hidden="true"></div>
-  <div class="w-front" aria-hidden="true"><span class="w404">404</span></div>
+  <div class="w-front" aria-hidden="true"><span class="w404">404.</span></div>
+  <div class="w-keys" aria-hidden="true">{{ range seq 9 }}<div data-k="{{ . }}"></div>{{ end }}</div>
 </div>
+<script>
+(function () {
+  var wall = document.getElementById("wall");
+  if (!wall) return;
+  var on404 = {{ eq .Kind "404" }};
+  var dom = {{ site.Params.face_domain | default "" }};
+  function cookie(k, v, age) { // shared by the faces, like the logo door's storageSet (header.html)
+    try {
+      var h = location.hostname, shared = dom && (h === dom || h.endsWith("." + dom)) ? "; domain=" + dom : "";
+      document.cookie = k + "=" + v + "; path=/; SameSite=Lax" + shared + "; max-age=" + age;
+    } catch (e) {}
+  }
+  function isOpen() {
+    try { if (localStorage.getItem("door") === "open") return true; } catch (e) {}
+    try { return /(?:^|; )door=open(?:;|$)/.test(document.cookie); } catch (e) { return false; }
+  }
+  function goBack() { // the page the lock sent you away from: same site, never /404, query and fragment kept
+    var to = null;
+    try { to = sessionStorage.getItem("door-to"); sessionStorage.removeItem("door-to"); } catch (e) {}
+    var u = null;
+    if (to && to.charAt(0) === "/" && to.indexOf("\\") < 0) { try { u = new URL(to, location.href); } catch (e) {} }
+    if (!u || u.origin !== location.origin || /^\/404(?:\/|$)/.test(u.pathname)) location.replace("/");
+    else location.replace(u.pathname + u.search + u.hash);
+  }
+  if (isOpen()) { if (on404) goBack(); else wall.remove(); return; }
+  function open() {
+    try { localStorage.setItem("door", "open"); } catch (e) {}
+    cookie("door", "open", 34560000);
+    // The logo door played unseen behind the wall; forget it, so it plays for real on the page you enter.
+    try { sessionStorage.removeItem("intro-seen"); } catch (e) {}
+    cookie("intro-seen", "", 0);
+    if (on404 && isOpen()) goBack(); // storage refused: open where you stand, no loop back to the lock
+    else wall.remove();
+  }
+  var pressed = {}, count = 0;
+  wall.querySelector(".w-keys").addEventListener("pointerdown", function (e) {
+    var k = e.target && e.target.getAttribute("data-k");
+    if (!k || pressed[k]) return;
+    pressed[k] = true;
+    if (++count === 9) open();
+  });
+})();
+</script>
 {{- end -}}
