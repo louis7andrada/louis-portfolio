@@ -1,5 +1,8 @@
+{{- /* The door (Louis, council #6879, Nov 6 2026): /404 is where every page sends you while params.wall_redirect
+       is on, and where every missing page lands. While params.wall is on it is empty: the wall (partials/wall.html)
+       covers it like every other page. With the wall called back, the old "not found" page returns. */ -}}
 {{ define "main" }}
-
+{{- if not site.Params.wall }}
 <section class="flex flex-col items-center justify-center min-h-screen text-center px-6 py-20">
   <h1 class="text-5xl font-bold mb-4">404</h1>
   <p class="text-gray-600 mb-8">The page you're looking for doesn't exist.</p>
@@ -7,5 +10,5 @@
     Go Home
   </a>
 </section>
-
+{{- end }}
 {{ end }}

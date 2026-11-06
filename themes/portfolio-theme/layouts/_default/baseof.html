@@ -7,6 +7,12 @@
   <!--       Codes by Louis Andrada                -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {{- /* THE SECOND LOCK (Louis, council #6879): every page sends the visitor to the door, /404 (the 404 page, layouts/404.html), in the page's own
+       code, so it can be broken (turn off JavaScript, or stop this script). The 404 page itself never redirects.
+       Call it back: params.wall_redirect = false in hugo.toml. */ -}}
+  {{- if and site.Params.wall_redirect (ne .Kind "404") }}
+  <script id="lock">location.replace("/404");</script>
+  {{- end }}
   <!-- The font is only discovered once the stylesheet is parsed; preloading it
        starts the download immediately, so text usually paints in AndradaMono
        straight away instead of swapping in later. -->
@@ -342,6 +348,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") (eq .Type "production") (eq .Type "career") }}page-books{{ end }}">
+  {{ partial "wall.html" . }}
 
   <!-- ══════════════════════════════════════════════════════
        SITE MIRROR — a vertically-flipped, color-inverted,
@@ -425,7 +432,7 @@
     var held = firstVisit;
     if (firstVisit) html.classList.add("reveal-first");
 
-    var EXCLUDE = "#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #arwModal, #lightbox, #arwLightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown, #bookModal, .book-modal, #bookFullscreen, .artwork-filter-overlay, #siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho";
+    var EXCLUDE = "#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #arwModal, #lightbox, #arwLightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown, #bookModal, .book-modal, #bookFullscreen, .artwork-filter-overlay, #siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho, #wall";
     if (!firstVisit) EXCLUDE += ", #siteHeader"; // the header stays steady while pages change
     var SKIP = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, SVG: 1, PATH: 1, INPUT: 1, TEXTAREA: 1, SELECT: 1, OPTION: 1 };
 
