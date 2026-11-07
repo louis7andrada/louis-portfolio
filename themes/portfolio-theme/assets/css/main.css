@@ -661,6 +661,14 @@
   html:not(.dark) body.page-books #siteMirrorBleed     { opacity: 0.42; }
   html:not(.dark) body.page-books #siteMirrorBleedDark { opacity: 0.32; }
 
+  /* THE NEAREST FOG A LITTLE BRIGHTER (Louis, council #7163: "maybe we can make just a very close layer to use your fog a
+     bit brighter just a tiny bit brighter", list #277). Only the core copy (the fog right behind the paintings and words)
+     is lifted x1.125; under the darker layer's x0.8 it lands at x0.9 of the old brightness instead of x0.8. The dark base
+     (mirror, frost, mid and far fog) stays as Louis approved it. The wall has its own copy (wall.html, .w-core). */
+  html.dark #siteMirrorBleedCore { filter: blur(6.7px) brightness(1.125); }
+  html.dark body.page-books #siteMirrorBleedCore { filter: blur(11.2px) brightness(1.125); }
+  html.dark .edge-core { filter: blur(4.5px) brightness(1.125); }
+
 
   /* ----------------------------------------
     OEUVRE / PHOTOGRAPHY / ARTWORKS (home): the title cluster is one fog island (the header's
