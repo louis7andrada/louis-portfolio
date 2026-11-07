@@ -633,6 +633,9 @@
     mask-image: linear-gradient(to bottom, transparent 0, black 46px);
   }
   #headerBleed.mirror-ready, #footerBleed.mirror-ready { opacity: 1; }
+  /* The darker layer's share for these two fogs (Aster, council #7103). Not a black box: #headerBleed rides over the page,
+     so a box would also darken whatever scrolls under it. The glow itself is dimmed by the same 20% instead. */
+  html.dark #headerBleed, html.dark #footerBleed { filter: brightness(0.8); }
   #headerBleed .edge-layer, #footerBleed .edge-layer {
     position: absolute; inset: 0; pointer-events: none;
   }
