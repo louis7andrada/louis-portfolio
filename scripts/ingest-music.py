@@ -99,12 +99,16 @@ def read(path):
 
 
 def clean_tags(path, title):
-    """Only the tags of the copy change, never the sound: the generator's comment and link go, the title is the site's."""
+    """Only the tags of the copy change, never the sound: the generator's own comment and link go (any other comment
+    or link stays), the title is the site's."""
     from mutagen.id3 import ID3, TIT2
     tags = ID3(path)
     for k in list(tags.keys()):
-        if k.startswith(("WOAS", "COMM")) or (k.startswith("TXXX") and "made with" in str(tags[k]).lower()):
-            tags.delall(k)
+        f = tags[k]
+        if k.startswith("WOAS") and "suno.com" in f.url.lower():
+            del tags[k]
+        elif k.startswith(("COMM", "TXXX")) and any("made with suno" in str(x).lower() for x in f.text):
+            del tags[k]
     tags.setall("TIT2", [TIT2(encoding=3, text=title)])
     tags.save(path, v2_version=4)
 
