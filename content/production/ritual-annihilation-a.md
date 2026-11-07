@@ -2,7 +2,7 @@
 id: "ritual-annihilation-a"
 title: "Ritual Annihilation"
 side: "A"
-order: 21
+order: 24
 year: 2026
 duration: 230
 style: "Hard Techno"
