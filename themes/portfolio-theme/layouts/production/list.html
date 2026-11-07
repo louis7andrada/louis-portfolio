@@ -8,7 +8,7 @@
      leaves the music playing in a small now-playing bar (music-player.html). Filters: Style /
      Elements / Voice; the search box finds titles, sides, words and styles.
      Tracks come from scripts/ingest-music.py: ids are the slugged titles, the two sides of one song
-     share a cover and differ by `side` (A / B); `order` = the date Suno made it (higher shows first). */}}
+     share a cover and differ by `side` (A / B); `order` = the date the song was made (higher shows first). */}}
 {{ $tracks := sort (where .Site.RegularPages "Section" "production") "Params.order" "desc" }}
 {{ partial "jsonld/collection.html" (dict "page" . "items" $tracks) }}
 
@@ -38,7 +38,7 @@
        would make this position:fixed overlay relative to it instead of the screen.
        Filters (Louis, Oct 2026): Style (each track's kind of techno, one per track), Elements (what
        else is in it: trance breaks, breakbeat, dubstep drops, metal; a track can have several) and
-       Voice (Instrumental / Vocals), set by hand per page from the song's Suno style prompt. Each
+       Voice (Instrumental / Vocals), set by hand per page from the song's style prompt. Each
        group lists the values the pages actually use, so a new kind adds itself. -->
   <div id="bookFilterOverlay" class="artwork-filter-overlay">
       <div class="artwork-filter-inner">
@@ -314,7 +314,7 @@ html.dark .artwork-filter-overlay { background: var(--glass-overlay); backdrop-f
 .sp-info-top p { margin: 0; font-size: clamp(0.78rem, 2.2vw, 0.93rem); line-height: 1.45; opacity: 0.62; }
 .sp-comment { font-size: 0.83rem !important; margin-top: 6px !important; }
 .photo-modal-img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; cursor: zoom-in; }
-/* the words of the track (Suno's lyrics without its [Verse] markers), small, under the player */
+/* the words of the track (its lyrics without the [Verse] markers), small, under the player */
 .music-modal .book-modal-pane .sp-info { gap: 22px; }
 .mp-words { margin: 0; font-size: 0.83rem; line-height: 1.5; opacity: 0.62; white-space: pre-line; max-height: 32vh; overflow-y: auto; overscroll-behavior: contain; }
 .mp-words:empty { display: none; }
