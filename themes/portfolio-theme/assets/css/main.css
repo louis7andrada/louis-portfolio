@@ -230,18 +230,18 @@
 
   /* ----------------------------------------
     DARK-MODE COLOR + GLASS TOKENS — one source of truth. Base is 20%
-    darker than before (#0f0f0f -> #0c0c0c); every translucent panel
+    darker than before (#0f0f0f -> #0c0c0c, then #080808: Louis, council #7058, #7070); every translucent panel
     (header, filter bars/boxes, dropdowns, popups, modal veils) takes its
     tint from here so every page matches.
   ----------------------------------------- */
   html.dark {
-    --bg-base: #0c0c0c;
-    --glass-bar: rgba(12, 12, 12, 0.62);
-    --glass-header: rgba(12, 12, 12, 0.36);
+    --bg-base: #080808;
+    --glass-bar: rgba(8, 8, 8, 0.62);
+    --glass-header: rgba(8, 8, 8, 0.36);
     --glass-overlay: rgba(10, 10, 10, 0.76);
     --glass-modal: rgba(8, 8, 8, 0.85);
     --glass-modal-soft: rgba(6, 6, 6, 0.6);
-    --glass-veil: rgba(12, 12, 12, 0.35);
+    --glass-veil: rgba(8, 8, 8, 0.35);
   }
 
   /* Top-layer glass: blur + a saturation boost so the paintings and
@@ -387,7 +387,7 @@
   ----------------------------------------- */
 
   html.dark body {
-    background-color: #0c0c0c !important;
+    background-color: #080808 !important;
     color: #e8e8e8 !important;
   }
 
@@ -725,7 +725,7 @@
   html.fx-lite body.page-about #siteMirrorClone { filter: invert(1) blur(40px) saturate(0.35) brightness(0.2); }
   html.fx-lite body.page-inquiry #siteMirrorClone { filter: invert(1) blur(40px) saturate(0.35) brightness(0.25); }
   /* solid-ish tints where the blur used to sit, so text stays readable */
-  html.dark.fx-lite header#siteHeader:not(.edge-copy)::before { background: rgba(12, 12, 12, 0.6); }
+  html.dark.fx-lite header#siteHeader:not(.edge-copy)::before { background: rgba(8, 8, 8, 0.6); }
   /* PINCH-ZOOMED (see watchPinchZoom in baseof.html): no background stack, no backdrop blurs - re-rendering all of
      that at the zoomed scale is what made phone tabs blink white and reload. */
   html.fx-zoomed #siteMirror, html.fx-zoomed #headerBleed, html.fx-zoomed #footerBleed,
@@ -736,7 +736,7 @@
   }
   /* the popups keep a plain dim instead of the blur, so they stay readable */
   html.fx-zoomed .lightbox-overlay, html.fx-zoomed .book-fullscreen-overlay, html.fx-zoomed .book-modal-bg,
-  html.fx-zoomed .arw-modal-bg, html.fx-zoomed .arch-popup-bg, html.fx-zoomed .sins-popup-bg { background: rgba(12, 12, 12, 0.88) !important; }
+  html.fx-zoomed .arw-modal-bg, html.fx-zoomed .arch-popup-bg, html.fx-zoomed .sins-popup-bg { background: rgba(8, 8, 8, 0.88) !important; }
   /* fast-scroll pause (see updateWindows in baseof.html) */
   #siteMirror { transition: opacity 0.25s ease; }
   #siteMirror.fx-paused { opacity: 0; transition-duration: 0.08s; }
@@ -842,7 +842,7 @@
   }
 
   html.dark #artworkModal .modal-content {
-    background-color: #0c0c0c !important;
+    background-color: #080808 !important;
     color: #e8e8e8 !important;
   }
 
@@ -949,7 +949,7 @@
   }
 
   html.dark option {
-    background-color: #0c0c0c !important;
+    background-color: #080808 !important;
     color: #e8e8e8 !important;
   }
 
@@ -967,7 +967,7 @@
   ----------------------------------------- */
 
   .dark #artworkSelectorModal > div {
-    background-color: #0c0c0c !important;
+    background-color: #080808 !important;
     color: #ffffff !important;
   }
 
@@ -977,7 +977,7 @@
 
   .dark #artworkSelectorModal .artworkChoice {
     border-color: #555555 !important;
-    background-color: #0c0c0c !important;
+    background-color: #080808 !important;
   }
 
   .dark #artworkSelectorModal .artworkChoice p {
@@ -1057,7 +1057,7 @@
   }
 
   html.dark .filter-menu {
-    background: #0c0c0c !important;
+    background: #080808 !important;
     border-color: #3a3a3a;
     box-shadow: 0 8px 20px rgba(0,0,0,0.4);
   }

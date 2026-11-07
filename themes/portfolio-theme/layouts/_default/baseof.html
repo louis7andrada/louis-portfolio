@@ -352,7 +352,7 @@
 
 </head>
 
-<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") (eq .Type "production") (eq .Type "career") }}page-books{{ end }}">
+<body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#080808] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") (eq .Type "production") (eq .Type "career") }}page-books{{ end }}">
   {{ partial "wall.html" . }}
 
   <!-- ══════════════════════════════════════════════════════
