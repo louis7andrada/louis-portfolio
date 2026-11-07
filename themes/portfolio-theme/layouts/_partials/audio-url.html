@@ -6,15 +6,16 @@
 
   Unlike img-url.html this fails the build instead of falling back: the fallback URL could never
   play, and a deploy that stops is better than a page whose player silently does nothing.
-  Hugo keeps the download forever (getresource cache), so only a new track needs the network; a
-  404 cached in the minute after an upload has to be deleted from that cache (see CLAUDE.md).
+  Hugo caches downloads. Bump the explicit audio revision below whenever existing remote MP3 bytes change,
+  so metadata updates refresh cached copies as well as new tracks. The public /audio/<file> path stays unchanged.
 
   Usage: {{ partial "audio-url.html" .Params.audio }}
 */ -}}
 {{- $src := . -}}
 {{- $out := "" -}}
 {{- with $src -}}
-  {{- with try (resources.GetRemote $src) -}}
+  {{- $audioRevision := "clean-tags-2026-11-07" -}}
+  {{- with try (resources.GetRemote $src (dict "key" (printf "%s|%s" $src $audioRevision))) -}}
     {{- with .Err -}}
       {{- errorf "audio-url: could not fetch %s: %s" $src . -}}
     {{- else with .Value -}}
