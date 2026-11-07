@@ -429,6 +429,19 @@
     opacity: 1;
   }
 
+  /* ONE DARKER LAYER over the whole background, fog included (Louis, council #7058: "125%" darker; #7089: "a layer
+     thst makes the overall backgroubd darker including the fog"). Black at 20% (x 0.8) on top of everything inside
+     #siteMirror (mirror, frost, the three fog copies, the grain), still under the page's paintings, words and header.
+     The wall (wall.html) has its own copy, .w-dim. Tune both with one number. */
+  html.dark #siteMirror::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+  }
+
   /* Thin film grain over the mirror layer — tiled noise SVG, blended
      with "overlay" so it adds texture without tinting the color. */
   #siteMirror::after {
@@ -620,6 +633,9 @@
     mask-image: linear-gradient(to bottom, transparent 0, black 46px);
   }
   #headerBleed.mirror-ready, #footerBleed.mirror-ready { opacity: 1; }
+  /* The darker layer's share for these two fogs (Aster, council #7103). Not a black box: #headerBleed rides over the page,
+     so a box would also darken whatever scrolls under it. The glow itself is dimmed by the same 20% instead. */
+  html.dark #headerBleed, html.dark #footerBleed { filter: brightness(0.8); }
   #headerBleed .edge-layer, #footerBleed .edge-layer {
     position: absolute; inset: 0; pointer-events: none;
   }
