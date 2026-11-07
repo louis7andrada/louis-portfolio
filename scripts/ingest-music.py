@@ -1,11 +1,12 @@
 """
-Turns a folder of songs (Suno MP3s) into Ny's Production section (ny.andrada.one).
+Turns a folder of songs (MP3s) into Ny's Production section (ny.andrada.one).
 
 For every .mp3 in the folder:
-  1. reads its tags: title, length, the date Suno made it, and the words (lyrics) without
-     Suno's [Verse]/[Drop] section markers. The title is the file name (a renamed download
-     keeps Louis's name; the tag inside stays as Suno wrote it);
-  2. copies the MP3 untouched to music-images/<slug>.mp3;
+  1. reads its tags: title, length, the date it was made, and the words (lyrics) without
+     the [Verse]/[Drop] section markers. The title is the file name (a renamed download
+     keeps Louis's name; the tag inside is set to it in the copy);
+  2. copies the MP3 to music-images/<slug>.mp3, sound untouched: only the tags change (the generator's
+     comment and link dropped, the title set to the site's; Louis, 2026-11-07: no advertisement);
   3. makes its cover, music-images/<slug>.jpg: an Ambiguous photograph from the Photography
      section, cut square from the full-size original (private/photography-originals/), 1600px,
      with the name small in AndradaMono (bottom left) and, for a song with two sides, the side
@@ -21,7 +22,7 @@ Covers are chosen by hand: --cover "Title=photoN" (optionally "@0.3": where the 
 portrait photo, 0 = top, 1 = bottom; default 0.5). Pages already written keep their number, cover,
 crop and description (matched by `source`, the original file name), so re-runs only add.
 
-Numbering follows the date Suno made each song, oldest = 1; `order` is that number (higher shows
+Numbering follows the date each song was made, oldest = 1; `order` is that number (higher shows
 first), and Side A always sits just before Side B.
 
 The files are not served from this repo: upload music-images/* to music/ in
@@ -62,7 +63,7 @@ def slugify(s):
 
 
 def words(raw):
-    """Suno's lyrics with the [Section] markers dropped; a marker between lines starts a new stanza."""
+    """The lyrics with the [Section] markers dropped; a marker between lines starts a new stanza."""
     stanzas, cur = [], []
     for line in raw.replace("�", " ").splitlines():
         line = re.sub(r"\s+", " ", line).strip()
@@ -95,6 +96,21 @@ def read(path):
         "length": int(round(m.info.length)),
         "words": words(lyr.text) if lyr else "",
     }
+
+
+def clean_tags(path, title):
+    """Only the tags of the copy change, never the sound: the generator's own comment and link go (any other comment
+    or link stays), the title is the site's."""
+    from mutagen.id3 import ID3, TIT2
+    tags = ID3(path)
+    for k in list(tags.keys()):
+        f = tags[k]
+        if k.startswith("WOAS") and "suno.com" in f.url.lower():
+            del tags[k]
+        elif k.startswith(("COMM", "TXXX")) and any("made with suno" in str(x).lower() for x in f.text):
+            del tags[k]
+    tags.setall("TIT2", [TIT2(encoding=3, text=title)])
+    tags.save(path, v2_version=4)
 
 
 def existing():
@@ -189,8 +205,8 @@ def main():
         stem = os.path.splitext(os.path.basename(p))[0]
         n = re.search(r" \((\d+)\)$", stem)
         song = dict(read(p), path=p, source=stem, copy=int(n.group(1)) if n else 0)
-        # A file Louis renamed carries the title he wants ("Near-Sacred.mp3" holds Suno's "Sacred
-        # Near-Death"): the file name wins over the tag. The tag inside the MP3 stays as Suno wrote it.
+        # A file Louis renamed carries the title he wants ("Near-Sacred.mp3" holds the tag "Sacred
+        # Near-Death"): the file name wins over the tag, and the copy's tag is set to it.
         named = stem[:n.start()] if n else stem
         if named != song["title"]:
             print(f'  note: "{os.path.basename(p)}" is titled "{song["title"]}" inside; using "{named}"')
@@ -229,6 +245,7 @@ def main():
 
         with open(s["path"], "rb") as fin, open(os.path.join(OUT_DIR, f"{s['slug']}.mp3"), "wb") as fout:
             fout.write(fin.read())
+        clean_tags(os.path.join(OUT_DIR, f"{s['slug']}.mp3"), s["title"])
         make_cover(pid, float(crop), s["title"], s["side"], os.path.join(OUT_DIR, f"{s['slug']}.jpg"))
 
         lines = ["---", f'id: "{s["slug"]}"', f'title: {q(s["title"])}']
@@ -236,7 +253,7 @@ def main():
             lines.append(f'side: "{s["side"]}"')
         lines += [f"order: {order}", f"year: {s['made'][:4] if s['made'][0] != '9' else '2026'}",
                   f"duration: {s['length']}",
-                  # the Filters (set BY HAND per page from the song's Suno style prompt; re-runs keep them)
+                  # the Filters (set BY HAND per page from the song's style prompt; re-runs keep them)
                   f'style: {q(kept.get("style", ""))}', f'elements: {kept.get("elements", "[]")}',
                   f'voice: {q(kept.get("voice", "") or ("Vocals" if s["words"] else "Instrumental"))}',
                   f'cover: "{pid}"', f"coverCrop: {crop}",
