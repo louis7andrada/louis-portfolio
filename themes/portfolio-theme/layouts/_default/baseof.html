@@ -128,7 +128,7 @@
   {{/* The door (/404 while params.wall is on) is where every page sends a visitor that runs scripts, search engines'
        renderers included, so it is the page search finds (Louis, portfolio #7583: the "lighthouse" leads to the front
        door). It keeps its number but not "Page not found" (that reads as a broken page to a search engine), and its
-       description is his one line, exact. The other names reach machines through the Person's alternateName. */}}
+       description is his one line, exact. Every other name is in the door's biography (partials/wall.html). */}}
   {{ else if and (eq .Kind "404") site.Params.wall }}
     {{ $pageTitle = printf "%s — 404" $name }}
     {{ $desc = site.Params.one_line }}
