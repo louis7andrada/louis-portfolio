@@ -50,7 +50,7 @@
   #wall .w-intro .w-access { margin-top: .6em; }
   #wall > .w-keys { display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
 </style>
-<div id="wall" role="img" aria-label="404.">
+<div id="wall" role="img" aria-label="404. Portfolio of Andrada. Access = HTML">
   <div class="w-mirror" aria-hidden="true"><span class="w404">404.</span></div>
   <div class="w-frost" aria-hidden="true"></div>
   <div class="w-far" aria-hidden="true"><span class="w404">404.</span></div>
@@ -68,8 +68,7 @@
       (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career).
       Who this is, in full: https://andrada.one/llms.txt</p>
     <p>How to open the door (Louis, portfolio #7749: the instructions are in the HTML, for anyone who reads it): the 404 is cut
-      into nine invisible squares, three by three. Press all nine, in any order, and the door opens for this visit. Or remove
-      the element with id "wall" in the browser's developer tools.</p>
+      into nine invisible squares, three by three. Press all nine, in any order, and the door opens for this visit.
   </template>
   <div class="w-keys" aria-hidden="true">{{ range seq 9 }}<div data-k="{{ . }}"></div>{{ end }}</div>
 </div>
