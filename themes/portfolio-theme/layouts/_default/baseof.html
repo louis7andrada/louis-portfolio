@@ -14,8 +14,12 @@
        closes (browsers that restore the session on reopening may keep it). The page you came for is kept in sessionStorage "door-to". With storage refused, window.name "door-session=open"
        keeps the tab open instead (Aster #6954). Yesterday's lasting memory (the 400-day cookie "door" and localStorage "door")
        is deleted on every page, and the old window.name "door=open" no longer opens it (Tessera #6980, Aster #6981).
-       Call it back: params.wall_redirect = false in hugo.toml. */ -}}
-  {{- if and site.Params.wall_redirect (ne .Kind "404") }}
+       Call it back: params.wall_redirect = false in hugo.toml.
+       PUBLIC OPENINGS (Louis, portfolio #7795: "The works that start each page should be publicly available"): a page with
+       public: true in its front matter (each face's opening work) gets neither this redirect nor the wall, so it keeps its own
+       address and words for search. Visiting it opens nothing: no cookie, no storage. tests/smoke-test.mjs checks that each
+       face's hero is that page, so if a hero changes, the build tells you to move the flag. */ -}}
+  {{- if and site.Params.wall_redirect (ne .Kind "404") (not .Params.public) }}
   <script id="lock">(function(){var d={{ site.Params.face_domain | default "" }};try{localStorage.removeItem("door")}catch(e){}try{if(/(?:^|; )door=/.test(document.cookie)){document.cookie="door=; path=/; max-age=0";if(d)document.cookie="door=; path=/; domain="+d+"; max-age=0"}}catch(e){}var o=window.name==="door-session=open";if(!o)try{o=/(?:^|; )door-session=open(?:;|$)/.test(document.cookie)}catch(e){}if(o)return;try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")})();</script>
   {{- end }}
   <!-- The font is only discovered once the stylesheet is parsed; preloading it

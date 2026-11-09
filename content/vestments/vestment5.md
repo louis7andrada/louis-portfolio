@@ -1,4 +1,5 @@
 ---
+public: true   # the opening work of its face: no door, no redirect (Louis, portfolio #7795)
 id: "vestment5"
 title: "v"
 order: 5

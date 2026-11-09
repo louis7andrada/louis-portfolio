@@ -15,7 +15,7 @@
   reopening may keep it. A new browser or a private window starts closed. On /404 you're sent to the page you came for (same site only, never
   /404 again, no backslashes, same origin; Aster #6936, #6952) or home, and the logo door plays there as usual.
 */ -}}
-{{- if site.Params.wall -}}
+{{- if and site.Params.wall (not .Params.public) -}}{{/* public: true, a face's opening work: no door (baseof.html, PUBLIC OPENINGS) */}}
 <style>
   html:has(#wall), html:has(#wall) body { overflow: hidden !important; overscroll-behavior: none; }
   /* Keyboard too, with or without scripts (Aster, council #6890, #6897): while the wall stands, everything behind it is
