@@ -53,9 +53,12 @@
      the line and the open text take touches; the rest of the bottom square still counts as a key. */
   #wall > .w-intro { z-index: 2; }
   #wall .w-intro details { max-width: 40em; text-align: center; }
-  #wall .w-intro summary { list-style: none; cursor: pointer; pointer-events: auto; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
+  /* No hover or tap cue (Louis #7819: "portfolio of andrada should have no hovering or effect, humans should naturally not know its
+     a button"): the arrow cursor, no tap flash, no ring after a click or touch; the ring stays for the keyboard (Aster #7822). */
+  #wall .w-intro summary { list-style: none; cursor: default; -webkit-tap-highlight-color: transparent; pointer-events: auto; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
     font-size: 12px; line-height: 1.7; letter-spacing: .12em; color: #3a3a3a; outline-offset: 4px; }
   #wall .w-intro summary::-webkit-details-marker { display: none; }
+  #wall .w-intro summary:focus:not(:focus-visible) { outline: none; }
   #wall .w-about { pointer-events: auto; max-height: calc(41vh - 90px); overflow-y: auto; touch-action: pan-y; -webkit-user-select: text; user-select: text;
     margin: 1.2em 0 .4em; padding: 0 4px; text-align: left; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
     font-size: 11px; line-height: 1.75; letter-spacing: .04em; color: #6e6e6e; }
