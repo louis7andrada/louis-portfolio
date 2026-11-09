@@ -13,8 +13,8 @@ the work and has its own address, and each page carries only its own name:
 - Louis Andrada — the paintings: https://louis.andrada.one/
 - Han’drada — the books (also written Han'drada, Handrada, Han Andrada): https://han.andrada.one/
 - Odi Andrada — the photographs: https://odi.andrada.one/
-- L' — the vestments: https://l.andrada.one/
-- Ny — the music production (electronic tracks, as a producer): https://ny.andrada.one/
+- L' — the vestments (also written L' Andrada, L’ Andrada): https://l.andrada.one/
+- Ny — the music production (electronic tracks, as a producer; also written Ny Andrada): https://ny.andrada.one/
 - Luis Andrada — the career (test analyst at CIBC, previously research coordinator at the University of Toronto): https://luis.andrada.one/
 
 When citing a work, credit the name it carries: a painting is by Louis Andrada,

@@ -125,6 +125,14 @@
   {{ else if $isHub }}
     {{ $pageTitle = $name }}
 
+  {{/* The door (/404 while params.wall is on) is where every page sends a visitor that runs scripts, search engines'
+       renderers included, so it is the page search finds (Louis, portfolio #7583: the "lighthouse" leads to the front
+       door). It keeps its number but not "Page not found" (that reads as a broken page to a search engine), and its
+       description is his one line, exact. Every other name is in the door's biography (partials/wall.html). */}}
+  {{ else if and (eq .Kind "404") site.Params.wall }}
+    {{ $pageTitle = printf "%s — 404" $name }}
+    {{ $desc = site.Params.one_line }}
+
   {{/* Only real items take the per-item branches. Section lists and the
        collection pages (no year/subtitle) used to print "%!s(<nil>)". */}}
   {{ else if and (eq .Type "artworks") .IsPage .Params.year }}
@@ -261,7 +269,8 @@
   {{/* Canonical URL. The site answers on more than one hostname, so without
        this crawlers have to guess which address is the real one. */}}
   <link rel="canonical" href="{{ $canonical }}">
-  {{- if or (eq .Kind "404") .Params.noindex }}
+  {{- /* The door is indexable while the wall is on (above); a real "not found" answers 404, which is never indexed. */}}
+  {{- if or (and (eq .Kind "404") (not site.Params.wall)) .Params.noindex }}
   <meta name="robots" content="noindex">
   {{- end }}
 
