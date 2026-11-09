@@ -407,6 +407,42 @@ section("Career page (Luis)");
   }
 }
 
+// ── Public openings (Louis, portfolio #7795) ───────────────────────────
+// Each face's opening work (the hero its front page links to) is public: no redirect to /404 and no wall,
+// so it keeps its own address for search. Every other work stays behind the door. If a hero changes, these
+// checks fail until public: true moves to the new hero's page (front matter).
+section("Public openings (each face's first work, outside the door)");
+{
+  const wallOn = (html) => /id="?wall\b/.test(html);
+  const lockOn = (html) => /id="?lock\b/.test(html);
+  const fronts = [
+    ["Louis", "index.html", /href="?([^" >]+)"? class="?hp-image-link/],
+    ["Han", "oeuvre/index.html", /href="?([^" >]+)"? class="?hp-image-link face-hero-link/],
+    ["Odi", "photography/index.html", /href="?([^" >]+)"? class="?hp-image-link face-hero-link/],
+    ["L'", "vestments/index.html", /href="?([^" >]+)"? class="?hp-image-link face-hero-link/],
+    ["Ny", "production/index.html", /href="?([^" >]+)"? class="?hp-image-link face-hero-link/],
+  ];
+  const publicPaths = new Set();
+  for (const [face, front, re] of fronts) {
+    const html = readHtml(front);
+    const m = html && html.match(re);
+    if (!m) { fail(`${face}: front page has a hero link`, front); continue; }
+    const rel = m[1].replace(/^https?:\/\/[^/]+/, "").replace(/^\//, "") + "index.html";
+    publicPaths.add(rel);
+    const work = readHtml(rel);
+    if (!work) { fail(`${face}: its opening work's page exists`, rel); continue; }
+    assert(!lockOn(work) && !wallOn(work), `${face}: opening work /${rel.replace(/index\.html$/, "")} has no door and no redirect`,
+      "set public: true in that page's front matter (and remove it from the old hero)");
+    assert(!/name="?robots"? content="?noindex/.test(work), `${face}: opening work is indexable`);
+  }
+  // Every other page that has the door keeps it: only the five are public.
+  const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(path.join(d, e.name)) : e.name === "index.html" ? [path.join(d, e.name)] : []);
+  const open = walk(BUILD_DIR).map((f) => path.relative(BUILD_DIR, f).split(path.sep).join("/"))
+    .filter((rel) => !publicPaths.has(rel) && !lockOn(readHtml(rel)) && /\/(artworks|oeuvre|photography|vestments|production)\/[^/]+\/index\.html$/.test("/" + rel));
+  assert(open.length === 0, "No other work's page is outside the door", open.slice(0, 5).join(", "));
+}
+
 // ── Cleanup + summary ────────────────────────────────────────────────
 fs.rmSync(BUILD_DIR, { recursive: true, force: true });
 

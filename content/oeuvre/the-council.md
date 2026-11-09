@@ -1,4 +1,5 @@
 ---
+public: true   # the opening work of its face: no door, no redirect (Louis, portfolio #7795)
 id: "the-council"
 slug: "the-council"
 imageBase: "https://raw.githubusercontent.com/louis7andrada/louis-andrada-images/main/books/the-council"
