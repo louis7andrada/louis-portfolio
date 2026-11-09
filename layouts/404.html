@@ -2,8 +2,6 @@
        is on, and where every missing page lands. While params.wall is on it is empty: the wall (partials/wall.html)
        covers it like every other page. With the wall called back, the old "not found" page returns. */ -}}
 {{ define "main" }}
-{{- /* While the wall is on, the door says who this is to machines: the Person with every name (portfolio #7583). */}}
-{{- if site.Params.wall }}{{ partial "jsonld/identity.html" . }}{{ end }}
 {{- if not site.Params.wall }}
 <section class="flex flex-col items-center justify-center min-h-screen text-center px-6 py-20">
   <h1 class="text-5xl font-bold mb-4">404</h1>
