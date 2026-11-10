@@ -137,8 +137,6 @@
           <h2 class="sp-title" id="photoModalTitle"></h2>
           <p class="mp-sides" id="photoModalSides"></p>
           <p id="photoModalYear"></p>
-          <p id="photoModalStyle"></p>
-          <p class="sp-comment" id="photoModalDesc"></p>
         </div>
         {{ partial "music-controls.html" (dict "id" "photoModalPlayer" "skip" true) }}
         <div class="mp-words" id="photoModalWords"></div>
@@ -594,8 +592,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSides(document.getElementById("photoModalSides"), id);
     setField("photoModalYear", t.year ? String(t.year) : "");
     // "Hard Techno · Trance breaks": the style, then what else is in it
-    setField("photoModalStyle", [t.style].concat(t.elements || []).filter(Boolean).join(" · "));
-    setField("photoModalDesc", t.desc);
     words.textContent = t.words || "";
     words.scrollTop = 0;
     const q = shownIds(), i = q.indexOf(id);
