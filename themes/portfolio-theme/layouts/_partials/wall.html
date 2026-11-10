@@ -43,31 +43,14 @@
   #wall .w-grain { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 140px 140px; opacity: 0.035; mix-blend-mode: overlay; }
   /* THE TWO LINES (Louis, portfolio #7753, #7761, #7772: "Ill just say Portfolio of Andrada"): what this site is, very dark (his pick 1 of 3, #7768), under the 404 (the door's number);
-     his words. The longer description and the way in are in #door-notes, for whoever reads the HTML. Beneath the keys. */
+     his words. The way in is in #door-notes, for whoever reads the HTML. Beneath the keys. */
   #wall > .w-intro { flex-direction: column; justify-content: flex-end; padding: 0 24px 9vh; }
   #wall .w-intro p { max-width: 34em; margin: 0; text-align: center; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
     font-size: 12px; line-height: 1.7; letter-spacing: .12em; color: #3a3a3a; }
   #wall .w-intro .w-access { margin-top: .6em; }
-  /* THE BIOGRAPHY (Aster #7782, Louis #7785: "great idea", "everything that is important to be mentioned about me"): the first
-     line opens it. In the HTML from the start, words copied from llms.txt (About, names, exhibitions, press, collections), without the runes (Louis #7791: "just andrada"). Only
-     the line and the open text take touches; the rest of the bottom square still counts as a key. */
-  #wall > .w-intro { z-index: 2; }
-  #wall .w-intro details { max-width: 40em; text-align: center; }
-  #wall .w-intro summary { list-style: none; cursor: pointer; pointer-events: auto; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
-    font-size: 12px; line-height: 1.7; letter-spacing: .12em; color: #3a3a3a; outline-offset: 4px; }
-  #wall .w-intro summary::-webkit-details-marker { display: none; }
-  #wall .w-about { pointer-events: auto; max-height: calc(41vh - 90px); overflow-y: auto; touch-action: pan-y; -webkit-user-select: text; user-select: text;
-    margin: 1.2em 0 .4em; padding: 0 4px; text-align: left; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
-    font-size: 11px; line-height: 1.75; letter-spacing: .04em; color: #6e6e6e; }
-  #wall .w-about p, #wall .w-about ul { margin: 0 0 1em; max-width: none; text-align: left; font-size: 11px; color: #6e6e6e; letter-spacing: .04em; }
-  #wall .w-about ul { padding-left: 1.2em; list-style: "– "; }
-  #wall .w-about h2 { font-size: 11px; font-weight: normal; letter-spacing: .14em; color: #8a8a8a; margin: 1.4em 0 .5em; }
-  #wall .w-about a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-  /* touch-action is the intersection of every ancestor's, so it lives on the layers, not on #wall: none on the keys and the
-     line, pan-y on the open biography, so a finger scrolls the text while the page behind stays locked (Aster #7799). */
-  #wall > .w-keys, #wall .w-intro summary { touch-action: none; }
-  #wall .w-about { overscroll-behavior: contain; }
-  #wall > .w-keys { display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
+  /* The keys take every touch; the two lines under the 404 are plain text and take none (Louis, life #7904, recorded in
+     portfolio #7906: three visible lines, 404 / Portfolio of Andrada / Access = HTML, no biography). */
+  #wall > .w-keys { touch-action: none; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
 </style>
 <div id="wall">
   <div class="w-mirror" aria-hidden="true"><span class="w404">404.</span></div>
@@ -79,32 +62,7 @@
   <div class="w-dim" aria-hidden="true"></div>
   <div class="w-front"><span class="w404">404.</span></div>
   <div class="w-intro">
-    <details id="door-about">
-      <summary>Portfolio of Andrada</summary>
-      <div class="w-about">
-        <p>Andrada is a Brazilian-born artist based in Toronto who works under many names.</p>
-        <ul>
-          <li>Andrada — the person and the hub: <a href="https://andrada.one/">https://andrada.one/</a></li>
-          <li>Louis Andrada — paintings and art: <a href="https://louis.andrada.one/">https://louis.andrada.one/</a></li>
-          <li>Han’drada — writing (also written Han'drada, Handrada, Han Andrada): <a href="https://han.andrada.one/">https://han.andrada.one/</a></li>
-          <li>Odi Andrada — photography: <a href="https://odi.andrada.one/">https://odi.andrada.one/</a></li>
-          <li>L' — vestments (also written L' Andrada, L’ Andrada): <a href="https://l.andrada.one/">https://l.andrada.one/</a></li>
-          <li>Ny — music production (electronic tracks, as a producer; also written Ny Andrada): <a href="https://ny.andrada.one/">https://ny.andrada.one/</a></li>
-          <li>Luis Andrada — other career (test analyst at CIBC, previously research coordinator at the University of Toronto): <a href="https://luis.andrada.one/">https://luis.andrada.one/</a></li>
-          <li>Nilo Andrada — TBA</li>
-        </ul>
-        <p>Louis, Han, Odi, L', Ny, Luis, Nilo... different names, same person.</p>
-        <p>Since childhood, I found it difficult to express myself to others, and when I was younger I never understood why. I found out I'm an extreme visual learner and associative thinker, and speech has always been complex for me. I am improving, but it has never come easily. It created a distance between my internal experiences and the world around me.</p>
-        <p>Through horror movies and folklore, I found comfort, and a way to explore emotions that were difficult to understand and express.</p>
-        <p>My work originates in the merging of my fascination with occult symbolism and my attempt to give those emotions a form.</p>
-        <p>Whatever the medium, each work is less an invention than an extraction: taking what already exists internally and forcing it into visibility.</p>
-        <p>In the process of confronting what I fear most, the things I make erode and resist full resolution; they do not want to be fully seen.</p>
-        <h2>Exhibitions</h2><ul><li>Present: Carbonic Cafe, works on display, Toronto, Canada</li><li>2026: Art Week Toronto, group exhibition, Toronto, Canada</li><li>2026: Carbonic Cafe, works on display, Toronto, Canada</li><li>2026: RCHIVE: Art Gallery, group exhibition, Toronto, Canada</li><li>2026: PB - Revival, group exhibition, Toronto, Canada</li><li>2025: The Chess Gallery, works on display, Toronto, Canada</li><li>2024: The Chess Gallery, works on display, Toronto, Canada</li></ul>
-        <h2>Press &amp; publications</h2><ul><li>2026: Art Week Toronto, featured artist, online</li><li>2026: Art Week Toronto, studio visit interview, online</li><li>2026: ArtLaunch, featured artist, online</li></ul>
-        <h2>Collections</h2><p>Private collections in Athens (Greece), Montreal (Canada), Quebec City (Canada), Rapid City (USA), Suncheon (South Korea) and Toronto (Canada).</p>
-        <p>Everything, for people and machines: <a href="/llms.txt">llms.txt</a></p>
-      </div>
-    </details>
+    <p>Portfolio of Andrada</p>
     <p class="w-access">Access = HTML</p>
   </div>
   <template id="door-notes">

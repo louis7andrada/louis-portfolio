@@ -247,7 +247,7 @@ Always deploy with `npm run deploy` from the `main` branch. It
 1. refuses to run on any other branch,
 2. commits your changes and pulls anything new from GitHub first,
 3. pushes to GitHub, and stops before deploying if that fails,
-4. builds and deploys to Netlify, then notifies search engines.
+4. builds and deploys to Netlify.
 
 So GitHub and the live site always hold the same code. If GitHub has changes
 that clash with yours, it stops and nothing is deployed.

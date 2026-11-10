@@ -101,8 +101,6 @@
         <div class="sp-info-top">
           <h2 class="sp-title" id="photoModalTitle"></h2>
           <p id="photoModalYear"></p>
-          <p id="photoModalGarment"></p>
-          <p id="photoModalSleeve"></p>
         </div>
       </div>
 
@@ -466,8 +464,6 @@ document.addEventListener("DOMContentLoaded", () => {
     modalImg.alt = (d.title || "") + ", vestment";
     document.getElementById("photoModalTitle").textContent = d.title || "";
     setField("photoModalYear", d.year);
-    setField("photoModalGarment", d.garment);
-    setField("photoModalSleeve", d.sleeve ? d.sleeve + " sleeves" : "");
     const list = shown(), i = list.indexOf(item);
     prevBtn.style.display = i > 0 ? "flex" : "none";
     nextBtn.style.display = i >= 0 && i < list.length - 1 ? "flex" : "none";

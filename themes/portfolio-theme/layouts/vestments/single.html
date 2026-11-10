@@ -43,17 +43,7 @@
           <p>{{ . }}</p>
         {{ end }}
 
-        {{ with .Params.garment }}
-          <p>{{ . }}</p>
-        {{ end }}
-
-        {{ with .Params.sleeve }}
-          <p>{{ . }} sleeves</p>
-        {{ end }}
-
-        {{ with .Params.comment }}
-          <p class="photo-comment">{{ . }}</p>
-        {{ end }}
+        {{/* No garment, sleeve or comment lines (Louis, portfolio #7923: no descriptions); the Filters keep their labels. */}}
       </div>
 
     </div>

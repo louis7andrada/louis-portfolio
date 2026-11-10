@@ -18,7 +18,6 @@
   "url": "{{ partial "canonical.html" . }}",
   "license": "{{ "/license/" | absURL }}",
   {{ with .Params.description }}"alternativeHeadline": "{{ . }}",
-  "description": "{{ $.Title }} — {{ . }}. An illustrated book by {{ $who }}.",
   {{ end }}"author": {
     "@type": "Person",
     "@id": "{{ $person }}",
@@ -53,7 +52,6 @@
   "inLanguage": "en",
   "isAccessibleForFree": true,
   "isFamilyFriendly": true,
-  "genre": ["Philosophical fiction", "Existentialism", "Artist book"],
   "encoding": {
     "@type": "MediaObject",
     "encodingFormat": "text/plain",

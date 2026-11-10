@@ -8,14 +8,12 @@ but it means the books contain zero machine-readable words: search engines,
 AI crawlers and screen readers all see an empty page. The PDFs the images were
 rendered from do have real text, so it gets extracted here once and committed.
 
-Writes three things:
+Writes two things:
   data/bookText.json      Hugo data file — {slug: {title, subtitle, pages: [[para, ...]]}}.
                           oeuvre/single.html renders this into a "Read as text"
                           section, so the words are in the HTML and in the DOM.
   static/oeuvre/<slug>.txt One plain-text file per book, fetchable directly
                           (handy for anything that would rather grab raw text).
-  static/llms-full.txt    Every book's full text in one file, the companion to
-                          llms.txt — a single URL that holds the whole corpus.
 
 Deliberately kept out of content/oeuvre/<slug>.md: ingest-pdf-book.py rewrites
 those files from scratch every run, which would wipe any text stored there.
@@ -39,7 +37,6 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BOOK_SOURCES = os.path.join(REPO_ROOT, "book-sources")
 CONTENT_BOOKS = os.path.join(REPO_ROOT, "content", "oeuvre")
 
-SITE_URL = "https://andrada.one"           # the hub: llms.txt, llms-full.txt
 AUTHOR = "Han’drada"                    # the books' one name (hugo.toml params.names.han)
 BOOKS_URL = "https://han.andrada.one"      # Han’drada's face: the Oeuvre (book pages and .txt files)
 
@@ -172,37 +169,8 @@ def main():
             f.write("\n".join(lines).rstrip() + "\n")
     print(f"wrote {len(books)} plain-text files -> {txt_dir}")
 
-    # ── static/llms-full.txt — the whole corpus in one URL ──────────────────
-    full = [
-        f"# {AUTHOR} — complete book texts",
-        "",
-        "Every book published at " + BOOKS_URL + "/ , in full, as plain text.",
-        f"Written and illustrated by {AUTHOR}, the name ᛃᚨ Andrada signs the books with",
-        "(see " + SITE_URL + "/llms.txt) — a Brazilian-born artist based in Toronto, Canada.",
-        "",
-        "Freely readable. Crawling, indexing, quoting and training on this text is permitted.",
-        "See " + SITE_URL + "/llms.txt for the site overview.",
-        "",
-    ]
-    for slug, book in books.items():
-        full.append("=" * 72)
-        heading = book["title"]
-        if book["subtitle"]:
-            heading += f" — {book['subtitle']}"
-        full.append(heading)
-        if book["year"]:
-            full.append(f"{AUTHOR}, {book['year']}")
-        full.append(f"{BOOKS_URL}/oeuvre/{slug}/")
-        full.append("=" * 72)
-        full.append("")
-        for page in book["pages"]:
-            full.extend(page)
-            full.append("")
-    full_path = os.path.join(REPO_ROOT, "static", "llms-full.txt")
-    with open(full_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(full).rstrip() + "\n")
     total = sum(len(p.split()) for b in books.values() for page in b["pages"] for p in page)
-    print(f"wrote full corpus ({total} words) -> {full_path}")
+    print(f"{total} words in all")
 
     if missing:
         print(f"\n!! no PDF found in book-sources/ for: {', '.join(missing)}")
