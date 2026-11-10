@@ -109,7 +109,10 @@
   {{/* $name: the page's ONE name (params.names, see hugo.toml): the owner of its section, else
        name_default (ᛃᚨ Andrada, andrada.one). Titles, descriptions, author, previews and
        JSON-LD credits all use it, never two names together; the head script below swaps it on a
-       face subdomain. */}}
+       face subdomain. $nameKey picks the matching params.taglines.
+       DESCRIPTIONS (Louis, portfolio #8238, 2026-11-10: "the website should have some html descriptions or something to
+       help aid those who need. but no narcisism"): each says only what the page is (kind, title, year, collection, name),
+       never praise or a self-portrait: no adjectives about him, no birthplace, no "based in". */}}
   {{ $nameKey := partial "page-name.html" . }}
   {{ $name := index site.Params.names $nameKey }}
   {{ $canonical := partial "canonical.html" . }}
@@ -117,6 +120,7 @@
   {{/* Name first, then the section: "Odi Andrada — Photography", "Han’drada — Oeuvre", "ᛃᚨ Andrada — About"
        (Louis, Oct 2026: every tab reads like the home page's). Single works keep the work first. */}}
   {{ $pageTitle := printf "%s — %s" $name .Title }}
+  {{ $desc := index site.Params.taglines $nameKey }}
   {{ $ogImage := site.Params.share_image | absURL }}
   {{ $ogType := "website" }}
   {{ $imageAlt := site.Params.share_image_alt }}
@@ -134,6 +138,7 @@
        of its own (Louis, life #7904, recorded in portfolio #7906: no self-description on the door). */}}
   {{ else if and (eq .Kind "404") site.Params.wall }}
     {{ $pageTitle = printf "%s — 404" $name }}
+    {{ $desc = "" }}{{/* the door keeps no description (Louis, life #7904); ask him before giving it one */}}
 
   {{/* Only real items take the per-item branches. Section lists and the
        collection pages (no year/subtitle) used to print "%!s(<nil>)". */}}
@@ -146,6 +151,7 @@
     {{/* 11 paintings are "Untitled", two with the same year, medium and size: their id keeps every title unique. */}}
     {{ $when := cond (and (eq .Title "Untitled") .Params.id) (printf "%v, %s" .Params.year .Params.id) (printf "%v" .Params.year) }}
     {{ $pageTitle = printf "%s (%s)%s — %s" .Title $when (cond (eq $detail "") "" (printf " — %s" $detail)) $name }}
+    {{ $desc = printf "%s, %v.%s Painting by %s." .Title .Params.year (cond (eq $detail "") "" (printf " %s." $detail)) $name }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s (%v), %s by %s" .Title .Params.year (default "painting" .Params.medium) $name }}
 
@@ -153,6 +159,7 @@
     {{ $ogType = "article" }}
     {{ $sub := .Params.description }}
     {{ $pageTitle = printf "%s%s — A book by %s" .Title (cond (eq $sub "") "" (printf " — %s" $sub)) $name }}
+    {{ $desc = printf "%s%s — a %v-page illustrated book by %s, %v. The full text can be read online." .Title (cond (eq $sub "") "" (printf ", %s" $sub)) .Params.pageCount $name .Params.year }}
     {{ with .Params.imageBase }}{{ $ogImage = printf "%s/cover.jpg" . }}{{ end }}
     {{ $imageAlt = printf "Cover of %s, a book by %s" .Title $name }}
 
@@ -160,6 +167,7 @@
     {{ $ogType = "article" }}
     {{ $coll := .Params.collection }}
     {{ $pageTitle = printf "%s%s — Photograph by %s" .Title (cond (eq $coll nil) "" (printf " (%s)" $coll)) $name }}
+    {{ $desc = printf "%s — a photograph by %s, %v%s." .Title $name .Params.year (cond (eq $coll nil) "" (printf ", from the %s collection" $coll)) }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s, photograph by %s" .Title $name }}
 
@@ -169,6 +177,7 @@
     {{ $kind := "" }}{{ $what := "vestment" }}
     {{ with .Params.garment }}{{ $kind = printf " (%s)" . }}{{ $what = lower . }}{{ end }}
     {{ $pageTitle = printf "%s%s — Vestment by %s" .Title $kind $name }}
+    {{ $desc = printf "%s — a vestment by %s, %v." .Title $name .Params.year }}
     {{ with .Params.sleeve }}{{ $what = printf "%s-sleeve %s" (lower .) $what }}{{ end }}
     {{/* The PNG is transparent; link previews get a JPEG on the site's own black instead of white. */}}
     {{ with .Params.image }}{{ $ogImage = partial "img-url.html" (dict "src" . "width" 1200 "format" "jpg" "bg" "#0c0c0c") | absURL }}{{ end }}
@@ -180,6 +189,7 @@
     {{ $t := .Title }}{{ with .Params.side }}{{ $t = printf "%s (Side %s)" $t . }}{{ end }}
     {{ $d := int (.Params.duration | default 0) }}
     {{ $pageTitle = printf "%s — Track by %s" $t $name }}
+    {{ $desc = printf "%s — a track by %s, %v (%d:%02d)." $t $name .Params.year (div $d 60) (mod $d 60) }}
     {{ with .Params.image }}{{ $ogImage = partial "img-url.html" (dict "src" . "width" 1200 "format" "jpg") | absURL }}{{ end }}
     {{ $imageAlt = printf "Cover of %s, a track by %s" $t $name }}
 
@@ -188,14 +198,18 @@
     {{/* Archive photos have no titles (they're named by id); no description and no caption (Louis, portfolio #7923). */}}
     {{ $t := .Title | default (printf "%s (%v)" .Params.id .Params.year) }}
     {{ $pageTitle = printf "%s — %s" $t $name }}
+    {{ $desc = printf "%s — from the archive of %s." $t $name }}
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s — archive photograph, %s" $t $name }}
 
   {{/* Luis's page (Career, luis.andrada.one): his portrait in link previews; no description (Louis, portfolio #8225, #8226). */}}
   {{ else if eq .Type "career" }}
+    {{ with .Params.description }}{{ $desc = . }}{{ end }}
     {{ with .Params.image }}{{ $ogImage = . | absURL }}{{ end }}
     {{ $imageAlt = printf "Portrait of %s" $name }}
 
+  {{ else }}
+    {{ with .Params.description }}{{ $desc = . }}{{ end }}
   {{ end }}
 
   <title>{{ $pageTitle }}</title>
@@ -252,6 +266,7 @@
   </script>
 
   <!-- SEO -->
+  {{ with $desc }}<meta name="description" content="{{ . }}">{{ end }}
   <meta name="author" content="{{ $name }}">
 
   {{/* Canonical URL. The site answers on more than one hostname, so without
@@ -269,6 +284,7 @@
 
   <!-- OpenGraph -->
   <meta property="og:title" content="{{ $pageTitle }}" />
+  {{ with $desc }}<meta property="og:description" content="{{ . }}" />{{ end }}
   <meta property="og:type" content="{{ $ogType }}" />
   <meta property="og:url" content="{{ $canonical }}" />
   <meta property="og:site_name" content="{{ $name }}" />
@@ -280,6 +296,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="{{ $pageTitle }}" />
+  {{ with $desc }}<meta name="twitter:description" content="{{ . }}" />{{ end }}
   <meta name="twitter:image" content="{{ $ogImage }}" />
   <meta name="twitter:image:alt" content="{{ $imageAlt }}" />
 

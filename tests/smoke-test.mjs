@@ -386,9 +386,10 @@ section("Navigation sanity");
 // ── 11. No self-description (Louis, portfolio #7923, 2026-11-10) ─────
 // "No descriptions no shit. Remove it all. any descriptions. even from artworks photosc any olace thet has
 // descriptions." and "no cv no nothing". The works, books, buttons and forms stay; every description goes.
-// About and Career came back (Louis, portfolio #8225: "those pages are not to be removed. please put them back",
-// #8226: "just remove hidden html self talk of those"): both are published, with no description in their HTML.
-section("No descriptions, no CV (Louis #7923, #8225)");
+// About and Career came back (Louis, portfolio #8225: "those pages are not to be removed. please put them back"), and plain
+// descriptions with them (#8238: "the website should have some html descriptions or something to help aid those who need.
+// but no narcisism"): a description says what the page is, never praise or a self-portrait. The door keeps none (#7904).
+section("Plain descriptions, no CV (Louis #7923, #8238)");
 {
   for (const rel of ["docs/index.html", "cv/index.html", "llms.txt", "llms-full.txt"]) {
     assert(readHtml(rel) === null, `${rel} is not published`);
@@ -398,10 +399,12 @@ section("No descriptions, no CV (Louis #7923, #8225)");
   for (const rel of pages) {
     const html = readHtml(rel);
     if (html === null) { fail(`${rel} exists`); continue; }
-    assert(!/<meta[^>]+(name|property)="?(description|og:description|twitter:description|keywords)"?/.test(html), `${rel}: no description or keywords meta`);
-    assert(!/"description"\s*:/.test(html), `${rel}: no description in its JSON-LD`);
+    assert(!/<meta[^>]+name="?keywords"?/.test(html), `${rel}: no keywords meta`);
+    const hasDesc = /<meta[^>]+name="?description"?/.test(html);
+    if (rel === "404.html") assert(!hasDesc, "the door (404) has no description");
+    else assert(hasDesc, `${rel} has a plain description`);
     if (rel === "career/index.html") continue; // the resume itself (its rows, LinkedIn) is the page Louis asked back
-    assert(!/Brazilian|polymath|based in Toronto|"jobTitle"|"knowsAbout"|disambiguatingDescription|imdb\.com|linkedin\.com/i.test(html), `${rel}: no self-description or profile`);
+    assert(!/Brazilian|polymath|based in Toronto|existential|"jobTitle"|"knowsAbout"|disambiguatingDescription|imdb\.com|linkedin\.com/i.test(html), `${rel}: no self-description or profile`);
   }
 }
 

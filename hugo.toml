@@ -98,6 +98,17 @@ disableKinds = ["taxonomy", "term"]
     ja = "ᛃᚨ Andrada"
     andrada = "Andrada"
 
+  # Each name's description (meta description where a page has none of its own, WebSite JSON-LD). Plain: what is
+  # there, never praise or a self-portrait (Louis, portfolio #8238: "help aid those who need. but no narcisism").
+  [params.taglines]
+    louis = "Paintings by Louis Andrada."
+    han = "Illustrated books by Han’drada, readable in full online."
+    odi = "Photographs by Odi Andrada, in two collections: Ambiguous and Lucid."
+    l = "Vestments by L' Andrada."
+    ny = "Tracks produced by Ny Andrada."
+    luis = "Luis Andrada, Toronto: Test Analyst at CIBC, previously Research Coordinator at the University of Toronto. Testing, data validation and quality control."
+    ja = "The work of Andrada under six names: Louis Andrada (paintings), Han’drada (illustrated books), Odi Andrada (photography), L' (vestments), Ny (music production) and Luis Andrada (career)."
+
   # page: the page that IS the face's front page (served at https://<key>.andrada.one/).
   # section: the content section the face owns (its pages live on the face's subdomain).
   # hero: the image at the top. Odi: a photo id ("photo107"); empty = the newest Ambiguous photo.

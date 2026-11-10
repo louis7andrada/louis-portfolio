@@ -464,6 +464,12 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   resume, LinkedIn link, its ProfilePage JSON-LD, which repeats the visible rows), the Luis and About menu links, Luis in
   Links and in the Person's alternateName, `params.faces.luis`. Their hidden description (front matter, meta, JSON-LD
   `description`) stays out. Docs/CV, llms files and every other removal of #29 stay as they are.
+- Plain descriptions back (Louis, portfolio #8238: "the website should have some html descriptions or something to help
+  aid those who need. but no narcisism"; #8237, the Luis page "exactly how it was in the past"). meta/og/twitter
+  descriptions and the WebSite JSON-LD description say what a page is (kind, title, year, collection, name), from
+  `params.taglines` and per-type lines in baseof: no praise, birthplace, "based in" or adjectives about him. Career has its
+  old line again. Still out: meta keywords, the door's description, the Person's description/jobTitle/knowsAbout/sameAs,
+  captions, RSS summaries.
 - Link previews: a page without a picture of its own uses `params.share_image` = `images/og-photo106.jpg` (Odi's
   photo106, top cut to 1200×630; Louis, 2026-10-14, replacing the orange painting `og-default.jpg`), alt
   `share_image_alt`. Works (paintings, books, photos, vestments, tracks) and Career (his portrait) use their own.

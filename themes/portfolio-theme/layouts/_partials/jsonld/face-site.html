@@ -10,6 +10,6 @@
 {{ $name := index site.Params.names $key }}
 {{ $person := dict "@type" "Person" "@id" (printf "%s#person" site.BaseURL) "name" $name }}
 <script type="application/ld+json">
-{{ dict "@context" "https://schema.org" "@type" "WebSite" "@id" (printf "%s#website" $url) "url" $url "name" $name "alternateName" (slice (printf "%s.%s" $key $dom)) "inLanguage" "en" "author" $person "publisher" $person "isPartOf" (dict "@id" (printf "%s#website" site.BaseURL)) | jsonify | safeJS }}
+{{ dict "@context" "https://schema.org" "@type" "WebSite" "@id" (printf "%s#website" $url) "url" $url "name" $name "alternateName" (slice (printf "%s.%s" $key $dom)) "description" (index site.Params.taglines $key) "inLanguage" "en" "author" $person "publisher" $person "isPartOf" (dict "@id" (printf "%s#website" site.BaseURL)) | jsonify | safeJS }}
 </script>
 {{ end }}

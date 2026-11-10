@@ -33,5 +33,5 @@
 {{ with $p.Params.image }}{{ $person = merge $person (dict "image" (absURL .)) }}{{ end }}
 {{ with site.Params.profile_linkedin }}{{ $person = merge $person (dict "sameAs" (slice .)) }}{{ end }}
 <script type="application/ld+json">
-{{ dict "@context" "https://schema.org" "@type" "ProfilePage" "@id" (printf "%s#profile" $url) "url" $url "name" (printf "%s — %s" $name $p.Title) "inLanguage" "en" "mainEntity" $person | jsonify | safeJS }}
+{{ dict "@context" "https://schema.org" "@type" "ProfilePage" "@id" (printf "%s#profile" $url) "url" $url "name" (printf "%s — %s" $name $p.Title) "description" $p.Params.description "inLanguage" "en" "mainEntity" $person | jsonify | safeJS }}
 </script>
