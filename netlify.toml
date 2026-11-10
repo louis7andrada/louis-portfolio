@@ -40,7 +40,7 @@ directory = "netlify/functions"
 # ─────────────────────────────────────────────────────────────────────────
 # Security headers. None of these restrict crawlers/bots (including AI
 # crawlers/trainers) — CSP, X-Frame-Options, etc. are enforced by browsers
-# only, never checked by bots, so they're independent of robots.txt/llms.txt.
+# only, never checked by bots, so they're independent of robots.txt.
 #
 # CSP is as strict as this site's actual architecture allows: it's a fully
 # static Hugo build with no per-request server, so there's no way to mint a

@@ -18,8 +18,7 @@
   "@id": "{{ partial "canonical.html" . }}#work",
   "name": "{{ .Title | default (printf "%s (%v)" .Params.id .Params.year) }}",
   "url": "{{ partial "canonical.html" . }}",
-{{ with .Params.comment }}"description": "{{ . }}",
-  {{ end }}"license": "{{ "/license/" | absURL }}",
+"license": "{{ "/license/" | absURL }}",
 {{ with .Params.year }}"dateCreated": "{{ . }}",
   {{ end }}{{ with .Params.category }}"genre": "{{ . }}",
   {{ end }}"creator": {
@@ -35,8 +34,7 @@
   {{ with .Params.image }}"image": {
     "@type": "ImageObject",
     "contentUrl": "{{ . }}",
-    {{ with $.Params.comment }}"caption": "{{ . }}",
-    {{ end }}"creditText": "{{ $who }}",
+    "creditText": "{{ $who }}",
     "copyrightNotice": "© {{ site.Params.legal_name }}",
     "creator": {
       "@type": "Person",

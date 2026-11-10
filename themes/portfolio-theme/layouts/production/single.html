@@ -49,14 +49,7 @@
           <p>{{ . }}</p>
         {{ end }}
 
-        {{/* "Hard Techno · Trance breaks": the style, then what else is in it (the Filters' values) */}}
-        {{ with .Params.style }}
-          <p>{{ delimit (slice . | append ($.Params.elements | default slice)) " · " }}</p>
-        {{ end }}
-
-        {{ with .Params.description }}
-          <p class="photo-comment">{{ . }}</p>
-        {{ end }}
+        {{/* No style line or description (Louis, portfolio #7923: no descriptions); the Filters keep their labels. */}}
       </div>
 
       {{/* only this track: no previous/next here (the arrows at the sides lead to the other pages) */}}

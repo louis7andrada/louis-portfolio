@@ -31,7 +31,6 @@
          data-price="{{ .Params.price }}"
          data-image="{{ .Params.image }}"
          data-id="{{ .Params.id }}"
-         data-comment="{{ .Params.comment }}"
          data-collection="{{ if reflect.IsSlice .Params.collection }}{{ delimit .Params.collection "," }}{{ else }}{{ .Params.collection }}{{ end }}">
         <img src="{{ partial "img-url.html" (dict "src" .Params.image "width" 1600) }}" alt="{{ .Title }}" class="hp-image"{{ partial "imgdims.html" .Params.image }} />
       </a>
@@ -166,8 +165,7 @@
        data-availability="{{ $page.Params.availability }}"
        data-price="{{ $page.Params.price }}"
        data-image="{{ $page.Params.image }}"
-       data-id="{{ $page.Params.id }}"
-       data-comment="{{ $page.Params.comment }}">
+       data-id="{{ $page.Params.id }}">
       <img src="{{ partial "img-url.html" (dict "src" $page.Params.image "width" 800) }}" alt="{{ $page.Title }}" class="aw-img" loading="lazy"{{ partial "imgdims.html" $page.Params.image }} />
     </a>
     {{ end }}

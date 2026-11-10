@@ -85,7 +85,7 @@
       {{ with .Params.words }}{{ $words = $words | append . }}{{ end }}
       {{ $data = $data | append (dict "id" .Params.id "title" .Title "side" (.Params.side | default "") "year" .Params.year
           "style" (.Params.style | default "") "elements" (.Params.elements | default slice) "voice" (.Params.voice | default "")
-          "duration" (.Params.duration | default 0) "desc" (.Params.description | default "") "words" (.Params.words | default "")
+          "duration" (.Params.duration | default 0) "desc" "" "words" (.Params.words | default "")
           "audio" (partial "audio-url.html" .Params.audio) "href" .RelPermalink
           "src" (partial "img-url.html" (dict "src" .Params.image "width" 1600 "keep" true))
           "grid" (partial "img-url.html" (dict "src" .Params.image "width" 1200 "quality" 90))) }}
@@ -103,7 +103,6 @@
        data-style="{{ $page.Params.style | default "" }}"
        data-elements="{{ delimit ($page.Params.elements | default slice) "|" }}"
        data-voice="{{ $page.Params.voice | default "" }}"
-       data-desc="{{ $page.Params.description | default "" }}"
        data-words="{{ delimit (uniq $words) "\n\n" }}">
       {{/* the grid shows a 1200px WebP, q90 like Photography (the covers are its night photographs); the
            popup/fullscreen the 1600px cover JPEG itself */}}

@@ -84,6 +84,4 @@ Set-Content -Path .last-deploy -Value $head -Encoding ascii
 Write-Host ""
 Write-Host "Deployed $($head.Substring(0,7)) to Netlify; GitHub main is the same commit." -ForegroundColor Green
 
-# 7. Tell search engines about changed URLs (never fails the deploy).
-npm run notify-search-engines
 exit 0
