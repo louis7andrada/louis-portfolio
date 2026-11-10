@@ -191,6 +191,11 @@
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s — archive photograph, %s" $t $name }}
 
+  {{/* Luis's page (Career, luis.andrada.one): his portrait in link previews; no description (Louis, portfolio #8225, #8226). */}}
+  {{ else if eq .Type "career" }}
+    {{ with .Params.image }}{{ $ogImage = . | absURL }}{{ end }}
+    {{ $imageAlt = printf "Portrait of %s" $name }}
+
   {{ end }}
 
   <title>{{ $pageTitle }}</title>

@@ -457,6 +457,13 @@ the grid below; scrolling or the face's own menu entry leads to the grid):
   the production style line, the vestment garment/sleeve lines, the Links exhibition link and the Inquiry list of what
   he does. Kept: works, titles, year, size, medium, availability, collections, the Filters, books and lyrics, buttons,
   forms, License and Privacy. Some sections in this file below still describe what was there before.
+- About and Career back (Louis, portfolio #8225, 2026-11-10: "You guys deleted my about page and my luis page after removing
+  self-talk. well those pages are not to be removed. please put them back", #8226: "just remove hidden html self talk of
+  those", #8228: "we can use html to help ais into understanding my website. but i dont want to be egotistical and talk very
+  good of myself"). Restored as they were before #29: /about/ ("Who am I ?" over the fog), Career at luis.andrada.one (the
+  resume, LinkedIn link, its ProfilePage JSON-LD, which repeats the visible rows), the Luis and About menu links, Luis in
+  Links and in the Person's alternateName, `params.faces.luis`. Their hidden description (front matter, meta, JSON-LD
+  `description`) stays out. Docs/CV, llms files and every other removal of #29 stay as they are.
 - Link previews: a page without a picture of its own uses `params.share_image` = `images/og-photo106.jpg` (Odi's
   photo106, top cut to 1200×630; Louis, 2026-10-14, replacing the orange painting `og-default.jpg`), alt
   `share_image_alt`. Works (paintings, books, photos, vestments, tracks) and Career (his portrait) use their own.

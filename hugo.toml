@@ -60,12 +60,16 @@ disableKinds = ["taxonomy", "term"]
   share_image = "/images/og-photo106.jpg"
   # Its alt text (og:image:alt): the photo's own title, no name (a page carries only its own name).
   share_image_alt = "cvi (Ambiguous), a photograph"
+  # The one exception (Louis, 2026-10-14): Luis's page (Career, luis.andrada.one) shows LinkedIn as a
+  # visible link, since that page is meant to be the same thing as his LinkedIn profile.
+  profile_linkedin = "https://www.linkedin.com/in/louis7andrada/"
 
   # ANDRADA.ONE (Oct 2026): one domain, one person, six names. Each name owns a part of the work
   # and lives on its own subdomain, which opens on a home-page-style hero (one image + the staggered
   # menu, the grid below):
   #   louis.andrada.one → Artworks (the home page)   han.andrada.one → Oeuvre   odi.andrada.one → Photography
   #   l.andrada.one → Vestments (L', Oct 2026)        ny.andrada.one → Production (Ny, Oct 2026)
+  #   luis.andrada.one → Career (Luis, Oct 2026: his work life, a resume / LinkedIn-style page)
   #   andrada.one       → the Links page (the hub: every name, every door)
   # The menus jump between them (Photography → odi.andrada.one…, Links → andrada.one); shared pages
   # (About, Inquiry, Archive…) stay on whichever subdomain the visitor is on. netlify.toml serves each
@@ -74,7 +78,7 @@ disableKinds = ["taxonomy", "term"]
   #
   # NAMES (Louis, Oct 2026): every page carries ONE name, in its title, description, link
   # previews, author and JSON-LD credits: the owner of the page's section (louis. paintings, han. books,
-  # odi. photographs, l. vestments, ny. music production), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
+  # odi. photographs, l. vestments, ny. music production, luis. career), or name_default = "ja" (ᛃᚨ Andrada, ᛃᚨ = the runes Jera + Ansuz used as a first
   # name) for andrada.one itself and the shared pages that live there. Never two names side by side.
   # In the browser a face subdomain always shows its own name; on andrada.one, ?name=<key> picks it
   # for the visit (removed from the address bar). Only the Person node lists every name (alternateName).
@@ -89,6 +93,7 @@ disableKinds = ["taxonomy", "term"]
     odi = "Odi Andrada"
     l = "L' Andrada"
     ny = "Ny Andrada"
+    luis = "Luis Andrada"   # career (Louis, 2026-10-14); NOT the legal name (legal_name), which stays in legal statements
     nilo = "Nilo Andrada"   # no section yet (Louis, 2026-10-13: "surprises soon"); in About, the intro door, alternateName
     ja = "ᛃᚨ Andrada"
     andrada = "Andrada"
@@ -118,3 +123,7 @@ disableKinds = ["taxonomy", "term"]
     page = "/production/"
     section = "production"
     hero = "ritual-annihilation-a"   # the latest release, chosen by Louis 2026-10-12
+  [params.faces.luis]
+    page = "/career/"
+    section = "career"
+    plain = true   # Louis: luis.andrada.one starts right on the resume, the menu only in the header
