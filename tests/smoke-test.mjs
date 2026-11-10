@@ -164,8 +164,7 @@ const deadPaths = [
   "/profile.jpg",
   "/logo.png",
   "/profile3.jpeg",
-  // "/images/docs/" is live again since Sep 30 2026: the CV and practice PDFs
-  // (cleaned of Instagram) are served from the site itself.
+  "/images/docs/", // retired 2026-11-10 (Louis #7923: "no cv no nothing"); _redirects answers 404 there
   "/images/oeuvre/",
   "AndradaMono.ttf",
   "AndradaMono.sfd",

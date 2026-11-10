@@ -20,6 +20,11 @@ https://luis.andrada.one/*     https://andrada.one/           301!
 
 https://www.andrada.one/*       https://andrada.one/:splat   301!
 
+# The documents (CV, Description of Practice, Artist Statement, submission package) are retired, not published
+# (Louis, portfolio #7923: "no cv no nothing"). The files are kept in retired/docs/; a laptop's own copy under
+# static/images/docs/ (gitignored) would still be uploaded by a deploy, so the path itself answers "not found".
+/images/docs/*                  /404.html                    404!
+
 # A section asked for on andrada.one itself moves to its face (one address per page).
 https://andrada.one/artworks/                   https://louis.andrada.one/                          301!
 https://andrada.one/artworks/*                  https://louis.andrada.one/artworks/:splat           301!

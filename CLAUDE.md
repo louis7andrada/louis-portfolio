@@ -53,8 +53,8 @@ reach Netlify without GitHub having the same commit. Never push the pre-Sep-30 l
 `backup/laptop-2026-09-30`, local only): it contains newsletter `.msg` files that were scrubbed from GitHub.
 
 - Everything in `static/` is published by laptop deploys, gitignored or not. Private files go in `private/`
-  (gitignored, not published). `static/images/docs/` is gitignored, but the docs the site links (CV, etc.)
-  are force-tracked so Netlify builds from GitHub have them.
+  (gitignored, not published). `static/images/docs/` is gitignored; the docs it held (CV, etc.) were
+  retired on 2026-11-10 to `retired/docs/` (unpublished), and `_redirects` answers 404 for `/images/docs/*`.
 - Gallery images use resized WebP copies (`_partials/img-url.html`, Hugo `resources.GetRemote`), cached in
   `resources/_gen` — the deploy keeps that folder; deleting it makes every build re-download every image.
 
