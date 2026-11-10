@@ -46,7 +46,9 @@
      his words. The way in is in #door-notes, for whoever reads the HTML. Beneath the keys. */
   #wall > .w-intro { flex-direction: column; justify-content: flex-end; padding: 0 24px 9vh; }
   #wall .w-intro p { max-width: 34em; margin: 0; text-align: center; font-family: 'AndradaMono', 'Courier New', Courier, monospace;
-    font-size: 12px; line-height: 1.7; letter-spacing: .12em; color: #3a3a3a; }
+    font-size: 12px; line-height: 1.7; letter-spacing: .12em; color: #3a3a3a !important; }
+  /* !important: main.css paints every p white in dark mode (html.dark p, !important), which turned both lines white
+     (#e8e8e8) once the first line became a p in #29. Louis, portfolio #8231-#8233: "make them gray font", "not white". */
   #wall .w-intro .w-access { margin-top: .6em; }
   /* The keys take every touch; the two lines under the 404 are plain text and take none (Louis, life #7904, recorded in
      portfolio #7906: three visible lines, 404 / Portfolio of Andrada / Access = HTML, no biography). */
