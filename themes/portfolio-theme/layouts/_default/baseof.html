@@ -202,7 +202,7 @@
     {{ with .Params.image }}{{ $ogImage = . }}{{ end }}
     {{ $imageAlt = printf "%s — archive photograph, %s" $t $name }}
 
-  {{/* Luis's page (Career, luis.andrada.one): his portrait in link previews; no description (Louis, portfolio #8225, #8226). */}}
+  {{/* Luis's page (Career, luis.andrada.one): his portrait in link previews (Louis, portfolio #8225, #8226); its plain description is in its front matter (#8237). */}}
   {{ else if eq .Type "career" }}
     {{ with .Params.description }}{{ $desc = . }}{{ end }}
     {{ with .Params.image }}{{ $ogImage = . | absURL }}{{ end }}
