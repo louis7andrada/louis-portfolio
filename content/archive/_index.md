@@ -1,4 +1,4 @@
 ---
 title: "Archives"
-description: "The archive of ᛃᚨ Andrada: studio photographs, exhibitions and gallery history, year by year."
+description: "The archive of ᛃᚨ Andrada: photographs, year by year."
 ---
