@@ -73,6 +73,8 @@ const shouldHaveRecaptcha = {
 };
 const shouldNotHaveRecaptcha = {
   "index.html": "Home",
+  "about/index.html": "About",
+  "career/index.html": "Career (Luis)",
   "links/index.html": "Links (contact form removed Oct 2026)",
   "archive/index.html": "Archive",
   "artworks/index.html": "Artworks list",
@@ -302,15 +304,15 @@ section("Books/Oeuvre section");
 // Artworks / Oeuvre / Photography / Vestments / Production / Career read Louis / Han / Odi / L' / Ny / Luis in the menus, the
 // section titles and the back links. Only the labels: URLs, folders and ids
 // keep the section names. The Links page keeps its own list as it was.
-section(`Nav — sections shown as "Louis", "Han", "Odi", "L'", "Ny"`);
+section(`Nav — sections shown as "Louis", "Han", "Odi", "L'", "Ny", "Luis"`);
 {
   const home = readHtml("index.html");
   if (home === null) {
     fail("Home page exists for nav-rename check");
   } else {
     assert(/<h1[^>]*>Louis</.test(home), "Home page's section heading says Louis");
-    for (const label of ["Louis", "Han", "Odi", "L'", "Ny"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
-    for (const label of ["Artworks", "Oeuvre", "Photography", "Vestments", "Production", "Career", "Luis", "About"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
+    for (const label of ["Louis", "Han", "Odi", "L'", "Ny", "Luis"]) assert(new RegExp(`>${label}</a>`).test(home), `Home page's nav has a "${label}" link`);
+    for (const label of ["Artworks", "Oeuvre", "Photography", "Vestments", "Production", "Career"]) assert(!new RegExp(`>${label}</a>`).test(home), `Home page's nav no longer says "${label}"`);
     assert(/href="?https:\/\/han\.andrada\.one\/#oeuvre/.test(home), "Home page's Han link opens han.andrada.one at the grid");
   }
 
@@ -356,8 +358,8 @@ section("Header logos (each face's logo, then Jera Ansuz)");
 section("Site mirror background (regression guard from earlier work)");
 {
   const home = readHtml("index.html");
-  const inquiry = readHtml("inquiry/index.html"); // About was the second page checked here; removed 2026-11-10 (Louis #7923)
-  for (const [label, html] of [["Home", home], ["Inquiry", inquiry]]) {
+  const about = readHtml("about/index.html");
+  for (const [label, html] of [["Home", home], ["About", about]]) {
     if (html === null) {
       fail(`${label} page exists for site-mirror check`);
       continue;
@@ -375,7 +377,7 @@ section("Navigation sanity");
   const home = readHtml("index.html");
   if (home) {
     // Inquiry/Archive stay relative; the faces and the hub are their own (sub)domains (Oct 2026).
-    for (const href of ["/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production"]) {
+    for (const href of ["/about/", "/inquiry/", "/archive/", "https://andrada.one/", "https://han.andrada.one/#oeuvre", "https://odi.andrada.one/#photography", "https://l.andrada.one/#vestments", "https://ny.andrada.one/#production", "https://luis.andrada.one/"]) {
       assert(home.includes(`href=${href}`) || home.includes(`href="${href}"`), `Home page links to ${href}`);
     }
   }
@@ -384,18 +386,43 @@ section("Navigation sanity");
 // ── 11. No self-description (Louis, portfolio #7923, 2026-11-10) ─────
 // "No descriptions no shit. Remove it all. any descriptions. even from artworks photosc any olace thet has
 // descriptions." and "no cv no nothing". The works, books, buttons and forms stay; every description goes.
-section("No descriptions, no CV (Louis #7923)");
+// About and Career came back (Louis, portfolio #8225: "those pages are not to be removed. please put them back",
+// #8226: "just remove hidden html self talk of those"): both are published, with no description in their HTML.
+section("No descriptions, no CV (Louis #7923, #8225)");
 {
-  for (const rel of ["about/index.html", "career/index.html", "docs/index.html", "cv/index.html", "llms.txt", "llms-full.txt"]) {
+  for (const rel of ["docs/index.html", "cv/index.html", "llms.txt", "llms-full.txt"]) {
     assert(readHtml(rel) === null, `${rel} is not published`);
   }
   const pages = ["index.html", "404.html", "links/index.html", "inquiry/index.html", "archive/index.html", "oeuvre/index.html",
-    "photography/index.html", "vestments/index.html", "production/index.html"];
+    "photography/index.html", "vestments/index.html", "production/index.html", "about/index.html", "career/index.html"];
   for (const rel of pages) {
     const html = readHtml(rel);
     if (html === null) { fail(`${rel} exists`); continue; }
     assert(!/<meta[^>]+(name|property)="?(description|og:description|twitter:description|keywords)"?/.test(html), `${rel}: no description or keywords meta`);
-    assert(!/Brazilian|polymath|based in Toronto|"jobTitle"|"knowsAbout"|disambiguatingDescription|imdb\.com|linkedin\.com|luis\.andrada\.one/i.test(html), `${rel}: no self-description, profile or career link`);
+    assert(!/"description"\s*:/.test(html), `${rel}: no description in its JSON-LD`);
+    if (rel === "career/index.html") continue; // the resume itself (its rows, LinkedIn) is the page Louis asked back
+    assert(!/Brazilian|polymath|based in Toronto|"jobTitle"|"knowsAbout"|disambiguatingDescription|imdb\.com|linkedin\.com/i.test(html), `${rel}: no self-description or profile`);
+  }
+}
+
+// ── 12. Career (Luis, luis.andrada.one, Oct 2026) ──────────────────────
+// Luis's resume page. The forms are the only way to reach him: no phone, no email, no reference's
+// contact details on the page. LinkedIn is the one visible profile link (Louis, 2026-10-14).
+section("Career page (Luis)");
+{
+  const career = readHtml("career/index.html");
+  if (career === null) {
+    fail("Career page exists (career/index.html)");
+  } else {
+    assert(/<title>Luis Andrada — Career<\/title>/.test(career), `Career page's title is "Luis Andrada — Career"`);
+    for (const id of ["about", "experience", "education", "certifications", "skills", "languages"]) {
+      assert(career.includes(`id=${id}`) || career.includes(`id="${id}"`), `Career page has its "${id}" section`);
+    }
+    assert(career.includes("linkedin.com/in/"), "Career page links to LinkedIn");
+    assert(/href="?\/inquiry\/"?/.test(career), "Career page's Contact goes to the Inquiry form");
+    assert(!/(\+?1[-\s.]?)?\(?\d{3}\)?[-\s.]\d{3}[-\s.]\d{4}/.test(career.replace(/<script[\s\S]*?<\/script>/g, "")), "Career page shows no phone number");
+    assert(!/[\w.+-]+@[\w-]+\.(ca|com|org|edu)\b/i.test(career.replace(/<script[\s\S]*?<\/script>/g, "")), "Career page shows no email address");
+    assert(/"@type":"ProfilePage"/.test(career), "Career page declares a ProfilePage (JSON-LD)");
   }
 }
 
