@@ -1,0 +1,24 @@
+# jl.andrada.one: Lulu & Jiji, who pays whom (Louis, council #10005-#10021, Nov 15 2026).
+# Its own small Worker, separate from the website (Netlify) and from the council. Free plan only.
+# Not public: no workers.dev address, noindex on every reply, robots.txt says no, nothing links here.
+name = "jl"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+workers_dev = false
+
+# andrada.one's DNS is on this Cloudflare account, so the first deploy creates the jl record and its
+# certificate. It fails loudly if a record named "jl" already exists.
+routes = [{ pattern = "jl.andrada.one", custom_domain = true }]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = true
+
+[[durable_objects.bindings]]
+name = "LEDGER"
+class_name = "Ledger"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Ledger"]
