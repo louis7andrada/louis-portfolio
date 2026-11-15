@@ -11,7 +11,7 @@ workers_dev = false
 routes = [{ pattern = "jl.andrada.one", custom_domain = true }]
 
 [assets]
-directory = "./public"
+directory = "./files"
 binding = "ASSETS"
 run_worker_first = true
 
