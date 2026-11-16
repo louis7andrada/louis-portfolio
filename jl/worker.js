@@ -201,6 +201,7 @@ li.editing { grid-template-columns: 1fr; gap: 8px; }
 li .v { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 .rm { background: none; border: 1px solid #333; border-radius: 5px; padding: 5px 9px; font-size: .72rem; color: var(--muted); }
 .rm.sure { border-color: #ff8a8a; color: #ff8a8a; }
+.foot { color: #4a4945; font-size: .75rem; text-align: center; margin: 18px 0 0; }
 .empty { display: block; color: var(--muted); font-size: .8rem; border: 0; }
 
 /* The door: the same nine invisible squares as andrada.one's wall (Louis #10017). */
@@ -247,6 +248,7 @@ html:has(#wall) main { visibility: hidden; }
     <h2>PAYMENTS</h2>
     <ul id="list"></ul>
   </section>
+  <p class="foot">jiji feet smells. ps: you cant erase this :P</p>
 </main>
 <script>
 (function () {
