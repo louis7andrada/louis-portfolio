@@ -6,6 +6,8 @@
 // Memory forever (#10012): every payment is a row in one Durable Object (SQLite). Nothing deletes a row except Remove.
 // Louis, Nov 16 (#10062, #10065): under a filled box, a "/2" button that halves the number in that box (nothing is sent,
 // so the amount can still be fixed), and an optional reason that shows in the list.
+// Louis, Nov 16 (#10076, #10077; Aster #10080): Edit on every row (who paid, amount, reason), Save/Cancel; an edited row
+// says "[edited]" beside its reason, and the total above recalculates from the list as always.
 
 const NOINDEX = { "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet" };
 const WHO = new Set(["lulu", "jiji"]);
@@ -48,6 +50,16 @@ export default {
   },
 };
 
+function invalid(e) {
+  if (!e || !WHO.has(e.who)) return "Who paid? Lulu or Jiji.";
+  if (!Number.isInteger(e.cents) || e.cents <= 0 || e.cents > MAX_CENTS) return "Type an amount like 30 or 12.50.";
+  if (e.reason != null && (typeof e.reason !== "string" || e.reason.length > MAX_REASON)) {
+    return "Keep the reason to " + MAX_REASON + " letters or fewer.";
+  }
+  return null;
+}
+function cleanReason(r) { return typeof r === "string" && r.trim() ? r.trim() : null; }
+
 export class Ledger {
   constructor(state) {
     this.sql = state.storage.sql;
@@ -60,10 +72,11 @@ export class Ledger {
     // Added Nov 16 (#10062); rows from before have neither.
     const cols = new Set(this.sql.exec("PRAGMA table_info(payments)").toArray().map((c) => c.name));
     if (!cols.has("reason")) this.sql.exec("ALTER TABLE payments ADD COLUMN reason TEXT");
+    if (!cols.has("edited")) this.sql.exec("ALTER TABLE payments ADD COLUMN edited INTEGER NOT NULL DEFAULT 0");
   }
 
   list() {
-    return this.sql.exec("SELECT id, who, cents, at, reason FROM payments ORDER BY id DESC").toArray();
+    return this.sql.exec("SELECT id, who, cents, at, reason, edited FROM payments ORDER BY id DESC").toArray();
   }
 
   async fetch(request) {
@@ -76,23 +89,30 @@ export class Ledger {
       const entries = Array.isArray(body && body.payments) ? body.payments : [body];
       if (!entries.length || entries.length > 2) return json({ error: "One or two payments at a time." }, 400);
       for (const e of entries) {
-        if (!e || !WHO.has(e.who)) return json({ error: "Who paid? Lulu or Jiji." }, 400);
-        if (!Number.isInteger(e.cents) || e.cents <= 0 || e.cents > MAX_CENTS) {
-          return json({ error: "Type an amount like 30 or 12.50." }, 400);
-        }
-        if (e.reason != null && (typeof e.reason !== "string" || e.reason.length > MAX_REASON)) {
-          return json({ error: "Keep the reason to " + MAX_REASON + " letters or fewer." }, 400);
-        }
+        const bad = invalid(e);
+        if (bad) return json({ error: bad }, 400);
       }
       const at = Date.now();
       for (const e of entries) {
-        const reason = typeof e.reason === "string" && e.reason.trim() ? e.reason.trim() : null;
-        this.sql.exec("INSERT INTO payments (who, cents, at, reason) VALUES (?, ?, ?, ?)", e.who, e.cents, at, reason);
+        this.sql.exec("INSERT INTO payments (who, cents, at, reason) VALUES (?, ?, ?, ?)", e.who, e.cents, at, cleanReason(e.reason));
       }
       return json({ payments: this.list() });
     }
 
     const m = url.pathname.match(/^\/api\/payments\/(\d{1,12})$/);
+    if (request.method === "PUT" && m) {
+      let e;
+      try { e = await request.json(); } catch { return json({ error: "Send JSON." }, 400); }
+      const bad = invalid(e);
+      if (bad) return json({ error: bad }, 400);
+      const id = Number(m[1]);
+      if (!this.sql.exec("SELECT id FROM payments WHERE id = ?", id).toArray().length) {
+        return json({ error: "That payment was removed.", payments: this.list() }, 404);
+      }
+      this.sql.exec("UPDATE payments SET who = ?, cents = ?, reason = ?, edited = 1 WHERE id = ?",
+        e.who, e.cents, cleanReason(e.reason), id);
+      return json({ payments: this.list() });
+    }
     if (request.method === "DELETE" && m) {
       this.sql.exec("DELETE FROM payments WHERE id = ?", Number(m[1]));
       return json({ payments: this.list() });
@@ -163,6 +183,21 @@ li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items
 li .n { font-size: 1rem; }
 li .d { color: var(--muted); font-size: .72rem; margin-top: 2px; }
 li .r { font-size: .85rem; margin-top: 3px; overflow-wrap: anywhere; }
+li .r .ed { color: var(--muted); font-size: .72rem; }
+.btns { display: grid; gap: 6px; }
+li.editing { grid-template-columns: 1fr; gap: 8px; }
+.ed-form { display: grid; gap: 8px; }
+.ed-who { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ed-who button, .ed-acts button { background: none; border: 2px solid #333; border-radius: 6px; padding: 8px 0; font-size: .95rem; }
+.ed-who button.on { border-color: var(--line); }
+.ed-who .l.on { color: var(--lulu); } .ed-who .j.on { color: var(--jiji); }
+.ed-who button:not(.on) { color: var(--muted); }
+.ed-form input { background: #0b0b0b; color: inherit; font: inherit; border: 2px solid var(--line); border-radius: 6px; padding: 9px 8px;
+  outline: none; width: 100%; box-sizing: border-box; }
+.ed-form input.amt { font-size: 1.3rem; text-align: center; font-variant-numeric: tabular-nums; }
+.ed-acts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.ed-acts .save { border-color: var(--line); }
+.ed-form button:focus-visible, .ed-form input:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 li .v { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 .rm { background: none; border: 1px solid #333; border-radius: 5px; padding: 5px 9px; font-size: .72rem; color: var(--muted); }
 .rm.sure { border-color: #ff8a8a; color: #ff8a8a; }
@@ -266,7 +301,12 @@ html:has(#wall) main { visibility: hidden; }
       var d = document.createElement("div"); d.className = "d";
       d.textContent = new Date(p.at).toLocaleString([], { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
       left.append(n, d);
-      if (p.reason) { var r = document.createElement("div"); r.className = "r"; r.textContent = p.reason; left.append(r); }
+      if (p.reason || p.edited) {
+        var r = document.createElement("div"); r.className = "r";
+        if (p.reason) r.append(p.reason);
+        if (p.edited) r.append(span("ed", (p.reason ? " " : "") + "[edited]"));
+        left.append(r);
+      }
       var v = document.createElement("div"); v.className = "v"; v.textContent = fmt(p.cents);
       var rm = document.createElement("button"); rm.className = "rm"; rm.type = "button"; rm.textContent = "Remove";
       var t = null;
@@ -280,8 +320,46 @@ html:has(#wall) main { visibility: hidden; }
         call("DELETE", "/api/payments/" + p.id).then(function () { note("Removed " + NAME[p.who] + "'s " + fmt(p.cents) + "."); },
           function (e) { note("Couldn't remove it: " + e.message, true); });
       });
-      li.append(left, v, rm); ul.append(li);
+      var ed = document.createElement("button"); ed.className = "rm"; ed.type = "button"; ed.textContent = "Edit";
+      ed.addEventListener("click", function () { editing = p.id; render(); });
+      var btns = document.createElement("div"); btns.className = "btns"; btns.append(ed, rm);
+      if (editing === p.id) li.append(editForm(p, li)); else li.append(left, v, btns);
+      ul.append(li);
     });
+  }
+
+  // One row at a time can be edited; the list refreshing every few seconds leaves an open row alone.
+  var editing = null;
+  function editForm(p, li) {
+    li.className = "editing";
+    var f = document.createElement("div"); f.className = "ed-form";
+    var who = p.who, row = document.createElement("div"); row.className = "ed-who";
+    var bl = document.createElement("button"), bj = document.createElement("button");
+    bl.type = bj.type = "button"; bl.textContent = "Lulu paid"; bj.textContent = "Jiji paid";
+    function mark() { bl.className = "l" + (who === "lulu" ? " on" : ""); bj.className = "j" + (who === "jiji" ? " on" : ""); }
+    bl.addEventListener("click", function () { who = "lulu"; mark(); });
+    bj.addEventListener("click", function () { who = "jiji"; mark(); });
+    mark(); row.append(bl, bj);
+    var amt = document.createElement("input"); amt.className = "amt"; amt.inputMode = "decimal"; amt.autocomplete = "off";
+    amt.value = plain(p.cents); amt.setAttribute("aria-label", "Amount");
+    var rs = document.createElement("input"); rs.maxLength = 120; rs.autocomplete = "off"; rs.placeholder = "reason (optional)";
+    rs.value = p.reason || ""; rs.setAttribute("aria-label", "Reason");
+    var acts = document.createElement("div"); acts.className = "ed-acts";
+    var cancel = document.createElement("button"), save = document.createElement("button");
+    cancel.type = save.type = "button"; cancel.textContent = "Cancel"; save.textContent = "Save"; save.className = "save";
+    cancel.addEventListener("click", function () { editing = null; render(); });
+    save.addEventListener("click", function () {
+      var c = cents(amt.value);
+      if (isNaN(c) || !c) { note("Type an amount like 30 or 12.50.", true); return; }
+      save.disabled = true;
+      var body = { who: who, cents: c, reason: rs.value.trim() || null };
+      editing = null;
+      call("PUT", "/api/payments/" + p.id, body).then(function () { note("Saved."); },
+        function (e) { editing = p.id; render(); note("Didn't save: " + e.message, true); });
+    });
+    acts.append(cancel, save);
+    f.append(row, amt, rs, acts);
+    return f;
   }
 
   function call(method, path, body) {
@@ -356,6 +434,7 @@ html:has(#wall) main { visibility: hidden; }
   });
 
   function refresh() {
+    if (editing !== null) return Promise.resolve(); // don't redraw under someone's fingers
     return call("GET", "/api/payments").then(function () { if ($("note").textContent === "Loading…") note(""); },
       function (e) { note("Couldn't load: " + e.message, true); });
   }
