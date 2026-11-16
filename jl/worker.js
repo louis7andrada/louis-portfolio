@@ -4,10 +4,13 @@
 // "Jiji to pay Lulu $30"). No passwords or keys (#10005); the nine-square 404 door in front, as on andrada.one (#10017);
 // "not to be known publicly" (#10019): noindex everywhere, robots.txt says no, no workers.dev address.
 // Memory forever (#10012): every payment is a row in one Durable Object (SQLite). Nothing deletes a row except Remove.
+// Louis, Nov 16 (#10062, #10065): under a filled box, a "/2" button that halves the number in that box (nothing is sent,
+// so the amount can still be fixed), and an optional reason that shows in the list.
 
 const NOINDEX = { "X-Robots-Tag": "noindex, nofollow, noarchive, nosnippet" };
 const WHO = new Set(["lulu", "jiji"]);
 const MAX_CENTS = 10_000_000; // $100,000: a typo guard, not a limit anyone should reach
+const MAX_REASON = 120;
 
 function json(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -54,10 +57,13 @@ export class Ledger {
       cents INTEGER NOT NULL CHECK (cents > 0),
       at INTEGER NOT NULL
     )`);
+    // Added Nov 16 (#10062); rows from before have neither.
+    const cols = new Set(this.sql.exec("PRAGMA table_info(payments)").toArray().map((c) => c.name));
+    if (!cols.has("reason")) this.sql.exec("ALTER TABLE payments ADD COLUMN reason TEXT");
   }
 
   list() {
-    return this.sql.exec("SELECT id, who, cents, at FROM payments ORDER BY id DESC").toArray();
+    return this.sql.exec("SELECT id, who, cents, at, reason FROM payments ORDER BY id DESC").toArray();
   }
 
   async fetch(request) {
@@ -74,9 +80,15 @@ export class Ledger {
         if (!Number.isInteger(e.cents) || e.cents <= 0 || e.cents > MAX_CENTS) {
           return json({ error: "Type an amount like 30 or 12.50." }, 400);
         }
+        if (e.reason != null && (typeof e.reason !== "string" || e.reason.length > MAX_REASON)) {
+          return json({ error: "Keep the reason to " + MAX_REASON + " letters or fewer." }, 400);
+        }
       }
       const at = Date.now();
-      for (const e of entries) this.sql.exec("INSERT INTO payments (who, cents, at) VALUES (?, ?, ?)", e.who, e.cents, at);
+      for (const e of entries) {
+        const reason = typeof e.reason === "string" && e.reason.trim() ? e.reason.trim() : null;
+        this.sql.exec("INSERT INTO payments (who, cents, at, reason) VALUES (?, ?, ?, ?)", e.who, e.cents, at, reason);
+      }
       return json({ payments: this.list() });
     }
 
@@ -126,6 +138,14 @@ main { max-width: 440px; margin: 0 auto; display: grid; gap: 22px; }
   font: inherit; font-size: 2rem; text-align: center; padding: 22px 6px; outline: none; font-variant-numeric: tabular-nums;
 }
 .pair input::placeholder { opacity: 1; }
+.side { display: grid; gap: 8px; align-content: start; }
+.extra { display: grid; gap: 8px; }
+.extra[hidden] { display: none; }
+.pair .extra input.reason { font-size: .95rem; padding: 10px 8px; border-width: 2px; text-align: left; }
+.half { font-size: 1.15rem; letter-spacing: .08em; background: var(--bg); border: 2px solid var(--line); border-radius: 6px; padding: 8px 0; }
+.half:active { background: #1c1c1c; }
+.half:disabled { opacity: .4; cursor: default; }
+.half:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 #lulu, #lulu::placeholder { color: var(--lulu); }
 #jiji, #jiji::placeholder { color: var(--jiji); }
 .pair input:focus-visible { border-color: #fff; box-shadow: 0 0 0 3px #ffffff33; }
@@ -142,6 +162,7 @@ ul { list-style: none; margin: 0; padding: 0; }
 li { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid #222; }
 li .n { font-size: 1rem; }
 li .d { color: var(--muted); font-size: .72rem; margin-top: 2px; }
+li .r { font-size: .85rem; margin-top: 3px; overflow-wrap: anywhere; }
 li .v { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 .rm { background: none; border: 1px solid #333; border-radius: 5px; padding: 5px 9px; font-size: .72rem; color: var(--muted); }
 .rm.sure { border-color: #ff8a8a; color: #ff8a8a; }
@@ -170,8 +191,20 @@ html:has(#wall) main { visibility: hidden; }
     <div class="amount" id="amount">$0</div>
   </section>
   <div class="pair">
-    <input id="lulu" inputmode="decimal" autocomplete="off" placeholder="Lulu" aria-label="Lulu paid">
-    <input id="jiji" inputmode="decimal" autocomplete="off" placeholder="Jiji" aria-label="Jiji paid">
+    <div class="side">
+      <input id="lulu" inputmode="decimal" autocomplete="off" placeholder="Lulu" aria-label="Lulu paid">
+      <div class="extra" id="lulu-extra" hidden>
+        <button class="half" id="lulu-half" type="button" aria-label="Halve Lulu's amount">/2</button>
+        <input class="reason" id="lulu-reason" maxlength="120" autocomplete="off" placeholder="reason (optional)" aria-label="Reason for Lulu's payment">
+      </div>
+    </div>
+    <div class="side">
+      <input id="jiji" inputmode="decimal" autocomplete="off" placeholder="Jiji" aria-label="Jiji paid">
+      <div class="extra" id="jiji-extra" hidden>
+        <button class="half" id="jiji-half" type="button" aria-label="Halve Jiji's amount">/2</button>
+        <input class="reason" id="jiji-reason" maxlength="120" autocomplete="off" placeholder="reason (optional)" aria-label="Reason for Jiji's payment">
+      </div>
+    </div>
   </div>
   <div class="send-row"><button id="send" type="button">SEND</button></div>
   <p class="note" id="note">Loading…</p>
@@ -233,6 +266,7 @@ html:has(#wall) main { visibility: hidden; }
       var d = document.createElement("div"); d.className = "d";
       d.textContent = new Date(p.at).toLocaleString([], { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" });
       left.append(n, d);
+      if (p.reason) { var r = document.createElement("div"); r.className = "r"; r.textContent = p.reason; left.append(r); }
       var v = document.createElement("div"); v.className = "v"; v.textContent = fmt(p.cents);
       var rm = document.createElement("button"); rm.className = "rm"; rm.type = "button"; rm.textContent = "Remove";
       var t = null;
@@ -271,23 +305,54 @@ html:has(#wall) main { visibility: hidden; }
     return Math.round(parseFloat(s) * 100);
   }
 
+  var busy = false;
+  function buttons() {
+    ["send", "lulu-half", "jiji-half"].forEach(function (id) { $(id).disabled = busy; });
+  }
+  // The /2 and the reason show under a box once something is typed in it (#10062).
+  function extras() {
+    ["lulu", "jiji"].forEach(function (id) { $(id + "-extra").hidden = !$(id).value.trim(); });
+  }
+  function clear(ids) {
+    ids.forEach(function (id) { $(id).value = ""; $(id + "-reason").value = ""; });
+    extras();
+    if (document.activeElement) document.activeElement.blur();
+  }
+  function post(list, ids, done) {
+    busy = true; buttons();
+    call("POST", "/api/payments", { payments: list }).then(function () { clear(ids); note(done); },
+      function (e) { note("Didn't send: " + e.message + " Nothing was saved.", true); })
+      .then(function () { busy = false; buttons(); });
+  }
+  function entry(id, c) {
+    var e = { who: id, cents: c }, r = $(id + "-reason").value.trim();
+    if (r) e.reason = r;
+    return e;
+  }
+
   $("send").addEventListener("click", function () {
     var l = cents($("lulu").value), j = cents($("jiji").value);
     if (isNaN(l) || isNaN(j)) { note("Type an amount like 30 or 12.50.", true); return; }
     if (!l && !j) { note("Type what you paid in your box first.", true); return; }
-    var list = [];
-    if (l) list.push({ who: "lulu", cents: l });
-    if (j) list.push({ who: "jiji", cents: j });
-    $("send").disabled = true;
-    call("POST", "/api/payments", { payments: list }).then(function () {
-      $("lulu").value = ""; $("jiji").value = "";
-      if (document.activeElement) document.activeElement.blur();
-      note("Sent.");
-    }, function (e) { note("Didn't send: " + e.message + " Nothing was saved.", true); })
-      .then(function () { $("send").disabled = false; });
+    var list = [], ids = [];
+    if (l) { list.push(entry("lulu", l)); ids.push("lulu"); }
+    if (j) { list.push(entry("jiji", j)); ids.push("jiji"); }
+    post(list, ids, "Sent.");
   });
+  // /2: halves the number in this box, in the box (#10065); Send still sends it. Odd cents round to the nearest cent.
+  function plain(c) { return (c % 100 ? (c / 100).toFixed(2) : String(c / 100)); }
   ["lulu", "jiji"].forEach(function (id) {
+    $(id + "-half").addEventListener("click", function () {
+      var c = cents($(id).value);
+      if (isNaN(c) || !c) { note("Type an amount like 30 or 12.50.", true); return; }
+      var half = Math.round(c / 2);
+      if (!half) { note("Too small to halve.", true); return; }
+      $(id).value = plain(half);
+      note(fmt(c) + " halved: " + fmt(half) + ". Tap Send when it's right.");
+    });
+    $(id).addEventListener("input", extras);
     $(id).addEventListener("keydown", function (e) { if (e.key === "Enter") $("send").click(); });
+    $(id + "-reason").addEventListener("keydown", function (e) { if (e.key === "Enter") $("send").click(); });
   });
 
   function refresh() {
