@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <!-- The 404 door has nine hidden squares. Press all nine, in any order, to open it. -->
+  {{- $individualWork := partial "is-individual-work.html" . -}}
+  {{ partial "visitor-door-state.html" . }}
+  {{- if $individualWork }}
+  {{- /* A WORK SEEN FROM OUTSIDE (Louis, council #12449, #12473): someone who came in through a work, from a search or a link, sees
+       only the work, its words and the footer: no header, no menu, no "Back to", no arrows to the next work, and a song shows only the side they came to (Louis #12498). Someone who opened the
+       door this visit, or finished the game, browses works as before. Hidden by default, so a crawler or a page without scripts
+       sees the work alone; the class below shows the rest. */ -}}
+  <style>html:not(.door-known) :is(#siteHeader, #headerMirrorEcho, #mobileMenu, #intro-door, .sp-back, .photo-back, #prevBtnDesktop, #nextBtnDesktop, .sp-mobile-arrows, .photo-mobile-arrows, .mp-side:not(.active)) { display: none !important; }</style>
+  <script>(function(){var d=window.visitorDoor,s=d.read();if(d.openedNormally()||(s&&s.stage===4))document.documentElement.classList.add("door-known")})();</script>
+  {{- end }}
   <!--  All Rights Reserved - Louis Andrada - 2026 -->
   <!--   Webdesign by Jinah Park & Louis Andrada   -->
   <!--     AndradaMono Font by Louis Andrada       -->
   <!--       Codes by Louis Andrada                -->
-  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   {{- /* THE SECOND LOCK (Louis, council #6879): every page sends the visitor to the door, /404 (the 404 page, layouts/404.html), in the page's own
        code, so it can be broken (turn off JavaScript, or stop this script). The 404 page itself never redirects.
@@ -19,8 +30,8 @@
        public: true in its front matter (each face's opening work) gets neither this redirect nor the wall, so it keeps its own
        address and words for search. Visiting it opens nothing: no cookie, no storage. tests/smoke-test.mjs checks that each
        face's hero is that page, so if a hero changes, the build tells you to move the flag. */ -}}
-  {{- if and site.Params.wall_redirect (ne .Kind "404") (not .Params.public) }}
-  <script id="lock">(function(){var d={{ site.Params.face_domain | default "" }};try{localStorage.removeItem("door")}catch(e){}try{if(/(?:^|; )door=/.test(document.cookie)){document.cookie="door=; path=/; max-age=0";if(d)document.cookie="door=; path=/; domain="+d+"; max-age=0"}}catch(e){}var o=window.name==="door-session=open";if(!o)try{o=/(?:^|; )door-session=open(?:;|$)/.test(document.cookie)}catch(e){}if(o)return;try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")})();</script>
+  {{- if and site.Params.wall_redirect (ne .Kind "404") (not $individualWork) }}
+  <script id="lock">(function(){var s=visitorDoor.update(visitorDoor.read(),Date.now());if(s && s.locked && s.stage===3)return;var legacy=window.name==="door-session=open";if(!legacy)try{legacy=/(?:^|; )door-session=open(?:;|$)/.test(document.cookie)}catch(e){}if(s ? !s.locked : legacy)return;try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")})();</script>
   {{- end }}
   <!-- The font is only discovered once the stylesheet is parsed; preloading it
        starts the download immediately, so text usually paints in AndradaMono
@@ -417,6 +428,24 @@
     <div id="footerMirrorEcho" aria-hidden="true" inert></div>
     <div id="footerBleed" aria-hidden="true" inert><div class="edge-layer edge-far"></div><div class="edge-layer edge-mid"></div><div class="edge-layer edge-core"></div></div>
     {{ partial "footer.html" . }}
+    <script>(function(){var work={{ $individualWork }}; var api=window.visitorDoor;
+      if(work) document.getElementById("footerWrap").addEventListener("click",function(e){var a=e.target.closest("a[href]");if(!a)return;var u;try{u=new URL(a.href,location.href)}catch(_){return}var h=u.hostname,d={{ site.Params.face_domain | default "" }};if(u.origin!==location.origin && !(d && (h===d || h.endsWith("."+d))))return;var s=api.update(api.read(),Date.now());if(!s && !api.openedNormally())api.begin(Date.now());},true);
+      var finalLoading=false;
+      async function finalDoor(s){
+        if(finalLoading || document.getElementById("wall")) return; finalLoading=true;
+        try {
+          var response=await fetch("/404",{cache:"no-store"}); if(!response.ok)throw Error("door unavailable");
+          var doc=new DOMParser().parseFromString(await response.text(),"text/html"), wall=doc.getElementById("wall");
+          if(!wall || !wall.previousElementSibling || wall.previousElementSibling.tagName!=="STYLE")throw Error("door markup unavailable");
+          var css=wall.previousElementSibling; document.body.prepend(css); document.body.prepend(wall);
+          wall.querySelector(".w-stage-message").textContent="ok fine... you can explore my site ;P\n- Andrada";
+          var done=false;function dissolve(){if(done)return;done=true;api.finish(s);wall.classList.add("evaporating");setTimeout(function(){wall.remove();css.remove()},2200)}
+          wall.addEventListener("pointerdown",dissolve,{once:true});setTimeout(dissolve,Math.max(0,11000-(Date.now()-(s.finalOpenedAt||Date.now()))));
+        } catch (_) {try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")}
+      }
+      function check(){var s=api.update(api.read(),Date.now());if(s && s.locked && location.pathname!=="/404" && location.pathname!=="/404/"){if(s.stage===3){finalDoor(s);return}try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){} location.replace("/404");}}
+      setInterval(check,1000);addEventListener("pageshow",check);document.addEventListener("visibilitychange",function(){if(!document.hidden)check()});check();
+    })();</script>
   </div>
 
   <!-- ══════════════════════════════════════════════════════

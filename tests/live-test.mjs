@@ -174,6 +174,9 @@ async function main() {
   try {
     browser = await Browser.launch({ headless: true });
     musicBrowser = browser;
+    // This suite tests the underlying site, not the door game. Start as a
+    // visitor who has already unlocked it; door behavior has separate checks.
+    await browser.send("Storage.setCookies", { cookies: [{ name: "door-session", value: "open", url: BASE_URL }] });
     ok("Headless browser launched");
   } catch (e) {
     fail("Headless browser launched", e.message);
