@@ -1,4 +1,4 @@
-{{- /* WIP only: session state shared across the face subdomains. Not yet wired to the door. */ -}}
+{{- /* Session state shared across the face subdomains for the staged visitor door. */ -}}
 <script>
 window.visitorDoor = (function () {
   var domain = {{ site.Params.face_domain | default "" }};
