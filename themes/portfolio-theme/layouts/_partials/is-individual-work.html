@@ -1,5 +1,4 @@
-{{- /* Individual published works; artworks collection landing pages are not works. */ -}}
+﻿{{- /* Individual published works; artworks collection landing pages are not works. */ -}}
 {{- $sections := slice "artworks" "oeuvre" "photography" "vestments" "production" -}}
 {{- $isCollection := and (eq .Section "artworks") (in (slice "collection-sins" "collection-tree") .Layout) -}}
 {{- return (and .IsPage (in $sections .Section) (not $isCollection)) -}}
-
