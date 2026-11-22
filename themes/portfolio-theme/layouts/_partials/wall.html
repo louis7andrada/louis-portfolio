@@ -15,7 +15,7 @@
   reopening may keep it. A new browser or a private window starts closed. On /404 you're sent to the page you came for (same site only, never
   /404 again, no backslashes, same origin; Aster #6936, #6952) or home, and the logo door plays there as usual.
 */ -}}
-{{- if and site.Params.wall (not .Params.public) -}}{{/* public: true, a face's opening work: no door (baseof.html, PUBLIC OPENINGS) */}}
+{{- if and site.Params.wall (not (partial "is-individual-work.html" .)) -}}{{/* public: true, a face's opening work: no door (baseof.html, PUBLIC OPENINGS) */}}
 <style>
   html:has(#wall), html:has(#wall) body { overflow: hidden !important; overscroll-behavior: none; }
   /* Keyboard too, with or without scripts (Aster, council #6890, #6897): while the wall stands, everything behind it is
@@ -52,6 +52,9 @@
   #wall .w-intro .w-access { margin-top: .6em; }
   /* The keys take every touch; the two lines under the 404 are plain text and take none (Louis, life #7904, recorded in
      portfolio #7906: three visible lines, 404 / Portfolio of Andrada / Access = HTML, no biography). */
+  html:has(#wall.evaporating) body > :not(#wall), html:has(#wall.evaporating) body > :not(#wall) * { visibility: visible !important; }
+  #wall.evaporating { opacity: 0; filter: blur(32px); transition: opacity 2.2s ease, filter 2.2s ease; }
+  #wall .w-stage-message { margin-top: 1.8rem; font: 13px/1.5 'AndradaMono', monospace; text-align:center; color:#b8b8b8; white-space: pre-line; }
   #wall > .w-keys { touch-action: none; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
 </style>
 <div id="wall">
@@ -62,7 +65,7 @@
   <div class="w-core" aria-hidden="true"><span class="w404">404.</span></div>
   <div class="w-grain" aria-hidden="true"></div>
   <div class="w-dim" aria-hidden="true"></div>
-  <div class="w-front"><span class="w404">404.</span></div>
+  <div class="w-front" style="flex-direction:column"><span class="w404">404.</span><span class="w-stage-message"></span></div>
   <div class="w-intro">
     <p>Portfolio of Andrada</p>
     <p class="w-access">Access = HTML</p>
@@ -100,8 +103,18 @@
     if (!u || u.origin !== location.origin || /^\/404(?:\/|$)/.test(u.pathname)) location.replace("/");
     else location.replace(u.pathname + u.search + u.hash);
   }
-  if (isOpen()) { if (on404) goBack(); else wall.remove(); return; }
+  var game=window.visitorDoor, state=game.update(game.read(),Date.now());
+  if (state && !state.locked) { if (on404) goBack(); else wall.remove(); return; }
+  if (!state && isOpen()) { if (on404) goBack(); else wall.remove(); return; }
+  if(state && state.locked && state.stage===2) wall.querySelector(".w-stage-message").textContent="Ei thought I said you shouldn't be here";
+  if(state && state.locked && state.stage===3) {
+    wall.querySelector(".w-stage-message").textContent="ok fine... you can explore my site ;P\n- Andrada";
+    var done=false; function dissolve(){if(done)return;done=true;game.finish(state);wall.classList.add("evaporating");setTimeout(function(){if(on404)goBack();else wall.remove()},2200)}
+    wall.addEventListener("pointerdown",dissolve,{once:true});
+    setTimeout(dissolve,Math.max(0,11000-(Date.now()-(state.finalOpenedAt||Date.now())))); return;
+  }
   function open() {
+    if (state && state.locked) { game.unlock(state, Date.now()); if (on404) goBack(); else wall.remove(); return; }
     cookie("door-session", "open");
     if (!isOpen()) window.name = "door-session=open"; // no storage: the tab itself remembers, across this face's pages
     // The logo door played unseen behind the wall; forget it, so it plays for real on the page you enter.
@@ -119,3 +132,4 @@
 })();
 </script>
 {{- end -}}
+
