@@ -32,10 +32,12 @@ window.visitorDoor = (function () {
     }
     return s;
   }
-  function begin(now) { var s = { stage: 1, deadline: now + 213000, locked: false }; write(s); return s; }
+  // How long each stage stays open, in ms (Louis, council #12552, #12555: 33 s, 33 s, then 11 s).
+  var OPEN_MS = { 1: 33000, 2: 33000, 3: 11000 };
+  function begin(now) { var s = { stage: 1, deadline: now + OPEN_MS[1], locked: false }; write(s); return s; }
   function unlock(s, now) {
     if (!s || !s.locked || (s.stage !== 1 && s.stage !== 2)) return s;
-    s = { stage: s.stage + 1, deadline: now + (s.stage === 1 ? 142000 : 71000), locked: false };
+    s = { stage: s.stage + 1, deadline: now + OPEN_MS[s.stage + 1], locked: false };
     write(s); return s;
   }
   function finish(s) {
@@ -47,6 +49,6 @@ window.visitorDoor = (function () {
     if (window.name === "door-session=open") return true;
     try { return /(?:^|; )door-session=open(?:;|$)/.test(document.cookie); } catch (_) { return false; }
   }
-  return { openedNormally: openedNormally, read: read, write: write, update: update, begin: begin, unlock: unlock, finish: finish };
+  return { OPEN_MS: OPEN_MS, openedNormally: openedNormally, read: read, write: write, update: update, begin: begin, unlock: unlock, finish: finish };
 })();
 </script>
