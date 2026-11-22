@@ -435,6 +435,10 @@ section("Career page (Luis)");
 // checks fail until public: true moves to the new hero's page (front matter).
 section("Public openings (each face's first work, outside the door)");
 {
+  for (const rel of ["index.html", "404.html", "photography/photo106/index.html"]) {
+    const html = readHtml(rel), at = html ? html.search(/charset=["']?utf-8/i) : -1;
+    assert(at >= 0 && Buffer.byteLength(html.slice(0, at), "utf8") < 1024, `UTF-8 declared early: ${rel}`);
+  }
   const wallOn = (html) => /id="?wall\b/.test(html);
   const lockOn = (html) => /id="?lock\b/.test(html);
   const fronts = [
