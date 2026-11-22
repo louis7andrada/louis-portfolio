@@ -1,0 +1,48 @@
+{{- /* WIP only: session state shared across the face subdomains. Not yet wired to the door. */ -}}
+<script>
+window.visitorDoor = (function () {
+  var domain = {{ site.Params.face_domain | default "" }};
+  function read() {
+    try {
+      var m = null; try { m = document.cookie.match(/(?:^|; )visitor-door=([^;]+)/); } catch (_) {}
+      var encoded = window.name.startsWith("visitor-door:") ? window.name.slice(13) : (m ? m[1] : "");
+      if (!encoded) return null;
+      var s = JSON.parse(decodeURIComponent(encoded));
+      if (!Number.isInteger(s.stage) || s.stage < 1 || s.stage > 4) return null;
+      if (typeof s.locked !== "boolean") return null;
+      if (s.stage !== 4 && !Number.isFinite(s.deadline)) return null;
+      return s;
+    } catch (_) { return null; }
+  }
+  function write(s) {
+    var h = location.hostname;
+    var shared = domain && (h === domain || h.endsWith("." + domain)) ? "; domain=" + domain : "";
+    var encoded = encodeURIComponent(JSON.stringify(s));
+    try { document.cookie = "visitor-door=" + encoded + "; path=/; SameSite=Lax" + shared; } catch (_) {}
+    var stored = false;
+    try { stored = document.cookie.split("; ").some(function (item) { return item === "visitor-door=" + encoded; }); } catch (_) {}
+    if (!stored) window.name = "visitor-door:" + encoded;
+    else if (window.name.startsWith("visitor-door:")) window.name = "";
+  }
+  function update(s, now) {
+    if (s && !s.locked && s.stage < 4 && now >= s.deadline) {
+      s.locked = true;
+      if (s.stage === 3) s.finalOpenedAt = now;
+      write(s);
+    }
+    return s;
+  }
+  function begin(now) { var s = { stage: 1, deadline: now + 213000, locked: false }; write(s); return s; }
+  function unlock(s, now) {
+    if (!s || !s.locked || (s.stage !== 1 && s.stage !== 2)) return s;
+    s = { stage: s.stage + 1, deadline: now + (s.stage === 1 ? 142000 : 71000), locked: false };
+    write(s); return s;
+  }
+  function finish(s) {
+    if (!s || !s.locked || s.stage !== 3) return s;
+    s = { stage: 4, deadline: null, locked: false }; write(s); return s;
+  }
+  return { read: read, write: write, update: update, begin: begin, unlock: unlock, finish: finish };
+})();
+</script>
+
