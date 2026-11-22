@@ -465,6 +465,12 @@ section("Public openings (each face's first work, outside the door)");
     .filter((rel) => !/^artworks\/collection-/.test(rel));
   const blocked = works.filter((rel) => lockOn(readHtml(rel)) || wallOn(readHtml(rel)));
   assert(works.length > 5 && blocked.length === 0, "Every individual work is directly accessible", blocked.slice(0, 5).join(", "));
+  const headers = works.filter((rel) => /<header\b/i.test(readHtml(rel)));
+  assert(headers.length === 0, "Individual works omit the header", headers.slice(0, 5).join(", "));
+  for (const rel of ["artworks/collection-sins/index.html", "artworks/collection-the_tree_the_snake_the_fruit/index.html"]) {
+    const page = readHtml(rel);
+    assert(page && lockOn(page) && wallOn(page), `Collection landing remains gated: ${rel}`);
+  }
 }
 
 // ── Cleanup + summary ────────────────────────────────────────────────
