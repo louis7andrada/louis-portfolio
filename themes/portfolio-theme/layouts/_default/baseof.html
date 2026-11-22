@@ -7,10 +7,10 @@
   {{ partial "visitor-door-state.html" . }}
   {{- if $individualWork }}
   {{- /* A WORK SEEN FROM OUTSIDE (Louis, council #12449, #12473): someone who came in through a work, from a search or a link, sees
-       only the work, its words and the footer: no header, no menu, no "Back to", no arrows to the next work. Someone who opened the
+       only the work, its words and the footer: no header, no menu, no "Back to", no arrows to the next work, and a song shows only the side they came to (Louis #12498). Someone who opened the
        door this visit, or finished the game, browses works as before. Hidden by default, so a crawler or a page without scripts
        sees the work alone; the class below shows the rest. */ -}}
-  <style>html:not(.door-known) :is(#siteHeader, #headerMirrorEcho, #mobileMenu, #intro-door, .sp-back, .photo-back, #prevBtnDesktop, #nextBtnDesktop, .sp-mobile-arrows, .photo-mobile-arrows) { display: none !important; }</style>
+  <style>html:not(.door-known) :is(#siteHeader, #headerMirrorEcho, #mobileMenu, #intro-door, .sp-back, .photo-back, #prevBtnDesktop, #nextBtnDesktop, .sp-mobile-arrows, .photo-mobile-arrows, .mp-side:not(.active)) { display: none !important; }</style>
   <script>(function(){var d=window.visitorDoor,s=d.read();if(d.openedNormally()||(s&&s.stage===4))document.documentElement.classList.add("door-known")})();</script>
   {{- end }}
   <!--  All Rights Reserved - Louis Andrada - 2026 -->

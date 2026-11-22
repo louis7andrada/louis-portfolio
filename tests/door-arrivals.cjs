@@ -28,6 +28,10 @@ let pass = 0, failn = 0; const ok = (c, m) => { c ? pass++ : failn++; console.lo
       if (arrows) ok(await vis('#prevBtnDesktop, #nextBtnDesktop') === known, `${w} ${label}: arrows ${known ? 'shown' : 'hidden'}`);
       ok(await vis('.sp-back, .photo-back') === known, `${w} ${label}: 'Back to' ${known ? 'shown' : 'hidden'}`);
       ok(await vis('#footerWrap a[href]'), `${w} ${label}: footer link visible`);
+      if (await pg.evaluate(() => !!document.querySelector('.mp-side'))) {
+        ok(await vis('.mp-side.active'), `${w} ${label}: its own side shown`);
+        ok(await vis('.mp-side:not(.active)') === known, `${w} ${label}: other side ${known ? 'shown' : 'hidden'} (Louis #12498)`);
+      }
       if (label === 'outside' || label === 'opened door') {
         await pg.evaluate(() => { const a = document.querySelector('#footerWrap a[href^="/"], #footerWrap a[href*="andrada.one"]'); a.addEventListener('click', (e) => e.preventDefault()); a.click(); });
         const c = (await ctx.cookies()).find((x) => x.name === 'visitor-door');
