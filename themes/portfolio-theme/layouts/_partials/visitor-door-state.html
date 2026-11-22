@@ -42,6 +42,11 @@ window.visitorDoor = (function () {
     if (!s || !s.locked || s.stage !== 3) return s;
     s = { stage: 4, deadline: null, locked: false }; write(s); return s;
   }
-  return { read: read, write: write, update: update, begin: begin, unlock: unlock, finish: finish };
+  // A visitor who opened the door the usual way, this visit (wall.html's isOpen): no game for them (Louis, council #12445).
+  function openedNormally() {
+    if (window.name === "door-session=open") return true;
+    try { return /(?:^|; )door-session=open(?:;|$)/.test(document.cookie); } catch (_) { return false; }
+  }
+  return { openedNormally: openedNormally, read: read, write: write, update: update, begin: begin, unlock: unlock, finish: finish };
 })();
 </script>
