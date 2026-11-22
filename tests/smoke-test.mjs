@@ -457,12 +457,14 @@ section("Public openings (each face's first work, outside the door)");
       "set public: true in that page's front matter (and remove it from the old hero)");
     assert(!/name="?robots"? content="?noindex/.test(work), `${face}: opening work is indexable`);
   }
-  // Every other page that has the door keeps it: only the five are public.
+  // Individual works are public; the two artwork collection landing pages remain gated.
   const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) =>
     e.isDirectory() ? walk(path.join(d, e.name)) : e.name === "index.html" ? [path.join(d, e.name)] : []);
-  const open = walk(BUILD_DIR).map((f) => path.relative(BUILD_DIR, f).split(path.sep).join("/"))
-    .filter((rel) => !publicPaths.has(rel) && !lockOn(readHtml(rel)) && /\/(artworks|oeuvre|photography|vestments|production)\/[^/]+\/index\.html$/.test("/" + rel));
-  assert(open.length === 0, "No other work's page is outside the door", open.slice(0, 5).join(", "));
+  const works = walk(BUILD_DIR).map((f) => path.relative(BUILD_DIR, f).split(path.sep).join("/"))
+    .filter((rel) => /^(artworks|oeuvre|photography|vestments|production)\/[^/]+\/index\.html$/.test(rel))
+    .filter((rel) => !/^artworks\/collection-/.test(rel));
+  const blocked = works.filter((rel) => lockOn(readHtml(rel)) || wallOn(readHtml(rel)));
+  assert(works.length > 5 && blocked.length === 0, "Every individual work is directly accessible", blocked.slice(0, 5).join(", "));
 }
 
 // ── Cleanup + summary ────────────────────────────────────────────────
@@ -477,3 +479,4 @@ if (failures > 0) {
   console.log("\nAll checks passed.\n");
   process.exit(0);
 }
+
