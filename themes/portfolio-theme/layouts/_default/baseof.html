@@ -23,7 +23,7 @@
        address and words for search. Visiting it opens nothing: no cookie, no storage. tests/smoke-test.mjs checks that each
        face's hero is that page, so if a hero changes, the build tells you to move the flag. */ -}}
   {{- if and site.Params.wall_redirect (ne .Kind "404") (not $individualWork) }}
-  <script id="lock">(function(){var s=visitorDoor.update(visitorDoor.read(),Date.now());if(s && s.locked && s.stage===3)return;if(s ? !s.locked : (window.name==="door-session=open" || /(?:^|; )door-session=open(?:;|$)/.test(document.cookie)))return;try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")})();</script>
+  <script id="lock">(function(){var s=visitorDoor.update(visitorDoor.read(),Date.now());if(s && s.locked && s.stage===3)return;var legacy=window.name==="door-session=open";if(!legacy)try{legacy=/(?:^|; )door-session=open(?:;|$)/.test(document.cookie)}catch(e){}if(s ? !s.locked : legacy)return;try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")})();</script>
   {{- end }}
   <!-- The font is only discovered once the stylesheet is parsed; preloading it
        starts the download immediately, so text usually paints in AndradaMono
