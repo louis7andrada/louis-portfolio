@@ -53,7 +53,7 @@
   /* The keys take every touch; the two lines under the 404 are plain text and take none (Louis, life #7904, recorded in
      portfolio #7906: three visible lines, 404 / Portfolio of Andrada / Access = HTML, no biography). */
   html:has(#wall.evaporating) body > :not(#wall), html:has(#wall.evaporating) body > :not(#wall) * { visibility: visible !important; }
-  #wall.evaporating { opacity: 0; filter: blur(32px); transition: opacity 2.2s ease, filter 2.2s ease; }
+  #wall.evaporating { opacity: 0; filter: blur(32px); transition: opacity 4s ease, filter 4s ease; }
   #wall .w-stage-message { margin-top: 1.8rem; font: 13px/1.5 'AndradaMono', monospace; text-align:center; color:#b8b8b8; white-space: pre-line; }
   #wall > .w-keys { touch-action: none; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
 </style>
@@ -109,9 +109,9 @@
   if(state && state.locked && state.stage===2) wall.querySelector(".w-stage-message").textContent="Ei thought I said you shouldn't be here";
   if(state && state.locked && state.stage===3) {
     wall.querySelector(".w-stage-message").textContent="ok fine... you can explore my site ;P\n- Andrada";
-    var done=false; function dissolve(){if(done)return;done=true;game.finish(state);wall.classList.add("evaporating");setTimeout(function(){if(on404)goBack();else wall.remove()},2200)}
+    var done=false; function dissolve(){if(done)return;done=true;game.finish(state);wall.classList.add("evaporating");setTimeout(function(){if(on404)goBack();else wall.remove()},4000)}
     wall.addEventListener("pointerdown",dissolve,{once:true});
-    setTimeout(dissolve,Math.max(0,11000-(Date.now()-(state.finalOpenedAt||Date.now())))); return;
+    setTimeout(dissolve,Math.max(0,7000-(Date.now()-(state.finalOpenedAt||Date.now())))); return;
   }
   function open() {
     if (state && state.locked) { game.unlock(state, Date.now()); if (on404) goBack(); else wall.remove(); return; }
