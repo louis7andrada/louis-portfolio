@@ -485,4 +485,3 @@ if (failures > 0) {
   console.log("\nAll checks passed.\n");
   process.exit(0);
 }
-
