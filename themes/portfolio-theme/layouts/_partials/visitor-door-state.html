@@ -1,4 +1,4 @@
-{{- /* Session state shared across the face subdomains for the staged visitor door. */ -}}
+﻿{{- /* Session state shared across the face subdomains for the staged visitor door. */ -}}
 <script>
 window.visitorDoor = (function () {
   var domain = {{ site.Params.face_domain | default "" }};
@@ -45,4 +45,3 @@ window.visitorDoor = (function () {
   return { read: read, write: write, update: update, begin: begin, unlock: unlock, finish: finish };
 })();
 </script>
-
