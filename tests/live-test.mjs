@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 43220)
-Total output lines: 2400
-
 // Live test suite — drives the site through a real headless browser
 // against the ALREADY-RUNNING local dev server (hugo server -D), rather
 // than doing its own build. Meant to run continuously alongside
@@ -853,7 +850,784 @@ async function main() {
     const closed = await page.waitFor(`!document.getElementById('bookModal')?.classList.contains('open')`, { timeout: 3000 });
     await page.close();
     if (!opened) throw new Error("modal never gained .open class after clicking a cover");
-    if (urlAfterOpen !== urlBefore) throw new Error(`URL changed after opening the popup (${urlBefore} -> ${urlA…13220 tokens truncated….contains('mirror-ready') };
+    if (urlAfterOpen !== urlBefore) throw new Error(`URL changed after opening the popup (${urlBefore} -> ${urlAfterOpen}) — it navigated instead of popping up`);
+    if (!closed) throw new Error("modal never lost .open class after clicking close");
+    return true;
+  });
+
+  // Clicking the book in the popup (or on the standalone page) opens the
+  // fullscreen viewer; page turning happens by clicking inside that.
+  await check("Book popup: clicking the stage opens fullscreen, where a click turns a page", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/oeuvre/");
+    await waitForIntroDoorGone(page);
+    await page.evaluate(`document.querySelector('.aw-item:not([tabindex="-1"])')?.click()`);
+    await page.waitFor(`document.getElementById('bookModal')?.classList.contains('open')`, { timeout: 3000 });
+    await page.evaluate(`document.querySelector('#bookModal .book-viewport')?.click()`);
+    const fs = await page.waitFor(`document.getElementById('bookFullscreen')?.classList.contains('active')`, { timeout: 3000 });
+    if (!fs) { await page.close(); throw new Error("clicking the popup's book never opened #bookFullscreen"); }
+    const before = await page.evaluate(`document.querySelector('#bookFullscreen .book-page-indicator')?.textContent.trim()`);
+    await page.evaluate(clickRightHalfOf("#bookFullscreen .book-viewport"));
+    const advanced = await page.waitFor(
+      `document.querySelector('#bookFullscreen .book-page-indicator')?.textContent.trim() !== ${JSON.stringify(before)}`,
+      { timeout: 4000 }
+    );
+    await page.evaluate(`document.getElementById('bookFullscreenClose')?.click()`);
+    const closed = await page.waitFor(`!document.getElementById('bookFullscreen')?.classList.contains('active')`, { timeout: 3000 });
+    await page.close();
+    if (!advanced) throw new Error(`page indicator never changed after clicking in fullscreen (stayed: "${before}")`);
+    if (!closed) throw new Error("fullscreen didn't close via the X button");
+    return true;
+  });
+
+  await check("Standalone book page: viewer mounts, opens fullscreen, and turns a page", async () => {
+    const page = await browser.newPage();
+    // Follow whatever the grid's first real book links to, rather than
+    // hardcoding a slug that might not exist if the book list changes.
+    await page.goto(BASE_URL + "/oeuvre/");
+    await waitForIntroDoorGone(page);
+    const href = await page.evaluate(`document.querySelector('.aw-item:not([tabindex="-1"])')?.getAttribute('href')`);
+    if (!href) throw new Error("no book link found on the Oeuvre grid to follow");
+    await page.goto(BASE_URL + href);
+    await waitForIntroDoorGone(page);
+    // The site-mirror clone deep-clones the *entire* <main> element
+    // (tag included, see baseof.html's buildSiteMirror) into a div that
+    // sits BEFORE the real <main> in the DOM — so it contains its own
+    // nested <main>, and a plain "main .foo" selector matches that inert
+    // clone first, not the real interactive one. Only the real <main> is
+    // a direct child of <body>, so scoping to "body > main" is required.
+    const hasStage = await page.evaluate(`!!document.querySelector('body > main .book-viewport')`);
+    if (!hasStage) throw new Error(`${href} has no .book-viewport — standalone page may be broken`);
+    await page.evaluate(`document.querySelector('body > main .sp-row .book-viewport')?.click()`);
+    const fsOpen = await page.waitFor(`document.getElementById('bookFullscreen')?.classList.contains('active')`, { timeout: 3000 });
+    if (!fsOpen) throw new Error("clicking the book never opened #bookFullscreen");
+    const before = await page.evaluate(`document.querySelector('#bookFullscreen .book-page-indicator')?.textContent.trim()`);
+    await page.evaluate(clickRightHalfOf("#bookFullscreen .book-viewport"));
+    const advanced = await page.waitFor(
+      `document.querySelector('#bookFullscreen .book-page-indicator')?.textContent.trim() !== ${JSON.stringify(before)}`,
+      { timeout: 4000 }
+    );
+    const errors = page.consoleErrors;
+    await page.close();
+    if (!advanced) throw new Error(`page indicator never changed after clicking (stayed: "${before}")`);
+    if (errors.length) throw new Error(`console errors: ${errors.join(" | ")}`);
+    return true;
+  });
+
+  // ── 4. Form submission flows — fully exercised, but stubbed so no real
+  //      inquiry, subscriber, or notification is ever created ──────────
+  section("Form submissions (network calls stubbed — nothing real is sent)");
+
+  // Every form, end to end, under the production CSP and a stub that behaves like the real Apps
+  // Script (302 -> script.googleusercontent.com -> "OK"). These forms are the only way clients reach
+  // Louis, so each must prove: the message reached the webhook, the reply was read, the visitor saw
+  // success, no error text or alert appeared, and nothing violated the CSP. Forms with a spam check run
+  // twice - once with a normal check, once with the check itself failing (the "browser-error" a
+  // reCAPTCHA key gives on a domain it isn't registered for): a broken check must never stop a client.
+  const ERR = (sel) => `Array.from(document.querySelectorAll('${sel}')).filter(function(e){ return !e.classList.contains('hidden') && e.style.display !== 'none' && e.textContent.trim(); }).map(function(e){ return e.textContent.trim(); })[0] || ''`;
+  const FORMS = [
+    { name: "Inquiry: purchase", recaptcha: true, path: "/inquiry/",
+      before: `localStorage.setItem('selectedArtworks', JSON.stringify(['LA2026-o50']))`,
+      fill: `var f = document.querySelector('body > main #purchaseForm');
+        var r = f.querySelector('input[name="artworkType"][value="original"]'); if (r) r.click();
+        f.querySelector('[name="buyerName"]').value = 'Automated Test';
+        f.querySelector('[name="buyerEmail"]').value = 'automated-test@example.invalid';
+        f.querySelector('[name="buyerPhone"]').value = '0000000000';
+        f.querySelector('[name="buyerCity"]').value = 'Testville';
+        f.querySelector('[name="buyerCountry"]').value = 'Testland';`,
+      submit: `document.querySelector('body > main #purchaseForm').requestSubmit()`,
+      success: `!!document.querySelector('body > main .inq-submit-success')`,
+      error: ERR("body > main .inq-error") },
+    { name: "Inquiry: commission", recaptcha: true, path: "/inquiry/",
+      fill: `var f = document.querySelector('body > main #commissionForm');
+        f.querySelector('[name="commissionName"]').value = 'Automated Test';
+        f.querySelector('[name="commissionEmail"]').value = 'automated-test@example.invalid';
+        f.querySelector('[name="commissionPhone"]').value = '0000000000';
+        f.querySelector('[name="commissionCity"]').value = 'Testville';
+        f.querySelector('[name="commissionCountry"]').value = 'Testland';
+        f.querySelector('[name="commissionSize"]').value = '24x36';
+        f.querySelector('[name="commissionBudget"]').value = 'Test budget';
+        f.querySelector('input[name="commissionType[]"][value="canvas"]').click();`,
+      submit: `document.querySelector('body > main #commissionForm').requestSubmit()`,
+      success: `!!document.querySelector('body > main .inq-submit-success')`,
+      error: ERR("body > main .inq-error") },
+    { name: "Inquiry: contact", recaptcha: true, path: "/inquiry/",
+      fill: `var f = document.querySelector('body > main #contactForm');
+        f.querySelector('[name="name"]').value = 'Automated Test';
+        f.querySelector('[name="email"]').value = 'automated-test@example.invalid';
+        f.querySelector('[name="phone"]').value = '0000000000';
+        f.querySelector('[name="message"]').value = 'Automated test - please ignore.';`,
+      submit: `document.querySelector('body > main #contactForm').requestSubmit()`,
+      success: `!document.querySelector('body > main #contactSuccessMessage').classList.contains('hidden')`,
+      error: ERR("body > main #contactErrorMessage") },
+    { name: "Unsubscribe", recaptcha: true, path: "/unsubscribe/",
+      fill: `document.querySelector('body > main #unsubEmail').value = 'automated-test@example.invalid';`,
+      submit: `document.querySelector('body > main #unsubBtn').click()`,
+      success: `document.querySelector('body > main #unsubSuccess').style.display === 'block'`,
+      error: ERR("body > main #unsubNote"),
+      // Never reveal whether an address is on the list: "not on it" must look like a removal.
+      sameAsSuccess: ["NOT_FOUND"] },
+    { name: "Newsletter signup (footer)", recaptcha: false, path: "/",
+      fill: `document.getElementById('mlEmail').value = 'automated-test@example.invalid';`,
+      submit: `document.getElementById('mlSubmit').click()`,
+      success: `document.getElementById('mlNote').classList.contains('success')`,
+      error: `document.getElementById('mlNote').classList.contains('error') ? document.getElementById('mlNote').textContent.trim() : ''`,
+      // Never reveal whether an address is on the list: "already on it" must look like a signup.
+      sameAsSuccess: ["DUPLICATE"] },
+  ];
+  for (const form of FORMS) {
+    const modes = form.recaptcha
+      ? [["spam check passes", { success: true, score: 0.9 }], ["spam check itself fails (browser-error)", { success: false, "error-codes": ["browser-error"] }]]
+      : [["no spam check", null]];
+    for (const reply of form.sameAsSuccess || []) modes.push([`Apps Script replies ${reply} - must look like success`, form.recaptcha ? { success: true, score: 0.9 } : null, reply]);
+    for (const [mode, verifyReply, replyBody] of modes) {
+      await check(`Form works end to end - ${form.name} (${mode})`, async () => {
+        const page = await browser.newPage();
+        const { webhookRule, replyRule } = await withSafetyStubs(page, verifyReply || undefined, replyBody || "OK");
+        if (form.before) { await page.goto(BASE_URL + "/"); await page.evaluate(form.before); }
+        await page.goto(BASE_URL + form.path);
+        await new Promise((r) => setTimeout(r, 1500));
+        await page.evaluate(`(function(){ ${form.fill} })()`);
+        await page.evaluate(`window.__res = { success: false, error: '' };
+          window.__resPoll = setInterval(function(){
+            try { if (${form.success}) window.__res.success = true; var e = ${form.error}; if (e && !window.__res.error) window.__res.error = e; } catch (x) {}
+          }, 40);`);
+        await page.evaluate(form.submit);
+        await page.waitFor(`window.__res && (window.__res.success || window.__res.error)`, { timeout: 20000 }).catch(() => {});
+        await new Promise((r) => setTimeout(r, 300));
+        const res = await page.evaluate(`window.__res`);
+        const problems = [];
+        if (webhookRule.hits.length === 0) problems.push("the message never reached the webhook");
+        if (replyRule.hits.length === 0) problems.push("Apps Script's reply (script.googleusercontent.com) was never read");
+        if (!res || !res.success) problems.push("the visitor never saw the success state");
+        if (res && res.error) problems.push(`error shown: "${res.error}"`);
+        if (page.dialogs.length) problems.push(`alert shown: "${page.dialogs.join(" | ")}"`);
+        const csp = page.cspViolations.filter((t) => !/livereload/i.test(t));
+        if (csp.length) problems.push(`CSP blocked: ${csp[0].slice(0, 160)}`);
+        await page.close();
+        if (problems.length) throw new Error(problems.join("; "));
+        return true;
+      });
+    }
+  }
+
+  // ── 5. Regression guard for the site-mirror background feature ───────
+  section("Site mirror background (regression guard)");
+  await check("Home page: site mirror populates and fades in", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/");
+    const populated = await page.waitFor(
+      `document.getElementById('siteMirrorClone')?.children.length > 0`,
+      { timeout: 8000 }
+    );
+    const faded = await page.waitFor(
+      `getComputedStyle(document.getElementById('siteMirror')).opacity === '1'`,
+      { timeout: 3000 }
+    );
+    await page.close();
+    if (!populated) throw new Error("siteMirrorClone never populated");
+    if (!faded) throw new Error("siteMirror never reached opacity 1 (fade-in didn't complete)");
+    return true;
+  });
+
+  await check("Home page: smudge (ink bleed) layers populate and stay aligned with the page after scrolling", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/");
+    const populated = await page.waitFor(
+      `['siteMirrorBleedCore','siteMirrorBleed','siteMirrorBleedDark'].every(id => document.getElementById(id)?.children.length > 0)`,
+      { timeout: 8000 }
+    );
+    if (!populated) { await page.close(); throw new Error("a smudge layer never populated"); }
+    await page.evaluate(`window.scrollTo(0, 3000)`);
+    await new Promise((r) => setTimeout(r, 1500));
+    const drift = await page.evaluate(`(() => {
+      const r = document.querySelector('body > main .aw-item');
+      const c = document.querySelector('#siteMirrorBleedCore .aw-item');
+      if (!r || !c) return null;
+      return Math.abs(r.getBoundingClientRect().top - c.getBoundingClientRect().top);
+    })()`);
+    await page.close();
+    if (drift === null) throw new Error("couldn't find a grid item in both the page and the smudge layer");
+    if (drift > 20) throw new Error(`smudge layer drifted ${Math.round(drift)}px from the page after scrolling`);
+    return true;
+  });
+
+  // ── 6. Background smudge + glass, across pages AND screen sizes ─────────
+  // The smudge layers are static copies of the real page, so they only look
+  // right if they sit exactly under it. These guard the failure modes hit
+  // while building it: id-keyed CSS not applying to the copy (Oeuvre drifted
+  // 214px), pinned/fixed elements landing in the wrong place, JS-positioned
+  // grids going stale on resize, and the darker/standardized glass.
+  section("Background smudge + glass (pages x screen sizes)");
+  const SIZES = [
+    [390, 844, true, "phone"],
+    [820, 1180, true, "tablet"],
+    [1440, 900, false, "desktop"],
+  ];
+  const SMUDGE_PAGES = ["/", "/oeuvre/", "/archive/", "/artworks/la2026-o55/", "/about/"];
+  for (const [w, h, mobile, sizeLabel] of SIZES) {
+    for (const path of SMUDGE_PAGES) {
+      await check(`${path} @ ${sizeLabel} (${w}px): smudge copy lines up with the page, no pinned elements in it, no sideways overflow`, async () => {
+        const page = await browser.newPage();
+        await page.setViewport(w, h, mobile);
+        await page.goto(BASE_URL + path);
+        const lite = w <= 800; // phones: one cheap mirror layer only (see "lite mode")
+        const built = await page.waitFor(
+          lite ? `document.querySelector('#siteMirrorClone .fx-inner') !== null`
+               : `document.getElementById('siteMirrorBleedCore')?.children.length > 0`,
+          { timeout: 10000 }
+        );
+        if (!built) { await page.close(); throw new Error("smudge layers never built"); }
+        if (lite) {
+          const overflow0 = await page.evaluate(`document.documentElement.scrollWidth - window.innerWidth`);
+          await page.close();
+          if (overflow0 > 1) throw new Error(`page overflows the screen sideways by ${overflow0}px`);
+          return true;
+        }
+        // The copy rebuilds ~0.7s after the page's layout settles; poll for it
+        // to line up rather than sampling once.
+        const measure = `(() => {
+          const real = Array.from(document.querySelectorAll('body > main img')).filter(i => i.getBoundingClientRect().width > 0);
+          const copy = Array.from(document.querySelectorAll('#siteMirrorBleedCore img'));
+          // the copy holds header + main + footer, so match from the end backwards over main's images
+          const n = Math.min(real.length, 12);
+          let worst = 0;
+          const mainImgsInCopy = Array.from(document.querySelectorAll('#siteMirrorBleedCore main img')).filter(i => i.getBoundingClientRect().width > 0);
+          for (let i = 0; i < Math.min(n, mainImgsInCopy.length); i++) {
+            const a = real[i].getBoundingClientRect(), c = mainImgsInCopy[i].getBoundingClientRect();
+            worst = Math.max(worst, Math.abs(a.left - c.left), Math.abs(a.top - (c.top - 3)));
+          }
+          return { worst, compared: Math.min(n, mainImgsInCopy.length) };
+        })()`;
+        let m = null;
+        const deadline = Date.now() + 9000;
+        while (Date.now() < deadline) {
+          m = await page.evaluate(measure);
+          if (m && m.worst <= 4) break;
+          await new Promise((r) => setTimeout(r, 500));
+        }
+        const pinned = await page.evaluate(`Array.from(document.querySelectorAll('#siteMirrorBleedCore *, #siteMirrorBleed *, #siteMirrorBleedDark *')).filter(n => { const cs = getComputedStyle(n); return (cs.position === 'fixed' || cs.position === 'sticky') && cs.visibility !== 'hidden'; }).length`);
+        const overflow = await page.evaluate(`document.documentElement.scrollWidth - window.innerWidth`);
+        await page.close();
+        if (m && m.compared > 0 && m.worst > 4) throw new Error(`smudge copy is ${Math.round(m.worst)}px off the real page (compared ${m.compared} images)`);
+        if (pinned > 0) throw new Error(`${pinned} fixed/sticky element(s) visible inside the smudge copies (they'd sit in the wrong place)`);
+        if (overflow > 1) throw new Error(`page overflows the screen sideways by ${overflow}px`);
+        return true;
+      });
+    }
+  }
+
+  await check("Smudge copy re-aligns after the window is resized (Oeuvre grid re-lays out)", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900, false);
+    await page.goto(BASE_URL + "/oeuvre/");
+    await page.waitFor(`document.getElementById('siteMirrorBleedCore')?.children.length > 0`, { timeout: 10000 });
+    await page.setViewport(820, 1180, true);
+    const probe = `(() => {
+      const r = document.querySelector('body > main .aw-item');
+      const c = document.querySelector('#siteMirrorBleedCore main .aw-item');
+      return r && c ? Math.max(Math.abs(r.getBoundingClientRect().left - c.getBoundingClientRect().left), Math.abs(r.getBoundingClientRect().top - (c.getBoundingClientRect().top - 3))) : 9999;
+    })()`;
+    const ok2 = await page.waitFor(`(${probe}) <= 4`, { timeout: 10000 });
+    const worst = await page.evaluate(probe);
+    await page.close();
+    if (!ok2) throw new Error(`copy still ${Math.round(worst)}px off 10s after a resize`);
+    return true;
+  });
+
+  await check("Copies never hijack ids: header/logo/menu/theme-toggle ids resolve to the REAL header after the smudge is built", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/");
+    const built = await page.waitFor(
+      `document.getElementById('siteMirrorBleedCore')?.children.length > 0 && document.querySelectorAll('#headerBleed .edge-layer > *').length > 0`,
+      { timeout: 10000 }
+    );
+    if (!built) { await page.close(); throw new Error("smudge/header layers never built"); }
+    const bad = await page.evaluate(`['siteHeader','logoMorphWrap','mobileMenuBtn','artworkGallery','arwModal'].filter(id => { const el = document.getElementById(id); return !el || el.closest('#siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho'); })`);
+    await page.close();
+    if (bad.length) throw new Error(`ids resolving to a copy (or missing): ${bad.join(", ")}`);
+    return true;
+  });
+
+  await check("Header and footer have their own smudge layers; text is dimmed in the wide layers, big-image mirror is dimmed 10%", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.querySelectorAll('#footerBleed .edge-layer > *').length === 3`, { timeout: 10000 });
+    await page.evaluate(`document.documentElement.classList.add('dark')`);
+    const r = await page.evaluate(`(() => {
+      const op = (sel) => { const n = document.querySelector(sel); return n ? getComputedStyle(n).opacity : null; };
+      const img = document.querySelector('#siteMirrorClone img');
+      return {
+        headerLayers: document.querySelectorAll('#headerBleed .edge-layer > *').length,
+        farText: op('#siteMirrorBleedDark .bleed-text'),
+        midText: op('#siteMirrorBleed .bleed-text'),
+        coreText: op('#siteMirrorBleedCore .bleed-text'),
+        imgFilter: img ? getComputedStyle(img).filter : null,
+        hiddenFooterInPage: !!document.querySelector('#siteMirrorBleedCore footer') && getComputedStyle(document.querySelector('#siteMirrorBleedCore footer')).visibility,
+      };
+    })()`);
+    await page.close();
+    if (r.headerLayers !== 3) throw new Error(`header smudge layers missing (${r.headerLayers}/3)`);
+    if (!(parseFloat(r.farText) < parseFloat(r.midText) && parseFloat(r.midText) < 1 && (r.coreText === "1")))
+      throw new Error(`text dimming wrong (core ${r.coreText}, mid ${r.midText}, far ${r.farText})`);
+    if (!r.imgFilter || !/brightness\(0\.9\)/.test(r.imgFilter)) throw new Error(`mirror image dim missing: ${r.imgFilter}`);
+    if (r.hiddenFooterInPage !== "hidden") throw new Error("footer isn't hidden in the page smudge copies (it'd be smudged twice)");
+    return true;
+  });
+
+  await check("Dark background is the darkened base (rgb 12,12,12) on every page", async () => {
+    const bad = [];
+    for (const path of ["/", "/about/", "/archive/", "/oeuvre/", "/inquiry/", "/links/"]) {
+      const page = await browser.newPage();
+      await page.goto(BASE_URL + path);
+      // Force dark (an earlier test may have toggled the saved theme to light).
+      await page.evaluate(`document.documentElement.classList.add('dark')`);
+      // poll: the colour transition can lag on a busy page
+      await page.waitFor(`getComputedStyle(document.body).backgroundColor === 'rgb(12, 12, 12)'`, { timeout: 4000 });
+      const dark = true;
+      const bg = await page.evaluate(`getComputedStyle(document.body).backgroundColor`);
+      await page.close();
+      if (dark && bg !== "rgb(12, 12, 12)") bad.push(`${path}: ${bg}`);
+    }
+    if (bad.length) throw new Error(`unexpected dark background: ${bad.join(", ")}`);
+    return true;
+  });
+
+  await check("Cloud header: glass (blur 20 + saturate 1.5) sits on a soft-edged ::before, with no straight border or box under the header", async () => {
+    const bad = [];
+    for (const path of ["/", "/archive/", "/oeuvre/", "/about/"]) {
+      const page = await browser.newPage();
+      await page.goto(BASE_URL + path);
+      await page.evaluate(`document.documentElement.classList.add('dark')`);
+      await new Promise((res) => setTimeout(res, 700)); // let the theme colour transition finish
+      const r = await page.evaluate(`(() => {
+        const h = document.getElementById('siteHeader');
+        const b = getComputedStyle(h, '::before'), hs = getComputedStyle(h);
+        return { f: b.backdropFilter, mask: b.maskImage || b.webkitMaskImage, bottom: b.bottom, hbg: hs.backgroundColor, border: hs.borderBottomColor };
+      })()`);
+      await page.close();
+      if (!/saturate\(1\.5\)/.test(r.f) || !/blur\(20px\)/.test(r.f)) bad.push(`${path}: glass "${r.f}"`);
+      if (!r.mask || r.mask === "none") bad.push(`${path}: no soft-edge mask`);
+      if (r.bottom === "auto" || parseFloat(r.bottom) >= 0) bad.push(`${path}: glass doesn't extend below the header (would end on a line)`);
+      if (r.hbg !== "rgba(0, 0, 0, 0)") bad.push(`${path}: header itself isn't transparent (${r.hbg})`);
+    }
+    if (bad.length) throw new Error(bad.join(" | "));
+    return true;
+  });
+
+  // ── Performance guards: the smudge must stay cheap on long pages/phones ──
+  for (const [w, h, mobile, label] of [[390, 844, true, "phone"], [1440, 900, false, "desktop"]]) {
+    await check(`Smudge layers are bounded windows that follow the scroll (${label}) - never one page-tall texture`, async () => {
+      const page = await browser.newPage();
+      await page.setViewport(w, h, mobile);
+      await page.goto(BASE_URL + "/");
+      await page.waitFor(`document.querySelector('#siteMirrorClone .fx-inner') !== null`, { timeout: 10000 });
+      const bad = [];
+      for (const y of [0, 5000, 12000]) {
+        await page.evaluate(`window.scrollTo(0, ${y})`);
+        await new Promise((r) => setTimeout(r, 900));
+        const r = await page.evaluate(`(() => {
+          const vh = window.innerHeight, pageH = document.getElementById('siteMirror').offsetHeight;
+          return (window.innerWidth <= 800 ? ['siteMirrorClone'] : ['siteMirrorClone','siteMirrorBleedCore','siteMirrorBleed','siteMirrorBleedDark']).map(id => {
+            const b = document.getElementById(id).getBoundingClientRect();
+            return { id, top: b.top, bottom: b.bottom, height: b.height, vh, pageH };
+          });
+        })()`);
+        for (const l of r) {
+          if (l.pageH > l.vh * 5.5 && l.height > l.vh * 4.6) bad.push(`${l.id} is ${Math.round(l.height)}px tall on a ${Math.round(l.pageH)}px page (not windowed)`);
+          // 32px tolerance at the top: the layers' intentional gravity shift is 3-28px
+          if (l.top > 32 || l.bottom < l.vh - 2) bad.push(`${l.id} doesn't cover the screen at scrollY=${y} (top ${Math.round(l.top)}, bottom ${Math.round(l.bottom)})`);
+        }
+      }
+      await page.close();
+      if (bad.length) throw new Error([...new Set(bad)].slice(0, 4).join(" | "));
+      return true;
+    });
+  }
+
+  await check("Copies never force downloads (each copied image is a tiny preview or lazy)", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.getElementById('siteMirrorBleedCore')?.children.length > 0`, { timeout: 10000 });
+    const r = await page.evaluate(`(() => {
+      const c = Array.from(document.querySelectorAll('#siteMirrorBleedCore img'));
+      return { total: c.length, eager: c.filter(i => i.loading === 'eager' && !i.src.startsWith('data:')).length, lazy: c.filter(i => i.loading === 'lazy' || i.src.startsWith('data:')).length };
+    })()`);
+    await page.close();
+    if (!r.total) throw new Error("no images in the smudge copy");
+    if (r.eager > 0) throw new Error(`${r.eager} copied images are eager (would all download at once)`);
+    if (r.lazy < r.total * 0.5) throw new Error(`only ${r.lazy}/${r.total} copied images are lazy or tiny previews`);
+    return true;
+  });
+
+  await check("No rebuild storm while scrolling, and the page never reloads or jumps to the top during fast scrolling (phone)", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(390, 844, true);
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.querySelector('#siteMirrorClone .fx-inner') !== null`, { timeout: 10000 });
+    await page.evaluate(`window.__marker = 'same-document'; window.__b0 = window.__mirrorBuilds;`);
+    let lowest = Infinity;
+    // fast bursts, like a flick-scroll while images are still loading
+    for (let i = 1; i <= 14; i++) {
+      await page.evaluate(`window.scrollTo(0, ${i * 900})`);
+      await new Promise((r) => setTimeout(r, 120));
+      const y = await page.evaluate(`window.scrollY`);
+      if (i > 3 && y < lowest) lowest = y;
+    }
+    const r = await page.evaluate(`({ marker: window.__marker, y: window.scrollY, builds: window.__mirrorBuilds - window.__b0 })`);
+    await page.close();
+    if (r.marker !== 'same-document') throw new Error("the page reloaded during fast scrolling");
+    if (lowest < 1500) throw new Error(`scroll position jumped back to ${Math.round(lowest)}px during fast scrolling`);
+    if (r.builds > 1) throw new Error(`the smudge rebuilt ${r.builds} times while scrolling (should wait until scrolling stops)`);
+    return true;
+  });
+
+  // ── Oeuvre page: full-screen filter, dark fog islands, white text ────────
+  await check("Oeuvre: Filters opens a TRUE full-screen overlay (like Artworks), with no duplicate label, and closes on outside click", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1300, 700, false);
+    await page.goto(BASE_URL + "/oeuvre/");
+    await waitForIntroDoorGone(page);
+    await page.evaluate(`document.getElementById('bookFilterToggle').click()`);
+    await page.waitFor(`document.getElementById('bookFilterOverlay').classList.contains('open')`, { timeout: 4000 });
+    await new Promise((r) => setTimeout(r, 900)); // the overlay's open transition
+    const r = await page.evaluate(`(() => {
+      const o = document.getElementById('bookFilterOverlay').getBoundingClientRect();
+      const sp = document.querySelector('#bookFilterOverlay .filter-spacer');
+      return { x: o.left, y: o.top, w: o.width, h: o.height, iw: document.documentElement.clientWidth, ih: window.innerHeight, spacerOpacity: getComputedStyle(sp).opacity, inHeader: !!document.getElementById('bookFilterOverlay').closest('.book-page-header') };
+    })()`);
+    await page.evaluate(`document.getElementById('bookFilterOverlay').click()`);
+    const closed = await page.waitFor(`!document.getElementById('bookFilterOverlay').classList.contains('open')`, { timeout: 3000 });
+    await page.close();
+    if (r.inHeader) throw new Error("the overlay is still nested inside the transformed header (can't be full screen)");
+    if (Math.abs(r.x) > 1 || Math.abs(r.y) > 1 || Math.abs(r.w - r.iw) > 1 || Math.abs(r.h - r.ih) > 1) throw new Error(`overlay is ${Math.round(r.w)}x${Math.round(r.h)} at (${Math.round(r.x)},${Math.round(r.y)}), screen is ${r.iw}x${r.ih}`);
+    if (parseFloat(r.spacerOpacity) !== 0) throw new Error(`the overlay's alignment spacer is visible (opacity ${r.spacerOpacity}) - a duplicate "Filters" label`);
+    if (!closed) throw new Error("clicking outside didn't close the overlay");
+    return true;
+  });
+
+  await check("Oeuvre: title cluster + search are dark fog islands (no borders, no square box), Filters text is white", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/oeuvre/");
+    await page.evaluate(`document.documentElement.classList.add('dark')`);
+    await new Promise((r) => setTimeout(r, 700));
+    const r = await page.evaluate(`(() => {
+      const q = (s) => document.querySelector('body > main ' + s);
+      const inp = getComputedStyle(q('.book-search-input'));
+      const tog = getComputedStyle(q('#bookFilterToggle'));
+      const wrap = getComputedStyle(q('.book-search-wrap'), '::before');
+      const clu = getComputedStyle(q('.book-page-header'), '::before');
+      return { inpBorder: inp.borderTopWidth + '/' + inp.borderBottomWidth, inpBg: inp.backgroundColor, togColor: tog.color,
+               wrapMask: wrap.maskImage || wrap.webkitMaskImage, cluMask: clu.maskImage || clu.webkitMaskImage, wrapBg: wrap.backgroundColor, cluBg: clu.backgroundColor };
+    })()`);
+    await page.close();
+    const bad = [];
+    if (r.inpBorder !== "0px/0px") bad.push(`search input still has a border (${r.inpBorder})`);
+    if (r.inpBg !== "rgba(0, 0, 0, 0)") bad.push(`search input has a solid background (${r.inpBg})`);
+    if (r.togColor !== "rgb(255, 255, 255)") bad.push(`Filters text isn't white (${r.togColor})`);
+    if (!r.wrapMask || r.wrapMask === "none") bad.push("search island has no cloud mask");
+    if (!r.cluMask || r.cluMask === "none") bad.push("title cluster island has no cloud mask");
+    if (/^rgba?\(\s*2[0-9]{2}/.test(r.cluBg)) bad.push(`cluster fog isn't dark (${r.cluBg})`);
+    if (bad.length) throw new Error(bad.join(" | "));
+    return true;
+  });
+
+  await check("Every fog box is a cloud island, not a rectangle (Artworks, Archive, Oeuvre)", async () => {
+    const bad = [];
+    for (const [path, sel] of [["/", ".artwork-filter-bar"], ["/archive/", ".arch-filters-row"], ["/oeuvre/", ".book-page-header"]]) {
+      const page = await browser.newPage();
+      await page.goto(BASE_URL + path);
+      const r = await page.evaluate(`(() => {
+        const el = document.querySelector('body > main ${sel}');
+        if (!el) return null;
+        const b = getComputedStyle(el, '::before');
+        return { mask: b.maskImage || b.webkitMaskImage, size: b.maskSize || b.webkitMaskSize };
+      })()`);
+      await page.close();
+      if (!r) { bad.push(`${path}: ${sel} not found`); continue; }
+      if (!/svg/.test(r.mask || "")) bad.push(`${path} ${sel}: not using the blob mask (${(r.mask || "").slice(0, 40)})`);
+    }
+    if (bad.length) throw new Error(bad.join(" | "));
+    return true;
+  });
+
+  await check("Back layers load in one by one, bottom to top, on large screens", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1440, 900, false);
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.getElementById('siteMirror').classList.contains('mirror-ready')`, { timeout: 12000 });
+    const d = await page.evaluate(`['siteMirrorClone','siteMirrorFrost','siteMirrorBleedDark','siteMirrorBleed','siteMirrorBleedCore'].map(id => parseFloat(getComputedStyle(document.getElementById(id)).transitionDelay))`);
+    await page.close();
+    for (let i = 1; i < d.length; i++) if (!(d[i] > d[i - 1])) throw new Error(`layers don't load bottom-to-top, delays: ${d.join(", ")}`);
+    return true;
+  });
+
+  await check("Phones: no sideways drift or shake while scrolling slowly or flinging, no jump to the top, no reload", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(390, 844, true);
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.querySelector('#siteMirrorClone .fx-inner') !== null`, { timeout: 10000 });
+    const cfg = await page.evaluate(`({ ox: getComputedStyle(document.documentElement).overflowX, ob: getComputedStyle(document.documentElement).overscrollBehaviorY, bx: getComputedStyle(document.body).overflowX })`);
+    await page.evaluate(`window.__marker = 'same'`);
+    const bad = [];
+    const probe = `({ sx: window.scrollX, sl: document.documentElement.scrollLeft, bl: Math.round(document.body.getBoundingClientRect().left), y: window.scrollY })`;
+    // slow: small steady steps
+    for (let y = 0; y <= 2400; y += 120) {
+      await page.evaluate(`window.scrollTo(0, ${y})`);
+      await new Promise((r) => setTimeout(r, 40));
+      const s = await page.evaluate(probe);
+      if (s.sx !== 0 || s.sl !== 0 || s.bl !== 0) bad.push(`sideways shift at y=${y}: scrollX ${s.sx}, body left ${s.bl}`);
+    }
+    // fast: big jumps all the way down and back up
+    let lowest = Infinity;
+    for (let i = 1; i <= 16; i++) {
+      await page.evaluate(`window.scrollTo(0, ${i * 1100})`);
+      await new Promise((r) => setTimeout(r, 90));
+      const s = await page.evaluate(probe);
+      if (s.sx !== 0 || s.sl !== 0 || s.bl !== 0) bad.push(`sideways shift in fling at step ${i}`);
+      if (i > 3) lowest = Math.min(lowest, s.y);
+    }
+    const end = await page.evaluate(`({ marker: window.__marker, y: window.scrollY })`);
+    await page.close();
+    if (cfg.ox !== "clip" || cfg.bx !== "clip") bad.push(`horizontal overflow isn't clipped (html ${cfg.ox}, body ${cfg.bx})`);
+    if (cfg.ob !== "none") bad.push(`overscroll-behavior isn't disabled (${cfg.ob}) - pull-to-refresh can trigger`);
+    if (end.marker !== "same") bad.push("the page reloaded during the fling");
+    if (lowest < 2000) bad.push(`scroll jumped back up to ${Math.round(lowest)}px during the fling`);
+    if (bad.length) throw new Error([...new Set(bad)].slice(0, 4).join(" | "));
+    return true;
+  });
+
+  await check("Nav menus: no underline on hover anywhere (header + home menu); hover makes the link glow brighter instead", async () => {
+    const bad = [];
+    for (const path of ["/", "/about/"]) {
+      const page = await browser.newPage();
+      await page.goto(BASE_URL + path);
+      const r = await page.evaluate(`(() => {
+        const links = Array.from(document.querySelectorAll('body > header nav a, body > main .hp-nav-link'));
+        const afterBars = links.filter(a => { const c = getComputedStyle(a, '::after').content; return c && c !== 'none' && c !== 'normal'; }).length;
+        const twUnderline = links.filter(a => a.classList.contains('hover:underline')).length;
+        // any :hover rule that sets an underline, or that lacks the glow
+        let underlineOnHover = 0, glowRule = false;
+        for (const sheet of Array.from(document.styleSheets)) {
+          let rules; try { rules = sheet.cssRules; } catch (e) { continue; }
+          const walk = (list) => { for (const rule of Array.from(list)) {
+            if (rule.cssRules && !rule.selectorText) { walk(rule.cssRules); continue; }
+            const sel = rule.selectorText || '';
+            if (/(^|,|\s)(nav a|\.hp-nav-link)(:hover)/.test(sel) || /:hover/.test(sel) && /(nav a|hp-nav-link)/.test(sel)) {
+              if (/underline/.test(rule.style.textDecorationLine + ' ' + rule.style.textDecoration)) underlineOnHover++;
+              if (/text-shadow|filter/.test(rule.cssText)) glowRule = true;
+            } } };
+          walk(rules);
+        }
+        return { n: links.length, afterBars, twUnderline, underlineOnHover, glowRule };
+      })()`);
+      await page.close();
+      if (!r.n) bad.push(`${path}: no nav links found`);
+      if (r.afterBars) bad.push(`${path}: ${r.afterBars} link(s) still draw an ::after underline bar`);
+      if (r.twUnderline) bad.push(`${path}: ${r.twUnderline} link(s) still have hover:underline`);
+      if (r.underlineOnHover) bad.push(`${path}: a hover rule still underlines`);
+      if (!r.glowRule) bad.push(`${path}: no brighter/glow hover rule found`);
+    }
+    if (bad.length) throw new Error(bad.join(" | "));
+    return true;
+  });
+
+  // ── Lite mode (phones): the heavy effects are OFF so a fast scroll can't run the tab out of graphics memory ──
+  await check("Phones (effect level 0 = lite mode): only ONE background layer, no fog layers / header-footer fog / echoes, no backdrop blurs, smaller mirror blur", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(390, 844, true);
+    await page.goto(BASE_URL + "/?fx=0");
+    await page.waitFor(`document.querySelector('#siteMirrorClone .fx-inner') !== null`, { timeout: 10000 });
+    await new Promise((r) => setTimeout(r, 1500));
+    const r = await page.evaluate(`(() => {
+      try { localStorage.removeItem('fx-force'); } catch (e) {}
+      const shown = (id) => { const e = document.getElementById(id); return !!e && getComputedStyle(e).display !== 'none'; };
+      const filled = (id) => (document.getElementById(id)?.children.length || 0) > 0;
+      const bf = (el, pseudo) => { const c = getComputedStyle(el, pseudo); return c.backdropFilter || c.webkitBackdropFilter || 'none'; };
+      return {
+        mirror: filled('siteMirrorClone'),
+        heavy: ['siteMirrorBleedCore','siteMirrorBleed','siteMirrorBleedDark','headerMirrorEcho','footerMirrorEcho'].filter(id => filled(id)).map(id => id + ' (filled)'),
+        headerBackdrop: bf(document.getElementById('siteHeader'), '::before'),
+        headerOwnBackdrop: bf(document.getElementById('siteHeader')),
+        mirrorFilter: getComputedStyle(document.getElementById('siteMirrorClone')).filter,
+        frostBackdrop: bf(document.getElementById('siteMirrorFrost')),
+      };
+    })()`);
+    await page.close();
+    const bad = [];
+    if (!r.mirror) bad.push("the mirror layer isn't built");
+    if (r.heavy.length) bad.push(`heavy layers still active on a phone: ${r.heavy.join(", ")}`);
+    if (r.headerBackdrop !== "none" || r.headerOwnBackdrop !== "none" || r.frostBackdrop !== "none") bad.push(`backdrop blurs still on (header ::before ${r.headerBackdrop}, header ${r.headerOwnBackdrop}, frost ${r.frostBackdrop})`);
+    const blur = /blur\(([\d.]+)px\)/.exec(r.mirrorFilter || "");
+    if (!blur || parseFloat(blur[1]) > 40) bad.push(`mirror blur is too large for a phone (${r.mirrorFilter})`);
+    if (bad.length) throw new Error(bad.join(" | "));
+    return true;
+  });
+
+  await check("Phones: the background pauses during a fast fling (no re-render burst) and returns once scrolling slows", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(390, 844, true);
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.querySelector('#siteMirrorClone .fx-inner') !== null`, { timeout: 10000 });
+    await new Promise((r) => setTimeout(r, 800));
+    // a very fast jump, like a hard flick
+    await page.evaluate(`window.scrollTo(0, 400)`);
+    await new Promise((r) => setTimeout(r, 30));
+    await page.evaluate(`window.scrollTo(0, 9000)`);
+    const paused = await page.waitFor(`document.getElementById('siteMirror').classList.contains('fx-paused')`, { timeout: 1500 });
+    const resumed = await page.waitFor(`!document.getElementById('siteMirror').classList.contains('fx-paused')`, { timeout: 3000 });
+    await new Promise((r) => setTimeout(r, 300));
+    const covers = await page.evaluate(`(() => { const b = document.getElementById('siteMirrorClone').getBoundingClientRect(); return b.top <= 40 && b.bottom >= window.innerHeight - 2; })()`);
+    await page.close();
+    if (!paused) throw new Error("the background never paused during a fast fling");
+    if (!resumed) throw new Error("the background never came back after the fling");
+    if (!covers) throw new Error("after the fling the background window doesn't cover the screen (not recentred)");
+    return true;
+  });
+
+  await check("Phones: address-bar resizes (same width, different height) don't re-render or rebuild anything", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(390, 844, true);
+    await page.goto(BASE_URL + "/");
+    await page.waitFor(`document.querySelector('#siteMirrorClone .fx-inner') !== null`, { timeout: 10000 });
+    await new Promise((r) => setTimeout(r, 1500));
+    await page.evaluate(`window.__b0 = window.__mirrorBuilds; window.__wy0 = document.getElementById('siteMirror').style.getPropertyValue('--wy');`);
+    for (const hh of [760, 844, 780, 844]) { await page.setViewport(390, hh, true); await new Promise((r) => setTimeout(r, 250)); }
+    await new Promise((r) => setTimeout(r, 1800));
+    const r = await page.evaluate(`({ builds: window.__mirrorBuilds - window.__b0, wy: document.getElementById('siteMirror').style.getPropertyValue('--wy') === window.__wy0 })`);
+    await page.close();
+    if (r.builds !== 0) throw new Error(`the background rebuilt ${r.builds} time(s) on height-only resizes`);
+    if (!r.wy) throw new Error("the background window moved on height-only resizes");
+    return true;
+  });
+
+  // ── Page fog-in: every page, every load ────────────────────────────────
+  // (the harness opens each tab with no saved session, so a fresh tab = a "first visit" with the door;
+  //  a second navigation in the same tab is a normal browsing page)
+  const IN_VIEW_HIDDEN = `(() => Array.from(document.querySelectorAll('.reveal-item, .reveal-item-no-filter, .reveal-item-no-transform, .reveal-item-opacity-only'))
+      .filter(e => { const r = e.getBoundingClientRect(); return r.width > 0 && r.top < window.innerHeight * 0.9 && r.bottom > 0; }).length)()`;
+
+  await check("Fog-in on a normal page load: items are tagged, everything on screen comes out of the fog, nothing stays hidden, no leftover classes on screen", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/about/");
+    await waitForIntroDoorGone(page);
+    await page.goto(BASE_URL + "/archive/"); // same tab, intro already seen -> a browsing page load
+    const tagged = await page.waitFor(`window.__revealStats && window.__revealStats.tagged > 20`, { timeout: 6000 });
+    if (!tagged) { await page.close(); throw new Error("the reveal never tagged the page's content (window.__revealStats missing/low)"); }
+    const gate = await page.evaluate(`document.documentElement.classList.contains('reveal-boot')`);
+    const settled = await page.waitFor(`${IN_VIEW_HIDDEN} === 0`, { timeout: 9000 });
+    const left = await page.evaluate(IN_VIEW_HIDDEN);
+    const hdr = await page.evaluate(`document.querySelectorAll('#siteHeader .reveal-item, #siteHeader .reveal-item-no-filter, #siteHeader .reveal-item-no-transform, #siteHeader .reveal-item-opacity-only').length`);
+    await page.close();
+    if (gate) throw new Error("the pre-paint gate (reveal-boot) was never lifted");
+    if (!settled) throw new Error(`${left} on-screen item(s) never came out of the fog`);
+    if (hdr) throw new Error("the header was fogged on a normal page change (it should stay steady)");
+    return true;
+  });
+
+  await check("Fog-in on first visit waits for the door, then reveals", async () => {
+    const page = await browser.newPage();
+    // the door remembers you via a session cookie + sessionStorage, shared with earlier tests: forget it
+    await page.goto(BASE_URL + "/about/");
+    await page.evaluate(`sessionStorage.removeItem('intro-seen'); document.cookie = 'intro-seen=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';`);
+    await page.goto(BASE_URL + "/about/");
+    await page.waitFor(`window.__revealStats && window.__revealStats.tagged > 5`, { timeout: 6000 });
+    await new Promise((r) => setTimeout(r, 700));
+    const early = await page.evaluate(`({ revealed: window.__revealStats.revealed, first: document.documentElement.classList.contains('reveal-first'), doorUp: getComputedStyle(document.getElementById('intro-door')).display !== 'none' })`);
+    await waitForIntroDoorGone(page, 14000);
+    const after = await page.waitFor(`window.__revealStats.revealed > 0`, { timeout: 6000 });
+    await page.close();
+    if (!early.first) throw new Error("first-visit mode (slower fog) isn't active");
+    if (early.doorUp && early.revealed > 0) throw new Error(`${early.revealed} item(s) revealed while the door was still up`);
+    if (!after) throw new Error("nothing revealed after the door went away");
+    return true;
+  });
+
+  await check("Fog-in on scroll: below-the-fold items wait, then fog in when scrolled to", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(1300, 700, false);
+    await page.goto(BASE_URL + "/about/");
+    await waitForIntroDoorGone(page);
+    await page.goto(BASE_URL + "/archive/");
+    await page.waitFor(`window.__revealStats && window.__revealStats.tagged > 20`, { timeout: 6000 });
+    await page.waitFor(`${IN_VIEW_HIDDEN} === 0`, { timeout: 9000 });
+    const waiting = await page.evaluate(`document.querySelectorAll('.reveal-item, .reveal-item-no-filter, .reveal-item-no-transform, .reveal-item-opacity-only').length`);
+    await page.evaluate(`window.scrollTo(0, 1600)`);
+    const done = await page.waitFor(`${IN_VIEW_HIDDEN} === 0`, { timeout: 9000 });
+    const left = await page.evaluate(IN_VIEW_HIDDEN);
+    await page.close();
+    if (waiting < 1) throw new Error("expected some below-the-fold items to still be waiting");
+    if (!done) throw new Error(`${left} item(s) scrolled into view never came out of the fog`);
+    return true;
+  });
+
+  await check("Fog-in reveals to each element's OWN opacity (captions stay dim; nothing jumps when the classes are removed)", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/about/");
+    await waitForIntroDoorGone(page);
+    await page.goto(BASE_URL + "/artworks/la2026-o55/");
+    await page.waitFor(`window.__revealStats && window.__revealStats.tagged > 5`, { timeout: 6000 });
+    await page.waitFor(`${IN_VIEW_HIDDEN} === 0`, { timeout: 9000 });
+    await new Promise((r) => setTimeout(r, 1500)); // let the cleanup finish
+    const o = await page.evaluate(`(() => { const e = document.querySelector('body > main .sp-info-top p'); return e ? parseFloat(getComputedStyle(e).opacity) : null; })()`);
+    await page.close();
+    if (o === null) throw new Error("caption element not found");
+    if (o > 0.7) throw new Error(`caption opacity is ${o}; it should keep its own dim value (~0.62)`);
+    return true;
+  });
+
+  await check("Images show a foggy LOADING state (CSS rule exists) and the fog-in CSS has the fast/first/phone variants", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/");
+    const r = await page.evaluate(`(() => {
+      let loadingRule = false, phoneRule = false;
+      const walk = (list, inPhone) => { for (const rule of Array.from(list)) {
+        if (rule.media && /max-width:\\s*800px/.test(rule.media.mediaText)) { walk(rule.cssRules, true); continue; }
+        if (rule.cssRules && !rule.selectorText) { walk(rule.cssRules, inPhone); continue; }
+        const sel = rule.selectorText || '';
+        if (/reveal-loading/.test(sel)) { loadingRule = true; if (inPhone) phoneRule = true; }
+      } };
+      for (const s of Array.from(document.styleSheets)) { try { walk(s.cssRules, false); } catch (e) {} }
+      const d = getComputedStyle(document.documentElement).getPropertyValue('--fog-d').trim();
+      return { loadingRule, phoneRule, d };
+    })()`);
+    await page.close();
+    if (!r.loadingRule) throw new Error("no .reveal-loading (foggy loading) CSS rule");
+    if (!r.phoneRule) throw new Error("no lighter phone variant for the loading state");
+    if (!/^0?\.(9|55)s$/.test(r.d)) throw new Error(`unexpected fog duration ${r.d}`);
+    return true;
+  });
+
+  // ── Image sizes known up front: grids must not move when images finish loading ──
+  for (const path of ["/", "/archive/", "/oeuvre/"]) {
+    await check(`Grid items stay put while images load (${path}): declared sizes on every image, no position change after load`, async () => {
+      const page = await browser.newPage();
+      await page.goto(BASE_URL + path);
+      await page.waitFor(`document.querySelectorAll('body > main .aw-item, body > main .arch-item').length > 3`, { timeout: 8000 });
+      const snap = `(() => Array.from(document.querySelectorAll('body > main .aw-item, body > main .arch-item')).slice(0, 40).map(e => { const r = e.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top + scrollY), Math.round(r.width), Math.round(r.height)]; }))()`;
+      const missing = await page.evaluate(`Array.from(document.querySelectorAll('body > main .aw-img, body > main .arch-img')).filter(i => !(i.getAttribute('width') > 0 && i.getAttribute('height') > 0)).length`);
+      const before = await page.evaluate(snap);
+      await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
+      await new Promise((r) => setTimeout(r, 3500));
+      await page.evaluate(`window.scrollTo(0, 0)`);
+      await new Promise((r) => setTimeout(r, 500));
+      const after = await page.evaluate(snap);
+      await page.close();
+      if (missing) throw new Error(`${missing} grid image(s) have no width/height (run python scripts/image-dims.py)`);
+      const movedIdx = before.map((b, i) => i).filter((i) => after[i] && (Math.abs(before[i][0] - after[i][0]) > 1 || Math.abs(before[i][1] - after[i][1]) > 1 || Math.abs(before[i][3] - after[i][3]) > 1));
+      if (movedIdx.length) throw new Error(`${movedIdx.length} item(s) moved after their images loaded, e.g. #${movedIdx[0]}: ${before[movedIdx[0]]} -> ${after[movedIdx[0]]}`);
+      return true;
+    });
+  }
+
+  await check("Back-most fog layer is up early and paints tiny previews (no image downloads of its own)", async () => {
+    const page = await browser.newPage();
+    await page.goto(BASE_URL + "/archive/");
+    const early = await page.waitFor(`(() => { const c = document.getElementById('siteMirrorClone'); return !!c && c.querySelectorAll('img[src^="data:"]').length > 5; })()`, { timeout: 8000 });
+    await page.waitFor(`document.getElementById('siteMirror').classList.contains('mirror-ready')`, { timeout: 4000 });
+    const r = await page.evaluate(`(() => {
+      const imgs = Array.from(document.querySelectorAll('#siteMirrorClone .arch-img'));
+      return { total: imgs.length, tiny: imgs.filter(i => i.src.startsWith('data:')).length, ready: document.getElementById('siteMirror').classList.contains('mirror-ready') };
     })()`);
     await page.close();
     if (!early) throw new Error("the back-most layer never got its tiny previews");
@@ -1623,4 +2397,3 @@ main().catch((e) => {
   console.error("Live test suite crashed:", e);
   process.exit(ALWAYS_EXIT_0 ? 0 : 1);
 });
-
