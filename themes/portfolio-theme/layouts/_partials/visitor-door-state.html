@@ -32,8 +32,8 @@ window.visitorDoor = (function () {
     }
     return s;
   }
-  // How long each stage stays open, in ms (Louis, council #12552, #12555: 33 s, 33 s, then 11 s).
-  var OPEN_MS = { 1: 33000, 2: 33000, 3: 11000 };
+  // How long each stage stays open, in ms (Louis, council #13068: 22 s, 22 s, then 11 s).
+  var OPEN_MS = { 1: 22000, 2: 22000, 3: 11000 };
   function begin(now) { var s = { stage: 1, deadline: now + OPEN_MS[1], locked: false }; write(s); return s; }
   function unlock(s, now) {
     if (!s || !s.locked || (s.stage !== 1 && s.stage !== 2)) return s;
