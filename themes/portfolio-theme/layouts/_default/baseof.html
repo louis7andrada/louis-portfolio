@@ -438,7 +438,7 @@
           var doc=new DOMParser().parseFromString(await response.text(),"text/html"), wall=doc.getElementById("wall");
           if(!wall || !wall.previousElementSibling || wall.previousElementSibling.tagName!=="STYLE")throw Error("door markup unavailable");
           var css=wall.previousElementSibling; document.body.prepend(css); document.body.prepend(wall);
-          wall.querySelector(".w-stage-message").textContent="ok fine... you can explore my site ;P\n- Andrada";
+          wall.querySelector(".w-stage-message").textContent="Ok fine, You may explore my website";
           var done=false;function dissolve(){if(done)return;done=true;api.finish(s);wall.classList.add("evaporating");setTimeout(function(){wall.remove();css.remove()},4000)}
           wall.addEventListener("pointerdown",dissolve,{once:true});setTimeout(dissolve,Math.max(0,7000-(Date.now()-(s.finalOpenedAt||Date.now()))));
         } catch (_) {try{sessionStorage.setItem("door-to",location.pathname+location.search+location.hash)}catch(e){}location.replace("/404")}
