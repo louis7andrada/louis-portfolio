@@ -106,6 +106,7 @@
   var game=window.visitorDoor, state=game.update(game.read(),Date.now());
   if (state && !state.locked) { if (on404) goBack(); else wall.remove(); return; }
   if (!state && isOpen()) { if (on404) goBack(); else wall.remove(); return; }
+  if(state && state.locked && state.stage===1) wall.querySelector(".w-stage-message").textContent="You shouldn't be here. Do not check the HTML of this website.";
   if(state && state.locked && state.stage===2) wall.querySelector(".w-stage-message").textContent="Ei thought I said you shouldn't be here";
   if(state && state.locked && state.stage===3) {
     wall.querySelector(".w-stage-message").textContent="ok fine... you can explore my site ;P\n- Andrada";
