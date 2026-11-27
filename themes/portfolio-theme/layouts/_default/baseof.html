@@ -1202,12 +1202,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <script>
   // Safety net for the scatter grids' hidden pictures (main.css, .aw-ready): if a grid's layout()
-  // never finished (an error, or no width to measure), show its pictures anyway a few seconds
-  // after the page has loaded, stacked as they are, rather than leaving the grid empty.
-  window.addEventListener("load", function () {
+  // never finished (an error, or no width to measure), show its pictures anyway 4 s after the
+  // page's HTML is ready, stacked as they are, rather than leaving the grid empty. Timed from
+  // DOMContentLoaded, not "load": a picture or script that never finishes would hold "load" back
+  // for ever (Aster, council #13564). layout() itself first runs 100 ms after DOMContentLoaded.
+  document.addEventListener("DOMContentLoaded", function () {
     setTimeout(function () {
       document.querySelectorAll(".aw-grid:not(.aw-ready)").forEach(function (g) { g.classList.add("aw-ready"); });
-    }, 3000);
+    }, 4000);
   });
 </script>
 </body>
