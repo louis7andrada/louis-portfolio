@@ -31,14 +31,14 @@
   #wall .w-mirror { background: #0c0c0c; transform: scaleY(-1); filter: invert(1) blur(72px) saturate(0.35) brightness(0.25); }
   #wall .w-frost { background: rgba(6, 6, 6, 0.6); -webkit-backdrop-filter: blur(26px) brightness(0.4); backdrop-filter: blur(26px) brightness(0.4); }
   #wall .w-dim { background: rgba(0, 0, 0, 0.2); } /* the site's darker layer (main.css, #siteMirror::before), over the fog, under the 404 */
-  #wall .w-core { filter: blur(6.7px) brightness(1.125); transform: translateY(3px); opacity: 0.95; } /* nearest fog x1.125 under .w-dim (main.css, #277) */
+  #wall .w-core { filter: blur(6.7px) brightness(1.125); opacity: 0.95; } /* nearest fog x1.125 under .w-dim (main.css, #277) */
   #wall .w-mid, #wall .w-far {
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0045' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1130' height='1130'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.0045' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1130' height='1130'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.003' numOctaves='2' seed='8' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2.6 -0.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     -webkit-mask-size: 700px 700px, 1130px 1130px; mask-size: 700px 700px, 1130px 1130px;
     -webkit-mask-composite: source-in; mask-composite: intersect; }
-  #wall .w-mid { filter: blur(20.9px); transform: translateY(9px); opacity: 0.65; }
-  #wall .w-far { filter: blur(39.6px); transform: translateY(18px); opacity: 0.46;
+  #wall .w-mid { filter: blur(20.9px); opacity: 0.65; }
+  #wall .w-far { filter: blur(39.6px); opacity: 0.46;
     -webkit-mask-position: 320px 210px, 90px 480px; mask-position: 320px 210px, 90px 480px; }
   #wall .w-grain { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-size: 140px 140px; opacity: 0.035; mix-blend-mode: overlay; }
@@ -54,7 +54,20 @@
      portfolio #7906: three visible lines, 404 / Portfolio of Andrada / Access = HTML, no biography). */
   html:has(#wall.evaporating) body > :not(#wall), html:has(#wall.evaporating) body > :not(#wall) * { visibility: visible !important; }
   #wall.evaporating { opacity: 0; filter: blur(32px); transition: opacity 4s ease, filter 4s ease; }
-  #wall .w-stage-message { margin-top: 1.8rem; font: 13px/1.5 'AndradaMono', monospace; text-align:center; color:#b8b8b8; white-space: pre-line; }
+  #wall .w-stage-message { position: absolute; top: calc(50% + 14px + 1.8rem); max-width: calc(100% - 48px); font: 13px/1.5 'AndradaMono', monospace; text-align:center; color:#b8b8b8; white-space: pre-line; }
+  @media (max-height: 500px) {
+    /* Keep the stage message clear of the introduction on short screens. */
+    #wall:has(.w-stage-message:not(:empty)) {
+      --wall-title-lift: clamp(0px, calc(230px - 50vh), 80px);
+    }
+    #wall:has(.w-stage-message:not(:empty)) :is(.w-front, .w-core, .w-mid, .w-far) .w404 {
+      position: relative;
+      top: calc(-1 * var(--wall-title-lift));
+    }
+    #wall .w-stage-message:not(:empty) {
+      top: calc(50% + 14px + 8px - var(--wall-title-lift));
+    }
+  }
   #wall > .w-keys { touch-action: none; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); align-items: stretch; justify-content: stretch; pointer-events: auto; }
 </style>
 <div id="wall">
