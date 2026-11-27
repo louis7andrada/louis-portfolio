@@ -373,6 +373,9 @@
   </script>
   {{ end }}
 
+{{- /* Scatter grids keep their pictures hidden until layout() has placed them (main.css,
+     .aw-ready); without JavaScript nothing places them, so show them as they are. */}}
+<noscript><style>.aw-grid .aw-img { display: block !important; }</style></noscript>
 </head>
 
 <body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") (eq .Type "production") (eq .Type "career") }}page-books{{ end }}">
@@ -967,7 +970,14 @@ document.addEventListener("DOMContentLoaded", () => {
     var mirror = document.getElementById("siteMirror");
     var mainTarget = document.getElementById("siteMirrorClone");
     if (mainTarget) {
-      var source = document.createElement("div");
+      // The copy is built in an inert document (no window, so nothing in it ever loads)
+      // and only enters the page in mount(), after useTinyImages has swapped every
+      // picture for its 8px preview. A copy made with cloneNode in this document
+      // started downloading every image of the page at once, lazy or not, so a
+      // gallery fetched all its photos on opening (council #13544: 300 photos,
+      // 69 MB on a phone for /photography/).
+      var inert = document.implementation.createHTMLDocument("");
+      var source = inert.createElement("div");
       // Same flex column + full height as <body>, so <main> grows to fill
       // short pages; otherwise the copy is shorter than the page and the
       // flipped mirror stops short of the bottom, leaving a hard seam.
@@ -979,9 +989,9 @@ document.addEventListener("DOMContentLoaded", () => {
       if (document.body.classList.contains("page-about") || document.body.classList.contains("page-inquiry")) {
         source.style.background = getComputedStyle(document.body).backgroundColor;
       }
-      if (header) source.appendChild(header.cloneNode(true));
-      if (main) source.appendChild(main.cloneNode(true));
-      if (footer) source.appendChild(footer.cloneNode(true));
+      if (header) source.appendChild(inert.importNode(header, true));
+      if (main) source.appendChild(inert.importNode(main, true));
+      if (footer) source.appendChild(inert.importNode(footer, true));
       // sizes first: they pair real and copied <img>s by position, and sanitize
       // removes popup images from the copy
       syncImgSizes(main, source.querySelector("main"));
@@ -1190,5 +1200,15 @@ document.addEventListener("DOMContentLoaded", () => {
     <div id="siteMirrorBleedDark"></div>
   </div>
 
+<script>
+  // Safety net for the scatter grids' hidden pictures (main.css, .aw-ready): if a grid's layout()
+  // never finished (an error, or no width to measure), show its pictures anyway a few seconds
+  // after the page has loaded, stacked as they are, rather than leaving the grid empty.
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      document.querySelectorAll(".aw-grid:not(.aw-ready)").forEach(function (g) { g.classList.add("aw-ready"); });
+    }, 3000);
+  });
+</script>
 </body>
 </html>

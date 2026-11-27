@@ -654,6 +654,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     grid.style.height = (Math.max(...bots) + 220) + 'px';
+    grid.classList.add('aw-ready'); // the pictures show (and load) only once placed: main.css
     window.dispatchEvent(new Event('sitelayout'));
   }
 
