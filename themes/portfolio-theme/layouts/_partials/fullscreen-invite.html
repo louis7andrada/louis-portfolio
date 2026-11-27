@@ -38,8 +38,14 @@
     } catch (e) {}
   }
   function get() {
-    try { var s = sessionStorage.getItem(KEY); if (s) return s; } catch (e) {}
-    try { var m = document.cookie.match(/(?:^|; )fs-invite=([^;]*)/); return m ? m[1] : null; } catch (e) { return null; }
+    var stored = null, shared = null;
+    try { stored = sessionStorage.getItem(KEY); } catch (e) {}
+    try {
+      var m = document.cookie.match(/(?:^|; )fs-invite=([^;]*)/);
+      shared = m ? m[1] : null;
+    } catch (e) {}
+    if (stored === "shown" || shared === "shown") return "shown";
+    return stored || shared;
   }
   function set(v) { try { sessionStorage.setItem(KEY, v); } catch (e) {} cookie(v); }
   var root = document.documentElement;
@@ -57,9 +63,12 @@
     var d = document.getElementById("intro-door");
     return !d || getComputedStyle(d).display === "none";
   }
+  var handled = false;
   function show() {
+    if (handled || get() !== "pending") return;
+    handled = true;
     set("shown");
-    if (inFullscreen()) return;
+    if (!request || !enabled || inFullscreen()) return;
     var b = document.createElement("button");
     b.type = "button"; b.id = "fsInvite";
     b.innerHTML = "<span>This website looks best in full screen.</span><span>Press here to activate full screen.</span>";
@@ -67,7 +76,7 @@
     var gone = false, timer;
     function dissolve() {
       if (gone) return; gone = true; clearTimeout(timer);
-      document.removeEventListener("pointerdown", elsewhere, true);
+      document.removeEventListener("click", elsewhere, true);
       b.classList.add("fs-gone");
       setTimeout(function () { b.remove(); }, 1500);
     }
@@ -77,7 +86,7 @@
       try { var p = request.call(root); if (p && p.catch) p.catch(function () {}); } catch (e) {} // refused: it just dissolves
       dissolve();
     });
-    document.addEventListener("pointerdown", elsewhere, true);
+    document.addEventListener("click", elsewhere, true);
     requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add("fs-shown"); }); });
     timer = setTimeout(dissolve, 11000);
   }
