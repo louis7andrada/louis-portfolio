@@ -116,6 +116,9 @@
     if (!u || u.origin !== location.origin || /^\/404(?:\/|$)/.test(u.pathname)) location.replace("/");
     else location.replace(u.pathname + u.search + u.hash);
   }
+  // The full screen invitation (fullscreen-invite.html): queued when the visitor opens the door, shown once it has gone.
+  function fsQueue() { try { if (window.fsInviteQueue) window.fsInviteQueue(); } catch (e) {} }
+  function fsWait() { try { if (window.fsInviteWait) window.fsInviteWait(); } catch (e) {} }
   var game=window.visitorDoor, state=game.update(game.read(),Date.now());
   if (state && !state.locked) { if (on404) goBack(); else wall.remove(); return; }
   if (!state && isOpen()) { if (on404) goBack(); else wall.remove(); return; }
@@ -123,18 +126,19 @@
   if(state && state.locked && state.stage===2) wall.querySelector(".w-stage-message").textContent="Ei, I thought I said you shouldn’t be here";
   if(state && state.locked && state.stage===3) {
     wall.querySelector(".w-stage-message").textContent="Ok fine, You may explore my website :P\n\n- Andrada";
-    var done=false; function dissolve(){if(done)return;done=true;game.finish(state);wall.classList.add("evaporating");setTimeout(function(){if(on404)goBack();else wall.remove()},4000)}
+    var done=false; function dissolve(){if(done)return;done=true;game.finish(state);fsQueue();wall.classList.add("evaporating");setTimeout(function(){if(on404)goBack();else{wall.remove();fsWait()}},4000)}
     wall.addEventListener("pointerdown",dissolve,{once:true});
     setTimeout(dissolve,Math.max(0,7000-(Date.now()-(state.finalOpenedAt||Date.now())))); return;
   }
   function open() {
-    if (state && state.locked) { game.unlock(state, Date.now()); if (on404) goBack(); else wall.remove(); return; }
+    if (state && state.locked) { game.unlock(state, Date.now()); fsQueue(); if (on404) goBack(); else { wall.remove(); fsWait(); } return; }
     cookie("door-session", "open");
     if (!isOpen()) window.name = "door-session=open"; // no storage: the tab itself remembers, across this face's pages
     // The logo door played unseen behind the wall; forget it, so it plays for real on the page you enter.
     try { sessionStorage.removeItem("intro-seen"); } catch (e) {}
     cookie("intro-seen", "", 0);
-    if (on404) goBack(); else wall.remove();
+    fsQueue();
+    if (on404) goBack(); else { wall.remove(); fsWait(); }
   }
   var pressed = {}, count = 0;
   wall.querySelector(".w-keys").addEventListener("pointerdown", function (e) {

@@ -1,0 +1,94 @@
+{{- /*
+  THE FULL SCREEN INVITATION (Louis, council #13605, #13610, Nov 27 2026): the first time in a browser session that a visitor
+  opens the 404 door (the nine squares, or the door game's last stage), a small foggy message appears once the door and the logo
+  door have gone: "This website looks best in full screen. Press here to activate full screen."
+  - Where: in the top right quarter of the screen, close to the centre but not on it; on phones, in the middle.
+  - It covers nothing else: the page scrolls and clicks as usual underneath.
+  - It goes, dissolving like fog: when it's pressed (and then asks the browser for full screen), on any click anywhere else, or by
+    itself after 11 seconds. Scrolling alone leaves it. No cross, no checkmark (Louis #13610).
+  - Once per browser session: a session cookie "fs-invite" (no expiry, shared by the faces, like "door-session") and
+    sessionStorage. Browsers that can't put a page in full screen (iPhones) never see it.
+  - Full screen asked for by a page ends when the visitor goes to another page (every browser does this); only full screen
+    the visitor turns on themselves (F11) lasts. Louis chose the button anyway (council #13608, #13610).
+  The door queues it (wall.html, fsInviteQueue); this script shows it.
+*/ -}}
+{{- if site.Params.wall -}}
+<style>
+  #fsInvite { position: fixed; z-index: 2147483000; left: 62%; top: 34%; transform: translate(-50%, -50%);
+    width: max-content; max-width: min(22rem, calc(100vw - 48px)); box-sizing: border-box; padding: 1.1rem 1.4rem; border: 0; border-radius: 18px; cursor: pointer;
+    font: 13px/1.6 'AndradaMono', 'Courier New', Courier, monospace; letter-spacing: .04em; text-align: center; color: #d8d8d8;
+    background: rgba(12, 12, 12, 0.5); -webkit-backdrop-filter: blur(18px) brightness(0.6); backdrop-filter: blur(18px) brightness(0.6);
+    box-shadow: 0 0 48px 24px rgba(12, 12, 12, 0.45);
+    opacity: 0; filter: blur(14px); transition: opacity 1.6s ease, filter 1.6s ease; }
+  #fsInvite.fs-shown { opacity: 1; filter: blur(0); }
+  #fsInvite.fs-gone { opacity: 0; filter: blur(24px); transition: opacity 1.4s ease, filter 1.4s ease; pointer-events: none; }
+  #fsInvite span { display: block; }
+  #fsInvite span + span { margin-top: .35em; color: #9a9a9a; }
+  #fsInvite:focus-visible { outline: 1px solid #6a6a6a; outline-offset: 4px; }
+  @media (max-width: 640px) { #fsInvite { left: 50%; top: 50%; } }
+  @media (prefers-reduced-motion: reduce) { #fsInvite, #fsInvite.fs-gone { transition: opacity .4s ease; filter: none; } }
+</style>
+<script>
+(function () {
+  var KEY = "fs-invite", dom = {{ site.Params.face_domain | default "" }};
+  function cookie(v) {
+    try {
+      var h = location.hostname, shared = dom && (h === dom || h.endsWith("." + dom)) ? "; domain=" + dom : "";
+      document.cookie = KEY + "=" + v + "; path=/; SameSite=Lax" + shared;
+    } catch (e) {}
+  }
+  function get() {
+    try { var s = sessionStorage.getItem(KEY); if (s) return s; } catch (e) {}
+    try { var m = document.cookie.match(/(?:^|; )fs-invite=([^;]*)/); return m ? m[1] : null; } catch (e) { return null; }
+  }
+  function set(v) { try { sessionStorage.setItem(KEY, v); } catch (e) {} cookie(v); }
+  var root = document.documentElement;
+  var request = root.requestFullscreen || root.webkitRequestFullscreen;
+  var enabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+  // Called by the door when the visitor opens it (wall.html): once per browser session.
+  window.fsInviteQueue = function () {
+    if (get()) return; // already queued or shown this session
+    if (!request || !enabled) { set("shown"); return; } // can't go full screen here: never offer it
+    set("pending");
+  };
+  function inFullscreen() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  function ready() { // the 404 door and the logo door have both gone
+    if (document.getElementById("wall")) return false;
+    var d = document.getElementById("intro-door");
+    return !d || getComputedStyle(d).display === "none";
+  }
+  function show() {
+    set("shown");
+    if (inFullscreen()) return;
+    var b = document.createElement("button");
+    b.type = "button"; b.id = "fsInvite";
+    b.innerHTML = "<span>This website looks best in full screen.</span><span>Press here to activate full screen.</span>";
+    document.body.appendChild(b);
+    var gone = false, timer;
+    function dissolve() {
+      if (gone) return; gone = true; clearTimeout(timer);
+      document.removeEventListener("pointerdown", elsewhere, true);
+      b.classList.add("fs-gone");
+      setTimeout(function () { b.remove(); }, 1500);
+    }
+    function elsewhere(e) { if (!b.contains(e.target)) dissolve(); }
+    b.addEventListener("click", function () {
+      if (gone) return;
+      try { var p = request.call(root); if (p && p.catch) p.catch(function () {}); } catch (e) {} // refused: it just dissolves
+      dissolve();
+    });
+    document.addEventListener("pointerdown", elsewhere, true);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add("fs-shown"); }); });
+    timer = setTimeout(dissolve, 11000);
+  }
+  var tries = 0;
+  function wait() { // the door may still stand, or the logo door still play: look again until both have gone
+    if (get() !== "pending") return;
+    if (ready()) { setTimeout(show, 700); return; }
+    if (++tries < 240) setTimeout(wait, 250); // up to a minute; else the next page tries again
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", wait); else wait();
+  window.fsInviteWait = function () { tries = 0; wait(); }; // the door opened in place (no new page)
+})();
+</script>
+{{- end -}}
