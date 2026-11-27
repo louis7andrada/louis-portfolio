@@ -1636,6 +1636,50 @@ async function main() {
     return true;
   });
 
+  // ── Galleries load their pictures as the visitor scrolls (council #13519-#13566, 2026-11-27) ──
+  // Before: the fog's cloneNode copy and the stacked, not-yet-placed scatter grid each made the browser fetch
+  // every picture on opening (Photography: all 300 photos, 69 MB, on a phone).
+  for (const path of ["/photography/", "/"]) {
+    await check(`Gallery loads as you scroll (${path}, phone): only the pictures near the screen download on opening`, async () => {
+      const page = await browser.newPage();
+      await page.setViewport(390, 844, true);
+      await page.goto(BASE_URL + path);
+      await new Promise((r) => setTimeout(r, 4000));
+      const r = await page.evaluate(`(() => {
+        const files = new Set(performance.getEntriesByType('resource').map(e => e.name).filter(n => n.includes('/images/r/')));
+        const grid = document.querySelector('body > main .aw-grid');
+        const imgs = grid ? Array.from(grid.querySelectorAll('.aw-img')) : [];
+        const fogReal = Array.from(document.querySelectorAll('#siteMirror img')).filter(i => /^https?:/.test(i.src) && i.src.includes('/images/r/') && i.loading !== 'lazy').length;
+        return { downloaded: files.size, pictures: imgs.length, ready: !!grid && grid.classList.contains('aw-ready'), shown: imgs.filter(i => getComputedStyle(i).display !== 'none').length, fogReal };
+      })()`);
+      await page.close();
+      if (r.pictures < 40) throw new Error(`only ${r.pictures} grid pictures: too few for this check to mean anything`);
+      if (r.downloaded > 30) throw new Error(`${r.downloaded} pictures downloaded on opening (of ${r.pictures}): lazy loading is defeated again`);
+      if (!r.ready || r.shown !== r.pictures) throw new Error(`grid not placed/shown: ready=${r.ready}, ${r.shown} of ${r.pictures} shown`);
+      if (r.fogReal) throw new Error(`${r.fogReal} real (non-lazy) pictures in the fog copies`);
+      return true;
+    });
+  }
+
+  await check("Grid pictures still show if layout never places them, even when the page's load event never fires", async () => {
+    const page = await browser.newPage();
+    await page.setViewport(390, 844, true);
+    // no width for the grid -> layout() keeps waiting and never adds .aw-ready
+    await browser.send("Page.addScriptToEvaluateOnNewDocument", { source: `(() => { const d = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth'); Object.defineProperty(HTMLElement.prototype, 'offsetWidth', { configurable: true, get() { return this.classList && this.classList.contains('aw-grid') ? 0 : d.get.call(this); } }); })()` }, page.sessionId);
+    // the logos are never answered, so "load" never fires (Aster, council #13564)
+    await browser.send("Fetch.enable", { patterns: [{ urlPattern: "*logo-sm*", requestStage: "Request" }] }, page.sessionId);
+    await page.goto(BASE_URL + "/photography/", { timeout: 1500 });
+    const shown = `(() => { const a = Array.from(document.querySelectorAll('body > main .aw-img')); return a.length > 40 && a.every(i => getComputedStyle(i).display !== 'none'); })()`;
+    const early = await page.evaluate(`(() => ({ ready: document.readyState, hidden: Array.from(document.querySelectorAll('body > main .aw-img')).filter(i => getComputedStyle(i).display === 'none').length }))()`);
+    const ok = await page.waitFor(shown, { timeout: 8000 });
+    const loadFired = await page.evaluate(`document.readyState === 'complete'`);
+    await page.close();
+    if (loadFired) throw new Error("the stalled logos didn't hold 'load' back: this check tests nothing");
+    if (!early.hidden) throw new Error("pictures were not hidden before layout: the grid hides nothing (or layout ran)");
+    if (!ok) throw new Error("pictures never shown: the fallback didn't fire without 'load'");
+    return true;
+  });
+
   // ── Zoom (100 -> 180% in 20% steps) in every fullscreen viewer ──
   const ZOOM_STATE = (sel, imgSel) => `(() => { const o = document.querySelector(${JSON.stringify(sel)}); const i = o.querySelector(${JSON.stringify(imgSel)}); const r = i.getBoundingClientRect();
     return { label: o.querySelector('.zoom-label').textContent, w: Math.round(r.width), sw: o.scrollWidth, cw: o.clientWidth, sh: o.scrollHeight, ch: o.clientHeight,

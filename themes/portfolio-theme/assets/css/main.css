@@ -1340,3 +1340,12 @@ html:has(body[data-lightbox-open]),
 html:has(body.filter-lock),
 html:has(body.book-fullscreen-lock) { overflow: hidden !important; }
 body[style*="overflow: hidden"], body.filter-lock, body.book-fullscreen-lock { overflow: clip !important; }
+
+/* Scatter grids (Artworks home, Photography, Vestments, Oeuvre, Production): every item is
+   position:absolute and only layout() spreads them out. Until it has run once (it adds
+   .aw-ready), all the items sit on top of each other at the top of the grid, so the browser
+   counts every lazy picture as "on screen" and downloads them all at once (council #13544).
+   Hidden (display:none), a lazy picture isn't fetched; once placed, only those near the
+   screen are, and the rest follow as the visitor scrolls. layout() reads sizes from the
+   width/height attributes, not from the pictures, so hiding them changes no position. */
+.aw-grid:not(.aw-ready) .aw-img { display: none; }

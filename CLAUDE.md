@@ -526,7 +526,12 @@ only new URLs are fetched) and commit the JSON. The test "Grid items stay put wh
 
 `image-dims.py` also stores an 8px preview of each image (`data-lqip`). ALL page-sized fog layers
 (`#siteMirrorClone`, Bleed*, Core) paint those previews instead of the real files, so the whole mirror is built right after
-DOMContentLoaded and stays put while real images load (`useTinyImages` in baseof.html). Quick single-test reruns:
+DOMContentLoaded and stays put while real images load (`useTinyImages` in baseof.html). The copy is built in an inert document
+(`document.implementation.createHTMLDocument` + `importNode`) and enters the page only after that swap: a `cloneNode` copy made in
+the page started every image's download at once, lazy or not (council #13544, 2026-11-27: Photography fetched all 300 photos, 69 MB,
+on opening). Likewise the scatter grids (`.aw-grid`) hide their `.aw-img` until `layout()` adds `.aw-ready` (main.css): before
+that every item sits stacked at the top, so the browser counted all of them as on screen. Result: pictures load as the visitor
+scrolls (6 of 300 on opening). A `<noscript>` style shows them without JavaScript, and baseof shows them 4 s after DOMContentLoaded (not `load`, which a stalled file can hold back) if a layout never ran. Quick single-test reruns:
 `node tests/live-test.mjs --always-pass --only="text in the check label"`. Sizes must respect EXIF rotation (the script does).
 
 ## Zoom in fullscreen viewers
