@@ -379,6 +379,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col font-sans bg-white text-black dark:bg-[#0c0c0c] dark:text-white {{ if .IsHome }}page-home{{ else if eq .Type "inquiry" }}page-inquiry{{ else if eq .Type "links" }}page-links{{ else if eq .RelPermalink "/about/" }}page-about{{ else if or (eq .Type "oeuvre") (eq .Type "photography") (eq .Type "vestments") (eq .Type "production") (eq .Type "career") }}page-books{{ end }}">
+  {{ partial "fullscreen-invite.html" . }}
   {{ partial "wall.html" . }}
 
   <!-- ══════════════════════════════════════════════════════
@@ -481,7 +482,7 @@
     var held = firstVisit;
     if (firstVisit) html.classList.add("reveal-first");
 
-    var EXCLUDE = "#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #arwModal, #lightbox, #arwLightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown, #bookModal, .book-modal, #bookFullscreen, .artwork-filter-overlay, #siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho, #wall";
+    var EXCLUDE = "#intro-door, .logo-morph-wrap, #mobileMenu, #artworkModal, .arw-modal, #arwModal, #lightbox, #arwLightbox, .ml-popup, .filter-menu, #artworkSelectorModal, .sins-popup, .arch-popup, .filter-dropdown, #bookModal, .book-modal, #bookFullscreen, .artwork-filter-overlay, #siteMirror, #headerBleed, #footerBleed, #headerMirrorEcho, #footerMirrorEcho, #wall, #fsInvite";
     if (!firstVisit) EXCLUDE += ", #siteHeader"; // the header stays steady while pages change
     var SKIP = { SCRIPT: 1, STYLE: 1, NOSCRIPT: 1, SVG: 1, PATH: 1, INPUT: 1, TEXTAREA: 1, SELECT: 1, OPTION: 1 };
 
